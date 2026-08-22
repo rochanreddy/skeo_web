@@ -3,7 +3,6 @@ const groups = [
     title: 'Explore',
     links: [
       { label: 'Tools', href: '#tools' },
-      { label: 'How it works', href: '#how-it-works' },
       { label: 'Job Board', href: '#jobs' },
     ],
   },

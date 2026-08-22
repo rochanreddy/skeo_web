@@ -22,41 +22,34 @@ export const promiseStats = [
   { value: '1', label: 'certification system' },
 ] as const
 
-export const tools = [
-  'Claude',
-  'ChatGPT',
-  'Gemini',
-  'Lovable',
-  'n8n',
-  'Cursor',
-  'Notion',
-  'Perplexity',
-  'Zapier',
-  'Figma',
-] as const
-
-export const moduleFlow = [
-  { icon: '📘', title: 'Lessons', body: 'Short, practical, no fluff' },
-  { icon: '🛠️', title: 'Practice', body: 'Try it yourself, guided' },
-  { icon: '🚀', title: 'Projects', body: 'Build something real' },
-  { icon: '🎓', title: 'Certificate', body: 'Proof you can share' },
-] as const
-
-export const pathSteps = [
-  { num: '01', title: 'Pick', body: 'Choose a tool or module' },
-  { num: '02', title: 'Learn', body: 'Short-form, on the go' },
-  { num: '03', title: 'Practice', body: 'Hands-on, guided reps' },
-  { num: '04', title: 'Build', body: 'Ship a real project' },
-  { num: '05', title: 'Prove', body: 'Certify and get discovered' },
-] as const
-
-export const outcomes = [
-  { icon: '💼', title: 'Work', body: 'Do your job faster with AI' },
-  { icon: '🧱', title: 'Build', body: 'Ship AI-powered products' },
-  { icon: '⚙️', title: 'Automate', body: 'Cut the busywork with workflows' },
-  { icon: '🎨', title: 'Create', body: 'Produce content at AI speed' },
-  { icon: '📈', title: 'Grow', body: 'Turn skills into opportunities' },
-] as const
+/**
+ * The single tool the library section puts on stage.
+ * `poster` is the left-hand panel — it is drawn in markup, not an image,
+ * so the copy stays editable and nothing needs re-exporting.
+ */
+export const featuredTool = {
+  badge: 'Featured tool',
+  name: 'Claude',
+  maker: 'by Anthropic',
+  tagline: 'From a blank page to shipped work, in one tool.',
+  poster: {
+    logo: '/claude.svg',
+    kicker: 'AI tool library',
+    lines: ['Learn Claude', 'end to end'],
+    note: 'Prompting, research, and real deliverables.',
+    footer: 'Module 01 · Beginner friendly',
+  },
+  capsules: ['Prompts that hold up', 'Long-document research', 'Drafts and artifacts'],
+  facts: [
+    { icon: '📘', label: '12 lessons' },
+    { icon: '⏱️', label: '3.5 hours' },
+    { icon: '🚀', label: '4 projects' },
+    { icon: '🧭', label: 'Self-paced' },
+  ],
+  blurb:
+    'Start where most people start. Learn one tool properly — how to brief it, push back on it, and ship with it — and every tool after it takes half the time.',
+  cta: { label: 'Start this module', href: '#pricing' },
+} as const
 
 export const projects = [
   {

@@ -1,6 +1,7 @@
 import { PurchaseButton } from '@/components/ActionButton'
+import { ModuleCart } from '@/components/ModuleCart'
 import { Reveal } from '@/components/Reveal'
-import { MODULE_ROWS, PLANS } from '@/lib/plans'
+import { PLANS } from '@/lib/plans'
 
 export function Pricing() {
   const allAccess = PLANS.member
@@ -22,19 +23,8 @@ export function Pricing() {
           <Reveal as="article" className="modules-card">
             <span className="plan">INDIVIDUAL MODULES</span>
             <h3>Pay once, own the module</h3>
-            <p>Buy a single challenge outright — lifetime access to that module and its certificate.</p>
-            {MODULE_ROWS.map((row) => (
-              <div className="module-row" key={row.key}>
-                <div>
-                  <b>{row.title}</b>
-                  <small>{row.subtitle}</small>
-                </div>
-                <span className="module-price">{row.price}</span>
-                <PurchaseButton plan={row.key} className="button button-small button-outline">
-                  Start
-                </PurchaseButton>
-              </div>
-            ))}
+            <p>Buy the tools you actually need — lifetime access to each module and its certificate.</p>
+            <ModuleCart />
           </Reveal>
 
           <Reveal as="article" className="price-card pro allaccess-card" delay={1}>

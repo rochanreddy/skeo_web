@@ -1,4 +1,4 @@
-export type PlanKey = 'challenge14' | 'challenge28' | 'challengeContent' | 'member' | 'teams'
+export type PlanKey = 'claude' | 'chatgpt' | 'lovable' | 'n8n' | 'member' | 'teams'
 
 export type Plan = {
   eyebrow: string
@@ -13,34 +13,44 @@ export type Plan = {
 }
 
 export const PLANS: Record<PlanKey, Plan> = {
-  challenge14: {
-    eyebrow: '14-DAY AI CHALLENGE',
-    title: '14-Day AI Challenge',
+  claude: {
+    eyebrow: 'CLAUDE MODULE',
+    title: 'Claude',
     price: '$9',
     period: '/ one-time',
     amount: 9,
     billing: 'one-time',
-    features: ['Claude & generative AI tools', '14 daily practical builds', 'Certificate on completion'],
+    features: ['Prompts that hold up', 'Long-document research', 'Certificate on completion'],
     cta: 'Confirm and start module',
   },
-  challenge28: {
-    eyebrow: '28-DAY AI TOOLS CHALLENGE',
-    title: '28-Day AI Tools Challenge',
-    price: '$19',
-    period: '/ one-time',
-    amount: 19,
-    billing: 'one-time',
-    features: ['10+ AI tools — LLMs, automation, more', '28 daily practical builds', 'Certificate on completion'],
-    cta: 'Confirm and start module',
-  },
-  challengeContent: {
-    eyebrow: 'AI CONTENT CREATION CHALLENGE',
-    title: 'AI Content Creation Challenge',
+  chatgpt: {
+    eyebrow: 'CHATGPT MODULE',
+    title: 'ChatGPT',
     price: '$9',
     period: '/ one-time',
     amount: 9,
     billing: 'one-time',
-    features: ['AI-assisted content workflows', '14 daily practical builds', 'Certificate on completion'],
+    features: ['Everyday work, done faster', 'Custom GPTs and data analysis', 'Certificate on completion'],
+    cta: 'Confirm and start module',
+  },
+  lovable: {
+    eyebrow: 'LOVABLE MODULE',
+    title: 'Lovable',
+    price: '$12',
+    period: '/ one-time',
+    amount: 12,
+    billing: 'one-time',
+    features: ['Ship a working app from a prompt', 'Iterate without touching code', 'Certificate on completion'],
+    cta: 'Confirm and start module',
+  },
+  n8n: {
+    eyebrow: 'N8N MODULE',
+    title: 'n8n',
+    price: '$12',
+    period: '/ one-time',
+    amount: 12,
+    billing: 'one-time',
+    features: ['Automate the busywork', 'Wire AI into real workflows', 'Certificate on completion'],
     cta: 'Confirm and start module',
   },
   member: {
@@ -70,16 +80,19 @@ export const PLANS: Record<PlanKey, Plan> = {
   },
 }
 
-/** The individually purchasable modules, in the order the pricing table lists them. */
-export const MODULE_KEYS = ['challenge14', 'challenge28', 'challengeContent'] as const
+/** The individually purchasable modules, in the order the pricing card lists them. */
+export const MODULE_KEYS = ['claude', 'chatgpt', 'lovable', 'n8n'] as const
 
-export const MODULE_ROWS: { key: PlanKey; title: string; subtitle: string; price: string }[] = [
-  { key: 'challenge14', title: '14-Day AI Challenge', subtitle: 'Claude & generative AI tools', price: '$9' },
-  { key: 'challenge28', title: '28-Day AI Tools Challenge', subtitle: '10+ AI tools, end to end', price: '$19' },
-  {
-    key: 'challengeContent',
-    title: 'AI Content Creation Challenge',
-    subtitle: 'Content workflows & visuals',
-    price: '$9',
-  },
+export type ModuleKey = (typeof MODULE_KEYS)[number]
+
+export type ModuleRow = { key: ModuleKey; title: string; subtitle: string; price: string; amount: number }
+
+export const MODULE_ROWS: ModuleRow[] = [
+  { key: 'claude', title: 'Claude', subtitle: 'Prompting, research, real deliverables', price: '$9', amount: 9 },
+  { key: 'chatgpt', title: 'ChatGPT', subtitle: 'Everyday work, custom GPTs, analysis', price: '$9', amount: 9 },
+  { key: 'lovable', title: 'Lovable', subtitle: 'Ship a working app from a prompt', price: '$12', amount: 12 },
+  { key: 'n8n', title: 'n8n', subtitle: 'Automations that run without you', price: '$12', amount: 12 },
 ]
+
+/** Prices are whole dollars everywhere on the page, so no cents formatting. */
+export const money = (amount: number) => `$${amount}`

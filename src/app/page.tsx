@@ -12,7 +12,6 @@ import { Pricing } from '@/components/sections/Pricing'
 import { Problem } from '@/components/sections/Problem'
 import { Projects } from '@/components/sections/Projects'
 import { CorePromise } from '@/components/sections/CorePromise'
-import { System } from '@/components/sections/System'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { Tools } from '@/components/sections/Tools'
 
@@ -26,12 +25,11 @@ export default function Home() {
         <Problem />
         <CorePromise />
         <Tools />
-        <System />
         <Projects />
+        <Certification />
         <Jobs />
         <Comparison />
         <Pricing />
-        <Certification />
         <Audience />
         <Testimonials />
         <Faq />

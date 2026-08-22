@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 import { Modal, useDialogId } from './Modal'
-import { PLANS, type PlanKey } from '@/lib/plans'
+import { PLANS, money, type PlanKey } from '@/lib/plans'
 import {
   cardBrand,
   formatCardNumber,
@@ -16,10 +16,13 @@ import {
 type Field = 'email' | 'card' | 'expiry' | 'cvc'
 type Errors = Partial<Record<Field, string>>
 
-export function PurchaseModal({ planKey, onClose }: { planKey: PlanKey; onClose: () => void }) {
+export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onClose: () => void }) {
   const titleId = useDialogId('purchase-title')
-  const plan = PLANS[planKey]
-  const isTeams = plan.billing === 'custom'
+  const plans = planKeys.map((key) => PLANS[key])
+  // A cart of one behaves exactly as the old single-plan checkout did.
+  const single = plans.length === 1 ? plans[0] : null
+  const isTeams = single?.billing === 'custom'
+  const cartTotal = plans.reduce((sum, plan) => sum + (plan.amount ?? 0), 0)
 
   const [values, setValues] = useState({ email: '', card: '', expiry: '', cvc: '' })
   const [errors, setErrors] = useState<Errors>({})
@@ -66,19 +69,40 @@ export function PurchaseModal({ planKey, onClose }: { planKey: PlanKey; onClose:
   return (
     <Modal labelledBy={titleId} onClose={onClose} className="purchase-modal">
       <div className="purchase-plan">
-        <span className="eyebrow">{plan.eyebrow}</span>
-        <h3 id={titleId}>{plan.title}</h3>
-        <div className="purchase-price">
-          <span>{plan.price}</span>
-          <small>{plan.period}</small>
-        </div>
-        <ul>
-          {plan.features.map((feature) => (
-            <li key={feature}>
-              <b aria-hidden="true">✓</b> {feature}
-            </li>
-          ))}
-        </ul>
+        {single ? (
+          <>
+            <span className="eyebrow">{single.eyebrow}</span>
+            <h3 id={titleId}>{single.title}</h3>
+            <div className="purchase-price">
+              <span>{single.price}</span>
+              <small>{single.period}</small>
+            </div>
+            <ul>
+              {single.features.map((feature) => (
+                <li key={feature}>
+                  <b aria-hidden="true">✓</b> {feature}
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <>
+            <span className="eyebrow">YOUR CART</span>
+            <h3 id={titleId}>{plans.length} modules</h3>
+            <ul className="purchase-cart">
+              {plans.map((plan) => (
+                <li key={plan.title}>
+                  <b>{plan.title}</b>
+                  <span>{plan.price}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="purchase-price">
+              <span>{money(cartTotal)}</span>
+              <small>/ one-time</small>
+            </div>
+          </>
+        )}
       </div>
 
       {done ? (
@@ -86,7 +110,7 @@ export function PurchaseModal({ planKey, onClose }: { planKey: PlanKey; onClose:
           <div className="success-mark" aria-hidden="true">
             ✓
           </div>
-          <h3>{isTeams ? 'Request received.' : 'You’re enrolled.'}</h3>
+          <h3>{isTeams ? 'Request received.' : single ? 'You’re enrolled.' : 'Your modules are ready.'}</h3>
           <p>
             {isTeams
               ? 'A member of the team will reach out within one working day.'
@@ -191,7 +215,7 @@ export function PurchaseModal({ planKey, onClose }: { planKey: PlanKey; onClose:
           )}
 
           <button type="submit" className="button modal-submit full" disabled={submitting}>
-            <span className="btn-label">{submitting ? 'Processing…' : plan.cta}</span>
+            <span className="btn-label">{submitting ? 'Processing…' : single ? single.cta : `Pay ${money(cartTotal)}`}</span>
             <span className={submitting ? 'spinner' : ''} aria-hidden="true">
               {submitting ? '' : '→'}
             </span>

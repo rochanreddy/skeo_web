@@ -9,7 +9,6 @@ export const site = {
 
 export const navLinks = [
   { href: '#tools', label: 'Tools' },
-  { href: '#how-it-works', label: 'How it works' },
   { href: '#jobs', label: 'Job Board' },
   { href: '#pricing', label: 'Pricing' },
 ] as const

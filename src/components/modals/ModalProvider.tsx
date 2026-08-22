@@ -10,11 +10,13 @@ export type AuthMode = 'signin' | 'signup'
 type ModalState =
   | { kind: 'none' }
   | { kind: 'auth'; mode: AuthMode }
-  | { kind: 'purchase'; plan: PlanKey }
+  | { kind: 'purchase'; plans: PlanKey[] }
 
 type ModalApi = {
   openAuth: (mode: AuthMode) => void
   openPurchase: (plan: PlanKey) => void
+  /** Checkout for a multi-module cart. */
+  openCart: (plans: PlanKey[]) => void
   close: () => void
 }
 
@@ -31,16 +33,22 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ModalState>({ kind: 'none' })
 
   const openAuth = useCallback((mode: AuthMode) => setState({ kind: 'auth', mode }), [])
-  const openPurchase = useCallback((plan: PlanKey) => setState({ kind: 'purchase', plan }), [])
+  const openPurchase = useCallback((plan: PlanKey) => setState({ kind: 'purchase', plans: [plan] }), [])
+  const openCart = useCallback((plans: PlanKey[]) => {
+    if (plans.length > 0) setState({ kind: 'purchase', plans })
+  }, [])
   const close = useCallback(() => setState({ kind: 'none' }), [])
 
-  const api = useMemo(() => ({ openAuth, openPurchase, close }), [openAuth, openPurchase, close])
+  const api = useMemo(
+    () => ({ openAuth, openPurchase, openCart, close }),
+    [openAuth, openPurchase, openCart, close],
+  )
 
   return (
     <ModalContext.Provider value={api}>
       {children}
       {state.kind === 'auth' && <AuthModal initialMode={state.mode} onClose={close} />}
-      {state.kind === 'purchase' && <PurchaseModal planKey={state.plan} onClose={close} />}
+      {state.kind === 'purchase' && <PurchaseModal planKeys={state.plans} onClose={close} />}
     </ModalContext.Provider>
   )
 }

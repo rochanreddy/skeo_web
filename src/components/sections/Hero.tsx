@@ -19,8 +19,8 @@ export function Hero() {
         </p>
         <div className="hero-buttons">
           <AuthButton mode="signup">Register</AuthButton>
-          <a className="text-link" href="#how-it-works">
-            See how it works <span aria-hidden="true">↘</span>
+          <a className="text-link" href="#projects">
+            See what you’ll build <span aria-hidden="true">↘</span>
           </a>
         </div>
         <div className="proof">
