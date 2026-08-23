@@ -69,7 +69,7 @@ export function Nav() {
           <span className="brand-mark" aria-hidden="true">
             S
           </span>
-          <span>skillora</span>
+          <span>SKEO</span>
         </a>
 
         <nav className={`nav-links${open ? ' open' : ''}`} aria-label="Main">

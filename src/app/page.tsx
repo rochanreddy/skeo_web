@@ -1,5 +1,6 @@
 import { Footer } from '@/components/Footer'
 import { Nav } from '@/components/Nav'
+import { Accreditation } from '@/components/sections/Accreditation'
 import { Audience } from '@/components/sections/Audience'
 import { Certification } from '@/components/sections/Certification'
 import { Comparison } from '@/components/sections/Comparison'
@@ -21,7 +22,7 @@ export default function Home() {
       <Nav />
       <main id="top">
         <Hero />
-        <LogoStrip />
+        <Accreditation />
         <Problem />
         <CorePromise />
         <Tools />
@@ -30,6 +31,7 @@ export default function Home() {
         <Jobs />
         <Comparison />
         <Pricing />
+        <LogoStrip />
         <Audience />
         <Testimonials />
         <Faq />

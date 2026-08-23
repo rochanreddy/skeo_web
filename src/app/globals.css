@@ -513,7 +513,7 @@ h2 em {
 }
 
 /* -- the cards in front -- */
-.tool-card {
+.stage-card {
   position: absolute;
   left: calc(50% + (var(--cx) * var(--orbit)) - var(--card) / 2);
   top: calc(50% + (var(--cy) * var(--orbit)) - var(--card) / 2);
@@ -531,7 +531,7 @@ h2 em {
   animation-delay: var(--float-delay);
 }
 
-.tool-card-face {
+.stage-card-face {
   display: grid;
   position: relative;
   place-items: center;
@@ -545,19 +545,19 @@ h2 em {
   transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.25, 1), box-shadow 0.45s ease, border-color 0.35s ease;
 }
 
-.tool-card-mark {
+.stage-card-mark {
   width: 44%;
   height: auto;
 }
 
-.tool-card.is-active .tool-card-face {
+.stage-card.is-active .stage-card-face {
   transform: rotate(calc(var(--rot) * 0.3)) scale(1.08);
   border-color: color-mix(in srgb, var(--tint) 45%, #fff);
   box-shadow: 0 22px 44px color-mix(in srgb, var(--tint) 26%, transparent);
 }
 
 /* Marks the card whose scene is playing in the panel. */
-.tool-card-face::after {
+.stage-card-face::after {
   content: '';
   position: absolute;
   inset: -7px;
@@ -566,7 +566,7 @@ h2 em {
   opacity: 0;
 }
 
-.tool-card.is-active .tool-card-face::after {
+.stage-card.is-active .stage-card-face::after {
   opacity: 1;
   animation: ring-pulse 2.5s ease-out infinite;
 }
@@ -1151,6 +1151,73 @@ h2 em {
   }
   46% {
     transform: scale(1.09);
+  }
+}
+
+/* ============ ACCREDITATION STRIP ============ */
+/* Sits directly under the hero, so it borrows the trust strip's proportions
+   rather than inventing a second band style. */
+.accred-strip {
+  border-block: 1px solid var(--line);
+  padding: 26px 0 28px;
+}
+
+/* Label centred above the row rather than beside it, so the four marks read as
+   one centred group. */
+.accred-strip p {
+  font: 500 10px var(--mono);
+  letter-spacing: 0.2px;
+  color: #938e9a;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.accred-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px 0;
+}
+
+.accred-item {
+  display: flex;
+  align-items: center;
+  padding-inline: clamp(18px, 3vw, 44px);
+}
+
+.accred-item:first-child {
+  padding-left: 0;
+}
+
+.accred-item:last-child {
+  padding-right: 0;
+}
+
+/* Hairlines between the marks, as on the government-issued sheets these come
+   from. Dropped once the row wraps, where they would fall in odd places. */
+.accred-item + .accred-item {
+  border-left: 1px solid var(--line);
+}
+
+.accred-logo {
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 680px) {
+  .accred-strip p {
+    margin-bottom: 16px;
+  }
+  .accred-logos {
+    gap: 20px 0;
+  }
+  .accred-item {
+    padding-inline: 16px;
+  }
+  /* The row wraps here, where a left hairline would land mid-air. */
+  .accred-item + .accred-item {
+    border-left: 0;
   }
 }
 
@@ -3075,7 +3142,7 @@ details p {
   .stage-panel {
     border-radius: 22px;
   }
-  .tool-card-face {
+  .stage-card-face {
     border-radius: 20px;
   }
   .logo-strip .wrap {
@@ -3249,7 +3316,7 @@ details p {
     opacity: 1;
     transform: none;
   }
-  .tool-card {
+  .stage-card {
     animation: none;
   }
 }

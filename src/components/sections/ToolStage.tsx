@@ -123,7 +123,7 @@ export function ToolStage() {
           <button
             key={item.id}
             type="button"
-            className={`tool-card${index === active ? ' is-active' : ''}`}
+            className={`stage-card${index === active ? ' is-active' : ''}`}
             style={
               {
                 '--cx': Math.cos(angle).toFixed(4),
@@ -146,8 +146,8 @@ export function ToolStage() {
             onBlur={() => setHeld(false)}
             onClick={() => setActive(index)}
           >
-            <span className="tool-card-face">
-              <Mark className="tool-card-mark" />
+            <span className="stage-card-face">
+              <Mark className="stage-card-mark" />
             </span>
             <span className="sr-only">Preview {item.name}</span>
           </button>
