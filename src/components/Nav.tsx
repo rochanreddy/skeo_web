@@ -11,12 +11,23 @@ export function Nav() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const shellRef = useRef<HTMLDivElement>(null)
 
-  // Shadow the header once the page has moved off the top.
+  // Shadow the header once the page has moved off the top, and run the progress
+  // line under it. Written as a custom property rather than state so scrolling
+  // never re-renders the tree.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12)
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight
+      const progress = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0
+      shellRef.current?.style.setProperty('--progress', String(progress))
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
   // Highlight the nav link for whichever section currently owns the viewport.
@@ -65,11 +76,11 @@ export function Nav() {
   return (
     <div ref={shellRef} className={`nav-shell${scrolled ? ' scrolled' : ''}`}>
       <header className="nav wrap">
-        <a className="brand" href="#top" aria-label="Skillora home">
+        <a className="brand" href="#top" aria-label="Skeo home">
           <span className="brand-mark" aria-hidden="true">
             S
           </span>
-          <span>SKEO</span>
+          <span>skeo</span>
         </a>
 
         <nav className={`nav-links${open ? ' open' : ''}`} aria-label="Main">
@@ -87,11 +98,8 @@ export function Nav() {
         </nav>
 
         <div className="nav-actions">
-          <button type="button" className="login" onClick={() => openAuth('signin')}>
-            Sign in
-          </button>
           <button type="button" className="button button-small" onClick={() => openAuth('signup')}>
-            <span className="btn-label">Register</span>
+            <span className="btn-label">Start Learning</span>
             <span aria-hidden="true">→</span>
           </button>
         </div>
@@ -107,6 +115,7 @@ export function Nav() {
           <i />
         </button>
       </header>
+      <span className="scroll-progress" aria-hidden="true" />
     </div>
   )
 }

@@ -1,43 +1,29 @@
-'use client'
-
-import { useState } from 'react'
+import { Reveal } from '@/components/Reveal'
+import { LogoRail } from '@/components/sections/LogoRail'
 import { testimonials } from '@/lib/content'
 
-const PER_PAGE = 3
-const PAGES = Math.ceil(testimonials.length / PER_PAGE)
-
 /**
- * The original markup had arrow buttons that did nothing. They now page through
- * the full quote set, with dots, keyboard support, and a live region so screen
- * readers are told the page changed.
+ * The quotes ride the same continuous rail the logo strip uses, rather than
+ * paging three at a time: every testimonial comes past on its own, and the row
+ * keeps moving on hover instead of waiting to be clicked.
  */
 export function Testimonials() {
-  const [page, setPage] = useState(0)
-
-  const go = (next: number) => setPage((next + PAGES) % PAGES)
-  const visible = testimonials.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE)
-
   return (
-    <section className="section testimonials" aria-labelledby="testimonials-title">
+    <section className="section testimonials" id="reviews" aria-labelledby="testimonials-title">
       <div className="wrap">
-        <div className="heading-row">
+        <Reveal className="heading-row">
           <div>
             <span className="eyebrow">FROM THE COMMUNITY</span>
             <h2 id="testimonials-title">Builders become believers.</h2>
           </div>
-          <div className="arrows">
-            <button type="button" onClick={() => go(page - 1)} aria-label="Previous testimonials">
-              ←
-            </button>
-            <button type="button" onClick={() => go(page + 1)} aria-label="Next testimonials">
-              →
-            </button>
-          </div>
-        </div>
+        </Reveal>
+      </div>
 
-        <div className="quote-grid" aria-live="polite">
-          {visible.map((item, i) => (
-            <article key={`${page}-${item.name}`} className={`quote${i === 1 ? ' featured' : ''}`}>
+      {/* Full bleed: the rail should run off both edges, not stop at the column. */}
+      <Reveal delay={1}>
+        <LogoRail className="quote-rail" speed={0.35}>
+          {testimonials.map((item) => (
+            <article key={item.name} className="quote">
               <div className="stars" role="img" aria-label="Rated 5 out of 5">
                 <span aria-hidden="true">★★★★★</span>
               </div>
@@ -48,20 +34,8 @@ export function Testimonials() {
               </footer>
             </article>
           ))}
-        </div>
-
-        <div className="quote-dots">
-          {Array.from({ length: PAGES }, (_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setPage(i)}
-              aria-current={page === i}
-              aria-label={`Testimonials page ${i + 1} of ${PAGES}`}
-            />
-          ))}
-        </div>
-      </div>
+        </LogoRail>
+      </Reveal>
     </section>
   )
 }

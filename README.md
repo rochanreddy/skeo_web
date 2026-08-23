@@ -1,6 +1,6 @@
-# Skillora
+# Skeo
 
-The Skillora landing page, converted from the single-file `skillora-preview.html`
+The Skeo landing page, converted from the single-file `skeo-preview.html`
 prototype to a Next.js 15 App Router app (TypeScript, React 19, no runtime deps).
 
 ```bash
@@ -139,7 +139,7 @@ Don't run `npm run build` and `npm run dev` against this folder at the same time
 
 ## Notes
 
-- `skillora-preview.html` is kept at the repo root as the reference original.
+- `skeo-preview.html` is kept at the repo root as the reference original.
 - Auth and checkout submit against a simulated delay; wire them to real
   endpoints in `AuthModal.tsx` and `PurchaseModal.tsx` where the `setTimeout`
   stand-ins are.

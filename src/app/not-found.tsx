@@ -16,7 +16,7 @@ export default function NotFound() {
         That page has moved or never existed. Head back and pick up your streak.
       </p>
       <Link className="button" href="/" style={{ display: 'inline-flex' }}>
-        <span className="btn-label">Back to Skillora</span> <span aria-hidden="true">→</span>
+        <span className="btn-label">Back to Skeo</span> <span aria-hidden="true">→</span>
       </Link>
     </main>
   )

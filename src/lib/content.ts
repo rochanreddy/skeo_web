@@ -3,23 +3,22 @@
  * Sections read from here so wording changes never require touching JSX.
  */
 
-export const employers = ['microsoft', 'amazon', 'accenture', 'Razorpay', 'deloitte.', 'flipkart'] as const
-
 export const problems = [
-  { mark: '01', title: 'Too many tools', body: 'Claude, ChatGPT, Gemini, Lovable, n8n — new ones every month.' },
+  { mark: '01', title: 'Too many tools', body: 'New tools drop every week, every month.' },
   { mark: '02', title: 'No structure', body: 'Random videos and threads don’t add up to a real skill.' },
   { mark: '03', title: 'No proof', body: 'Watching a tutorial isn’t something you can show anyone.' },
   {
     mark: '04',
     title: 'No next step',
-    body: 'Even after learning, most people don’t know how to turn it into opportunity.',
+    body: 'Even after learning, don’t know how to turn it into an opportunity.',
   },
 ] as const
 
 export const promiseStats = [
-  { value: '10+', label: 'AI tools, one place' },
-  { value: '15 min', label: 'a day, structured' },
-  { value: '1', label: 'certification system' },
+  { value: '5+', label: 'AI Tools' },
+  { value: '30', label: 'Minutes A Day' },
+  { value: '100', label: 'Real Time Projects' },
+  { value: '1000', label: 'Job & Monetization Opportunities' },
 ] as const
 
 /**
@@ -39,39 +38,39 @@ export const featuredTool = {
     note: 'Prompting, research, and real deliverables.',
     footer: 'Module 01 · Beginner friendly',
   },
-  capsules: ['Prompts that hold up', 'Long-document research', 'Drafts and artifacts'],
+  capsules: ['Claude Chat', 'Claude Cowork', 'Claude Code'],
   facts: [
-    { icon: '📘', label: '12 lessons' },
-    { icon: '⏱️', label: '3.5 hours' },
-    { icon: '🚀', label: '4 projects' },
-    { icon: '🧭', label: 'Self-paced' },
+    { icon: 'book', label: '12 lessons' },
+    { icon: 'clock', label: '3.5 hours' },
+    { icon: 'rocket', label: '4 projects' },
+    { icon: 'compass', label: 'Self-paced' },
   ],
   blurb:
-    'Start where most people start. Learn one tool properly — how to brief it, push back on it, and ship with it — and every tool after it takes half the time.',
-  cta: { label: 'Start this module', href: '#pricing' },
+    'Master Claude from foundations to advanced, apply it to real-world problems, build powerful projects, and turn your skills into new opportunities.',
+  cta: { label: 'Start Learning', href: '#pricing' },
 } as const
 
 export const projects = [
   {
     art: 'pink',
-    glyph: '✺',
-    category: 'CONTENT CREATION',
-    title: 'Animated Carousels',
-    body: 'Design scroll-stopping carousels with AI-assisted visuals and motion.',
+    icon: 'learn',
+    category: 'LEARN',
+    title: 'Master the tools, from foundations to advanced.',
+    body: 'Build a strong understanding of each tool and learn how to use it confidently in real-world scenarios.',
   },
   {
     art: 'blue',
-    glyph: '⌁',
-    category: 'AUTOMATION',
-    title: 'An always-on content engine',
-    body: 'Build an intelligent workflow that does the busywork.',
+    icon: 'build',
+    category: 'BUILD',
+    title: 'Apply what you learn. Build what matters.',
+    body: 'Turn your knowledge into workflows, automations, and real projects that solve meaningful problems.',
   },
   {
     art: 'yellow',
-    glyph: '◉',
-    category: 'PRODUCTIVITY',
-    title: 'Your personal research copilot',
-    body: 'Turn a messy brief into a source-backed point of view.',
+    icon: 'monetize',
+    category: 'MONETIZE',
+    title: 'Turn AI skills into opportunities.',
+    body: 'Use your skills to create value, unlock career opportunities, freelance, or build something of your own.',
   },
 ] as const
 
@@ -81,34 +80,35 @@ export const jobs = [
   { title: 'Prompt Engineer Intern', meta: 'Remote · Internship' },
 ] as const
 
+/* What the board opens up — listed beside the copy, not as sample roles. */
+export const opportunities = [
+  '1000+ Monetization Opportunities',
+  'Freelance Projects',
+  'Internships',
+  'Full Time Jobs',
+] as const
+
 export const comparison = {
   legacy: [
-    'Watch another video',
-    'Pass a multiple-choice quiz',
-    'Collect a generic certificate',
-    'Hope someone notices',
+    'Fixed, all-in-one courses',
+    'Watch lessons & complete quizzes',
+    'Certificate of completion',
+    'Finish the course & figure out what’s next',
+    'Limited ways to apply your skills',
   ],
-  skillora: [
-    'Build something every day',
-    'Learn tools in real context',
-    'Earn proof through projects',
-    'Get discovered for real work',
+  skeo: [
+    'Individual AI tools & modules',
+    'Learn by building real projects',
+    'Verified proof of practical skills',
+    'Access jobs, internships & freelancing',
+    '1,000+ monetization opportunities',
   ],
 } as const
-
-export const audiences = [
-  { title: 'Students & college students', body: 'Get ahead before you graduate.' },
-  { title: 'Fresh graduates', body: 'Stand out with proof, not just a degree.' },
-  { title: 'Working professionals', body: 'Stay relevant in your current role.' },
-  { title: 'Career switchers', body: 'Build a portfolio in a new direction.' },
-  { title: 'Freelancers & creators', body: 'Add AI to your existing craft.' },
-  { title: 'Job seekers', body: 'Turn learning into opportunities.' },
-] as const
 
 export const testimonials = [
   {
     quote:
-      'Skillora gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.',
+      'Skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.',
     name: 'Priya Shah',
     role: 'Product Designer, Mumbai',
   },
@@ -147,7 +147,7 @@ export const testimonials = [
 export const faqs = [
   {
     q: 'Do I need a technical background?',
-    a: 'Not at all. Skillora is designed to make practical AI accessible, whether you work in design, marketing, operations, or are just getting started.',
+    a: 'Not at all. Skeo is designed to make practical AI accessible, whether you work in design, marketing, operations, or are just getting started.',
   },
   {
     q: 'How much time does a module take?',
@@ -164,5 +164,17 @@ export const faqs = [
   {
     q: 'Can I cancel whenever I want?',
     a: 'Absolutely. There are no long-term commitments. You can manage or cancel your membership at any time.',
+  },
+  {
+    q: 'Do I have to pay for the AI tools as well?',
+    a: 'No. Every build is designed around the free tier of each tool, and where a paid plan genuinely changes what is possible, we say so before you start rather than after.',
+  },
+  {
+    q: 'What do I actually walk away with?',
+    a: 'Finished work — carousels, automations, research briefs and the rest — sitting in a portfolio you own, plus the certificate that links straight to it.',
+  },
+  {
+    q: 'The tools change every month. Does the content?',
+    a: 'Yes. Modules are revised as the tools shift, and your access covers those revisions — you are not buying a snapshot of how Claude or n8n worked this quarter.',
   },
 ] as const

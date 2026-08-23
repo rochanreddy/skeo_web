@@ -1,4 +1,5 @@
 import Image, { type StaticImageData } from 'next/image'
+import { Reveal } from '@/components/Reveal'
 import anthropic from '@/assets/accreditation/anthropic.webp'
 import googleEducation from '@/assets/accreditation/google-education.webp'
 import msme from '@/assets/accreditation/msme.webp'
@@ -21,10 +22,10 @@ const ACCREDITORS: { name: string; logo: StaticImageData; height: number }[] = [
 
 export function Accreditation() {
   return (
-    <section className="accred-strip" aria-label="Skillora accreditations">
-      <div className="wrap">
+    <section className="accred-strip" aria-label="Skeo accreditations">
+      <Reveal className="wrap">
         <p>We are accredited by</p>
-        <div className="accred-logos">
+        <div className="accred-logos reveal-stagger">
           {ACCREDITORS.map((item) => (
             <span key={item.name} className="accred-item">
               <Image
@@ -36,7 +37,7 @@ export function Accreditation() {
             </span>
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   )
 }

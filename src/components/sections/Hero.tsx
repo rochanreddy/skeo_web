@@ -12,24 +12,22 @@ export function Hero() {
         <h1 id="hero-title">
           Master the AI tools
           <br />
-          <em>that matter.</em>
+          <em>that matter!</em>
         </h1>
         <p>
-          Claude, ChatGPT, Gemini, automation, and more — in one structured system. Learn by doing, build real proof of
-          work, and unlock opportunities.
+          Claude, ChatGPT, Gemini, n8n, Lovable and many more.
+          <br />
+          Learn by doing, build real proof of work, and unlock opportunities.
         </p>
         <div className="hero-buttons">
-          <AuthButton mode="signup">Start learning</AuthButton>
-          <a className="text-link" href="#projects">
-            Learn more <span aria-hidden="true">↘</span>
-          </a>
+          <AuthButton mode="signup">Start Learning</AuthButton>
         </div>
         <div className="proof">
           <div className="avatars" aria-hidden="true">
-            <b>AM</b>
-            <b>RS</b>
-            <b>NK</b>
-            <b>JP</b>
+            <b>AV</b>
+            <b>AR</b>
+            <b>MU</b>
+            <b>SR</b>
           </div>
           <div>
             <strong>15,000+ builders</strong>

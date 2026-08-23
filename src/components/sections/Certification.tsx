@@ -1,6 +1,20 @@
 import { Reveal } from '@/components/Reveal'
+import { ChatGptMark, ClaudeMark, GeminiMark, N8nMark } from '@/components/tools/marks'
 
-const proofPoints = ['Verifiable public profile', 'Project-based assessment', 'Unlocks the Job & Freelancing Board']
+const proofPoints = [
+  'Verified tool-specific credentials',
+  'Earned through practical projects',
+  'Build a profile of proven skills',
+  'Unlock jobs, freelance work & opportunities',
+]
+
+/* The tools a certificate actually vouches for, shown as their own marks. */
+const certTools = [
+  { name: 'Claude', Mark: ClaudeMark },
+  { name: 'ChatGPT', Mark: ChatGptMark },
+  { name: 'Gemini', Mark: GeminiMark },
+  { name: 'n8n', Mark: N8nMark },
+]
 
 export function Certification() {
   return (
@@ -23,7 +37,7 @@ export function Certification() {
             </p>
             <div>
               <span>Issued Jun 2026</span>
-              <i>skillora</i>
+              <i>skeo</i>
             </div>
           </div>
         </Reveal>
@@ -35,8 +49,11 @@ export function Certification() {
             real signal.
           </h2>
           <p>
-            Skillora certificates are earned by doing the work — not by watching. Every certificate is a step toward the
-            Job &amp; Freelancing Board, not the finish line.
+            Build skills across the tools you need, from beginner to advanced.
+            <br />
+            Put them into practice, earn verified credentials, and
+            <br />
+            build a profile that shows what you can actually do.
           </p>
           <ul>
             {proofPoints.map((point) => (
@@ -45,9 +62,14 @@ export function Certification() {
               </li>
             ))}
           </ul>
-          <a className="text-link" href="/profiles/sample">
-            See a sample profile <span aria-hidden="true">↗</span>
-          </a>
+          <ul className="cert-tools">
+            {certTools.map(({ name, Mark }) => (
+              <li key={name} title={name}>
+                <Mark className="cert-tool-mark" />
+                <span>{name}</span>
+              </li>
+            ))}
+          </ul>
         </Reveal>
       </div>
     </section>

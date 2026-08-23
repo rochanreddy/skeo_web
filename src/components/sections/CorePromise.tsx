@@ -6,17 +6,16 @@ export function CorePromise() {
     <section className="promise" aria-labelledby="promise-title">
       <div className="wrap">
         <Reveal className="promise-inner">
-          <span className="eyebrow">THE SKILLORA WAY</span>
+          <span className="eyebrow">THE SKEO WAY</span>
           <h2 id="promise-title">
-            One platform.
-            <br />
-            <em>Every AI tool.</em>
+            One platform. <em>Every AI tool.</em>
           </h2>
           <p>
-            Stop hopping between tutorials. Skillora brings every major AI tool into one structured system of short
-            challenges — so you build real skills, not just watch them.
+            Skeo brings every major AI tool into one structured system of short challenges.
+            <br />
+            So you build real skills, not just watch them.
           </p>
-          <div className="promise-stats">
+          <div className="promise-stats reveal-stagger">
             {promiseStats.map((stat) => (
               <div className="stat-chip" key={stat.label}>
                 <b>{stat.value}</b>

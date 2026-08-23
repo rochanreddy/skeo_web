@@ -7,10 +7,7 @@ export function Problem() {
       <Reveal className="center-heading">
         <span className="eyebrow">THE PROBLEM</span>
         <h2 id="problem-title">AI isn’t one skill anymore.</h2>
-        <p>
-          New tools drop every week. Free tutorials pile up. Most people still don’t know where to start — or what’s
-          actually worth learning.
-        </p>
+        <p>Most people still don’t know where to start or what’s actually worth learning and free tutorials pile up.</p>
       </Reveal>
       <div className="problem-grid">
         {problems.map((problem, i) => (

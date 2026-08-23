@@ -14,7 +14,7 @@
  * same node would overwrite the attribute.
  */
 
-import type { CSSProperties, ReactElement } from 'react'
+import type { CSSProperties } from 'react'
 import { CLAUDE_PATH, GEMINI_PATH, LovableMark, OPENAI_PATH } from './marks'
 
 const step = (n: number) => ({ '--step': n }) as CSSProperties
@@ -153,6 +153,7 @@ export function N8nScene() {
     </svg>
   )
 }
+
 /** Claude: code typing itself out, line by line, in an editor window. */
 export function ClaudeScene() {
   const lines = [

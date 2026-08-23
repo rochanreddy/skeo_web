@@ -2,20 +2,19 @@
 
 import { useState, type FormEvent } from 'react'
 import { Modal, useDialogId } from './Modal'
+import { BackgroundField } from '@/components/forms/BackgroundField'
 import { PLANS, money, type PlanKey } from '@/lib/plans'
-import {
-  cardBrand,
-  formatCardNumber,
-  formatExpiry,
-  validateCardNumber,
-  validateCvc,
-  validateEmail,
-  validateExpiry,
-} from '@/lib/validation'
+import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 
-type Field = 'email' | 'card' | 'expiry' | 'cvc'
+type Field = 'name' | 'email' | 'phone' | 'background'
 type Errors = Partial<Record<Field, string>>
 
+/**
+ * Checkout captures the lead, not a card: name, phone, email and the same
+ * background question menler.in asks, so a person who lands here is described
+ * the same way they would be on the main site. Payment is taken afterwards,
+ * out of band.
+ */
 export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onClose: () => void }) {
   const titleId = useDialogId('purchase-title')
   const plans = planKeys.map((key) => PLANS[key])
@@ -24,12 +23,10 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
   const isTeams = single?.billing === 'custom'
   const cartTotal = plans.reduce((sum, plan) => sum + (plan.amount ?? 0), 0)
 
-  const [values, setValues] = useState({ email: '', card: '', expiry: '', cvc: '' })
+  const [values, setValues] = useState({ name: '', email: '', phone: '', background: '' })
   const [errors, setErrors] = useState<Errors>({})
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
-
-  const brand = cardBrand(values.card)
 
   function set(key: Field, value: string) {
     setValues((v) => ({ ...v, [key]: value }))
@@ -38,17 +35,14 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
 
   function validate(): Errors {
     const next: Errors = {}
+    const name = validateName(values.name)
+    if (name) next.name = name
     const email = validateEmail(values.email)
     if (email) next.email = email
-    // Teams enquiries never collect card details.
-    if (!isTeams) {
-      const card = validateCardNumber(values.card)
-      if (card) next.card = card
-      const expiry = validateExpiry(values.expiry)
-      if (expiry) next.expiry = expiry
-      const cvc = validateCvc(values.cvc)
-      if (cvc) next.cvc = cvc
-    }
+    const phone = validatePhone(values.phone)
+    if (phone) next.phone = phone
+    // BackgroundField reports '' until the follow-up is answered too.
+    if (!values.background) next.background = 'Tell us where you are right now.'
     return next
   }
 
@@ -110,119 +104,107 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
           <div className="success-mark" aria-hidden="true">
             ✓
           </div>
-          <h3>{isTeams ? 'Request received.' : single ? 'You’re enrolled.' : 'Your modules are ready.'}</h3>
+          <h3>{isTeams ? 'Request received.' : 'Details received.'}</h3>
           <p>
             {isTeams
               ? 'A member of the team will reach out within one working day.'
-              : 'Check your email for next steps. Your first build is waiting.'}
+              : 'Our team will call you shortly to confirm your enrolment and get you started.'}
           </p>
           <button type="button" className="button" onClick={onClose}>
-            {isTeams ? 'Back to pricing' : 'Start building'} <span aria-hidden="true">→</span>
+            {isTeams ? 'Back to pricing' : 'Done'} <span aria-hidden="true">→</span>
           </button>
         </div>
       ) : (
         <form className="purchase-form" onSubmit={handleSubmit} noValidate>
-          <h4>{isTeams ? 'Tell us where to reach you' : 'Checkout'}</h4>
+          <h4>{isTeams ? 'Tell us where to reach you' : 'Where should we reach you?'}</h4>
 
-          <div className={`field${errors.email ? ' invalid' : ''}`}>
-            <label htmlFor="purchase-email">{isTeams ? 'Work email' : 'Email'}</label>
+          <div className={`field${errors.name ? ' invalid' : ''}`}>
+            <label htmlFor="purchase-name">Full name</label>
             <input
-              id="purchase-email"
-              type="email"
-              placeholder="you@example.com"
-              autoComplete="email"
-              value={values.email}
-              onChange={(e) => set('email', e.target.value)}
-              aria-invalid={Boolean(errors.email)}
-              aria-describedby={errors.email ? 'purchase-email-error' : undefined}
+              id="purchase-name"
+              type="text"
+              placeholder="Your name"
+              autoComplete="name"
+              value={values.name}
+              onChange={(e) => set('name', e.target.value)}
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? 'purchase-name-error' : undefined}
             />
-            {errors.email && (
-              <span className="field-message" id="purchase-email-error">
-                {errors.email}
+            {errors.name && (
+              <span className="field-message" id="purchase-name-error">
+                {errors.name}
               </span>
             )}
           </div>
 
-          {!isTeams && (
-            <>
-              <div className={`field${errors.card ? ' invalid' : ''}`}>
-                <label htmlFor="purchase-card">
-                  Card number
-                  {brand && <span className="card-brand">{brand}</span>}
-                </label>
-                <input
-                  id="purchase-card"
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="cc-number"
-                  placeholder="4242 4242 4242 4242"
-                  maxLength={19}
-                  value={values.card}
-                  onChange={(e) => set('card', formatCardNumber(e.target.value))}
-                  aria-invalid={Boolean(errors.card)}
-                  aria-describedby={errors.card ? 'purchase-card-error' : undefined}
-                />
-                {errors.card && (
-                  <span className="field-message" id="purchase-card-error">
-                    {errors.card}
-                  </span>
-                )}
-              </div>
+          <div className="field-row">
+            <div className={`field${errors.email ? ' invalid' : ''}`}>
+              <label htmlFor="purchase-email">Email</label>
+              <input
+                id="purchase-email"
+                type="email"
+                placeholder="you@domain.com"
+                autoComplete="email"
+                value={values.email}
+                onChange={(e) => set('email', e.target.value)}
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={errors.email ? 'purchase-email-error' : undefined}
+              />
+              {errors.email && (
+                <span className="field-message" id="purchase-email-error">
+                  {errors.email}
+                </span>
+              )}
+            </div>
+            <div className={`field${errors.phone ? ' invalid' : ''}`}>
+              <label htmlFor="purchase-phone">Phone / WhatsApp</label>
+              <input
+                id="purchase-phone"
+                type="tel"
+                inputMode="tel"
+                placeholder="+91 …"
+                autoComplete="tel"
+                value={values.phone}
+                onChange={(e) => set('phone', e.target.value)}
+                aria-invalid={Boolean(errors.phone)}
+                aria-describedby={errors.phone ? 'purchase-phone-error' : undefined}
+              />
+              {errors.phone && (
+                <span className="field-message" id="purchase-phone-error">
+                  {errors.phone}
+                </span>
+              )}
+            </div>
+          </div>
 
-              <div className="field-row">
-                <div className={`field${errors.expiry ? ' invalid' : ''}`}>
-                  <label htmlFor="purchase-expiry">Expiry</label>
-                  <input
-                    id="purchase-expiry"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="cc-exp"
-                    placeholder="MM / YY"
-                    maxLength={7}
-                    value={values.expiry}
-                    onChange={(e) => set('expiry', formatExpiry(e.target.value))}
-                    aria-invalid={Boolean(errors.expiry)}
-                    aria-describedby={errors.expiry ? 'purchase-expiry-error' : undefined}
-                  />
-                  {errors.expiry && (
-                    <span className="field-message" id="purchase-expiry-error">
-                      {errors.expiry}
-                    </span>
-                  )}
-                </div>
-                <div className={`field${errors.cvc ? ' invalid' : ''}`}>
-                  <label htmlFor="purchase-cvc">CVC</label>
-                  <input
-                    id="purchase-cvc"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="cc-csc"
-                    placeholder="123"
-                    maxLength={4}
-                    value={values.cvc}
-                    onChange={(e) => set('cvc', e.target.value.replace(/\D/g, '').slice(0, 4))}
-                    aria-invalid={Boolean(errors.cvc)}
-                    aria-describedby={errors.cvc ? 'purchase-cvc-error' : undefined}
-                  />
-                  {errors.cvc && (
-                    <span className="field-message" id="purchase-cvc-error">
-                      {errors.cvc}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </>
-          )}
+          <div className={`field${errors.background ? ' invalid' : ''}`}>
+            <label htmlFor="purchase-background">Background</label>
+            <BackgroundField
+              id="purchase-background"
+              onChange={(value) => set('background', value)}
+              invalid={Boolean(errors.background)}
+              describedBy={errors.background ? 'purchase-background-error' : undefined}
+            />
+            {errors.background && (
+              <span className="field-message" id="purchase-background-error">
+                {errors.background}
+              </span>
+            )}
+          </div>
 
           <button type="submit" className="button modal-submit full" disabled={submitting}>
-            <span className="btn-label">{submitting ? 'Processing…' : single ? single.cta : `Pay ${money(cartTotal)}`}</span>
+            <span className="btn-label">
+              {submitting ? 'Sending…' : isTeams ? single.cta : `Confirm · ${money(cartTotal)}`}
+            </span>
             <span className={submitting ? 'spinner' : ''} aria-hidden="true">
               {submitting ? '' : '→'}
             </span>
           </button>
 
           <small className="purchase-note">
-            {isTeams ? 'No card required · We reply within one working day' : 'No card is charged in this preview · Cancel anytime'}
+            {isTeams
+              ? 'No card required · We reply within one working day'
+              : 'No card is charged here · Our team confirms your seat by phone'}
           </small>
         </form>
       )}

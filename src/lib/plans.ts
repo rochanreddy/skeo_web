@@ -24,8 +24,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     cta: 'Confirm and start module',
   },
   chatgpt: {
-    eyebrow: 'CHATGPT MODULE',
-    title: 'ChatGPT',
+    eyebrow: 'CONTENT CREATION MODULE',
+    title: 'Content Creation',
     price: '$9',
     period: '/ one-time',
     amount: 9,
@@ -34,8 +34,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     cta: 'Confirm and start module',
   },
   lovable: {
-    eyebrow: 'LOVABLE MODULE',
-    title: 'Lovable',
+    eyebrow: 'VIBE CODING MODULE',
+    title: 'Vibe Coding',
     price: '$12',
     period: '/ one-time',
     amount: 12,
@@ -44,8 +44,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     cta: 'Confirm and start module',
   },
   n8n: {
-    eyebrow: 'N8N MODULE',
-    title: 'n8n',
+    eyebrow: 'AUTOMATIONS MODULE',
+    title: 'Automations',
     price: '$12',
     period: '/ one-time',
     amount: 12,
@@ -85,13 +85,49 @@ export const MODULE_KEYS = ['claude', 'chatgpt', 'lovable', 'n8n'] as const
 
 export type ModuleKey = (typeof MODULE_KEYS)[number]
 
-export type ModuleRow = { key: ModuleKey; title: string; subtitle: string; price: string; amount: number }
+/** `marks` names the tool logos shown beside the module title. */
+export type ModuleRow = {
+  key: ModuleKey
+  title: string
+  subtitle: string
+  price: string
+  amount: number
+  marks: readonly ('claude' | 'chatgpt' | 'gemini' | 'n8n' | 'lovable')[]
+}
 
 export const MODULE_ROWS: ModuleRow[] = [
-  { key: 'claude', title: 'Claude', subtitle: 'Prompting, research, real deliverables', price: '$9', amount: 9 },
-  { key: 'chatgpt', title: 'ChatGPT', subtitle: 'Everyday work, custom GPTs, analysis', price: '$9', amount: 9 },
-  { key: 'lovable', title: 'Lovable', subtitle: 'Ship a working app from a prompt', price: '$12', amount: 12 },
-  { key: 'n8n', title: 'n8n', subtitle: 'Automations that run without you', price: '$12', amount: 12 },
+  {
+    key: 'claude',
+    title: 'Claude',
+    subtitle: 'Beginner to advanced, new ways to work with AI',
+    price: '$9',
+    amount: 9,
+    marks: ['claude'],
+  },
+  {
+    key: 'chatgpt',
+    title: 'Content Creation',
+    subtitle: 'Create content faster with ChatGPT and Gemini',
+    price: '$9',
+    amount: 9,
+    marks: ['chatgpt', 'gemini'],
+  },
+  {
+    key: 'n8n',
+    title: 'Automations',
+    subtitle: 'Automate repetitive work with n8n, Make, and Zapier',
+    price: '$12',
+    amount: 12,
+    marks: ['n8n'],
+  },
+  {
+    key: 'lovable',
+    title: 'Vibe Coding',
+    subtitle: 'Build products with Lovable, AI Studio, and Replit',
+    price: '$12',
+    amount: 12,
+    marks: ['lovable'],
+  },
 ]
 
 /** Prices are whole dollars everywhere on the page, so no cents formatting. */

@@ -5,15 +5,16 @@ export function Comparison() {
   return (
     <section className="section wrap comparison" id="why" aria-labelledby="why-title">
       <Reveal className="section-intro">
-        <span className="eyebrow">WHY SKILLORA</span>
+        <span className="eyebrow">WHY SKEO</span>
         <h2 id="why-title">
           Traditional course
           <br />
-          vs. your platform.
+          vs. skeo
         </h2>
         <p>
-          The future of work won’t reward people who just know the theory. It will reward the people who can make AI
-          useful.
+          Traditional courses help you learn.
+          <br />
+          Skeo helps you learn, build, prove your skills, and turn them into real opportunities.
         </p>
       </Reveal>
       <Reveal className="compare-grid" delay={1}>
@@ -28,9 +29,9 @@ export function Comparison() {
         </div>
         <div className="compare-column new">
           <span className="column-title">
-            Your platform <i aria-hidden="true">✦</i>
+            skeo <i aria-hidden="true">✦</i>
           </span>
-          {comparison.skillora.map((item) => (
+          {comparison.skeo.map((item) => (
             <div key={item}>
               {item}
               <b aria-hidden="true">✓</b>

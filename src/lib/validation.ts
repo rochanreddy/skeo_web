@@ -96,3 +96,11 @@ export function cardBrand(value: string): string | null {
   if (/^(60|65|81|82)/.test(d)) return 'RuPay'
   return null
 }
+
+/** Lenient on shape, strict on substance: any 8-15 digit number, +country optional. */
+export function validatePhone(value: string): string | null {
+  const digits = value.replace(/\D/g, '')
+  if (!value.trim()) return 'Phone number is required.'
+  if (digits.length < 8 || digits.length > 15) return 'Enter a valid phone number.'
+  return null
+}

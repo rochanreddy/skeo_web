@@ -1,6 +1,7 @@
 import { AuthButton } from '@/components/ActionButton'
 import { Reveal } from '@/components/Reveal'
-import { jobs } from '@/lib/content'
+import { JobBoard } from '@/components/sections/JobBoard'
+import { opportunities } from '@/lib/content'
 
 export function Jobs() {
   return (
@@ -14,21 +15,21 @@ export function Jobs() {
             Job &amp; Freelancing Board.
           </h2>
           <p>
-            Certification isn’t the finish line. Every completed module unlocks real job and freelance opportunities to
-            apply to — not a guaranteed placement, but a real shot.
+            Certification is just the beginning.
+            <br />
+            Apply skills to work through real opportunities
+            <br />
+            to earn, gain experience, and build your career.
           </p>
+          <ul className="opportunity-list" aria-label="What the board opens up">
+            {opportunities.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
           <AuthButton mode="signup">Explore the board</AuthButton>
         </Reveal>
-        <Reveal as="ul" className="job-preview" delay={1} aria-label="Sample open roles">
-          {jobs.map((job) => (
-            <li className="job-card" key={job.title}>
-              <div>
-                <b>{job.title}</b>
-                <span>{job.meta}</span>
-              </div>
-              <i aria-hidden="true">↗</i>
-            </li>
-          ))}
+        <Reveal delay={1}>
+          <JobBoard />
         </Reveal>
       </div>
     </section>
