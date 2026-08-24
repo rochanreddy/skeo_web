@@ -6,17 +6,26 @@ import { site } from '@/lib/site'
  * back to back read as one repeated twice.
  */
 
-const quickLinks = [
-  { label: 'Tools', href: '#tools' },
-  { label: 'Job Board', href: '#jobs' },
-  { label: 'Reviews', href: '#reviews' },
-  { label: 'Pricing', href: '#pricing' },
-]
-
-const legalLinks = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Support', href: '/contact' },
+const columns = [
+  {
+    title: 'Explore',
+    links: [
+      { label: 'Tools', href: '#tools' },
+      { label: 'Job Board', href: '#jobs' },
+      { label: 'Reviews', href: '#reviews' },
+      { label: 'Pricing', href: '#pricing' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About', href: '/about' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Refund Policy', href: '/refund' },
+      { label: 'Terms & Conditions', href: '/terms' },
+    ],
+  },
 ]
 
 /* Marks rather than names — the row reads as icons, not a third link list. */
@@ -52,17 +61,13 @@ export function Footer() {
 
         <div className="footer-columns">
           <div className="footer-brand">
-            <div className="footer-lockup">
-              <a className="brand" href="#top" aria-label={`${site.name} home`}>
-                <span className="brand-mark" aria-hidden="true">
-                  S
-                </span>
-                <span>{site.name.toLowerCase()}</span>
-              </a>
-              {/* Beside the mark, not under it — on a line of its own it read
-                  as body copy rather than as part of the logo. */}
-              <span className="footer-tagline">Learn. Build. Monetize.</span>
-            </div>
+            <a className="brand" href="#top" aria-label={`${site.name} home`}>
+              <span className="brand-mark" aria-hidden="true">
+                S
+              </span>
+              <span>{site.name.toLowerCase()}</span>
+            </a>
+            <span className="footer-tagline">Learn. Build. Monetize.</span>
             <div className="footer-social">
               {social.map((item) => (
                 <a
@@ -80,13 +85,18 @@ export function Footer() {
             </div>
           </div>
 
-          <nav className="footer-pills" aria-label="Footer">
-            {quickLinks.concat(legalLinks).map((link) => (
-              <a key={link.label} href={link.href}>
-                {link.label}
-              </a>
+          <div className="footer-nav">
+            {columns.map((column) => (
+              <nav key={column.title} aria-label={column.title}>
+                <span className="footer-col-title">{column.title}</span>
+                {column.links.map((link) => (
+                  <a key={link.label} href={link.href}>
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
             ))}
-          </nav>
+          </div>
         </div>
 
         {/* The wordmark, oversized and half-buried — it closes the page the way

@@ -214,7 +214,7 @@ export function JobBoard() {
         <i />
         <i />
         <i />
-        <span>skeo.com/jobs</span>
+        <span>skeoai.io/jobs</span>
         <em>Live</em>
       </div>
 
@@ -240,8 +240,9 @@ export function JobBoard() {
         </div>
 
         <div className="jobboard-main">
-          {/* Tiles are the chart's legend as well as its control. */}
-          <div className="jobboard-stats" role="tablist" aria-label="Metric">
+          <div className="jobboard-trend">
+            {/* Tiles are the chart's legend as well as its control. */}
+            <div className="jobboard-stats" role="tablist" aria-label="Metric">
             {METRICS.map((item, i) => {
               const series = data.series[item.key]
               return (
@@ -345,7 +346,9 @@ export function JobBoard() {
             </div>
           </div>
 
-          <div className="jobboard-split">
+          </div>
+
+          <div className="jobboard-side">
             {/* Mix ring — clicking a segment jumps the whole panel to that track. */}
             <div className="jobboard-mix">
               <span className="chart-label">Board mix</span>
@@ -417,7 +420,8 @@ export function JobBoard() {
             </div>
           </div>
 
-          <ul className="jobboard-roles">
+          <div className="jobboard-foot">
+            <ul className="jobboard-roles">
             {data.roles.map((item, i) => (
               <li key={item.title} className={i === role ? 'is-lit' : undefined}>
                 <button type="button" onMouseEnter={() => setRole(i)} onFocus={() => setRole(i)}>
@@ -429,9 +433,9 @@ export function JobBoard() {
                 </button>
               </li>
             ))}
-          </ul>
+            </ul>
 
-          {/* The panel's footer rather than a card hanging off the corner, so
+            {/* The match card sits beside the roles rather than a card hanging off the corner, so
               the whole thing stays one clean rectangle. Follows whichever role
               is under the pointer. */}
           <div className="jobboard-float">
@@ -444,7 +448,8 @@ export function JobBoard() {
                 <span style={{ width: `${featured.match}%` }} />
               </span>
             </span>
-            <em>{featured.match}%</em>
+              <em>{featured.match}%</em>
+            </div>
           </div>
         </div>
       </div>

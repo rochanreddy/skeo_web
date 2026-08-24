@@ -1955,8 +1955,10 @@ h2 em {
 
 .jobs-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
+  /* The panel takes the wider half so it reads as a landscape window rather
+     than the near-square it became at 50/50. */
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 44px;
   align-items: center;
 }
 
@@ -2152,9 +2154,42 @@ h2 em {
 
 .jobboard-body {
   display: grid;
-  grid-template-columns: 118px 1fr;
-  gap: 13px;
-  padding: 14px;
+  grid-template-columns: 112px 1fr;
+  gap: 12px;
+  padding: 13px;
+}
+
+/* Two readout columns over one shared footer: the panel stays wide and low. */
+.jobboard-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
+  grid-template-areas:
+    "trend side"
+    "roles roles";
+  gap: 12px 14px;
+  align-content: start;
+}
+
+.jobboard-trend {
+  grid-area: trend;
+  min-width: 0;
+}
+
+.jobboard-side {
+  grid-area: side;
+  min-width: 0;
+  padding-left: 14px;
+  border-left: 1px solid #f0edf5;
+}
+
+.jobboard-foot {
+  grid-area: roles;
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding-top: 11px;
+  border-top: 1px solid #f0edf5;
 }
 
 .jobboard-rail {
@@ -2269,7 +2304,7 @@ h2 em {
 }
 
 .jobboard-chart {
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .chart-head {
@@ -2330,7 +2365,7 @@ h2 em {
 
 .chart-plot {
   position: relative;
-  height: 104px;
+  height: 88px;
 }
 
 .chart-plot svg {
@@ -2469,25 +2504,22 @@ h2 em {
   font-weight: 700;
 }
 
-.jobboard-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 14px;
-  padding-top: 13px;
-  border-top: 1px solid #f0edf5;
+.jobboard-skills {
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid #f4f1f9;
 }
 
 .mix-body {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 11px;
+  margin-top: 7px;
 }
 
 .mix-ring {
-  width: 84px;
-  height: 84px;
+  width: 76px;
+  height: 76px;
   flex: none;
   /* Start at twelve o'clock rather than three. */
   transform: rotate(-90deg);
@@ -2550,7 +2582,7 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 9px;
+  margin-top: 7px;
   font-size: 10.5px;
   color: #6b6577;
 }
@@ -2595,9 +2627,8 @@ h2 em {
 
 .jobboard-roles {
   list-style: none;
-  margin: 13px 0 0;
-  padding: 12px 0 2px;
-  border-top: 1px solid #f0edf5;
+  margin: 0;
+  padding: 0;
 }
 
 .jobboard-roles button {
@@ -2650,10 +2681,10 @@ h2 em {
 /* The footer strip: in flow, inside the panel's own rectangle. */
 .jobboard-float {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-  padding: 11px 13px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 12px 13px;
   border: 1px solid #e7e1f6;
   border-radius: 12px;
   background: linear-gradient(120deg, #f7f4fe, #fbfaff);
@@ -2704,10 +2735,16 @@ h2 em {
 }
 
 .jobboard-float em {
-  flex: none;
   font-style: normal;
-  font: 700 11px var(--mono);
+  font: 700 10px var(--mono);
   color: var(--purple);
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #ede7fd;
+}
+
+.float-body {
+  width: 100%;
 }
 
 
@@ -3671,42 +3708,41 @@ details p {
   color: #fff;
 }
 
-.footer-lockup {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-/* Beside the wordmark, divided by a hairline, so the pair reads as one lockup. */
+/* Under the wordmark: logo, then the line it stands for, then the marks. */
 .footer-tagline {
-  padding-left: 12px;
-  border-left: 1px solid #ffffff2b;
+  display: block;
+  margin: 12px 0 18px;
   color: #ffffff8f;
   font-size: 12.5px;
 }
 
-.footer-pills {
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, auto));
+  gap: 34px 54px;
+}
+
+.footer-nav nav {
   display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 9px;
-  max-width: 470px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.footer-pills a {
-  padding: 10px 20px;
-  border: 1px solid #ffffff24;
-  border-radius: 999px;
-  color: #ffffffc4;
-  font-size: 12.5px;
-  font-weight: 700;
-  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+.footer-col-title {
+  font: 500 10px var(--mono);
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #ffffff70;
+  margin-bottom: 2px;
 }
 
-.footer-pills a:hover {
-  border-color: #ffffff54;
-  background: #ffffff14;
+.footer-nav a {
+  font-size: 13px;
+  color: #ffffffbd;
+  transition: color 0.2s ease;
+}
+
+.footer-nav a:hover {
   color: #fff;
 }
 
@@ -3737,7 +3773,6 @@ details p {
   gap: 14px 24px;
   flex-wrap: wrap;
   padding-top: 18px;
-  border-top: 1px solid #ffffff17;
   color: #ffffff85;
   font-size: 11px;
 }
@@ -4500,15 +4535,9 @@ details p {
     flex-direction: column;
     gap: 24px;
   }
-  .footer-pills {
-    justify-content: flex-start;
-  }
-  .footer-pills {
-    gap: 8px;
-  }
-  .footer-pills a {
-    padding: 9px 15px;
-    font-size: 11.5px;
+  .footer-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 34px;
   }
   .footer-mark {
     margin-top: 40px;
