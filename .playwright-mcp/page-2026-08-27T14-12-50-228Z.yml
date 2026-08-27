@@ -1,0 +1,631 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#top"
+  - banner [ref=e4]:
+    - link "Skeo home" [ref=e5] [cursor=pointer]:
+      - /url: "#top"
+      - generic [ref=e6]: S
+      - generic [ref=e7]: skeo
+    - navigation "Main" [ref=e8]:
+      - link "Tools" [ref=e9] [cursor=pointer]:
+        - /url: "#tools"
+      - link "Job Board" [ref=e10] [cursor=pointer]:
+        - /url: "#jobs"
+      - link "Reviews" [ref=e11] [cursor=pointer]:
+        - /url: "#reviews"
+      - link "Pricing" [ref=e12] [cursor=pointer]:
+        - /url: "#pricing"
+    - button "Start Learning" [ref=e14] [cursor=pointer]:
+      - generic [ref=e16]: →
+  - main [ref=e17]:
+    - region [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]: AI skills shouldn’t take months to learn
+        - heading [level=1] [ref=e22]:
+          - text: Master the AI tools
+          - emphasis [ref=e23]: that matter!
+        - paragraph [ref=e24]: Claude, ChatGPT, Gemini, n8n, Lovable and many more.Learn by doing, build real proof of work, and unlock opportunities.
+        - button "Start Learning" [ref=e26] [cursor=pointer]:
+          - generic [ref=e28]: →
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - generic [ref=e31]: AV
+            - generic [ref=e32]: AR
+            - generic [ref=e33]: MU
+            - generic [ref=e34]: SR
+          - generic [ref=e35]:
+            - strong [ref=e36]: 15,000+ builders
+            - generic [ref=e37]: are already building their AI edge
+      - generic [ref=e39]:
+        - generic [ref=e118]:
+          - strong [ref=e119]: n8n
+          - generic [ref=e120]: Chain tools together
+        - button "Preview n8n" [pressed] [ref=e121] [cursor=pointer]
+        - button "Preview Claude" [ref=e126] [cursor=pointer]
+        - button "Preview ChatGPT" [ref=e131] [cursor=pointer]
+        - button "Preview Gemini" [ref=e136] [cursor=pointer]
+        - button "Preview Lovable" [ref=e141] [cursor=pointer]
+    - region "Skeo accreditations" [ref=e154]:
+      - generic [ref=e155]:
+        - paragraph [ref=e156]: We are accredited by
+        - generic [ref=e157]:
+          - img "Startup India" [ref=e159]
+          - img "Ministry of MSME, Government of India" [ref=e161]
+          - img "Google for Education" [ref=e163]
+          - img "Anthropic" [ref=e165]
+    - region [ref=e166]:
+      - generic [ref=e167]:
+        - generic [ref=e168]: THE PROBLEM
+        - heading "AI isn’t one skill anymore." [level=2] [ref=e169]
+        - paragraph [ref=e170]: Most people still don’t know where to start or what’s actually worth learning and free tutorials pile up.
+      - generic [ref=e171]:
+        - generic [ref=e172]:
+          - generic [ref=e173]: "01"
+          - heading "Too many tools" [level=3] [ref=e174]
+          - paragraph [ref=e175]: New tools drop every week, every month.
+        - generic [ref=e176]:
+          - generic [ref=e177]: "02"
+          - heading "No structure" [level=3] [ref=e178]
+          - paragraph [ref=e179]: Random videos and threads don’t add up to a real skill.
+        - generic [ref=e180]:
+          - generic [ref=e181]: "03"
+          - heading "No proof" [level=3] [ref=e182]
+          - paragraph [ref=e183]: Watching a tutorial isn’t something you can show anyone.
+        - generic [ref=e184]:
+          - generic [ref=e185]: "04"
+          - heading "No next step" [level=3] [ref=e186]
+          - paragraph [ref=e187]: Even after learning, don’t know how to turn it into an opportunity.
+    - region [ref=e188]:
+      - generic [ref=e190]:
+        - generic [ref=e191]: THE SKEO WAY
+        - heading [level=2] [ref=e192]:
+          - text: One platform.
+          - emphasis [ref=e193]: Every AI tool.
+        - paragraph [ref=e194]: Skeo brings every major AI tool into one structured system of short challenges.So you build real skills, not just watch them.
+        - generic [ref=e195]:
+          - generic [ref=e196]:
+            - generic [ref=e197]: 5+
+            - generic [ref=e198]: AI Tools
+          - generic [ref=e199]:
+            - generic [ref=e200]: "30"
+            - generic [ref=e201]: Minutes A Day
+          - generic [ref=e202]:
+            - generic [ref=e203]: "100"
+            - generic [ref=e204]: Real Time Projects
+          - generic [ref=e205]:
+            - generic [ref=e206]: "1000"
+            - generic [ref=e207]: Job & Monetization Opportunities
+    - region [ref=e208]:
+      - generic [ref=e211]:
+        - generic [ref=e212]:
+          - generic [ref=e213]: skeo
+          - generic [ref=e215]:
+            - generic [ref=e216]: ✦ AI tool library
+            - paragraph [ref=e217]:
+              - generic [ref=e218]: Learn Claude
+              - generic [ref=e219]: end to end
+            - paragraph [ref=e220]: Prompting, research, and real deliverables.
+          - generic [ref=e221]: Module 01 · Beginner friendly
+        - generic [ref=e222]:
+          - generic [ref=e223]: Featured tool
+          - heading "Claude by Anthropic" [level=2] [ref=e224]:
+            - text: Claude
+            - generic [ref=e225]: by Anthropic
+          - paragraph [ref=e226]: From a blank page to shipped work, in one tool.
+          - list [ref=e227]:
+            - listitem [ref=e228]: Claude Chat
+            - listitem [ref=e229]: Claude Cowork
+            - listitem [ref=e230]: Claude Code
+          - list [ref=e231]:
+            - listitem [ref=e232]: 12 lessons
+            - listitem [ref=e237]: 3.5 hours
+            - listitem [ref=e242]: 4 projects
+            - listitem [ref=e248]: Self-paced
+          - paragraph [ref=e254]: Master Claude from foundations to advanced, apply it to real-world problems, build powerful projects, and turn your skills into new opportunities.
+          - link "Start Learning" [ref=e255] [cursor=pointer]:
+            - /url: "#pricing"
+            - generic [ref=e257]: ↗
+    - region [ref=e258]:
+      - generic [ref=e259]:
+        - generic [ref=e260]:
+          - generic [ref=e261]: THE SKEO SCOPE
+          - heading [level=2] [ref=e262]:
+            - text: Don’t just learn AI.
+            - emphasis [ref=e263]: Make it useful.
+          - paragraph [ref=e264]: Learn the tools that matter. Apply them to real-world problems.Build real projects and turn your skills into opportunities.
+          - link "See all modules" [ref=e265] [cursor=pointer]:
+            - /url: "#pricing"
+            - generic [ref=e267]: →
+        - generic [ref=e268]:
+          - article [ref=e269]:
+            - generic [ref=e274]:
+              - text: LEARN
+              - heading "Master the tools, from foundations to advanced." [level=3] [ref=e275]
+              - paragraph [ref=e276]: Build a strong understanding of each tool and learn how to use it confidently in real-world scenarios.
+            - generic [ref=e277]: "01"
+          - article [ref=e278]:
+            - generic [ref=e285]:
+              - text: BUILD
+              - heading "Apply what you learn. Build what matters." [level=3] [ref=e286]
+              - paragraph [ref=e287]: Turn your knowledge into workflows, automations, and real projects that solve meaningful problems.
+            - generic [ref=e288]: "02"
+          - article [ref=e289]:
+            - generic [ref=e295]:
+              - text: MONETIZE
+              - heading "Turn AI skills into opportunities." [level=3] [ref=e296]
+              - paragraph [ref=e297]: Use your skills to create value, unlock career opportunities, freelance, or build something of your own.
+            - generic [ref=e298]: "03"
+    - region [ref=e299]:
+      - generic [ref=e300]:
+        - generic [ref=e303]:
+          - generic [ref=e304]: S
+          - generic [ref=e305]: CERTIFICATE OF COMPLETION
+          - heading "28-Day AI Tools Challenge" [level=3] [ref=e306]: 28-Day AI ToolsChallenge
+          - paragraph [ref=e307]: This certifies that Alex Morgan has demonstrated practical proficiency across 10+ AI tools.
+          - generic [ref=e308]:
+            - generic [ref=e309]: Issued Jun 2026
+            - generic [ref=e310]: skeo
+        - generic [ref=e311]:
+          - generic [ref=e312]: PROOF, NOT PROMISES
+          - heading "Certificates with real signal." [level=2] [ref=e313]: Certificates withreal signal.
+          - paragraph [ref=e314]: Build skills across the tools you need, from beginner to advanced.Put them into practice, earn verified credentials, andbuild a profile that shows what you can actually do.
+          - list [ref=e315]:
+            - listitem [ref=e316]:
+              - generic [ref=e317]: ✓
+              - text: Verified tool-specific credentials
+            - listitem [ref=e318]:
+              - generic [ref=e319]: ✓
+              - text: Earned through practical projects
+            - listitem [ref=e320]:
+              - generic [ref=e321]: ✓
+              - text: Build a profile of proven skills
+            - listitem [ref=e322]:
+              - generic [ref=e323]: ✓
+              - text: Unlock jobs, freelance work & opportunities
+          - list [ref=e324]:
+            - listitem "Claude" [ref=e325]
+            - listitem "ChatGPT" [ref=e329]
+            - listitem "Gemini" [ref=e333]
+            - listitem "n8n" [ref=e337]
+    - region [ref=e341]:
+      - generic [ref=e342]:
+        - generic [ref=e343]:
+          - generic [ref=e344]: YOUR NEXT STEP
+          - heading "Access to the Job & Freelancing Board." [level=2] [ref=e345]: Access to theJob & Freelancing Board.
+          - paragraph [ref=e346]: Certification is just the beginning.Apply skills to work through real opportunitiesto earn, gain experience, and build your career.
+          - list "What the board opens up" [ref=e347]:
+            - listitem [ref=e348]: 1000+ Monetization Opportunities
+            - listitem [ref=e349]: Freelance Projects
+            - listitem [ref=e350]: Internships
+            - listitem [ref=e351]: Full Time Jobs
+          - button "Explore the board" [ref=e352] [cursor=pointer]:
+            - generic [ref=e354]: →
+        - generic [ref=e356]:
+          - generic [ref=e357]:
+            - generic [ref=e361]: skeoai.io/jobs
+            - emphasis [ref=e362]: Live
+          - generic [ref=e363]:
+            - tablist "Opportunity type" [ref=e364]:
+              - tab "All 1,024" [selected] [ref=e365] [cursor=pointer]:
+                - text: All
+                - generic [ref=e366]: 1,024
+              - tab "Freelance 412" [ref=e367] [cursor=pointer]:
+                - text: Freelance
+                - generic [ref=e368]: "412"
+              - tab "Internships 188" [ref=e369] [cursor=pointer]:
+                - text: Internships
+                - generic [ref=e370]: "188"
+              - tab "Full time 424" [ref=e371] [cursor=pointer]:
+                - text: Full time
+                - generic [ref=e372]: "424"
+            - generic [ref=e373]:
+              - generic [ref=e374]:
+                - tablist "Metric" [ref=e375]:
+                  - tab "1,024 Open roles" [selected] [ref=e376] [cursor=pointer]:
+                    - generic [ref=e377]: 1,024
+                    - text: Open roles
+                  - tab "86% Match rate" [ref=e378] [cursor=pointer]:
+                    - generic [ref=e379]: 86%
+                    - text: Match rate
+                  - tab "₹48k Avg / mo" [ref=e380] [cursor=pointer]:
+                    - generic [ref=e381]: ₹48k
+                    - text: Avg / mo
+                - generic [ref=e382]:
+                  - generic [ref=e383]:
+                    - generic [ref=e384]:
+                      - text: Open roles · trend
+                      - emphasis [ref=e385]: ▲ 28%
+                    - generic [ref=e386]:
+                      - button "6M" [ref=e387] [cursor=pointer]
+                      - button "12M" [ref=e388] [cursor=pointer]
+                  - generic [ref=e394]:
+                    - 'button "Mar: 802" [ref=e395]'
+                    - 'button "Apr: 838" [ref=e396]'
+                    - 'button "May: 866" [ref=e397]'
+                    - 'button "Jun: 905" [ref=e398]'
+                    - 'button "Jul: 964" [ref=e399]'
+                    - 'button "Aug: 1,024" [ref=e400]'
+                  - generic [ref=e401]:
+                    - generic [ref=e402]: Mar
+                    - generic [ref=e403]: Apr
+                    - generic [ref=e404]: May
+                    - generic [ref=e405]: Jun
+                    - generic [ref=e406]: Jul
+                    - generic [ref=e407]: Aug
+              - generic [ref=e408]:
+                - generic [ref=e409]:
+                  - generic [ref=e410]: Board mix
+                  - generic [ref=e411]:
+                    - img [ref=e412]:
+                      - 'button "Freelance: 40%" [ref=e413] [cursor=pointer]'
+                      - 'button "Full time: 42%" [ref=e414] [cursor=pointer]'
+                      - 'button "Internships: 18%" [ref=e415] [cursor=pointer]'
+                    - generic [ref=e416]:
+                      - generic [ref=e417]:
+                        - text: Freelance
+                        - generic [ref=e419]: 40%
+                      - generic [ref=e420]:
+                        - text: Full time
+                        - generic [ref=e422]: 42%
+                      - generic [ref=e423]:
+                        - text: Internships
+                        - generic [ref=e425]: 18%
+                - generic [ref=e426]:
+                  - generic [ref=e427]: Tools in demand
+                  - generic [ref=e428]:
+                    - generic [ref=e429]: Claude
+                    - generic [ref=e434]: "92"
+                  - generic [ref=e435]:
+                    - generic [ref=e436]: n8n
+                    - generic [ref=e441]: "84"
+                  - generic [ref=e442]:
+                    - generic [ref=e443]: ChatGPT
+                    - generic [ref=e448]: "78"
+                  - generic [ref=e449]:
+                    - generic [ref=e450]: Lovable
+                    - generic [ref=e463]: "66"
+              - generic [ref=e464]:
+                - list [ref=e465]:
+                  - listitem [ref=e466]:
+                    - button "AI Content Freelancer Remote · Freelance 94%" [ref=e467] [cursor=pointer]:
+                      - generic [ref=e468]:
+                        - generic [ref=e469]: AI Content Freelancer
+                        - text: Remote · Freelance
+                      - emphasis [ref=e470]: 94%
+                  - listitem [ref=e471]:
+                    - button "Junior AI Ops Bengaluru · Full-time 88%" [ref=e472] [cursor=pointer]:
+                      - generic [ref=e473]:
+                        - generic [ref=e474]: Junior AI Ops
+                        - text: Bengaluru · Full-time
+                      - emphasis [ref=e475]: 88%
+                  - listitem [ref=e476]:
+                    - button "Prompt Engineer Intern Remote · Internship 81%" [ref=e477] [cursor=pointer]:
+                      - generic [ref=e478]:
+                        - generic [ref=e479]: Prompt Engineer Intern
+                        - text: Remote · Internship
+                      - emphasis [ref=e480]: 81%
+                - generic [ref=e481]:
+                  - generic [ref=e482]:
+                    - generic [ref=e483]: ✦
+                    - text: Best match
+                  - generic [ref=e484]: AI Content Freelancer
+                  - emphasis [ref=e488]: 94%
+    - region [ref=e489]:
+      - generic [ref=e490]:
+        - generic [ref=e491]: WHY SKEO
+        - heading "Traditional course vs. skeo" [level=2] [ref=e492]: Traditional coursevs. skeo
+        - paragraph [ref=e493]: Traditional courses help you learn.Skeo helps you learn, build, prove your skills, and turn them into real opportunities.
+      - generic [ref=e494]:
+        - generic [ref=e495]:
+          - generic [ref=e496]: Traditional course
+          - generic [ref=e497]:
+            - text: Fixed, all-in-one courses
+            - generic [ref=e498]: ✕
+          - generic [ref=e499]:
+            - text: Watch lessons & complete quizzes
+            - generic [ref=e500]: ✕
+          - generic [ref=e501]:
+            - text: Certificate of completion
+            - generic [ref=e502]: ✕
+          - generic [ref=e503]:
+            - text: Finish the course & figure out what’s next
+            - generic [ref=e504]: ✕
+          - generic [ref=e505]:
+            - text: Limited ways to apply your skills
+            - generic [ref=e506]: ✕
+        - generic [ref=e507]:
+          - generic [ref=e508]:
+            - text: skeo
+            - generic [ref=e509]: ✦
+          - generic [ref=e510]:
+            - text: Individual AI tools & modules
+            - generic [ref=e511]: ✓
+          - generic [ref=e512]:
+            - text: Learn by building real projects
+            - generic [ref=e513]: ✓
+          - generic [ref=e514]:
+            - text: Verified proof of practical skills
+            - generic [ref=e515]: ✓
+          - generic [ref=e516]:
+            - text: Access jobs, internships & freelancing
+            - generic [ref=e517]: ✓
+          - generic [ref=e518]:
+            - text: 1,000+ monetization opportunities
+            - generic [ref=e519]: ✓
+    - region [ref=e520]:
+      - generic [ref=e521]:
+        - generic [ref=e522]:
+          - generic [ref=e523]: SIMPLE PRICING
+          - heading "Individual modules. Or all access." [level=2] [ref=e524]: Individual modules.Or all access.
+          - paragraph [ref=e525]: Start with one module, or unlock everything — including the Job & Freelancing Board.
+        - generic [ref=e526]:
+          - article [ref=e527]:
+            - text: INDIVIDUAL MODULES
+            - heading "Pay once, own the module" [level=3] [ref=e528]
+            - paragraph [ref=e529]: Buy the tools you actually need — lifetime access to each module and its certificate.
+            - generic [ref=e530]:
+              - list [ref=e531]:
+                - listitem [ref=e532]:
+                  - generic [ref=e533]: "01"
+                  - generic [ref=e534]:
+                    - generic [ref=e535]: Claude
+                    - generic [ref=e539]: Beginner to advanced, new ways to work with AI
+                  - generic [ref=e540]: $9
+                  - button "Add +" [ref=e541] [cursor=pointer]
+                - listitem [ref=e542]:
+                  - generic [ref=e543]: "02"
+                  - generic [ref=e544]:
+                    - generic [ref=e545]: Content Creation
+                    - generic [ref=e551]: Create content faster with ChatGPT and Gemini
+                  - generic [ref=e552]: $9
+                  - button "Add +" [ref=e553] [cursor=pointer]
+                - listitem [ref=e554]:
+                  - generic [ref=e555]: "03"
+                  - generic [ref=e556]:
+                    - generic [ref=e557]: Automations
+                    - generic [ref=e561]: Automate repetitive work with n8n, Make, and Zapier
+                  - generic [ref=e562]: $12
+                  - button "Add +" [ref=e563] [cursor=pointer]
+                - listitem [ref=e564]:
+                  - generic [ref=e565]: "04"
+                  - generic [ref=e566]:
+                    - generic [ref=e567]: Vibe Coding
+                    - generic [ref=e579]: Build products with Lovable, AI Studio, and Replit
+                  - generic [ref=e580]: $12
+                  - button "Add +" [ref=e581] [cursor=pointer]
+              - status [ref=e583]: Add any module to check out
+          - article [ref=e584]:
+            - generic [ref=e585]: MOST POPULAR
+            - text: ALL ACCESS
+            - heading "Go all-in on AI" [level=3] [ref=e586]
+            - generic [ref=e587]: $19 / month
+            - paragraph [ref=e588]: Every module, every tool, one membership.
+            - list [ref=e589]:
+              - listitem [ref=e590]: ✓ All challenges & modules
+              - listitem [ref=e591]: ✓ Certificates & portfolio
+              - listitem [ref=e592]: ✓ Job & Freelancing Board access
+              - listitem [ref=e593]: ✓ Weekly expert sessions
+            - button "Start 7-day free trial" [ref=e594] [cursor=pointer]:
+              - generic [ref=e596]: →
+        - paragraph [ref=e597]:
+          - text: Need this for your team?
+          - button "Talk to us" [ref=e598] [cursor=pointer]:
+            - generic [ref=e600]: →
+    - region "Where Skeo builders end up" [ref=e601]:
+      - generic [ref=e602]:
+        - paragraph [ref=e603]: Skeo builders go on to teams at
+        - generic [ref=e605]:
+          - generic "Microsoft" [ref=e607]
+          - generic "Accenture" [ref=e609]
+          - generic "Razorpay" [ref=e611]
+          - generic "Flipkart" [ref=e613]
+          - generic "Adobe" [ref=e615]
+          - generic "Cognizant" [ref=e617]
+    - region [ref=e642]:
+      - generic [ref=e645]:
+        - generic [ref=e646]: FROM THE COMMUNITY
+        - heading "Builders become believers." [level=2] [ref=e647]
+      - generic [ref=e650]:
+        - article [ref=e652]:
+          - img "Rated 5 out of 5" [ref=e653]: ★★★★★
+          - blockquote [ref=e654]: “Skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.”
+          - generic [ref=e655]:
+            - generic [ref=e656]: Priya Shah
+            - generic [ref=e657]: Product Designer, Mumbai
+        - article [ref=e659]:
+          - img "Rated 5 out of 5" [ref=e660]: ★★★★★
+          - blockquote [ref=e661]: “I went from opening ChatGPT once a week to building automations my whole team now uses. That felt like a superpower.”
+          - generic [ref=e662]:
+            - generic [ref=e663]: Marcus Chen
+            - generic [ref=e664]: Operations Lead, Singapore
+        - article [ref=e666]:
+          - img "Rated 5 out of 5" [ref=e667]: ★★★★★
+          - blockquote [ref=e668]: “Not another course. Actual momentum, actual output, and a community that keeps you moving.”
+          - generic [ref=e669]:
+            - generic [ref=e670]: Aisha Rahman
+            - generic [ref=e671]: Growth Marketer, London
+        - article [ref=e673]:
+          - img "Rated 5 out of 5" [ref=e674]: ★★★★★
+          - blockquote [ref=e675]: “The daily builds are the whole trick. Fifteen minutes is small enough that I never skipped it, and it compounded fast.”
+          - generic [ref=e676]:
+            - generic [ref=e677]: Daniel Okafor
+            - generic [ref=e678]: Founder, Lagos
+        - article [ref=e680]:
+          - img "Rated 5 out of 5" [ref=e681]: ★★★★★
+          - blockquote [ref=e682]: “I applied through the Job Board with three shipped projects attached. That conversation went very differently.”
+          - generic [ref=e683]:
+            - generic [ref=e684]: Sofia Almeida
+            - generic [ref=e685]: AI Ops Analyst, Lisbon
+        - article [ref=e687]:
+          - img "Rated 5 out of 5" [ref=e688]: ★★★★★
+          - blockquote [ref=e689]: “My team ran the 28-day module together. We now have shared automations instead of shared bookmarks.”
+          - generic [ref=e690]:
+            - generic [ref=e691]: Ravi Menon
+            - generic [ref=e692]: Engineering Manager, Bengaluru
+        - article [ref=e694]:
+          - img [ref=e695]: ★★★★★
+          - blockquote [ref=e696]: “Skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.”
+          - generic [ref=e697]:
+            - generic [ref=e698]: Priya Shah
+            - generic [ref=e699]: Product Designer, Mumbai
+        - article [ref=e701]:
+          - img [ref=e702]: ★★★★★
+          - blockquote [ref=e703]: “I went from opening ChatGPT once a week to building automations my whole team now uses. That felt like a superpower.”
+          - generic [ref=e704]:
+            - generic [ref=e705]: Marcus Chen
+            - generic [ref=e706]: Operations Lead, Singapore
+        - article [ref=e708]:
+          - img [ref=e709]: ★★★★★
+          - blockquote [ref=e710]: “Not another course. Actual momentum, actual output, and a community that keeps you moving.”
+          - generic [ref=e711]:
+            - generic [ref=e712]: Aisha Rahman
+            - generic [ref=e713]: Growth Marketer, London
+        - article [ref=e715]:
+          - img [ref=e716]: ★★★★★
+          - blockquote [ref=e717]: “The daily builds are the whole trick. Fifteen minutes is small enough that I never skipped it, and it compounded fast.”
+          - generic [ref=e718]:
+            - generic [ref=e719]: Daniel Okafor
+            - generic [ref=e720]: Founder, Lagos
+        - article [ref=e722]:
+          - img [ref=e723]: ★★★★★
+          - blockquote [ref=e724]: “I applied through the Job Board with three shipped projects attached. That conversation went very differently.”
+          - generic [ref=e725]:
+            - generic [ref=e726]: Sofia Almeida
+            - generic [ref=e727]: AI Ops Analyst, Lisbon
+        - article [ref=e729]:
+          - img [ref=e730]: ★★★★★
+          - blockquote [ref=e731]: “My team ran the 28-day module together. We now have shared automations instead of shared bookmarks.”
+          - generic [ref=e732]:
+            - generic [ref=e733]: Ravi Menon
+            - generic [ref=e734]: Engineering Manager, Bengaluru
+        - article [ref=e736]:
+          - img [ref=e737]: ★★★★★
+          - blockquote [ref=e738]: “Skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.”
+          - generic [ref=e739]:
+            - generic [ref=e740]: Priya Shah
+            - generic [ref=e741]: Product Designer, Mumbai
+        - article [ref=e743]:
+          - img [ref=e744]: ★★★★★
+          - blockquote [ref=e745]: “I went from opening ChatGPT once a week to building automations my whole team now uses. That felt like a superpower.”
+          - generic [ref=e746]:
+            - generic [ref=e747]: Marcus Chen
+            - generic [ref=e748]: Operations Lead, Singapore
+        - article [ref=e750]:
+          - img [ref=e751]: ★★★★★
+          - blockquote [ref=e752]: “Not another course. Actual momentum, actual output, and a community that keeps you moving.”
+          - generic [ref=e753]:
+            - generic [ref=e754]: Aisha Rahman
+            - generic [ref=e755]: Growth Marketer, London
+        - article [ref=e757]:
+          - img [ref=e758]: ★★★★★
+          - blockquote [ref=e759]: “The daily builds are the whole trick. Fifteen minutes is small enough that I never skipped it, and it compounded fast.”
+          - generic [ref=e760]:
+            - generic [ref=e761]: Daniel Okafor
+            - generic [ref=e762]: Founder, Lagos
+        - article [ref=e764]:
+          - img [ref=e765]: ★★★★★
+          - blockquote [ref=e766]: “I applied through the Job Board with three shipped projects attached. That conversation went very differently.”
+          - generic [ref=e767]:
+            - generic [ref=e768]: Sofia Almeida
+            - generic [ref=e769]: AI Ops Analyst, Lisbon
+        - article [ref=e771]:
+          - img [ref=e772]: ★★★★★
+          - blockquote [ref=e773]: “My team ran the 28-day module together. We now have shared automations instead of shared bookmarks.”
+          - generic [ref=e774]:
+            - generic [ref=e775]: Ravi Menon
+            - generic [ref=e776]: Engineering Manager, Bengaluru
+    - region [ref=e777]:
+      - generic [ref=e778]:
+        - generic [ref=e779]: QUESTIONS, ANSWERED
+        - heading "You’re probably wondering." [level=2] [ref=e780]: You’re probablywondering.
+        - paragraph [ref=e781]: Straight answers on how Skeo works, what you walk away with, and what it costs.
+        - button "Play the Skeo walkthrough — video coming soon" [ref=e782] [cursor=pointer]:
+          - generic [ref=e783]: ▶
+          - generic [ref=e784]:
+            - text: Watch how Skeo works
+            - generic [ref=e785]: 2 MIN
+      - generic [ref=e786]:
+        - group [ref=e787]:
+          - generic "Do I need a technical background?" [ref=e788] [cursor=pointer]:
+            - generic [ref=e789]: "01"
+            - generic [ref=e791]: +
+          - paragraph [ref=e792]: Not at all. Skeo is designed to make practical AI accessible, whether you work in design, marketing, operations, or are just getting started.
+        - group [ref=e793]:
+          - generic "How much time does a module take?" [ref=e794] [cursor=pointer]:
+            - generic [ref=e795]: "02"
+            - generic [ref=e797]: +
+        - group [ref=e798]:
+          - generic "Are the certificates recognized?" [ref=e799] [cursor=pointer]:
+            - generic [ref=e800]: "03"
+            - generic [ref=e802]: +
+        - group [ref=e803]:
+          - generic "Does completing a module guarantee a job?" [ref=e804] [cursor=pointer]:
+            - generic [ref=e805]: "04"
+            - generic [ref=e807]: +
+        - group [ref=e808]:
+          - generic "Can I cancel whenever I want?" [ref=e809] [cursor=pointer]:
+            - generic [ref=e810]: "05"
+            - generic [ref=e812]: +
+        - group [ref=e813]:
+          - generic "Do I have to pay for the AI tools as well?" [ref=e814] [cursor=pointer]:
+            - generic [ref=e815]: "06"
+            - generic [ref=e817]: +
+        - group [ref=e818]:
+          - generic "What do I actually walk away with?" [ref=e819] [cursor=pointer]:
+            - generic [ref=e820]: "07"
+            - generic [ref=e822]: +
+        - group [ref=e823]:
+          - generic "The tools change every month. Does the content?" [ref=e824] [cursor=pointer]:
+            - generic [ref=e825]: "08"
+            - generic [ref=e827]: +
+        - paragraph [ref=e828]:
+          - text: Still not sure?
+          - link "Talk to a human ↗" [ref=e829] [cursor=pointer]:
+            - /url: /contact
+  - contentinfo [ref=e830]:
+    - generic [ref=e831]:
+      - generic [ref=e832]: YOUR NEXT CHAPTER STARTS HERE
+      - heading "Ready to begin?" [level=2] [ref=e833]
+      - paragraph [ref=e834]: Join thousands of ambitious people building their AI edge, one module at a time.
+      - separator [ref=e835]
+      - generic [ref=e836]:
+        - generic [ref=e837]:
+          - link "Skeo home" [ref=e838] [cursor=pointer]:
+            - /url: "#top"
+            - generic [ref=e839]: S
+            - generic [ref=e840]: skeo
+          - generic [ref=e841]: Learn. Build. Monetize.
+          - generic [ref=e842]:
+            - link "LinkedIn" [ref=e843] [cursor=pointer]:
+              - /url: https://linkedin.com
+            - link "Instagram" [ref=e846] [cursor=pointer]:
+              - /url: https://instagram.com
+            - link "X" [ref=e849] [cursor=pointer]:
+              - /url: https://x.com
+        - generic [ref=e852]:
+          - navigation "Explore" [ref=e853]:
+            - link "Tools" [ref=e855] [cursor=pointer]:
+              - /url: "#tools"
+            - link "Job Board" [ref=e856] [cursor=pointer]:
+              - /url: "#jobs"
+            - link "Reviews" [ref=e857] [cursor=pointer]:
+              - /url: "#reviews"
+            - link "Pricing" [ref=e858] [cursor=pointer]:
+              - /url: "#pricing"
+          - navigation "Company" [ref=e859]:
+            - link "About" [ref=e861] [cursor=pointer]:
+              - /url: /about
+            - link "Contact" [ref=e862] [cursor=pointer]:
+              - /url: /contact
+            - link "Privacy Policy" [ref=e863] [cursor=pointer]:
+              - /url: /privacy
+            - link "Refund Policy" [ref=e864] [cursor=pointer]:
+              - /url: /refund
+            - link "Terms & Conditions" [ref=e865] [cursor=pointer]:
+              - /url: /terms
+      - generic: skeo
+      - generic [ref=e866]:
+        - generic [ref=e867]: © 2026 Skeo. All rights reserved.
+        - link "Back to top" [ref=e868] [cursor=pointer]:
+          - /url: "#top"
+          - text: ↑
