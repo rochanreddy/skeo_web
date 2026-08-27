@@ -1754,12 +1754,13 @@ h2 em {
   margin: 0 auto;
 }
 
+/* A grid, not a flex row: sized to their own labels the chips came out four
+   different widths, the last one half again as wide as the first. */
 .promise-stats {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin-top: 38px;
-  flex-wrap: wrap;
   /* Breaks out past the 640px copy column, so four chips hold one row. */
   position: relative;
   left: 50%;
@@ -1771,8 +1772,7 @@ h2 em {
   --spot-tint: #ffffff1f;
   --spot-size: 200px;
 
-  flex: 1 1 auto;
-  min-width: 160px;
+  min-width: 0;
   padding: 24px 24px 22px;
   border: 1px solid #ffffff1c;
   border-radius: var(--r-lg);
@@ -3516,8 +3516,8 @@ h2 em {
   outline-offset: 2px;
 }
 
-/* One fixed footer row holds the whole cart — count, total and checkout — so
-   the card height never changes as modules are ticked. */
+/* One fixed footer row holds the whole cart — the running total and Next — and
+   keeps its height while empty, so the card never jumps as modules are ticked. */
 .cart-actions {
   display: flex;
   align-items: center;
@@ -3525,13 +3525,6 @@ h2 em {
   min-height: 38px;
   padding-top: 18px;
   border-top: 1px solid var(--line-soft);
-}
-
-.cart-hint {
-  font: 700 10px var(--mono);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 
 .cart-checkout {
@@ -4794,7 +4787,7 @@ details p {
   text-decoration: none;
 }
 
-/* ---- step track ---- */
+/* ---- step track (used on /checkout) ---- */
 .step-track {
   display: flex;
   align-items: center;
@@ -4804,6 +4797,8 @@ details p {
   padding: 0;
 }
 
+/* Reversed out: the finished steps read as quiet rather than as a second accent
+   competing with the current one. */
 .step-track li {
   display: flex;
   align-items: center;
@@ -4812,11 +4807,11 @@ details p {
   min-width: 0;
   padding: 6px 9px;
   border-radius: var(--r-pill);
-  background: var(--surface-2);
+  background: #ffffff14;
   font: 700 9.5px var(--mono);
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--ink-5);
+  color: var(--on-dark-3);
   white-space: nowrap;
 }
 
@@ -4827,62 +4822,26 @@ details p {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #fff;
-  color: var(--ink-5);
+  background: #ffffff1f;
+  color: var(--on-dark-2);
   font-size: 9px;
-  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .step-track li.done {
-  color: var(--purple-ink);
-  background: var(--purple-soft);
+  color: var(--on-dark-2);
 }
 
 .step-track li.done b {
   background: var(--purple);
   color: #fff;
-  box-shadow: none;
 }
 
 .step-track li.current {
-  background: var(--ink);
-  color: #fff;
-}
-
-.step-track li.current b {
-  background: var(--lime);
-  color: var(--ink);
-  box-shadow: none;
-}
-
-/* On the ink panel the track is reversed out, so the finished steps read as
-   quiet rather than as a second accent competing with the current one. */
-.step-track.on-dark li {
-  background: #ffffff14;
-  color: var(--on-dark-3);
-}
-
-.step-track.on-dark li b {
-  background: #ffffff1f;
-  color: var(--on-dark-2);
-  box-shadow: none;
-}
-
-.step-track.on-dark li.done {
-  color: var(--on-dark-2);
-}
-
-.step-track.on-dark li.done b {
-  background: var(--purple);
-  color: #fff;
-}
-
-.step-track.on-dark li.current {
   background: #fff;
   color: var(--ink);
 }
 
-.step-track.on-dark li.current b {
+.step-track li.current b {
   background: var(--lime);
   color: var(--ink);
 }
@@ -4894,56 +4853,10 @@ details p {
   max-height: 96vh;
 }
 
-/* The dialog's ✕ is absolutely positioned over the top-right corner, which is
-   exactly where the third step pill ends — keep the track clear of it. */
-.verify-modal .step-track {
-  padding-right: 34px;
-}
-
-.verify-cart {
-  background: var(--purple-soft);
-  border: 1px solid var(--purple-line);
-  border-radius: 12px;
-  padding: 13px 15px;
-  margin-bottom: 16px;
-}
-
-.verify-cart ul {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-}
-
-.verify-cart li {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 12.5px;
-  margin: 5px 0;
-  color: var(--ink-2);
-}
-
-.verify-cart li b {
-  font-weight: 700;
-  color: var(--ink);
-}
-
-.verify-cart-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-top: 9px;
-  padding-top: 9px;
-  border-top: 1px solid var(--purple-line);
-  font-size: 12.5px;
-  color: var(--ink-2);
-}
-
-.verify-cart-total b {
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: var(--ink);
+/* The dialog opens straight onto the fields, so the first one has to clear the
+   ✕ sitting in the corner. */
+.verify-modal .field:first-of-type {
+  margin-top: 12px;
 }
 
 .verify-form .modal-submit.full {
@@ -5032,6 +4945,7 @@ details p {
 .checkout-summary {
   background: var(--paper);
   display: flex;
+  align-items: flex-start;
   justify-content: flex-start;
   padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 52px);
 }
@@ -5039,6 +4953,14 @@ details p {
 .checkout-panel {
   width: 100%;
   max-width: 420px;
+}
+
+/* The order column is the tall one; the money follows it down rather than
+   scrolling away above it. */
+.checkout-summary .checkout-panel {
+  position: sticky;
+  top: clamp(32px, 5vw, 64px);
+  align-self: flex-start;
 }
 
 .checkout-back {
@@ -5112,15 +5034,18 @@ details p {
   padding: 0;
 }
 
-.checkout-items li {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 13px 14px;
+.checkout-items > li {
+  padding: 15px 16px;
   border: 1px solid #ffffff29;
-  border-radius: 11px;
+  border-radius: 14px;
   background: #ffffff0a;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
+}
+
+.checkout-item-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
 }
 
 .checkout-item-info {
@@ -5129,9 +5054,40 @@ details p {
 }
 
 .checkout-item-info b {
-  display: block;
-  font-size: 14px;
-  letter-spacing: -0.015em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+
+/* What the module actually contains — the panel was otherwise a title, a price
+   and a lot of empty column. */
+.checkout-item-features {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid #ffffff1a;
+  display: grid;
+  gap: 7px;
+}
+
+.checkout-item-features li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--on-dark-2);
+}
+
+.checkout-item-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--lime);
 }
 
 .checkout-item-info small {
@@ -5144,7 +5100,7 @@ details p {
 
 .checkout-item-price {
   flex: none;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.025em;
 }
@@ -5154,17 +5110,9 @@ details p {
   margin-bottom: 30px;
 }
 
-.checkout-amount {
-  margin: 6px 0 22px;
-  font-size: 44px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  color: var(--ink);
-}
-
 .checkout-lines {
   list-style: none;
-  margin: 0;
+  margin: 16px 0 0;
   padding: 0;
   border-top: 1px solid var(--line);
 }
@@ -5191,16 +5139,26 @@ details p {
   color: var(--ink-4);
 }
 
+/* The one big number on the page, sat directly above the button that charges
+   it. */
 .checkout-total {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  margin-top: 13px;
-  padding-top: 13px;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 14px;
   border-top: 1px solid var(--line);
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.025em;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--ink);
+}
+
+.checkout-total b {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .checkout-pay {
@@ -5215,78 +5173,267 @@ details p {
   color: #d64545;
 }
 
+/* Two claims, both taken from the module's own pricing copy. */
+.checkout-assurances {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 8px;
+}
+
+.checkout-assurances li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.checkout-assurances li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--purple);
+}
+
 .checkout-fine {
-  margin-top: 11px;
+  margin-top: 14px;
   font-size: 11.5px;
   color: var(--ink-4);
   text-align: center;
 }
 
-/* ---- step 3, confirmed ---- */
-.checkout-done {
+/* ---- after the money: /thank-you ---- */
+.thanks {
   display: grid;
-  place-items: center;
+  place-items: start center;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: 60px 20px;
+  padding: clamp(32px, 6vw, 72px) 20px clamp(48px, 8vw, 96px);
   background: var(--surface);
 }
 
-.checkout-done-inner {
+.thanks-card {
   width: 100%;
-  max-width: 420px;
-  text-align: center;
+  max-width: 560px;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: var(--r-xl);
-  padding: 36px 30px 32px;
+  border-radius: var(--r-2xl);
+  padding: clamp(28px, 4vw, 44px) clamp(22px, 4vw, 40px);
   box-shadow: var(--shadow-lg);
 }
 
-.checkout-done h1 {
-  font-size: 32px;
-  letter-spacing: -0.035em;
+.thanks-head {
+  text-align: center;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.thanks-head h1 {
+  font-size: clamp(30px, 5vw, 40px);
+  letter-spacing: -0.04em;
   margin-bottom: 10px;
 }
 
-.checkout-done p {
+.thanks-head p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.thanks-head b {
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.thanks-h {
+  font: 700 10px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin: 28px 0 16px;
+}
+
+/* The order is load-bearing: nothing in steps two or three works until the
+   password from step one has arrived. */
+.thanks-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 22px;
+}
+
+.thanks-steps > li {
+  display: flex;
+  gap: 14px;
+  position: relative;
+}
+
+/* A rule down the gutter, joining the numbers into one sequence. */
+.thanks-steps > li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 32px;
+  bottom: -22px;
+  width: 1px;
+  background: var(--line);
+}
+
+.thanks-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: #fff;
+  font: 700 12px var(--font);
+  position: relative;
+  z-index: 1;
+}
+
+.thanks-step-body {
+  flex: 1;
+  min-width: 0;
+  padding-top: 3px;
+}
+
+.thanks-step-body b {
+  display: block;
+  font-size: 15.5px;
+  letter-spacing: -0.02em;
+  margin-bottom: 5px;
+}
+
+.thanks-step-body p {
   font-size: 13.5px;
   line-height: 1.6;
   color: var(--ink-3);
 }
 
-.checkout-done-list {
-  list-style: none;
-  margin: 20px 0 14px;
-  padding: 0;
-  text-align: left;
-  border-top: 1px solid var(--line-soft);
+.thanks-step-body p b {
+  display: inline;
+  font-size: inherit;
+  color: var(--ink);
+  word-break: break-word;
 }
 
-.checkout-done-list li {
+.thanks-cta {
+  margin-top: 13px;
+}
+
+/* The receipt itself — quieter than the steps, since it is a record rather than
+   something to act on. */
+.thanks-order {
+  margin-top: 30px;
+  padding: 4px 18px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+}
+
+.thanks-order .thanks-h {
+  margin-top: 18px;
+  margin-bottom: 10px;
+}
+
+.thanks-order ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.thanks-order li {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   padding: 10px 0;
   border-bottom: 1px solid var(--line-soft);
   font-size: 13.5px;
   color: var(--ink-2);
 }
 
-.checkout-order-id {
-  font: 500 11px var(--mono);
-  letter-spacing: 0.06em;
-  color: var(--ink-4);
-  margin-bottom: 22px;
+.thanks-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
 }
 
-.checkout-order-id b {
+.thanks-total b {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.thanks-ref {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font: 500 10.5px var(--mono);
+  letter-spacing: 0.06em;
+  color: var(--ink-4);
+}
+
+.thanks-ref b {
   color: var(--ink-2);
 }
 
-.checkout-done .button {
+.thanks-foot {
+  margin-top: 26px;
+  text-align: center;
+}
+
+.thanks-foot p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-4);
+  margin-bottom: 16px;
+}
+
+.thanks-foot a {
+  color: var(--purple-ink);
+  font-weight: 700;
+}
+
+.thanks-foot .button {
   width: 100%;
   justify-content: space-between;
+}
+
+@media (max-width: 480px) {
+  .thanks-card {
+    border-radius: var(--r-xl);
+  }
+  .thanks-steps > li {
+    gap: 12px;
+  }
+  .thanks-steps > li:not(:last-child)::before {
+    left: 12px;
+  }
+  .thanks-num {
+    width: 25px;
+    height: 25px;
+    font-size: 11px;
+  }
+  .thanks-cta {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 /* Phones: one ink column, summary first — the price is what people came to
@@ -5325,8 +5472,11 @@ details p {
   .checkout-panel {
     max-width: none;
   }
-  /* The paper panel becomes a card on the ink field, so its type flips over. */
+  /* The paper panel becomes a card on the ink field, so its type flips over.
+     It also sits at the top of one scrolling column here, with nothing to stick
+     alongside. */
   .checkout-summary .checkout-panel {
+    position: static;
     background: #ffffff0d;
     border: 1px solid #ffffff1f;
     border-radius: 18px;
@@ -5338,7 +5488,6 @@ details p {
   .checkout-summary .eyebrow {
     color: var(--on-dark-3);
   }
-  .checkout-amount,
   .checkout-total {
     color: #fff;
   }
@@ -5347,8 +5496,12 @@ details p {
     color: var(--on-dark-2);
   }
   .checkout-sub.muted,
-  .checkout-fine {
+  .checkout-fine,
+  .checkout-assurances li {
     color: var(--on-dark-3);
+  }
+  .checkout-assurances {
+    border-top-color: #ffffff1a;
   }
   .checkout-lines {
     border-top-color: #ffffff29;
@@ -5359,8 +5512,8 @@ details p {
   .checkout-total {
     border-top-color: #ffffff29;
   }
-  .checkout-amount {
-    font-size: 34px;
+  .checkout-total b {
+    font-size: 30px;
   }
   .checkout-back {
     margin-bottom: 12px;
@@ -5730,12 +5883,10 @@ details p {
      than its own value ("1000+" at 30px), which pushed the number out of the
      chip and gave the whole document a horizontal scrollbar. */
   .promise-stats {
-    display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
   .stat-chip {
-    min-width: 0;
     padding: 16px 18px;
   }
   .stat-chip b {
