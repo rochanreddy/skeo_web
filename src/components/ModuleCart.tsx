@@ -16,7 +16,8 @@ const MARKS = {
 /**
  * Step one of buying a module. Each row owns its own Add button, so there is no
  * separate "add the ticked ones" step between choosing a module and moving on —
- * the footer holds the running total and Next, and nothing else.
+ * the footer holds the running total and Next, and nothing else. The rows
+ * already show what is added, so the footer does not count them back.
  *
  * Next does not check out: it opens verification (step two), which is what
  * hands the cart to /checkout (step three). Nothing here talks about money
@@ -68,21 +69,14 @@ export function ModuleCart() {
         })}
       </ul>
 
+      {/* Kept in the tree while empty: its min-height reserves the row so the
+          card does not jump the moment a first module is added. */}
       <div className="cart-actions">
-        {cart.length > 0 ? (
-          <>
-            <button type="button" className="button button-small cart-checkout" onClick={() => openVerify(cart)}>
-              <span className="btn-label">Next · {money(total)}</span>
-              <span aria-hidden="true">→</span>
-            </button>
-            <span className="cart-hint" role="status">
-              {cart.length} module{cart.length > 1 ? 's' : ''} selected
-            </span>
-          </>
-        ) : (
-          <span className="cart-hint" role="status">
-            Add any module to continue
-          </span>
+        {cart.length > 0 && (
+          <button type="button" className="button button-small cart-checkout" onClick={() => openVerify(cart)}>
+            <span className="btn-label">Next · {money(total)}</span>
+            <span aria-hidden="true">→</span>
+          </button>
         )}
       </div>
     </div>
