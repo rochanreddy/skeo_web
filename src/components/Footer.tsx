@@ -1,9 +1,11 @@
+import { AuthButton } from '@/components/ActionButton'
 import { site } from '@/lib/site'
 
 /**
- * The closing block: the last word, the routes off the page, and the legal line.
- * The ask itself lives in the pricing section above — two "start now" moments
- * back to back read as one repeated twice.
+ * The closing block: the last ask, the routes off the page, and the legal line.
+ * Pricing carries its own CTA, but four sections separate the two now, so the
+ * closing statement gets a button rather than leaving the page on a question
+ * with nothing to answer it.
  */
 
 const columns = [
@@ -56,6 +58,13 @@ export function Footer() {
         <span className="eyebrow footer-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span>
         <h2 className="footer-title">Ready to begin?</h2>
         <p className="footer-lede">Join thousands of ambitious people building their AI edge, one module at a time.</p>
+
+        <div className="footer-cta">
+          <AuthButton mode="signup" className="button button-lime">
+            Start Learning
+          </AuthButton>
+          <span>No card required to browse the modules.</span>
+        </div>
 
         <hr className="footer-rule" />
 
