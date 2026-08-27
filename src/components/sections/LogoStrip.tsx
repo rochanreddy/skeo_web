@@ -1,6 +1,5 @@
 import Image, { type StaticImageData } from 'next/image'
 import { Reveal } from '@/components/Reveal'
-import { LogoRail } from '@/components/sections/LogoRail'
 import accenture from '@/assets/employers/accenture.webp'
 import cognizant from '@/assets/employers/cognizant.webp'
 import flipkart from '@/assets/employers/flipkart.webp'
@@ -26,16 +25,18 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
 export function LogoStrip() {
   return (
     <section className="logo-strip" aria-label="Where skeo builders end up">
-      <Reveal>
-        <p>skeo builders go on to teams at</p>
-        <LogoRail>
-          {EMPLOYERS.map((item) => (
-            <span key={item.name} className="logo-item" title={item.name}>
-              <Image src={item.logo} alt="" style={{ height: item.height, width: 'auto' }} />
-            </span>
-          ))}
-        </LogoRail>
-      </Reveal>
+      <div className="wrap">
+        <Reveal className="logo-strip-row">
+          <p>skeo builders go on to teams at</p>
+          <div className="logo-static-row">
+            {EMPLOYERS.map((item) => (
+              <span key={item.name} className="logo-item" title={item.name}>
+                <Image src={item.logo} alt="" style={{ height: item.height, width: 'auto' }} />
+              </span>
+            ))}
+          </div>
+        </Reveal>
+      </div>
     </section>
   )
 }

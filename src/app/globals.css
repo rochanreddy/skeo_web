@@ -1483,8 +1483,19 @@ h2 em {
 
 .logo-strip p {
   color: var(--ink-4);
-  margin: 0 0 20px;
-  text-align: center;
+  margin: 0;
+  text-align: left;
+  /* The label is one leg of the row, not a heading over it — it must not shrink
+     or wrap while the logos take the space that is left. */
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Label left, logos spread across the rest of the line — one strip, one row. */
+.logo-strip-row {
+  display: flex;
+  align-items: center;
+  gap: 20px 56px;
 }
 
 /* Transform-driven marquee (JS in LogoRail) — not a scroll container, so it
@@ -1520,6 +1531,21 @@ h2 em {
   align-items: center;
   justify-content: center;
   min-width: 120px;
+}
+
+/* Static row for the employer strip — logos stay put, no marquee. */
+/* Takes the width the label leaves and distributes the marks across it, so the
+   last logo lands on the right edge of the column rather than trailing off. */
+.logo-static-row {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+}
+
+.logo-static-row .logo-item {
+  min-width: 0;
 }
 
 .logo-item img {
@@ -3355,10 +3381,11 @@ h2 em {
 }
 
 .price-card li::before {
-  content: '✓';
+  content: '•';
   flex: none;
   margin-right: 10px;
-  font-size: 13px;
+  font-size: 18px;
+  line-height: 1;
   font-weight: 700;
   color: var(--purple);
 }
@@ -4224,7 +4251,7 @@ details p {
 .footer-mark {
   display: block;
   margin: -0.1em 0 -0.5em;
-  font-size: clamp(46px, 9vw, 118px);
+  font-size: clamp(70px, 14vw, 180px);
   line-height: 0.72;
   font-weight: 800;
   /* Opened up rather than tucked tight — it reads as a mark, not a word. */
@@ -4915,8 +4942,18 @@ details p {
   .stage-card-face {
     border-radius: 20px;
   }
-  .logo-strip p {
-    margin-bottom: 17px;
+  /* One line does not fit a phone: the label goes back above the marks, and the
+     marks wrap instead of being squeezed to nothing. */
+  .logo-strip-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 17px;
+  }
+  .logo-static-row {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px 32px;
   }
   /* The rail keeps scrolling on phones — the marks just ride closer together. */
   .logo-rail-track > span {

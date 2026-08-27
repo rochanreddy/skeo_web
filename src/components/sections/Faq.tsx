@@ -19,7 +19,11 @@ export function Faq() {
           <br />
           wondering.
         </h2>
-        <p>Straight answers on how skeo works, what you walk away with, and what it costs.</p>
+        <p>
+          Straight answers on how skeo works,
+          <br />
+          what you walk away with, and what it costs.
+        </p>
         <VideoDialog src={walkthrough.src} label={walkthrough.label} duration={walkthrough.duration} />
       </Reveal>
 
