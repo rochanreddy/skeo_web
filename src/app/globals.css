@@ -3537,26 +3537,6 @@ h2 em {
   transform: none;
 }
 
-.teams-note {
-  text-align: center;
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 20px;
-}
-
-.teams-note button {
-  font-weight: 800;
-  color: var(--purple);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  font-size: 12px;
-  font-family: var(--font);
-}
-
 /* ============ CERTIFICATION ============ */
 .proof-section {
   background: #f2eefc;
@@ -4077,21 +4057,6 @@ details p {
   min-height: 4.5em;
   margin: -4px 0 0;
   padding: 0 58px 22px 66px;
-}
-
-.faq-foot {
-  margin: auto 0 0;
-  padding: 17px 22px;
-  border-top: 1px solid var(--line-soft);
-  background: var(--surface);
-  font: 500 10px var(--mono);
-  letter-spacing: 0.5px;
-  color: var(--ink-4);
-}
-
-.faq-foot a {
-  color: var(--purple);
-  font-weight: 700;
 }
 
 /* ============ FOOTER ============ */
