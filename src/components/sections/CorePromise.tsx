@@ -13,7 +13,7 @@ export function CorePromise() {
             One platform. <em>Every AI tool.</em>
           </h2>
           <p>
-            Skeo brings every major AI tool into one structured system of short challenges.
+            skeo brings every major AI tool into one structured system of short challenges.
             <br />
             So you build real skills, not just watch them.
           </p>
