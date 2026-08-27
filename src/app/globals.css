@@ -4766,6 +4766,630 @@ details p {
   margin-top: 8px;
 }
 
+/* ============ BUYING A MODULE ============ */
+/* Three screens, one flow: the cart on the pricing card, the verify modal, and
+   /checkout. The step track and the money-line styles below are shared by the
+   last two so the same order reads the same way on both. */
+
+/* Inline text button — sits inside a sentence, not on its own row. */
+.link-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--purple-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.link-button:hover:not(:disabled) {
+  color: var(--purple);
+}
+
+.link-button:disabled {
+  color: var(--ink-5);
+  cursor: default;
+  text-decoration: none;
+}
+
+/* ---- step track ---- */
+.step-track {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.step-track li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding: 6px 9px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  font: 700 9.5px var(--mono);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+  white-space: nowrap;
+}
+
+.step-track li b {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink-5);
+  font-size: 9px;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.step-track li.done {
+  color: var(--purple-ink);
+  background: var(--purple-soft);
+}
+
+.step-track li.done b {
+  background: var(--purple);
+  color: #fff;
+  box-shadow: none;
+}
+
+.step-track li.current {
+  background: var(--ink);
+  color: #fff;
+}
+
+.step-track li.current b {
+  background: var(--lime);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+/* On the ink panel the track is reversed out, so the finished steps read as
+   quiet rather than as a second accent competing with the current one. */
+.step-track.on-dark li {
+  background: #ffffff14;
+  color: var(--on-dark-3);
+}
+
+.step-track.on-dark li b {
+  background: #ffffff1f;
+  color: var(--on-dark-2);
+  box-shadow: none;
+}
+
+.step-track.on-dark li.done {
+  color: var(--on-dark-2);
+}
+
+.step-track.on-dark li.done b {
+  background: var(--purple);
+  color: #fff;
+}
+
+.step-track.on-dark li.current {
+  background: #fff;
+  color: var(--ink);
+}
+
+.step-track.on-dark li.current b {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+/* ---- step 2: verify ---- */
+.verify-modal {
+  max-width: 400px;
+  padding: 24px 26px 20px;
+  max-height: 96vh;
+}
+
+/* The dialog's ✕ is absolutely positioned over the top-right corner, which is
+   exactly where the third step pill ends — keep the track clear of it. */
+.verify-modal .step-track {
+  padding-right: 34px;
+}
+
+.verify-cart {
+  background: var(--purple-soft);
+  border: 1px solid var(--purple-line);
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin-bottom: 16px;
+}
+
+.verify-cart ul {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.verify-cart li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
+  margin: 5px 0;
+  color: var(--ink-2);
+}
+
+.verify-cart li b {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.verify-cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px solid var(--purple-line);
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.verify-cart-total b {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+.verify-form .modal-submit.full {
+  margin-top: 12px;
+}
+
+/* ---- OTP boxes ---- */
+.otp-boxes {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin: 4px 0 2px;
+}
+
+.otp-boxes input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 12px 0;
+  text-align: center;
+  font: 700 19px var(--font);
+  color: var(--ink);
+  /* A digit box should never grow a number spinner. */
+  appearance: textfield;
+}
+
+.otp-boxes input:focus {
+  outline: 2px solid #c8b9ff;
+  outline-offset: 1px;
+  border-color: var(--purple);
+  background: #fff;
+}
+
+.otp-boxes.invalid input {
+  border-color: #e2a1a1;
+  background: #fffafa;
+}
+
+.otp-message {
+  display: block;
+  margin-top: 8px;
+}
+
+.otp-demo {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--ink-4);
+  font-size: 11.5px;
+  text-align: center;
+}
+
+.otp-demo b {
+  color: var(--ink);
+  font: 500 12.5px var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.otp-resend {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--ink-4);
+}
+
+/* ---- step 3: /checkout ---- */
+/* Two panels meeting in the middle: what you are buying on the ink side, what
+   it costs on the paper side. */
+.checkout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.checkout-detail {
+  background: var(--ink-bg);
+  color: var(--on-dark);
+  display: flex;
+  justify-content: flex-end;
+  padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 52px);
+}
+
+.checkout-summary {
+  background: var(--paper);
+  display: flex;
+  justify-content: flex-start;
+  padding: clamp(32px, 5vw, 64px) clamp(20px, 4vw, 52px);
+}
+
+.checkout-panel {
+  width: 100%;
+  max-width: 420px;
+}
+
+.checkout-back {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--on-dark-2);
+  text-decoration: none;
+}
+
+.checkout-back:hover {
+  color: #fff;
+}
+
+.checkout-h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 11px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.checkout-verified {
+  font: 700 9px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #cdeba3;
+  background: #ffffff12;
+  border-radius: var(--r-pill);
+  padding: 3px 8px;
+}
+
+.checkout-info {
+  margin: 0;
+  border: 1px solid #ffffff29;
+  border-radius: 11px;
+  overflow: hidden;
+}
+
+.checkout-info > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid #ffffff1a;
+}
+
+.checkout-info > div:last-child {
+  border-bottom: 0;
+}
+
+.checkout-info dt {
+  font-size: 13px;
+  color: var(--on-dark-3);
+}
+
+.checkout-info dd {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+}
+
+.checkout-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.checkout-items li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 14px;
+  border: 1px solid #ffffff29;
+  border-radius: 11px;
+  background: #ffffff0a;
+  margin-bottom: 9px;
+}
+
+.checkout-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.checkout-item-info b {
+  display: block;
+  font-size: 14px;
+  letter-spacing: -0.015em;
+}
+
+.checkout-item-info small {
+  display: block;
+  margin-top: 3px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--on-dark-3);
+}
+
+.checkout-item-price {
+  flex: none;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+/* Paper side. */
+.checkout-summary .brand {
+  margin-bottom: 30px;
+}
+
+.checkout-amount {
+  margin: 6px 0 22px;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.checkout-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.checkout-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.checkout-sub {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 9px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.checkout-sub.muted {
+  color: var(--ink-4);
+}
+
+.checkout-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 13px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+.checkout-pay {
+  margin-top: 20px;
+  justify-content: space-between;
+}
+
+.checkout-error {
+  margin-top: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #d64545;
+}
+
+.checkout-fine {
+  margin-top: 11px;
+  font-size: 11.5px;
+  color: var(--ink-4);
+  text-align: center;
+}
+
+/* ---- step 3, confirmed ---- */
+.checkout-done {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 60px 20px;
+  background: var(--surface);
+}
+
+.checkout-done-inner {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 36px 30px 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+.checkout-done h1 {
+  font-size: 32px;
+  letter-spacing: -0.035em;
+  margin-bottom: 10px;
+}
+
+.checkout-done p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.checkout-done-list {
+  list-style: none;
+  margin: 20px 0 14px;
+  padding: 0;
+  text-align: left;
+  border-top: 1px solid var(--line-soft);
+}
+
+.checkout-done-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.checkout-order-id {
+  font: 500 11px var(--mono);
+  letter-spacing: 0.06em;
+  color: var(--ink-4);
+  margin-bottom: 22px;
+}
+
+.checkout-order-id b {
+  color: var(--ink-2);
+}
+
+.checkout-done .button {
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Phones: one ink column, summary first — the price is what people came to
+   check, and it should not sit below a screenful of order detail. */
+@media (max-width: 860px) {
+  .checkout {
+    display: flex;
+    flex-direction: column;
+    background: var(--ink-bg);
+    padding: 20px clamp(14px, 4vw, 20px) 40px;
+  }
+  .checkout-summary {
+    display: block;
+    padding: 0;
+    background: none;
+  }
+  /* Flattened so the back link, the step track and the order detail become
+     orderable siblings of the summary card rather than being trapped inside
+     their own column. */
+  .checkout-detail,
+  .checkout-detail > .checkout-panel {
+    display: contents;
+  }
+  .checkout-back {
+    order: -3;
+  }
+  .checkout-detail .step-track {
+    order: -2;
+  }
+  /* The price is what people came to check; it must not sit below a screenful
+     of order detail. */
+  .checkout-summary {
+    order: -1;
+    margin-bottom: 14px;
+  }
+  .checkout-panel {
+    max-width: none;
+  }
+  /* The paper panel becomes a card on the ink field, so its type flips over. */
+  .checkout-summary .checkout-panel {
+    background: #ffffff0d;
+    border: 1px solid #ffffff1f;
+    border-radius: 18px;
+    padding: 18px;
+  }
+  .checkout-summary .brand {
+    display: none;
+  }
+  .checkout-summary .eyebrow {
+    color: var(--on-dark-3);
+  }
+  .checkout-amount,
+  .checkout-total {
+    color: #fff;
+  }
+  .checkout-lines li,
+  .checkout-sub {
+    color: var(--on-dark-2);
+  }
+  .checkout-sub.muted,
+  .checkout-fine {
+    color: var(--on-dark-3);
+  }
+  .checkout-lines {
+    border-top-color: #ffffff29;
+  }
+  .checkout-lines li {
+    border-bottom-color: #ffffff1a;
+  }
+  .checkout-total {
+    border-top-color: #ffffff29;
+  }
+  .checkout-amount {
+    font-size: 34px;
+  }
+  .checkout-back {
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .otp-boxes {
+    gap: 5px;
+  }
+  .otp-boxes input {
+    padding: 10px 0;
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Three labelled pills stop fitting here; the numbers stay. */
+  .step-track li {
+    justify-content: center;
+    padding: 6px;
+    font-size: 0;
+    gap: 0;
+  }
+  .step-track li b {
+    font-size: 9px;
+  }
+}
+
 /* ============ RESPONSIVE ============ */
 /* Small phones: the display floor is a touch tall for a 300px column. */
 @media (max-width: 400px) {
