@@ -1,4 +1,5 @@
 import { Reveal } from '@/components/Reveal'
+import { SpotlightCard } from '@/components/ui/spotlight-card'
 import { problems } from '@/lib/content'
 
 export function Problem() {
@@ -11,10 +12,12 @@ export function Problem() {
       </Reveal>
       <div className="problem-grid">
         {problems.map((problem, i) => (
-          <Reveal key={problem.mark} className="problem-card" delay={(i % 3) as 0 | 1 | 2}>
-            <span className="problem-mark">{problem.mark}</span>
-            <h3>{problem.title}</h3>
-            <p>{problem.body}</p>
+          <Reveal key={problem.mark} delay={(i % 3) as 0 | 1 | 2}>
+            <SpotlightCard className="problem-card">
+              <span className="problem-mark">{problem.mark}</span>
+              <h3>{problem.title}</h3>
+              <p>{problem.body}</p>
+            </SpotlightCard>
           </Reveal>
         ))}
       </div>
