@@ -25,9 +25,9 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
 
 export function LogoStrip() {
   return (
-    <section className="logo-strip" aria-label="Where Skeo builders end up">
+    <section className="logo-strip" aria-label="Where skeo builders end up">
       <Reveal>
-        <p>Skeo builders go on to teams at</p>
+        <p>skeo builders go on to teams at</p>
         <LogoRail>
           {EMPLOYERS.map((item) => (
             <span key={item.name} className="logo-item" title={item.name}>
