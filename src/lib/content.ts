@@ -34,7 +34,7 @@ export const promiseStats = [
    it at a file in /public (or any direct video URL) to switch the lightbox on. */
 export const walkthrough = {
   src: '',
-  label: 'Watch how Skeo works',
+  label: 'Watch how skeo works',
   duration: '2 MIN',
 } as const
 
@@ -128,7 +128,7 @@ export const comparison = {
 export const testimonials = [
   {
     quote:
-      'Skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.',
+      'skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.',
     name: 'Priya Shah',
     role: 'Product Designer, Mumbai',
   },
@@ -167,7 +167,7 @@ export const testimonials = [
 export const faqs = [
   {
     q: 'Do I need a technical background?',
-    a: 'Not at all. Skeo is designed to make practical AI accessible, whether you work in design, marketing, operations, or are just getting started.',
+    a: 'Not at all. skeo is designed to make practical AI accessible, whether you work in design, marketing, operations, or are just getting started.',
   },
   {
     q: 'How much time does a module take?',
