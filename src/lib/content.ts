@@ -56,7 +56,7 @@ export const featuredTool = {
     kicker: 'AI tool library',
     lines: ['Learn Claude', 'end to end'],
     note: 'Prompting, research, and real deliverables.',
-    footer: 'Module 01 · Beginner friendly',
+    footer: 'From beginner to advanced level',
   },
   capsules: ['Claude Chat', 'Claude Cowork', 'Claude Code'],
   facts: [
