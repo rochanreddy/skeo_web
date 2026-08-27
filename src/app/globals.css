@@ -4065,7 +4065,7 @@ details p {
 .footer {
   position: relative;
   margin-top: 10px;
-  padding: clamp(62px, 6.5vw, 92px) 0 20px;
+  padding: clamp(48px, 5vw, 68px) 0 14px;
   background: radial-gradient(120% 90% at 50% -10%, #2b2340 0%, #1b1626 42%, #141019 100%);
   color: #fff;
   overflow: hidden;
@@ -4096,10 +4096,10 @@ details p {
   /* background-clip: text paints only inside the element's box, so a
      line-height under 1 cropped the descenders of "y" and "g". The box has to
      clear them; the negative margins keep the optical spacing tight. */
-  margin: 10px 0 8px;
+  margin: 8px 0 6px;
   padding-bottom: 0.06em;
-  font-size: clamp(44px, 8.4vw, 104px);
-  line-height: 1.08;
+  font-size: clamp(38px, 6.6vw, 80px);
+  line-height: 1.06;
   letter-spacing: -0.042em;
   font-weight: 800;
   background: linear-gradient(180deg, #fff 16%, #ffffff9e 66%, #ffffff54 100%);
@@ -4112,7 +4112,7 @@ details p {
   max-width: 48ch;
   margin: 0 auto;
   color: var(--on-dark-2);
-  font-size: 17px;
+  font-size: 15.5px;
   line-height: 1.6;
 }
 
@@ -4122,8 +4122,8 @@ details p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin-top: 30px;
+  gap: 12px;
+  margin-top: 22px;
 }
 
 .footer-cta > span {
@@ -4135,7 +4135,7 @@ details p {
 .footer-rule {
   border: 0;
   border-top: 1px solid #ffffff1f;
-  margin: 30px 0 26px;
+  margin: 20px 0 18px;
 }
 
 /* Brand on the left, link pills on the right. */
@@ -4143,52 +4143,70 @@ details p {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 30px 40px;
+  gap: 26px 40px;
   flex-wrap: wrap;
   text-align: left;
 }
 
+/* The brand lockup sits a step down from the nav wordmark — at 22px it out-shouted
+   the link columns it is supposed to balance. */
 .footer-brand .brand {
   color: #fff;
+  font-size: 19px;
 }
 
 .footer-brand .brand-mark {
+  width: 27px;
+  height: 27px;
+  font-size: 15px;
   background: #ffffff17;
   border: 1px solid #ffffff29;
   color: #fff;
 }
 
-/* Under the wordmark: logo, then the line it stands for, then the marks. */
+/* Under the wordmark: logo, then the line it stands for, then the marks.
+   Same size and face as .footer-nav a, so the two halves of the row read as one
+   scale rather than two. */
 .footer-tagline {
   display: block;
-  margin: 14px 0 20px;
+  margin: 12px 0 16px;
   color: var(--on-dark-3);
-  font-size: 14px;
+  font-family: var(--font);
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .footer-nav {
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, auto));
-  gap: 34px 54px;
+  grid-template-columns: repeat(2, minmax(110px, auto));
+  gap: 24px 44px;
 }
 
 .footer-nav nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 7px;
 }
 
 .footer-col-title {
   font: 500 10px var(--mono);
-  letter-spacing: 1.1px;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   color: #ffffff70;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
+/* Matched to .footer-tagline on the other side of the row — the links were
+   14.5px against a 14px tagline, which read as two different scales rather than
+   one footer. */
 .footer-nav a {
   width: max-content;
-  font-size: 14.5px;
+  font-family: var(--font);
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
   color: var(--on-dark-2);
   transition: color 0.2s ease, transform 0.2s var(--ease-out);
 }
@@ -4198,19 +4216,21 @@ details p {
   transform: translateX(3px);
 }
 
-/* Oversized wordmark, cropped by the bottom edge. */
+/* Oversized wordmark, cropped by the bottom edge. Sized well under the old
+   19vw/250px: at that scale it claimed a third of the footer's height on its own
+   and stopped reading as texture behind the bottom bar. Pulled tight to the row
+   above rather than floating in its own gap, so the mark reads as texture caught
+   mid-word rather than a header of its own. */
 .footer-mark {
   display: block;
-  /* Pulled up hard: the wordmark is texture behind the bottom bar, not a row
-     of its own. */
-  margin: clamp(16px, 2.4vw, 34px) 0 -0.34em;
-  font-size: clamp(80px, 19vw, 250px);
-  line-height: 0.74;
+  margin: -0.1em 0 -0.5em;
+  font-size: clamp(46px, 9vw, 118px);
+  line-height: 0.72;
   font-weight: 800;
   /* Opened up rather than tucked tight — it reads as a mark, not a word. */
   letter-spacing: 0.04em;
   color: transparent;
-  background: linear-gradient(180deg, #ffffff1a 0%, #ffffff05 68%, transparent 100%);
+  background: linear-gradient(180deg, #ffffff1f 0%, #ffffff06 68%, transparent 100%);
   -webkit-background-clip: text;
   background-clip: text;
   user-select: none;
@@ -4222,25 +4242,25 @@ details p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px 24px;
+  gap: 12px 24px;
   flex-wrap: wrap;
-  padding-top: 20px;
+  padding-top: 12px;
   border-top: 1px solid #ffffff14;
   color: var(--on-dark-3);
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
 .footer-social {
   display: flex;
-  gap: 10px;
+  gap: 9px;
 }
 
 .footer-social a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 31px;
+  height: 31px;
   border: 1px solid #ffffff24;
   border-radius: 50%;
   color: #ffffffab;
@@ -4248,8 +4268,8 @@ details p {
 }
 
 .footer-social svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 }
 
 .footer-social a:hover {
@@ -4261,12 +4281,12 @@ details p {
 .footer-top-link {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border: 1px solid #ffffff2e;
   border-radius: 50%;
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   transition: background 0.25s ease, transform 0.25s ease;
 }
 
@@ -5034,10 +5054,10 @@ details p {
   }
   .footer-nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px 34px;
+    gap: 20px 28px;
   }
   .footer-mark {
-    margin-top: 40px;
+    margin-top: 16px;
   }
   .reveal {
     transition-duration: 0.45s;
