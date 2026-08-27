@@ -12,18 +12,18 @@ export function Pricing() {
         <Reveal className="center-heading">
           <span className="eyebrow">SIMPLE PRICING</span>
           <h2 id="pricing-title">
-            Individual modules.
+            Individual Tool.
             <br />
-            Or all access.
+            Or all at once.
           </h2>
-          <p>Start with one module, or unlock everything — including the Job &amp; Freelancing Board.</p>
+          <p>Pick the AI tools you need, learn from beginner to advanced <br/> and unlock opportunities along the way.</p>
         </Reveal>
 
         <div className="pricing-two">
           <Reveal as="article" className="modules-card">
             <span className="plan">INDIVIDUAL MODULES</span>
             <h3>Pay once, own the module</h3>
-            <p>Buy the tools you actually need — lifetime access to each module and its certificate.</p>
+            <p>Choose any tool, learn it end-to-end, build projects, earn your certification,<br/> and unlock opportunities</p>
             <ModuleCart />
           </Reveal>
 
@@ -44,12 +44,6 @@ export function Pricing() {
           </Reveal>
         </div>
 
-        <p className="teams-note">
-          Need this for your team?{' '}
-          <PurchaseButton plan="teams" className="">
-            Talk to us
-          </PurchaseButton>
-        </p>
       </div>
     </section>
   )
