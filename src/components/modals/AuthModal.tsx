@@ -209,7 +209,7 @@ export function AuthModal({ initialMode, onClose }: { initialMode: AuthMode; onC
               </>
             ) : (
               <>
-                New to Skeo?{' '}
+                New to skeo?{' '}
                 <button type="button" onClick={() => switchMode('signup')}>
                   Register
                 </button>
