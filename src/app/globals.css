@@ -1,3 +1,8 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 /* ==========================================================================
    Skeo — global stylesheet
    Design tokens, base layer, then one block per page section.
@@ -5,17 +10,97 @@
    ========================================================================== */
 
 :root {
+  /* ---- Brand ---------------------------------------------------------- */
   --ink: #14121c;
-  --muted: #6f6b78;
-  --line: #e8e5ed;
-  --paper: #fff;
-  --lav: #e9e4ff;
   --purple: #6c4af2;
   --lime: #dfff75;
+  --lav: #e9e4ff;
   --yellow: #ffcf52;
+  --paper: #fff;
+
+  /* Ink ramp. Every piece of text on a light surface picks one of these five
+     steps — before this the page carried ~28 one-off greys, which is what made
+     it read as assembled rather than designed. */
+  --ink-2: #46414f; /* body copy */
+  --ink-3: var(--ink-3); /* secondary copy */
+  --ink-4: #8a8497; /* tertiary, captions */
+  --ink-5: #aba5b8; /* faint labels, disabled */
+  --muted: var(--ink-3); /* legacy alias — used widely as a text colour */
+
+  /* Purple ramp, so the accent has somewhere to go besides one flat value. */
+  --purple-ink: #4d2fc9; /* accent text / hover, passes AA on white */
+  --purple-soft: #f4f0ff; /* tinted surface */
+  --purple-line: #ded3fb; /* tinted border */
+
+  /* Surfaces and rules. */
+  --surface: #faf9fc; /* raised-but-quiet panel */
+  --surface-2: #f5f3f9; /* inset wells, tracks */
+  --line: #e8e5ed;
+  --line-soft: #f1eff6;
+
+  /* Ink surfaces, for the dark bands. */
+  --ink-bg: #17131e;
+  --ink-bg-2: #211b31;
+  --on-dark: #ffffff;
+  --on-dark-2: #c4bdd4;
+  --on-dark-3: #9a92ad;
+
+  /* ---- Type ----------------------------------------------------------- */
   --font: var(--font-sans), 'Manrope', system-ui, sans-serif;
   --mono: var(--font-mono), 'DM Mono', ui-monospace, monospace;
-  --nav-h: 86px;
+
+  /* Fluid display sizes. Tracking lives with the rule that sets the size, in
+     em, so it stays proportional as the clamp scales. */
+  /* Capped so "Master the AI tools" still holds the one line the copy's <br />
+     is written for, now that tracking is a proportional -0.035em rather than a
+     fixed -4.4px (which was far tighter at this size). */
+  --t-display: clamp(42px, 4.55vw, 68px);
+  --t-h2: clamp(33px, 3.9vw, 52px);
+  --t-h3: clamp(28px, 3.2vw, 42px);
+
+  /* ---- Radii ---------------------------------------------------------- */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-2xl: 28px;
+  --r-pill: 999px;
+
+  /* ---- Elevation ------------------------------------------------------ */
+  /* Two-part shadows: a tight contact shadow plus a wide ambient one, both
+     tinted with the brand violet rather than neutral black. */
+  --shadow-sm: 0 1px 2px #1a123a0f, 0 2px 6px #1a123a0a;
+  --shadow-md: 0 2px 4px #1a123a0d, 0 8px 20px #1a123a12;
+  --shadow-lg: 0 4px 8px #1a123a0f, 0 18px 40px #1a123a1a;
+  --shadow-xl: 0 8px 16px #1a123a14, 0 34px 70px #1a123a26;
+
+  /* ---- Motion --------------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 0.9, 0.3, 1);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.25, 1);
+
+  --nav-h: 84px;
+
+  /* ---- shadcn bridge --------------------------------------------------- */
+  /* shadcn/base-ui primitives read these. Pointed at the Skeo palette so any
+     primitive dropped in inherits the brand instead of default slate. */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: #fff;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--ink);
+  --muted-foreground: var(--ink-3);
+  --accent: var(--purple-soft);
+  --accent-foreground: var(--purple-ink);
+  --destructive: #d64545;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--purple);
+  --radius: var(--r-md);
 }
 
 * {
@@ -38,9 +123,16 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font);
-  font-size: 15px;
-  line-height: 1.55;
+  /* 16px base rather than 15px. Every secondary size below is derived from it,
+     and the old 10–12px captions were the main thing making the page read as a
+     template rather than a product. */
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Proportional lining figures: stats and prices sit on a common baseline. */
+  font-variant-numeric: tabular-nums;
 }
 
 a {
@@ -54,6 +146,18 @@ h3,
 h4,
 p {
   margin-top: 0;
+}
+
+/* Headings share one voice: tight optical tracking that scales with the size,
+   and balanced ragging so a two-line heading breaks evenly instead of leaving
+   an orphan. */
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 800;
+  text-wrap: balance;
+  font-variant-numeric: normal;
 }
 
 img,
@@ -122,84 +226,139 @@ svg {
 }
 
 /* ============ NAVBAR ============ */
+/* A floating glass pill rather than a full-bleed bar. The shell itself is
+   transparent and only supplies the sticky position and the padding the pill
+   floats in; all the material lives on .nav. */
 .nav-shell {
   position: sticky;
-  /* Containing block for .scroll-progress. */
   isolation: isolate;
   top: 0;
   z-index: 30;
-  background: #fffffff2;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 12px 0;
+  background: transparent;
+  pointer-events: none;
 }
 
-.nav-shell.scrolled {
-  border-bottom-color: var(--line);
-  box-shadow: 0 6px 22px #14121c0a;
-}
-
+/* The glass. Blur plus saturation is what makes it read as material rather than
+   as a translucent rectangle — the saturation boost keeps colour passing under
+   it from going grey. It starts near-clear at the top of the page and gains
+   opacity once content is actually moving underneath. */
 .nav {
-  height: var(--nav-h);
+  position: relative;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  z-index: 10;
+  gap: 20px;
+  height: calc(var(--nav-h) - 24px);
+  max-width: 1120px;
+  padding: 0 10px 0 20px;
+  border: 1px solid #ffffff5c;
+  border-radius: var(--r-pill);
+  background: #ffffff8a;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: 0 1px 1px #14121c0a, 0 6px 20px #14121c0f, inset 0 1px 0 #ffffffb3;
+  pointer-events: auto;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.nav-shell.scrolled .nav {
+  background: #ffffffc7;
+  border-color: #ffffff8a;
+  box-shadow: 0 1px 1px #14121c0f, 0 10px 34px #14121c1a, inset 0 1px 0 #ffffffcc;
 }
 
 .brand {
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: -1.5px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.055em;
+  flex: none;
 }
 
 .brand-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 9px;
   background: var(--ink);
   color: #fff;
-  width: 27px;
-  height: 27px;
-  border-radius: 8px;
-  font: 500 17px/27px var(--mono);
-  text-align: center;
-  letter-spacing: -2px;
+  font: 500 17px var(--mono);
+  letter-spacing: -0.08em;
+  transition: transform 0.3s var(--ease-out);
 }
 
+.brand:hover .brand-mark {
+  transform: rotate(-6deg);
+}
+
+/* Optically centred in the pill, independent of how wide the brand or the CTA
+   happen to be — taking the slack with flex would have centred the links in
+   whatever space was left over instead, which is not the same thing. */
 .nav-links {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  gap: 30px;
-  margin-left: 100px;
+  align-items: center;
+  gap: 2px;
 }
 
 .nav-links a,
 .login {
-  font-size: 13px;
-  font-weight: 700;
+  position: relative;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink-3);
   background: none;
   border: 0;
-  padding: 0;
   cursor: pointer;
   font-family: var(--font);
-  color: inherit;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 
 .nav-links a:hover,
-.login:hover,
-.text-link:hover {
-  color: var(--purple);
+.login:hover {
+  color: var(--ink);
+  background: #14121c0f;
 }
 
+.text-link:hover {
+  color: var(--purple-ink);
+}
+
+/* The current section gets a mark under the label, not just a colour shift —
+   colour alone was too quiet to find at a glance. */
 .nav-links a.active {
-  color: var(--purple);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--purple);
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 23px;
+  gap: 14px;
+  flex: none;
 }
 
 .menu {
@@ -209,61 +368,101 @@ svg {
 }
 
 /* ============ BUTTONS ============ */
+/* One button, three skins. The label and the trailing glyph sit close enough to
+   read as one object — the old 24px gap pushed the arrow to the far edge and
+   made every CTA look like a split control. */
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
   background: var(--ink);
   color: #fff;
-  border-radius: 9px;
-  padding: 14px 18px;
-  font-weight: 800;
-  font-size: 13px;
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-  border: 0;
-  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
   font-family: var(--font);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), background 0.2s ease,
+    border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 }
 
 .button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px #16121b26;
+  transform: translateY(-1.5px);
+  box-shadow: var(--shadow-md);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .button:disabled {
-  opacity: 0.62;
+  opacity: 0.55;
   cursor: progress;
+  transform: none;
 }
 
+/* The trailing glyph. Sized to the label rather than 20px, and it steps forward
+   on hover so the button reads as going somewhere. */
 .button span {
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 12px;
+  line-height: 1;
+  transition: transform 0.25s var(--ease-out);
 }
 
-/* Label spans keep the button's own type; only the trailing glyph goes large. */
+.button:hover:not(:disabled) span:not(.btn-label):not(.spinner) {
+  transform: translateX(3px);
+}
+
 .button .btn-label {
-  font-size: 13px;
-  font-weight: 800;
+  font-size: inherit;
+  font-weight: 700;
   line-height: normal;
+  transform: none;
 }
 
 .button-small {
-  padding: 10px 14px;
-  gap: 14px;
-  font-size: 12px;
+  height: 40px;
+  padding: 0 16px;
+  gap: 8px;
+  font-size: 13.5px;
 }
 
 .button-small span {
-  font-size: 16px;
+  font-size: 14px;
 }
 
+/* Ghost: a hairline that fills rather than a second solid button competing
+   with the primary next to it. */
 .button-outline {
   background: transparent;
   color: var(--ink);
-  border: 1px solid #d6d1dc;
-  margin-top: 12px;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.button-outline:hover:not(:disabled) {
+  background: var(--surface);
+  border-color: #d6d0e2;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Lime: the accent CTA used on the ink-coloured bands. */
+.button-lime {
+  background: var(--lime);
+  color: #26331e;
+}
+
+.button-lime:hover:not(:disabled) {
+  background: #e8ff96;
 }
 
 .spinner {
@@ -299,40 +498,69 @@ svg {
 }
 
 /* Every small label line reads the same: mono, caps, one tracking value —
-   whatever case the copy is written in. */
+   whatever case the copy is written in. Tracking in em so it stays proportional
+   wherever the label is reused at a different size. */
 .eyebrow,
 .overline,
 .accred-strip p,
 .logo-strip p {
-  font: 500 10px var(--mono);
-  letter-spacing: 1.1px;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #6b6674;
+  color: var(--ink-3);
 }
 
+/* On the hero the eyebrow is a status chip, not just a line of caps — it is the
+   first thing on the page and needs enough presence to hold that spot. */
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+}
+
+.hero-copy .eyebrow {
+  padding: 7px 14px 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--ink-2);
 }
 
 .live-dot {
   width: 7px;
   height: 7px;
+  flex: none;
   border-radius: 50%;
-  background: #bdff3a;
-  box-shadow: 0 0 0 3px #e7fbc7;
+  background: #8fd41a;
+  box-shadow: 0 0 0 3px #dff5b8;
+  animation: live-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px #dff5b8;
+  }
+  50% {
+    box-shadow: 0 0 0 5px #dff5b800;
+  }
 }
 
 /* Caps track the hero column: it stops growing when .wrap hits 1440px
    (47% ≈ 677px), and "Master the AI tools" needs ~9.2x the font size minus the
    fixed letter-spacing, so 78px is the largest that still holds one line. */
+/* Tracking in em, not px. The old fixed -4.4px was ~-5.6% at the 78px cap but
+   ~-9.8% at the 45px floor, so the headline collapsed into itself on a laptop
+   and on phones. In em it holds the same optical tightness at every size. */
 h1 {
-  font-size: clamp(45px, 5.1vw, 78px);
-  line-height: 1.07;
-  letter-spacing: -4.4px;
-  margin: 19px 0 22px;
+  font-size: var(--t-display);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  margin: 22px 0 24px;
   font-weight: 800;
+  /* The hero headline carries its own <br />, so leave the breaks to the copy
+     rather than letting the balancer redistribute them. */
+  text-wrap: initial;
 }
 
 h1 em,
@@ -345,23 +573,24 @@ h2 em {
   /* Wide enough to hold "…and unlock opportunities." on the one line the copy
      is written for; the <br /> supplies the only break. */
   max-width: 540px;
-  font-size: 16px;
-  color: var(--muted);
-  line-height: 1.65;
+  font-size: 18px;
+  color: var(--ink-3);
+  line-height: 1.6;
 }
 
 .hero-buttons {
   display: flex;
   align-items: center;
-  gap: 26px;
-  margin: 31px 0 38px;
+  gap: 14px;
+  margin: 32px 0 40px;
+  flex-wrap: wrap;
 }
 
 .text-link {
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 14.5px;
+  font-weight: 700;
   display: inline-flex;
-  gap: 9px;
+  gap: 8px;
   align-items: center;
   background: none;
   border: 0;
@@ -369,15 +598,21 @@ h2 em {
   cursor: pointer;
   font-family: var(--font);
   color: inherit;
+  transition: color 0.2s ease;
 }
 
 .text-link span {
-  font-size: 18px;
+  font-size: 15px;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.text-link:hover span {
+  transform: translateX(3px);
 }
 
 .proof {
   display: flex;
-  gap: 13px;
+  gap: 14px;
   align-items: center;
 }
 
@@ -385,21 +620,24 @@ h2 em {
   display: flex;
 }
 
+/* Bigger than the original 28px/7px, which rendered the initials as specks. */
 .avatars b {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 2px solid #fff;
-  margin-left: -7px;
+  margin-left: -10px;
   display: grid;
   place-items: center;
-  font-size: 7px;
+  font: 700 10px var(--font);
+  letter-spacing: 0.02em;
   color: #fff;
   background: #7657eb;
+  box-shadow: var(--shadow-sm);
 }
 
 .avatars b:first-child {
-  margin: 0;
+  margin-left: 0;
   background: #ee956f;
 }
 
@@ -411,14 +649,17 @@ h2 em {
   background: #c8a357;
 }
 
-.proof strong,
-.proof span {
+.proof strong {
   display: block;
-  font-size: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.015em;
 }
 
 .proof span {
-  color: var(--muted);
+  display: block;
+  font-size: 13px;
+  color: var(--ink-4);
 }
 
 /* ---- Tool stage ---- */
@@ -462,7 +703,7 @@ h2 em {
   transform: translate(-50%, -50%);
   border: 1px solid #e4e0ee;
   border-radius: 28px;
-  background: linear-gradient(165deg, #fff, #faf8ff);
+  background: linear-gradient(165deg, #fff, var(--surface));
   box-shadow: 0 34px 70px #2b1a6826;
   overflow: hidden;
   z-index: 1;
@@ -1180,7 +1421,7 @@ h2 em {
 /* Label centred above the row rather than beside it, so the four marks read as
    one centred group. */
 .accred-strip p {
-  color: #938e9a;
+  color: var(--ink-4);
   margin: 0 0 20px;
   text-align: center;
 }
@@ -1222,6 +1463,7 @@ h2 em {
     margin-bottom: 16px;
   }
   .accred-logos {
+    grid-template-columns: 1fr 1fr;
     gap: 20px 0;
   }
   .accred-item {
@@ -1240,7 +1482,7 @@ h2 em {
 }
 
 .logo-strip p {
-  color: #938e9a;
+  color: var(--ink-4);
   margin: 0 0 20px;
   text-align: center;
 }
@@ -1287,8 +1529,10 @@ h2 em {
 }
 
 /* ============ SHARED SECTION HEADINGS ============ */
+/* Vertical rhythm scales with the viewport instead of holding 126px down to a
+   phone, where it left the page reading as a stack of unrelated slabs. */
 .section {
-  padding: 126px 0;
+  padding: clamp(76px, 8.5vw, 128px) 0;
 }
 
 .section-intro h2,
@@ -1297,29 +1541,37 @@ h2 em {
 .sticky-copy h2,
 .credential-copy h2,
 .faq-intro h2 {
-  font-size: clamp(35px, 4vw, 54px);
-  line-height: 1.1;
-  letter-spacing: -3px;
-  margin: 14px 0 18px;
+  font-size: var(--t-h2);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  margin: 16px 0 20px;
+}
+
+.section-intro p,
+.center-heading p {
+  color: var(--ink-3);
+  font-size: 17px;
+  line-height: 1.6;
 }
 
 .section-intro p {
-  max-width: 370px;
-  color: var(--muted);
-  font-size: 15px;
+  max-width: 42ch;
 }
 
 .center-heading {
   text-align: center;
 }
 
+/* The eyebrow is a wayfinding label, so it sits a step above the faintest ink
+   rather than fading out of the page entirely. */
 .center-heading .eyebrow {
-  color: #aaa1b5;
+  color: var(--ink-4);
+  justify-content: center;
 }
 
 .center-heading p {
-  color: #aaa4af;
-  font-size: 14px;
+  max-width: 58ch;
+  margin-inline: auto;
 }
 
 /* ============ PROBLEM ============ */
@@ -1328,7 +1580,7 @@ h2 em {
 }
 
 .problem .center-heading .eyebrow {
-  color: #6b6674;
+  color: var(--ink-3);
 }
 
 .problem .center-heading p {
@@ -1338,43 +1590,103 @@ h2 em {
   margin-inline: auto;
 }
 
+/* ---- spotlight card (technique adapted from 21st.dev) ---- */
+/* The overlay sits at z-index -1 inside the card's own stacking context, which
+   paints it above the card's background but below its text — so the light falls
+   on the surface rather than washing over the copy. */
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* --spot-tint lets a dark surface opt into a light glow instead of the violet
+   one, so the same component works on both grounds. */
+.spotlight-card-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--spot-o, 0);
+  background: radial-gradient(
+    var(--spot-size, 260px) circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    var(--spot-tint, color-mix(in srgb, var(--purple) 13%, transparent)),
+    transparent 70%
+  );
+  transition: opacity 0.4s ease;
+}
+
 .problem-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: 16px;
 }
 
+.problem-grid > * {
+  display: flex;
+}
+
+/* Each card carries its own index, so the four read as a numbered sequence
+   rather than four unrelated tiles. */
 .problem-card {
+  flex: 1;
+  padding: 26px 22px 24px;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 20px 16px;
-  background: #fbfafd;
+  border-radius: var(--r-lg);
+  background: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
 
+.problem-card:hover {
+  border-color: var(--purple-line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+/* A numbered chip rather than a loose mono string — it gives the card a fixed
+   anchor for the eye and reads as a step in a sequence. */
 .problem-mark {
-  font: 500 10px var(--mono);
-  color: #b3adba;
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 16px;
+  border: 1px solid var(--purple-line);
+  border-radius: var(--r-sm);
+  background: var(--purple-soft);
+  font: 500 11px var(--mono);
+  letter-spacing: 0.02em;
+  color: var(--purple-ink);
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.problem-card:hover .problem-mark {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: #fff;
 }
 
 .problem-card h3 {
-  font-size: 16px;
-  letter-spacing: -0.4px;
-  margin: 14px 0 6px;
+  font-size: 18px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
 }
 
 .problem-card p {
-  /* Sized so the bodies hold one line each across four cards. */
-  font-size: 11px;
+  font-size: 14.5px;
   line-height: 1.6;
-  color: var(--muted);
+  color: var(--ink-3);
   margin: 0;
 }
 
 /* ============ CORE PROMISE ============ */
 .promise {
-  background: #17131e;
+  /* A touch of violet lifted into the centre, so the darkest band on the page
+     reads as lit rather than as a flat black slab. */
+  background: radial-gradient(105% 130% at 50% 0%, #262046 0%, #1a1526 46%, var(--ink-bg) 100%);
   color: #f9f8fa;
-  padding: 100px 0;
+  padding: clamp(76px, 7.5vw, 110px) 0;
 }
 
 .promise-inner {
@@ -1384,15 +1696,15 @@ h2 em {
 }
 
 .promise .eyebrow {
-  color: #aaa1b5;
+  color: var(--on-dark-3);
   justify-content: center;
 }
 
 .promise h2 {
-  font-size: clamp(32px, 3.9vw, 50px);
-  line-height: 1.1;
-  letter-spacing: -2.6px;
-  margin: 16px 0 18px;
+  font-size: var(--t-h3);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 18px 0 20px;
   /* Breaks out of the 640px copy column so the line stays unbroken — the same
      centring trick the stat row uses. */
   position: relative;
@@ -1407,8 +1719,9 @@ h2 em {
 }
 
 .promise p {
-  color: #b4aec0;
-  font-size: 15px;
+  color: var(--on-dark-2);
+  font-size: 17px;
+  line-height: 1.6;
   /* Holds the longer of the two sentences on its own row; the <br /> supplies
      the only break. */
   max-width: 640px;
@@ -1429,49 +1742,111 @@ h2 em {
 }
 
 .stat-chip {
-  background: #211c2c;
-  border: 1px solid #382f47;
-  border-radius: 11px;
-  padding: 16px 22px;
-  min-width: 150px;
+  --spot-tint: #ffffff1f;
+  --spot-size: 200px;
+
+  flex: 1 1 auto;
+  min-width: 160px;
+  padding: 24px 24px 22px;
+  border: 1px solid #ffffff1c;
+  border-radius: var(--r-lg);
+  background: #ffffff0a;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s var(--ease-out);
+}
+
+/* A lime hairline along the top edge, opening out from the centre on hover —
+   the chips were four identical flat boxes with nothing to reward attention.
+   Centred to match the chip's own alignment. */
+.stat-chip::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ffffff00, var(--lime), #ffffff00);
+  transform: scaleX(0);
+  transition: transform 0.45s var(--ease-out);
+}
+
+.stat-chip:hover {
+  border-color: #ffffff3d;
+  background: #ffffff14;
+  transform: translateY(-3px);
+}
+
+.stat-chip:hover::after {
+  transform: scaleX(1);
 }
 
 .stat-chip b {
-  font-size: 24px;
-  letter-spacing: -1px;
   display: block;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
   color: #fff;
+  /* Fixed-width digits, so the count doesn't shimmer as it runs. */
+  font-variant-numeric: tabular-nums;
 }
 
-.stat-chip span {
-  font-size: 11px;
-  color: #a49dae;
+/* Its own class rather than `.stat-chip span`: the chip now contains other
+   spans — the spotlight overlay and the two count-up copies — and a bare
+   descendant selector caught those too, dropping the number to label size. */
+.stat-label {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--on-dark-3);
+}
+
+/* ---- count-up ---- */
+/* Both copies share one grid cell: the hidden one reserves the final value's
+   width, the visible one animates inside it. */
+.countup {
+  display: inline-grid;
+}
+
+.countup > * {
+  grid-area: 1 / 1;
+}
+
+.countup-ghost {
+  visibility: hidden;
 }
 
 /* ============ TOOL LIBRARY ============ */
-/* One tool on stage: a poster panel on the left, the detail rail on the right,
-   both held inside a card that floats on a deep field. The section runs on its
-   own tokens, so re-hueing it means editing this one block. */
+/* One tool on stage: a module poster on the left, the detail rail on the right,
+   both on a white card floating over the violet field — the same white-panel-on-
+   dark-field treatment the hero stage and the job board use, so the three read
+   as one family. The frosted-glass version this replaces put translucent white
+   on violet twice over, which left every value in the card muddy and the body
+   copy barely legible. */
 .tools {
-  --tool-field: #2c2059;
-  --tool-field-deep: #221948;
-  --tool-card: #fffdfb;
-  --tool-wash-a: #fbf9ff;
-  --tool-wash-b: #ece5ff;
-  --tool-wash-c: #d9ccff;
-  --tool-soft: #f5f1ff;
-  --tool-line: #ddd3f7;
-  --tool-hair: #ebe5f8;
-  --tool-mute: #5f5878;
-  --tool-pale: #e9e4ff;
-  --tool-accent: #6c4af2;
+  --tool-field: #241a4d;
+  --tool-accent: var(--purple);
 
-  padding: 95px 0;
-  background: var(--tool-field);
+  padding: clamp(76px, 8vw, 118px) 0;
+  background: radial-gradient(90% 70% at 50% 0%, #33255f 0%, var(--tool-field) 58%, #1d1540 100%);
 }
 
-/* Frosted glass on the violet field: the card is translucent, so the section
-   colour and the glow behind it carry the tint rather than a painted fill. */
+.tools-intro {
+  margin-bottom: clamp(34px, 4vw, 52px);
+}
+
+.tools-intro h2 {
+  color: #fff;
+}
+
+.tools-intro .eyebrow {
+  color: #a99ccf;
+}
+
+.tools-intro p {
+  color: var(--on-dark-2);
+}
+
 .tool-shell {
   position: relative;
   max-width: 1180px;
@@ -1479,66 +1854,30 @@ h2 em {
   perspective: 1400px;
 }
 
-/* Light source behind the glass — without it the panel has nothing to refract. */
-.tool-shell::before {
-  content: '';
-  position: absolute;
-  inset: -12% -6% -18%;
-  background:
-    radial-gradient(46% 52% at 18% 12%, #7b5cff66 0%, transparent 68%),
-    radial-gradient(42% 46% at 84% 82%, #ff9a6b3d 0%, transparent 70%);
-  filter: blur(28px);
-  pointer-events: none;
-}
-
 .tool-card {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(300px, 460px) 1fr;
+  grid-template-columns: minmax(300px, 440px) 1fr;
   align-items: stretch;
-  gap: clamp(22px, 3vw, 44px);
-  padding: clamp(20px, 2.4vw, 30px);
-  border: 1px solid #ffffff2e;
-  border-radius: 24px;
-  background: linear-gradient(152deg, #ffffff26 0%, #ffffff0f 46%, #ffffff08 100%);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  box-shadow:
-    0 30px 70px #0c0725a3,
-    inset 0 1px 0 #ffffff40,
-    inset 0 -1px 0 #ffffff14;
+  gap: clamp(22px, 3vw, 40px);
+  padding: clamp(18px, 2.2vw, 26px);
+  border: 1px solid #ffffff1a;
+  border-radius: var(--r-2xl);
+  background: #fff;
+  box-shadow: 0 40px 90px #0c07254d, 0 8px 24px #0c07252e;
   overflow: hidden;
   /* Angles come from TiltCard as custom properties. */
   transform: perspective(1400px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.25, 1), box-shadow 0.4s ease;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
   will-change: transform;
 }
 
 .tool-card:hover {
-  box-shadow:
-    0 40px 90px #0c0725b8,
-    inset 0 1px 0 #ffffff59,
-    inset 0 -1px 0 #ffffff1f;
+  box-shadow: 0 50px 110px #0c072566, 0 10px 28px #0c072538;
 }
 
-/* Specular highlight that follows the cursor across the pane. */
-.tool-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 0%), #ffffff2b, transparent 62%);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.tool-card:hover::before {
-  opacity: 1;
-}
-
-/* ---- left: the poster, a brighter pane of the same glass ---- */
+/* ---- left: the module poster, the one saturated pane in the card ---- */
 .tool-poster {
   position: relative;
   z-index: 1;
@@ -1546,11 +1885,10 @@ h2 em {
   flex-direction: column;
   align-items: flex-start;
   gap: 11px;
-  min-height: 300px;
-  padding: 24px 24px 60px;
-  border: 1px solid #ffffff29;
-  border-radius: 16px;
-  background: linear-gradient(158deg, #ffffff2e 0%, #ffffff14 58%, #ffffff0a 100%);
+  min-height: 320px;
+  padding: 26px 26px 62px;
+  border-radius: var(--r-xl);
+  background: radial-gradient(120% 100% at 12% 8%, #6b4ae0 0%, #4a32a8 46%, #2f2170 100%);
   overflow: hidden;
 }
 
@@ -1650,12 +1988,12 @@ h2 em {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  background: #ffffff1a;
-  border: 1px solid #ffffff33;
-  border-radius: 999px;
-  color: #fff;
-  font: 800 11px var(--mono);
+  padding: 8px 15px;
+  background: var(--purple-soft);
+  border: 1px solid var(--purple-line);
+  border-radius: var(--r-pill);
+  color: var(--purple-ink);
+  font: 700 11px var(--mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -1665,62 +2003,63 @@ h2 em {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--lime);
-  box-shadow: 0 0 10px #dfff7580;
+  background: var(--purple);
 }
 
-.tool-detail h2 {
+.tool-name {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 16px 0 8px;
-  color: #fff;
-  font-size: clamp(30px, 3.4vw, 44px);
-  line-height: 1.05;
-  letter-spacing: -2px;
+  margin: 18px 0 8px;
+  color: var(--ink);
+  font-size: clamp(32px, 3.4vw, 46px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
 }
 
-.tool-detail h2 i {
+.tool-name i {
   font-style: normal;
   font-family: var(--mono);
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #ffffff8c;
+  color: var(--ink-4);
 }
 
 .tool-tagline {
-  margin: 0 0 18px;
-  color: #ffffffc7;
-  font-size: 16px;
+  margin: 0 0 20px;
+  color: var(--ink-3);
+  font-size: 17px;
+  line-height: 1.5;
 }
 
 .tool-capsules {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 0 0 18px;
+  gap: 9px;
+  margin: 0 0 20px;
   padding: 0;
   list-style: none;
 }
 
 .tool-capsules li {
-  padding: 9px 16px;
-  border: 1px solid #ffffff26;
-  border-radius: 999px;
-  background: #ffffff12;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: -0.2px;
-  transition: border-color 0.25s ease, background 0.25s ease;
+  padding: 9px 15px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: #fff;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
 
 .tool-capsules li:hover {
-  border-color: #ffffff5c;
-  background: #ffffff1f;
+  border-color: var(--purple-line);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
 }
 
 .tool-facts {
@@ -1736,10 +2075,10 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: #ffffffab;
+  color: var(--ink-3);
   font-family: var(--mono);
   font-size: 12px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -1755,28 +2094,22 @@ h2 em {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  color: #a59fc4;
+  color: var(--purple);
 }
 
 .tool-blurb {
-  max-width: 560px;
-  margin: 0 0 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #ffffff26;
-  color: #ffffffb8;
-  font-size: 14px;
+  max-width: 62ch;
+  margin: 0 0 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-3);
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 /* Pinned to the bottom, so it lines up with the poster's footer bar. */
 .tool-detail .button {
   margin-top: auto;
-  background: #fff;
-  color: var(--ink);
-}
-
-.tool-detail .button:hover {
-  background: #fff;
-  box-shadow: 0 14px 30px #0c072566;
 }
 
 /* ============ PROJECTS ============ */
@@ -1792,13 +2125,20 @@ h2 em {
   height: max-content;
 }
 
+/* Spacing belongs to the layout, not to the button variant — .button-outline
+   used to carry its own margin-top, which followed it everywhere it was used. */
+.sticky-copy .button {
+  margin-top: 26px;
+}
+
 .sticky-copy p,
 .credential-copy > p {
-  color: var(--muted);
+  color: var(--ink-3);
   /* Wide enough to hold the longest of the three written rows; the <br />s
      supply the only breaks. */
   max-width: 530px;
-  font-size: 15px;
+  font-size: 17px;
+  line-height: 1.6;
 }
 
 .project-list {
@@ -1920,15 +2260,16 @@ h2 em {
 }
 
 .project-item small {
-  font: 500 9px var(--mono);
-  letter-spacing: 0.6px;
-  color: #8d8792;
+  font: 500 10.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
 }
 
 .project-item h3 {
-  font-size: 18px;
-  letter-spacing: -0.7px;
-  margin: 6px 0 4px;
+  font-size: 21px;
+  letter-spacing: -0.025em;
+  margin: 8px 0 5px;
   transition: color 0.25s ease;
 }
 
@@ -1937,19 +2278,31 @@ h2 em {
 }
 
 .project-item p {
-  font-size: 12px;
-  color: #817b87;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
   margin: 0;
+  max-width: 52ch;
 }
 
+/* The trailing index steps toward the row on hover, so the whole line reads as
+   one target rather than a label parked at the far edge. */
 .project-item > b {
-  font: 500 10px var(--mono);
-  color: #aaa4af;
+  font: 500 11px var(--mono);
+  color: var(--ink-5);
+  transition: color 0.25s ease, transform 0.25s var(--ease-out);
+}
+
+.project-item:hover > b {
+  color: var(--purple);
+  transform: translateX(3px);
 }
 
 /* ============ JOB BOARD ============ */
 .jobs {
-  background: #211b31;
+  /* Same lit-from-above field as the promise band and the tool library, so the
+     three dark sections read as one material rather than three flat fills. */
+  background: radial-gradient(90% 70% at 68% 0%, #2e2547 0%, var(--ink-bg-2) 52%, #1a1528 100%);
   color: #fff;
 }
 
@@ -1963,26 +2316,31 @@ h2 em {
 }
 
 .jobs .eyebrow {
-  color: #b7abda;
+  color: #a99ccf;
 }
 
 .jobs-copy h2 {
-  font-size: clamp(32px, 3.6vw, 46px);
-  line-height: 1.12;
-  letter-spacing: -2.4px;
-  margin: 14px 0 16px;
+  font-size: var(--t-h3);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  margin: 16px 0 18px;
 }
 
 .jobs-copy p {
-  color: #c6bcdb;
-  font-size: 14px;
-  max-width: 400px;
+  color: var(--on-dark-2);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 44ch;
   margin-bottom: 24px;
 }
 
 .jobs .button {
-  background: #dfff75;
+  background: var(--lime);
   color: #26331e;
+}
+
+.jobs .button:hover:not(:disabled) {
+  background: #e8ff96;
 }
 
 .job-preview {
@@ -2019,10 +2377,10 @@ h2 em {
 
 .opportunity-list li {
   position: relative;
-  font-size: 13px;
-  color: #d6cfe8;
-  margin: 11px 0;
-  padding-left: 18px;
+  font-size: 15px;
+  color: var(--on-dark-2);
+  margin: 12px 0;
+  padding-left: 20px;
 }
 
 /* A dot rather than a tick — the certificate list next door owns the ticks. */
@@ -2066,7 +2424,7 @@ h2 em {
   color: var(--ink);
   border: 1px solid #e4e0ee;
   border-radius: 28px;
-  background: linear-gradient(165deg, #fff, #faf8ff);
+  background: linear-gradient(165deg, #fff, var(--surface));
   box-shadow: 0 34px 70px #2b1a6840;
   animation: jb-float 7s ease-in-out infinite;
 }
@@ -2089,7 +2447,7 @@ h2 em {
   padding: 12px 16px;
   border-bottom: 1px solid #eeebf3;
   border-radius: 28px 28px 0 0;
-  background: #fbfaff;
+  background: var(--surface);
 }
 
 .jobboard-bar i {
@@ -2119,7 +2477,7 @@ h2 em {
   background: #fff;
   border: 1px solid #ece8f2;
   font: 500 10px var(--mono);
-  color: #8d879a;
+  color: var(--ink-4);
 }
 
 .jobboard-bar em {
@@ -2179,7 +2537,7 @@ h2 em {
   grid-area: side;
   min-width: 0;
   padding-left: 14px;
-  border-left: 1px solid #f0edf5;
+  border-left: 1px solid var(--line-soft);
 }
 
 .jobboard-foot {
@@ -2189,7 +2547,7 @@ h2 em {
   gap: 14px;
   align-items: center;
   padding-top: 11px;
-  border-top: 1px solid #f0edf5;
+  border-top: 1px solid var(--line-soft);
 }
 
 .jobboard-rail {
@@ -2205,13 +2563,13 @@ h2 em {
   justify-content: space-between;
   gap: 6px;
   padding: 8px 10px;
-  border: 1px solid #edeaf3;
+  border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: #fbfafd;
+  background: var(--surface);
   font-family: var(--font);
   font-size: 11.5px;
   font-weight: 700;
-  color: #4b4557;
+  color: var(--ink-2);
   text-align: left;
   cursor: pointer;
   overflow: hidden;
@@ -2220,7 +2578,7 @@ h2 em {
 
 .jobboard-rail button small {
   font: 500 9px var(--mono);
-  color: #9c96a8;
+  color: var(--ink-4);
 }
 
 .jobboard-rail button:hover {
@@ -2271,9 +2629,9 @@ h2 em {
 
 .jobboard-stats button {
   padding: 8px 10px;
-  border: 1px solid #f0edf5;
+  border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: #fbfafd;
+  background: var(--surface);
   text-align: left;
   font-family: var(--font);
   cursor: pointer;
@@ -2300,7 +2658,7 @@ h2 em {
   font: 500 9px var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #948e9f;
+  color: var(--ink-4);
 }
 
 .jobboard-chart {
@@ -2352,7 +2710,7 @@ h2 em {
   border-radius: 6px;
   background: none;
   font: 700 9px var(--mono);
-  color: #8b8499;
+  color: var(--ink-4);
   cursor: pointer;
   transition: background 0.18s ease, color 0.18s ease;
 }
@@ -2495,7 +2853,7 @@ h2 em {
   flex: 1;
   text-align: center;
   font: 500 9px var(--mono);
-  color: #b0aabd;
+  color: var(--ink-5);
   transition: color 0.18s ease;
 }
 
@@ -2507,7 +2865,7 @@ h2 em {
 .jobboard-skills {
   margin-top: 12px;
   padding-top: 11px;
-  border-top: 1px solid #f4f1f9;
+  border-top: 1px solid var(--line-soft);
 }
 
 .mix-body {
@@ -2557,7 +2915,7 @@ h2 em {
   align-items: center;
   gap: 6px;
   font-size: 10.5px;
-  color: #6b6577;
+  color: var(--ink-3);
   transition: color 0.18s ease;
 }
 
@@ -2584,7 +2942,7 @@ h2 em {
   gap: 8px;
   margin-top: 7px;
   font-size: 10.5px;
-  color: #6b6577;
+  color: var(--ink-3);
 }
 
 /* The same brand marks the hero stage uses, so the two panels share a family. */
@@ -2606,7 +2964,7 @@ h2 em {
   flex: 1;
   height: 6px;
   border-radius: 999px;
-  background: #f1eef8;
+  background: var(--line-soft);
   overflow: hidden;
 }
 
@@ -2622,7 +2980,7 @@ h2 em {
   width: 20px;
   text-align: right;
   font: 700 9px var(--mono);
-  color: #8b8499;
+  color: var(--ink-4);
 }
 
 .jobboard-roles {
@@ -2666,7 +3024,7 @@ h2 em {
 
 .jobboard-roles small {
   font-size: 10.5px;
-  color: #948e9f;
+  color: var(--ink-4);
 }
 
 .jobboard-roles em {
@@ -2687,7 +3045,7 @@ h2 em {
   padding: 12px 13px;
   border: 1px solid #e7e1f6;
   border-radius: 12px;
-  background: linear-gradient(120deg, #f7f4fe, #fbfaff);
+  background: linear-gradient(120deg, #f7f4fe, var(--surface));
 }
 
 .float-head {
@@ -2747,7 +3105,6 @@ h2 em {
   width: 100%;
 }
 
-
 /* ============ COMPARISON ============ */
 .comparison {
   display: grid;
@@ -2769,29 +3126,38 @@ h2 em {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   align-self: center;
+  box-shadow: var(--shadow-sm);
 }
 
 .compare-column {
-  padding: 23px;
+  padding: 26px;
 }
 
 .compare-column.old {
-  background: #faf9fa;
+  background: var(--surface);
   border-right: 1px solid var(--line);
+}
+
+/* The Skeo column carries a violet tint, so the comparison resolves visually
+   before the reader has finished the rows. */
+.compare-column.new {
+  background: linear-gradient(180deg, var(--purple-soft), #fff 62%);
 }
 
 .column-title {
   font: 700 11px var(--mono);
-  letter-spacing: 0.3px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   display: block;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  color: var(--ink-4);
 }
 
 .compare-column.new .column-title {
-  color: #6446d7;
+  color: var(--purple-ink);
 }
 
 .column-title i {
@@ -2800,22 +3166,30 @@ h2 em {
 }
 
 .compare-column > div {
-  height: 44px;
-  border-top: 1px solid #ece9ee;
+  min-height: 48px;
+  padding: 6px 0;
+  border-top: 1px solid var(--line-soft);
   display: flex;
   align-items: center;
-  font-size: 12px;
-  color: #77717e;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
+.compare-column.new > div {
+  color: var(--ink-2);
+  font-weight: 600;
 }
 
 .compare-column b {
   margin-left: auto;
-  color: #d4d0d6;
-  font-size: 14px;
+  flex: none;
+  color: var(--ink-5);
+  font-size: 15px;
 }
 
 .compare-column.new b {
-  color: #7a55eb;
+  color: var(--purple);
 }
 
 /* ============ PRICING ============ */
@@ -2828,7 +3202,7 @@ h2 em {
 }
 
 .pricing .center-heading .eyebrow {
-  color: #6b6674;
+  color: var(--ink-3);
 }
 
 .pricing .center-heading p {
@@ -2845,34 +3219,40 @@ h2 em {
 }
 
 .price-card {
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  padding: 26px;
   position: relative;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: #fff;
 }
 
 .price-card.pro {
-  background: #211b31;
+  /* Same lit-from-above treatment as the promise band, so the two dark moments
+     on the page belong to one family. */
+  background: radial-gradient(120% 100% at 50% 0%, #2d2547 0%, var(--ink-bg-2) 62%);
   color: #fff;
-  border-color: #211b31;
-  box-shadow: 0 15px 30px #291b4a25;
+  border-color: #362c4e;
+  box-shadow: var(--shadow-lg);
 }
 
 .popular {
   position: absolute;
-  right: 18px;
-  top: 18px;
-  background: #dfff75;
+  right: 20px;
+  top: 20px;
+  padding: 6px 11px;
+  border-radius: var(--r-pill);
+  background: var(--lime);
   color: #2d3b1e;
-  border-radius: 10px;
-  padding: 4px 7px;
-  font: 500 8px var(--mono);
+  font: 700 10px var(--mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
 }
 
 .plan {
-  font: 500 9px var(--mono);
-  letter-spacing: 0.7px;
-  color: #8a8490;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-4);
 }
 
 .pro .plan {
@@ -2880,45 +3260,57 @@ h2 em {
 }
 
 .price-card h3 {
-  font-size: 20px;
-  letter-spacing: -0.8px;
-  margin: 15px 0 19px;
+  font-size: 23px;
+  letter-spacing: -0.025em;
+  margin: 14px 0 20px;
 }
 
 .price {
-  font-size: 36px;
+  font-size: 44px;
   font-weight: 800;
-  letter-spacing: -2px;
+  line-height: 1;
+  letter-spacing: -0.04em;
 }
 
 .price small {
-  font-size: 11px;
-  color: #968f9b;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-4);
   letter-spacing: 0;
+  margin-left: 3px;
 }
 
 .price-card > p {
-  font-size: 12px;
-  color: #817b87;
-  margin: 15px 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+  margin: 16px 0;
 }
 
 .pro > p,
 .pro .price small {
-  color: #bdb4cc;
+  color: var(--on-dark-2);
 }
 
 .credential-copy ul,
 .price-card ul {
   list-style: none;
   padding: 0;
-  margin: 25px 0;
+  margin: 26px 0;
 }
 
 .credential-copy li,
 .price-card li {
-  font-size: 13px;
-  margin: 11px 0;
+  display: flex;
+  align-items: baseline;
+  font-size: 14.5px;
+  line-height: 1.5;
+  margin: 12px 0;
+  color: var(--ink-2);
+}
+
+.pro li {
+  color: var(--on-dark-2);
 }
 
 .credential-copy li b {
@@ -2947,7 +3339,7 @@ h2 em {
   background: #fff;
   font-size: 12px;
   font-weight: 600;
-  color: #453f52;
+  color: var(--ink-2);
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -2964,12 +3356,15 @@ h2 em {
 
 .price-card li::before {
   content: '✓';
-  color: #7453e9;
-  margin-right: 9px;
+  flex: none;
+  margin-right: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--purple);
 }
 
 .pro li::before {
-  color: #dfff75;
+  color: var(--lime);
 }
 
 .price-card .button {
@@ -2984,13 +3379,15 @@ h2 em {
 
 .modules-card {
   border: 1px solid var(--line);
-  border-radius: 11px;
-  padding: 26px;
+  border-radius: var(--r-xl);
+  padding: 30px;
+  background: #fff;
 }
 
 .modules-card > p {
-  font-size: 12px;
-  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
   margin: 14px 0 22px;
 }
 
@@ -3008,14 +3405,14 @@ h2 em {
   align-items: center;
   gap: 12px;
   padding: 13px 0;
-  border-top: 1px solid #f0edf2;
+  border-top: 1px solid var(--line-soft);
 }
 
 .module-index {
   flex: none;
   font: 600 10px var(--mono);
   letter-spacing: 0.06em;
-  color: #b9b3c4;
+  color: var(--ink-5);
 }
 
 .module-row.is-added .module-index {
@@ -3031,8 +3428,8 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
-  letter-spacing: -0.2px;
+  font-size: 14.5px;
+  letter-spacing: -0.015em;
 }
 
 .module-marks {
@@ -3048,16 +3445,16 @@ h2 em {
 }
 
 .module-row small {
-  font-size: 11px;
-  color: var(--muted);
+  font-size: 13px;
+  color: var(--ink-4);
   display: block;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .module-price {
   font-weight: 800;
-  font-size: 15px;
-  letter-spacing: -0.4px;
+  font-size: 16px;
+  letter-spacing: -0.025em;
 }
 
 /* Fixed width so the column stays straight whichever rows are added. */
@@ -3071,7 +3468,7 @@ h2 em {
   font: 700 10px var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #453f52;
+  color: var(--ink-2);
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
@@ -3100,7 +3497,7 @@ h2 em {
   gap: 14px;
   min-height: 38px;
   padding-top: 18px;
-  border-top: 1px solid #f0edf2;
+  border-top: 1px solid var(--line-soft);
 }
 
 .cart-hint {
@@ -3231,9 +3628,10 @@ h2 em {
 }
 
 .cert-inner p {
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 1.6;
   color: #d0c7e7;
-  max-width: 285px;
+  max-width: 320px;
 }
 
 .cert-inner > div {
@@ -3246,7 +3644,7 @@ h2 em {
   display: flex;
   justify-content: space-between;
   color: #c4bbdc;
-  font: 9px var(--mono);
+  font: 10px var(--mono);
 }
 
 .cert-inner i {
@@ -3256,7 +3654,7 @@ h2 em {
 
 /* ============ TESTIMONIALS ============ */
 .testimonials {
-  background: #fbfafc;
+  background: var(--surface);
 }
 
 .heading-row {
@@ -3297,22 +3695,27 @@ h2 em {
   margin-top: 34px;
 }
 
+/* Wider than the logo rail's spacing: these are cards with their own borders
+   and shadows, not free-floating marks. */
 .quote-rail .logo-rail-track > span {
-  margin-right: 15px;
+  margin-right: 20px;
 }
 
 .quote-rail .quote {
   width: 380px;
 }
 
+/* Spacing runs on one rhythm: 16px from the stars to the quote, 20px from the
+   quote to the rule, 16px from the rule to the attribution. */
 .quote {
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 24px;
-  min-height: 260px;
+  border-radius: var(--r-lg);
+  padding: 26px;
+  min-height: 240px;
   display: flex;
   flex-direction: column;
   background: #fff;
+  box-shadow: var(--shadow-sm);
   animation: quote-in 0.4s ease both;
 }
 
@@ -3328,30 +3731,46 @@ h2 em {
   border-color: #d8cffd;
 }
 
+/* line-height 1 so the row of glyphs takes its own height and nothing more —
+   the inherited 1.6 was adding a band of dead leading under the stars that read
+   as a gap the design never asked for. */
 .stars {
-  font-size: 11px;
-  color: #7453e8;
-  letter-spacing: 2px;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--purple);
+  letter-spacing: 0.16em;
 }
 
 .quote blockquote {
   font-size: 17px;
-  line-height: 1.45;
-  letter-spacing: -0.6px;
-  margin: 20px 0;
+  line-height: 1.5;
+  letter-spacing: -0.018em;
+  margin: 16px 0 20px;
+  color: var(--ink);
 }
 
 .quote footer {
+  /* Pushes the attribution to the card's floor, so footers line up across the
+     row however many lines each quote runs to. */
   margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
   display: flex;
   flex-direction: column;
-  font-size: 11px;
+  gap: 3px;
+}
+
+.quote footer b {
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
 .quote footer span {
-  color: #88828d;
-  font-size: 10px;
-  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-4);
 }
 
 .quote-dots {
@@ -3379,53 +3798,56 @@ h2 em {
 }
 
 /* ============ FAQ ============ */
+/* Two columns that start on the same line and end wherever their own content
+   ends. `align-items: start` is the fix for the video growing as an answer
+   opened — the old `stretch` forced both columns to a shared height and the
+   video was the element that absorbed the difference. */
 .faq {
   display: grid;
   grid-template-columns: 40fr 60fr;
   gap: clamp(28px, 3.4vw, 54px);
-  /* Both columns run to the same line — see .faq-video and .faq-foot, which
-     absorb whichever side has slack. */
-  align-items: stretch;
+  align-items: start;
 }
 
+/* The accordion is much taller than the pitch, so the left column rides along
+   rather than leaving a column of dead space beside the questions. */
 .faq-intro {
-  display: flex;
-  flex-direction: column;
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
 }
 
 .faq-intro p {
-  font-size: 12.5px;
-  line-height: 1.7;
-  color: #807a85;
-  max-width: 330px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-3);
+  max-width: 36ch;
 }
 
-.faq-intro p a {
-  font-weight: 800;
-  color: var(--purple);
-}
-
-/* The walkthrough takes the rest of the column, so the left side finishes level
-   with the questions. Sized by flex rather than ratio for that reason. */
-.faq-video {
+/* ---- the walkthrough poster ---- */
+.video-poster {
   position: relative;
   display: block;
-  flex: 1 1 auto;
-  min-height: 240px;
   width: 100%;
-  margin-top: 24px;
+  /* A fixed 16:9 frame. This was `flex: 1 1 auto` with a min-height, which is
+     what let it swell to whatever height the questions column reached. */
+  aspect-ratio: 16 / 9;
+  margin: 26px 0 0;
   padding: 0;
   border: 0;
-  border-radius: 16px;
-  background: radial-gradient(115% 90% at 22% 12%, #4b34b8 0%, #241a45 55%, #17131e 100%);
+  border-radius: var(--r-lg);
+  background: radial-gradient(115% 90% at 22% 12%, #4b34b8 0%, #241a45 55%, var(--ink-bg) 100%);
   overflow: hidden;
-  cursor: pointer;
   font-family: inherit;
   text-align: left;
+  box-shadow: var(--shadow-md);
 }
 
-.faq-video video,
-.faq-video img {
+button.video-poster {
+  cursor: pointer;
+}
+
+.video-poster video,
+.video-poster img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -3433,38 +3855,45 @@ h2 em {
   object-fit: cover;
 }
 
-.faq-video-play {
+.video-poster-play {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 54px;
-  height: 54px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   background: #fff;
   color: var(--ink);
   display: grid;
   place-items: center;
-  font-size: 14px;
+  font-size: 15px;
   padding-left: 3px;
   box-shadow: 0 16px 34px #0c081e5c;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.25, 1);
+  transition: transform 0.3s var(--ease-out);
 }
 
-.faq-video:hover .faq-video-play {
+button.video-poster:hover .video-poster-play {
   transform: translate(-50%, -50%) scale(1.08);
 }
 
 /* Ring around the button, so the panel reads as a player rather than a card. */
-.faq-video-play::after {
+.video-poster-play::after {
   content: '';
   position: absolute;
-  inset: -9px;
+  inset: -11px;
   border: 1px solid #ffffff42;
   border-radius: 50%;
 }
 
-.faq-video-label {
+/* Nothing to play yet — drop the affordance to a resting state. */
+.video-poster.is-pending .video-poster-play {
+  background: #ffffff1f;
+  color: #ffffffa8;
+  box-shadow: none;
+}
+
+.video-poster-label {
   position: absolute;
   left: 18px;
   right: 18px;
@@ -3473,27 +3902,67 @@ h2 em {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  font: 500 9px var(--mono);
-  letter-spacing: 0.7px;
+  font: 500 10px var(--mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
   color: #ffffffcc;
 }
 
-.faq-video-label b {
+.video-poster-label b {
   font: inherit;
-  padding: 4px 8px;
-  border-radius: 20px;
+  padding: 5px 9px;
+  border-radius: var(--r-pill);
   background: #ffffff1f;
   color: #fff;
 }
 
+/* ---- the lightbox ---- */
+/* Doubled-up class: the base .modal rules live further down the file, so a
+   single .video-modal would lose to them on source order. */
+.modal.video-modal {
+  max-width: min(1000px, 92vw);
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.video-frame {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: #000;
+  box-shadow: var(--shadow-xl);
+}
+
+.video-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.modal.video-modal .modal-close {
+  top: -46px;
+  right: 0;
+  background: #ffffff1f;
+  border-color: #ffffff3d;
+  color: #fff;
+}
+
+.modal.video-modal .modal-close:hover {
+  background: #ffffff33;
+}
+
+/* ---- the questions ---- */
 /* One white panel, questions divided by hairlines. */
 .faq-list {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: var(--r-lg);
   background: #fff;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 details {
@@ -3502,11 +3971,11 @@ details {
 }
 
 details + details {
-  border-top: 1px solid #f1eef6;
+  border-top: 1px solid var(--line-soft);
 }
 
 details[open] {
-  background: #faf8ff;
+  background: var(--surface);
   /* The open question keeps an accent rail, so the eye finds it without the
      row having to change size. */
   box-shadow: inset 3px 0 0 var(--purple);
@@ -3517,10 +3986,10 @@ summary {
   grid-template-columns: 26px 1fr 26px;
   align-items: center;
   gap: 16px;
-  padding: 19px 22px;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: -0.2px;
+  padding: 21px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.018em;
   cursor: pointer;
   list-style: none;
 }
@@ -3540,7 +4009,7 @@ summary:hover span {
 summary i {
   font: 500 10px var(--mono);
   font-style: normal;
-  color: #b6b0c2;
+  color: var(--ink-5);
   transition: color 0.25s ease;
 }
 
@@ -3559,7 +4028,7 @@ summary b {
   font-size: 15px;
   font-weight: 400;
   line-height: 1;
-  color: #817a88;
+  color: var(--ink-4);
   transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
@@ -3602,22 +4071,22 @@ details[open] p {
 }
 
 details p {
-  font-size: 12.5px;
-  color: #6d6777;
-  line-height: 1.75;
-  min-height: 5.25em;
+  font-size: 15px;
+  color: var(--ink-3);
+  line-height: 1.7;
+  min-height: 4.5em;
   margin: -4px 0 0;
-  padding: 0 58px 20px 64px;
+  padding: 0 58px 22px 66px;
 }
 
 .faq-foot {
   margin: auto 0 0;
   padding: 17px 22px;
-  border-top: 1px solid #f1eef6;
-  background: #fcfbfe;
+  border-top: 1px solid var(--line-soft);
+  background: var(--surface);
   font: 500 10px var(--mono);
   letter-spacing: 0.5px;
-  color: #918b9c;
+  color: var(--ink-4);
 }
 
 .faq-foot a {
@@ -3662,11 +4131,11 @@ details p {
   /* background-clip: text paints only inside the element's box, so a
      line-height under 1 cropped the descenders of "y" and "g". The box has to
      clear them; the negative margins keep the optical spacing tight. */
-  margin: 8px 0 6px;
+  margin: 10px 0 8px;
   padding-bottom: 0.06em;
-  font-size: clamp(46px, 9vw, 116px);
-  line-height: 1.12;
-  letter-spacing: -5px;
+  font-size: clamp(44px, 8.4vw, 104px);
+  line-height: 1.08;
+  letter-spacing: -0.042em;
   font-weight: 800;
   background: linear-gradient(180deg, #fff 16%, #ffffff9e 66%, #ffffff54 100%);
   -webkit-background-clip: text;
@@ -3675,10 +4144,26 @@ details p {
 }
 
 .footer-lede {
-  max-width: 470px;
+  max-width: 48ch;
   margin: 0 auto;
-  color: #ffffffa8;
-  font-size: 15px;
+  color: var(--on-dark-2);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* The closing ask. Lime on ink is the brand's loudest pairing, saved for the
+   two moments that matter: the pricing card and this one. */
+.footer-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.footer-cta > span {
+  font-size: 13px;
+  color: var(--on-dark-3);
 }
 
 /* The line closing the opening statement, before the brand and links. */
@@ -3711,9 +4196,9 @@ details p {
 /* Under the wordmark: logo, then the line it stands for, then the marks. */
 .footer-tagline {
   display: block;
-  margin: 12px 0 18px;
-  color: #ffffff8f;
-  font-size: 12.5px;
+  margin: 14px 0 20px;
+  color: var(--on-dark-3);
+  font-size: 14px;
 }
 
 .footer-nav {
@@ -3737,13 +4222,15 @@ details p {
 }
 
 .footer-nav a {
-  font-size: 13px;
-  color: #ffffffbd;
-  transition: color 0.2s ease;
+  width: max-content;
+  font-size: 14.5px;
+  color: var(--on-dark-2);
+  transition: color 0.2s ease, transform 0.2s var(--ease-out);
 }
 
 .footer-nav a:hover {
   color: #fff;
+  transform: translateX(3px);
 }
 
 /* Oversized wordmark, cropped by the bottom edge. */
@@ -3772,9 +4259,10 @@ details p {
   justify-content: space-between;
   gap: 14px 24px;
   flex-wrap: wrap;
-  padding-top: 18px;
-  color: #ffffff85;
-  font-size: 11px;
+  padding-top: 20px;
+  border-top: 1px solid #ffffff14;
+  color: var(--on-dark-3);
+  font-size: 13px;
 }
 
 .footer-social {
@@ -3880,13 +4368,14 @@ details p {
   transition-delay: 0.42s;
 }
 
-/* Thin progress line across the top of the nav, filled by Nav's scroll handler. */
+/* Reading progress, full bleed along the very top edge of the viewport, filled
+   by Nav's scroll handler. */
 .scroll-progress {
   position: absolute;
   left: 0;
-  bottom: -1px;
-  height: 2px;
-  width: 100%;
+  right: 0;
+  top: 0;
+  height: 2.5px;
   transform: scaleX(var(--progress, 0));
   transform-origin: left center;
   background: linear-gradient(90deg, var(--purple), #9d84ff 60%, var(--lime));
@@ -3947,7 +4436,7 @@ details p {
   background: #fff;
   font-size: 12px;
   cursor: pointer;
-  color: #6f6b78;
+  color: var(--ink-3);
 }
 
 .modal-close:hover {
@@ -3981,7 +4470,7 @@ details p {
   padding: 9px;
   border-radius: 6px;
   font: 700 12px var(--font);
-  color: #847e8d;
+  color: var(--ink-4);
   cursor: pointer;
 }
 
@@ -4013,7 +4502,7 @@ details p {
 .field label {
   font: 500 10px var(--mono);
   letter-spacing: 0.4px;
-  color: #6f6b78;
+  color: var(--ink-3);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -4022,7 +4511,7 @@ details p {
 /* Selects match the inputs — the background question renders both. */
 .field select {
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, #8b849b 50%), linear-gradient(135deg, #8b849b 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-4) 50%), linear-gradient(135deg, var(--ink-4) 50%, transparent 50%);
   background-position: calc(100% - 17px) center, calc(100% - 12px) center;
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
@@ -4042,7 +4531,7 @@ details p {
   padding: 11px 13px;
   font: 500 14px var(--font);
   color: var(--ink);
-  background: #fcfbfe;
+  background: var(--surface);
   width: 100%;
 }
 
@@ -4209,7 +4698,7 @@ details p {
 .purchase-price small {
   font-size: 11px;
   font-weight: 600;
-  color: #847e8d;
+  color: var(--ink-4);
   letter-spacing: 0;
   margin-left: 4px;
 }
@@ -4233,7 +4722,7 @@ details p {
 .purchase-form h4 {
   font: 700 11px var(--mono);
   letter-spacing: 0.5px;
-  color: #847e8d;
+  color: var(--ink-4);
   margin-bottom: 11px;
 }
 
@@ -4260,38 +4749,46 @@ details p {
 .purchase-note {
   display: block;
   text-align: center;
-  color: #948e9b;
+  color: var(--ink-4);
   font-size: 11px;
   margin-top: 8px;
 }
 
 /* ============ RESPONSIVE ============ */
-/* Small phones: the 45px floor overflows a 324px column by a few px. */
+/* Small phones: the display floor is a touch tall for a 300px column. */
 @media (max-width: 400px) {
   h1 {
-    font-size: clamp(36px, 11.6vw, 45px);
-  }
-}
-
-/* Tablet band only: the hero is still two columns here, and the copy column
-   drops to 44% of a shrinking wrap, so the headline must scale below its 45px
-   floor to keep "Master the AI tools" on one line. Below 681px the hero goes
-   single-column and full width, where 45px fits — so this must not apply there. */
-@media (min-width: 681px) and (max-width: 900px) {
-  h1 {
-    font-size: clamp(34px, 4.8vw, 45px);
+    font-size: 37px;
   }
 }
 
 @media (max-width: 900px) {
   .nav-links {
-    margin-left: 30px;
+    gap: 0;
+  }
+  /* The hero stacks here rather than at 680px. Held as two columns through the
+     tablet band, the copy side dropped to ~340px — too narrow for "Master the
+     AI tools", which stranded "tools" alone on its own line and forced the
+     headline below its intended size to compensate. Full width fixes both. */
+  .hero {
+    display: block;
+    min-height: 0;
+    padding-top: 34px;
+  }
+  .hero-copy {
+    padding: 10px 0 42px;
   }
   .tool-stage-frame {
-    min-width: min(480px, 100%);
+    min-width: 0;
+    margin-bottom: 36px;
   }
-  .hero {
-    grid-template-columns: 44% 56%;
+  /* The stage now has the full column, so the cards grow into it rather than
+     sitting marooned at their two-column size. */
+  .tool-stage {
+    --card: clamp(84px, 12vw, 112px);
+  }
+  .hero-copy .eyebrow {
+    font-size: 10px;
   }
   .comparison {
     grid-template-columns: 38fr 62fr;
@@ -4334,20 +4831,38 @@ details p {
   .wrap {
     width: min(100% - 36px, 540px);
   }
+  /* Below the pill as a dropdown panel, in the same glass so the two read as
+     one object. The centring transform has to be undone here. */
   .nav-links {
     display: none;
     position: absolute;
     left: 0;
     right: 0;
-    top: 62px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 14px;
+    top: calc(100% + 9px);
+    transform: none;
     flex-direction: column;
-    gap: 12px;
+    align-items: stretch;
+    gap: 2px;
     margin: 0;
-    box-shadow: 0 12px 20px #00000010;
+    padding: 10px;
+    border: 1px solid #ffffff8a;
+    border-radius: var(--r-lg);
+    background: #fffffff0;
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    box-shadow: 0 10px 34px #14121c1f;
+  }
+  .nav-links a {
+    padding: 11px 14px;
+    border-radius: var(--r-sm);
+  }
+  .nav-links a.active::after {
+    left: 14px;
+    right: auto;
+    bottom: 50%;
+    width: 3px;
+    height: 14px;
+    transform: translateY(50%);
   }
   .nav-links.open {
     display: flex;
@@ -4376,16 +4891,24 @@ details p {
   .menu[aria-expanded='true'] i:last-child {
     transform: translateY(-3.5px) rotate(-45deg);
   }
+  /* Stacking already happened at 900px; these are the phone refinements on top. */
   .hero {
-    display: block;
-    min-height: 0;
-    padding-top: 42px;
+    padding-top: 38px;
   }
   .hero-copy {
-    padding: 15px 0 45px;
+    padding: 12px 0 42px;
+  }
+  /* "Master the AI tools" cannot hold one line in a phone column, so let the
+     balancer split it evenly rather than leaving "tools" alone on its own row.
+     The authored <br /> still separates it from "that matter!". */
+  h1 {
+    text-wrap: balance;
+  }
+  .hero-copy .eyebrow {
+    padding-inline: 12px 13px;
   }
   .hero-copy > p {
-    font-size: 14px;
+    font-size: 16px;
   }
   .hero-buttons {
     gap: 18px;
@@ -4430,9 +4953,6 @@ details p {
   .tool-card {
     grid-template-columns: 1fr;
     gap: 35px;
-  }
-  .accred-logos {
-    grid-template-columns: 1fr 1fr;
   }
   .compare-grid {
     font-size: 11px;
@@ -4490,9 +5010,6 @@ details p {
     padding: 9px 14px;
     font-size: 12px;
   }
-  .accred-logos {
-    grid-template-columns: 1fr 1fr;
-  }
   .tool-facts {
     gap: 8px 18px;
   }
@@ -4509,10 +5026,12 @@ details p {
     padding-top: 75px;
   }
   .quote {
-    min-height: 220px;
+    min-height: 0;
+    padding: 22px;
   }
-  .quote:nth-child(n + 2) {
-    display: none;
+  .quote blockquote {
+    font-size: 16px;
+    margin: 14px 0 18px;
   }
   .price-card.pro {
     transform: none;
@@ -4523,6 +5042,19 @@ details p {
   /* One column here, so there is nothing for the copy to stick beside. */
   .faq-intro {
     position: static;
+  }
+  /* The poster's 16:9 gets short on a phone, so pull the play control and the
+     label in to match. */
+  .video-poster-play {
+    width: 50px;
+    height: 50px;
+    font-size: 13px;
+  }
+  .video-poster-label {
+    left: 14px;
+    right: 14px;
+    bottom: 13px;
+    font-size: 9px;
   }
   /* Stack the closing block on a phone; the wordmark would swamp it. */
   .footer-bottom {
@@ -4548,15 +5080,59 @@ details p {
   .problem-grid {
     grid-template-columns: 1fr;
   }
+  /* Two-up rather than four. Four chips across a phone left each one narrower
+     than its own value ("1000+" at 30px), which pushed the number out of the
+     chip and gave the whole document a horizontal scrollbar. */
   .promise-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
   .stat-chip {
     min-width: 0;
-    flex: 1;
+    padding: 16px 18px;
+  }
+  .stat-chip b {
+    font-size: 26px;
   }
   .module-row {
     flex-wrap: wrap;
+  }
+
+  /* The job board is a desktop dashboard — two readout columns beside a rail.
+     On a phone that left the legend and skill rows narrower than their own
+     labels, which pushed the whole document into a horizontal scroll. One
+     column here, with the track rail as a swipeable row above it. */
+  .jobboard-body {
+    grid-template-columns: 1fr;
+  }
+  .jobboard-rail {
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .jobboard-rail::-webkit-scrollbar {
+    display: none;
+  }
+  .jobboard-rail button {
+    flex: 0 0 auto;
+  }
+  .jobboard-main {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'trend'
+      'side'
+      'roles';
+  }
+  .jobboard-side {
+    padding-left: 0;
+    padding-top: 12px;
+    border-left: 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .jobboard-foot {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -4597,4 +5173,49 @@ details p {
   body {
     background: #fff;
   }
+}
+
+/* Exposes the Skeo tokens to Tailwind utilities and to any shadcn primitive
+   dropped into the page, so `bg-primary` / `text-muted-foreground` land on the
+   brand palette rather than default slate. */
+@theme inline {
+  --font-sans: var(--font);
+  --font-mono: var(--mono);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+  --color-ink-5: var(--ink-5);
+  --color-purple: var(--purple);
+  --color-purple-ink: var(--purple-ink);
+  --color-purple-soft: var(--purple-soft);
+  --color-lime: var(--lime);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+  --radius-2xl: var(--r-2xl);
 }

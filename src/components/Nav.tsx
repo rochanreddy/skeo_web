@@ -115,6 +115,10 @@ export function Nav() {
           <i />
         </button>
       </header>
+
+      {/* Pinned to the very top of the viewport rather than to the bar. The nav
+          is a floating pill now, and a line inside it read as a stray underline
+          against the brand. */}
       <span className="scroll-progress" aria-hidden="true" />
     </div>
   )
