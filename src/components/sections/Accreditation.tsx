@@ -22,7 +22,7 @@ const ACCREDITORS: { name: string; logo: StaticImageData; height: number }[] = [
 
 export function Accreditation() {
   return (
-    <section className="accred-strip" aria-label="Skeo accreditations">
+    <section className="accred-strip" aria-label="skeo accreditations">
       <Reveal className="wrap">
         <p>We are accredited by</p>
         <div className="accred-logos reveal-stagger">
