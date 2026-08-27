@@ -14,7 +14,7 @@ export function Comparison() {
         <p>
           Traditional courses help you learn.
           <br />
-          Skeo helps you learn, build, prove your skills, and turn them into real opportunities.
+          skeo helps you learn, build, prove your skills, and turn them into real opportunities.
         </p>
       </Reveal>
       <Reveal className="compare-grid" delay={1}>
