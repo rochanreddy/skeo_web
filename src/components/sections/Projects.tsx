@@ -14,7 +14,9 @@ export function Projects() {
             <em>Make it useful.</em>
           </h2>
           <p>
-            Learn the tools that matter. Apply them to real-world problems.
+            Learn the tools that matter.
+            <br />
+            Apply them to real-world problems.
             <br />
             Build real projects and turn your skills into opportunities.
           </p>
