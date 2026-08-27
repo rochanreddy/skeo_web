@@ -19,7 +19,7 @@ export function Faq() {
           <br />
           wondering.
         </h2>
-        <p>Straight answers on how Skeo works, what you walk away with, and what it costs.</p>
+        <p>Straight answers on how skeo works, what you walk away with, and what it costs.</p>
         <VideoDialog src={walkthrough.src} label={walkthrough.label} duration={walkthrough.duration} />
       </Reveal>
 
@@ -34,9 +34,6 @@ export function Faq() {
             <p>{faq.a}</p>
           </details>
         ))}
-        <p className="faq-foot">
-          Still not sure? <a href="/contact">Talk to a human ↗</a>
-        </p>
       </Reveal>
     </section>
   )
