@@ -107,8 +107,8 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
           <h3>{isTeams ? 'Request received.' : 'Details received.'}</h3>
           <p>
             {isTeams
-              ? 'A member of the team will reach out within one working day.'
-              : 'Our team will call you shortly to confirm your enrolment and get you started.'}
+              ? 'We will reach out within one working day.'
+              : "You'll get a call shortly to confirm your enrolment and get you started."}
           </p>
           <button type="button" className="button" onClick={onClose}>
             {isTeams ? 'Back to pricing' : 'Done'} <span aria-hidden="true">→</span>
@@ -204,7 +204,7 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
           <small className="purchase-note">
             {isTeams
               ? 'No card required · We reply within one working day'
-              : 'No card is charged here · Our team confirms your seat by phone'}
+              : 'No card is charged here · Your seat is confirmed by phone'}
           </small>
         </form>
       )}
