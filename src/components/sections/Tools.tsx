@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { TiltCard } from '@/components/sections/TiltCard'
-import { featuredTool } from '@/lib/content'
+import { featuredTool, toolsIntro } from '@/lib/content'
 import { site } from '@/lib/site'
 
 const { badge, name, maker, tagline, poster, capsules, facts, blurb, cta } = featuredTool
@@ -37,14 +37,21 @@ const iconMap: Record<string, ReactElement> = {
 }
 
 /**
- * The featured tool on one glass card: the poster restating the pitch on the
- * left, the detail rail on the right. Both panes stretch to the same height, so
- * the card has no dead margin at either end.
+ * The featured tool on one white card floating on the violet field: the module
+ * poster on the left, the detail rail on the right. Both panes stretch to the
+ * same height, so the card has no dead margin at either end. The white-panel-on-
+ * dark-field treatment is the same one the hero stage and the job board use.
  */
 export function Tools() {
   return (
     <section className="tools" id="tools" aria-labelledby="tools-title">
       <div className="wrap">
+        <Reveal className="center-heading tools-intro">
+          <span className="eyebrow">{toolsIntro.eyebrow}</span>
+          <h2 id="tools-title">{toolsIntro.title}</h2>
+          <p>{toolsIntro.body}</p>
+        </Reveal>
+
         <Reveal className="tool-shell">
           <TiltCard className="tool-card">
             {/* Decorative restatement of the copy on the right — hidden from screen readers. */}
@@ -68,9 +75,11 @@ export function Tools() {
 
             <div className="tool-detail">
               <span className="tool-badge">{badge}</span>
-              <h2 id="tools-title">
+              {/* The card title sits under the section heading above, so it is
+                  an h3 rather than a second h2 competing with it. */}
+              <h3 className="tool-name">
                 {name} <i>{maker}</i>
-              </h2>
+              </h3>
               <p className="tool-tagline">{tagline}</p>
               <ul className="tool-capsules">
                 {capsules.map((capsule) => (

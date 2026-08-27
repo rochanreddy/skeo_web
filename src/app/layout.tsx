@@ -4,9 +4,12 @@ import { ModalProvider } from '@/components/modals/ModalProvider'
 import { StructuredData } from '@/components/StructuredData'
 import { site } from '@/lib/site'
 import './globals.css'
+import { cn } from '@/lib/utils'
 
 // Self-hosted at build time: no render-blocking request to fonts.googleapis.com,
 // and `display: swap` plus automatic fallback metrics keep CLS at zero.
+// Manrope is the brand face — every tracking value in globals.css is tuned to
+// its widths, and it carries the 800 weight the headlines and buttons rely on.
 const manrope = Manrope({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
@@ -69,7 +72,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${dmMono.variable}`}>
+    <html lang="en" className={cn(manrope.variable, dmMono.variable)}>
       <body>
         <a className="skip-link" href="#top">
           Skip to content
