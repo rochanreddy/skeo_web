@@ -14,11 +14,14 @@ export const problems = [
   },
 ] as const
 
+/* Split into a number and its suffix so the value can be counted up rather than
+   printed. `1000+` matches how the job board section already states the same
+   figure — it read as a flat `1000` here. */
 export const promiseStats = [
-  { value: '5+', label: 'AI Tools' },
-  { value: '30', label: 'Minutes A Day' },
-  { value: '100', label: 'Real Time Projects' },
-  { value: '1000', label: 'Job & Monetization Opportunities' },
+  { value: 5, suffix: '+', label: 'AI Tools' },
+  { value: 30, suffix: '', label: 'Minutes A Day' },
+  { value: 100, suffix: '', label: 'Real Time Projects' },
+  { value: 1000, suffix: '+', label: 'Job & Monetization Opportunities' },
 ] as const
 
 /**
@@ -26,6 +29,23 @@ export const promiseStats = [
  * `poster` is the left-hand panel — it is drawn in markup, not an image,
  * so the copy stays editable and nothing needs re-exporting.
  */
+/* The product walkthrough. Leave `src` empty until the cut exists — the poster
+   renders as plain content rather than a dead button while it is missing. Point
+   it at a file in /public (or any direct video URL) to switch the lightbox on. */
+export const walkthrough = {
+  src: '',
+  label: 'Watch how Skeo works',
+  duration: '2 MIN',
+} as const
+
+/* Frames the tool library. Without it the section opened cold on a card, with
+   no heading to say what the reader was looking at. */
+export const toolsIntro = {
+  eyebrow: 'Tool library',
+  title: 'Start with one tool. Go deep.',
+  body: 'Every module takes a single tool from first principles to shipped work.',
+} as const
+
 export const featuredTool = {
   badge: 'Featured tool',
   name: 'Claude',

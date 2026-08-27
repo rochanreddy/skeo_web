@@ -1,11 +1,13 @@
 import { Reveal } from '@/components/Reveal'
-import { faqs } from '@/lib/content'
+import { VideoDialog } from '@/components/ui/video-dialog'
+import { faqs, walkthrough } from '@/lib/content'
 
 /**
- * Two columns of equal height: copy over a walkthrough on the left, the
- * questions as one panel on the right. Both stretch to the same line — the
- * video grows into whatever the questions leave, and the panel's footer link
- * is pinned to its bottom edge, so neither side ends short of the other.
+ * Two columns: the pitch over the walkthrough on the left, the questions on the
+ * right. The two used to stretch to a shared height, with the video as the
+ * flexible element — so opening an answer grew the accordion and the video grew
+ * with it. Now the columns start together and end independently, the poster
+ * holds a fixed 16:9, and the left side sticks while the questions scroll past.
  */
 export function Faq() {
   return (
@@ -18,16 +20,7 @@ export function Faq() {
           wondering.
         </h2>
         <p>Straight answers on how Skeo works, what you walk away with, and what it costs.</p>
-        {/* Placeholder for the walkthrough: drop a <video src … poster …> inside
-            this button once the cut exists — it already fills the frame. */}
-        <button type="button" className="faq-video" aria-label="Play the Skeo walkthrough — video coming soon">
-          <span className="faq-video-play" aria-hidden="true">
-            ▶
-          </span>
-          <span className="faq-video-label">
-            Watch how Skeo works <b>2 MIN</b>
-          </span>
-        </button>
+        <VideoDialog src={walkthrough.src} label={walkthrough.label} duration={walkthrough.duration} />
       </Reveal>
 
       <Reveal className="faq-list" delay={1}>
