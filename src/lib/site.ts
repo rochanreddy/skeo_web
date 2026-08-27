@@ -7,9 +7,11 @@ export const site = {
   twitter: '@skeo',
 } as const
 
+/* Ordered to match the order the sections appear down the page, so the active
+   link moves left-to-right as you scroll instead of jumping back and forth. */
 export const navLinks = [
   { href: '#tools', label: 'Tools' },
   { href: '#jobs', label: 'Job Board' },
-  { href: '#reviews', label: 'Reviews' },
   { href: '#pricing', label: 'Pricing' },
+  { href: '#reviews', label: 'Reviews' },
 ] as const
