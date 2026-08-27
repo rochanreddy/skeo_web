@@ -14,16 +14,16 @@ const MARKS = {
 }
 
 /**
- * Pick modules one row at a time and go straight to checkout. Each row owns its
- * own Add button, so there is no separate "add the ticked ones" step between
- * choosing a module and paying for it — the footer holds the running total and
- * the Checkout button, and nothing else.
+ * Step one of buying a module. Each row owns its own Add button, so there is no
+ * separate "add the ticked ones" step between choosing a module and moving on —
+ * the footer holds the running total and Next, and nothing else.
  *
- * The cart is deliberately session-only: there is no backend to persist it to,
- * and the checkout modal receives the keys directly.
+ * Next does not check out: it opens verification (step two), which is what
+ * hands the cart to /checkout (step three). Nothing here talks about money
+ * beyond the running total.
  */
 export function ModuleCart() {
-  const { openCart } = useModal()
+  const { openVerify } = useModal()
   const [cart, setCart] = useState<ModuleKey[]>([])
 
   const total = MODULE_ROWS.filter((row) => cart.includes(row.key)).reduce((sum, row) => sum + row.amount, 0)
@@ -71,8 +71,8 @@ export function ModuleCart() {
       <div className="cart-actions">
         {cart.length > 0 ? (
           <>
-            <button type="button" className="button button-small cart-checkout" onClick={() => openCart(cart)}>
-              <span className="btn-label">Checkout · {money(total)}</span>
+            <button type="button" className="button button-small cart-checkout" onClick={() => openVerify(cart)}>
+              <span className="btn-label">Next · {money(total)}</span>
               <span aria-hidden="true">→</span>
             </button>
             <span className="cart-hint" role="status">
@@ -81,7 +81,7 @@ export function ModuleCart() {
           </>
         ) : (
           <span className="cart-hint" role="status">
-            Add any module to check out
+            Add any module to continue
           </span>
         )}
       </div>
