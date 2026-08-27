@@ -1,9 +1,10 @@
 'use client'
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
-import type { PlanKey } from '@/lib/plans'
+import type { ModuleKey, PlanKey } from '@/lib/plans'
 import { AuthModal } from './AuthModal'
 import { PurchaseModal } from './PurchaseModal'
+import { VerifyModal } from './VerifyModal'
 
 export type AuthMode = 'signin' | 'signup'
 
@@ -11,12 +12,13 @@ type ModalState =
   | { kind: 'none' }
   | { kind: 'auth'; mode: AuthMode }
   | { kind: 'purchase'; plans: PlanKey[] }
+  | { kind: 'verify'; modules: ModuleKey[] }
 
 type ModalApi = {
   openAuth: (mode: AuthMode) => void
   openPurchase: (plan: PlanKey) => void
-  /** Checkout for a multi-module cart. */
-  openCart: (plans: PlanKey[]) => void
+  /** Step two of the module flow: verify the buyer, then send them to /checkout. */
+  openVerify: (modules: ModuleKey[]) => void
   close: () => void
 }
 
@@ -34,14 +36,14 @@ export function ModalProvider({ children }: { children: ReactNode }) {
 
   const openAuth = useCallback((mode: AuthMode) => setState({ kind: 'auth', mode }), [])
   const openPurchase = useCallback((plan: PlanKey) => setState({ kind: 'purchase', plans: [plan] }), [])
-  const openCart = useCallback((plans: PlanKey[]) => {
-    if (plans.length > 0) setState({ kind: 'purchase', plans })
+  const openVerify = useCallback((modules: ModuleKey[]) => {
+    if (modules.length > 0) setState({ kind: 'verify', modules })
   }, [])
   const close = useCallback(() => setState({ kind: 'none' }), [])
 
   const api = useMemo(
-    () => ({ openAuth, openPurchase, openCart, close }),
-    [openAuth, openPurchase, openCart, close],
+    () => ({ openAuth, openPurchase, openVerify, close }),
+    [openAuth, openPurchase, openVerify, close],
   )
 
   return (
@@ -49,6 +51,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       {children}
       {state.kind === 'auth' && <AuthModal initialMode={state.mode} onClose={close} />}
       {state.kind === 'purchase' && <PurchaseModal planKeys={state.plans} onClose={close} />}
+      {state.kind === 'verify' && <VerifyModal modules={state.modules} onClose={close} />}
     </ModalContext.Provider>
   )
 }
