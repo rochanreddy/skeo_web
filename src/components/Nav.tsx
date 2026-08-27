@@ -76,7 +76,7 @@ export function Nav() {
   return (
     <div ref={shellRef} className={`nav-shell${scrolled ? ' scrolled' : ''}`}>
       <header className="nav wrap">
-        <a className="brand" href="#top" aria-label="Skeo home">
+        <a className="brand" href="#top" aria-label="skeo home">
           <span className="brand-mark" aria-hidden="true">
             S
           </span>
