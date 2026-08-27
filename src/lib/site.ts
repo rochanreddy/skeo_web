@@ -1,9 +1,9 @@
 export const site = {
-  name: 'Skeo',
+  name: 'skeo',
   url: 'https://skeo.com',
   tagline: 'Master the AI tools that matter',
   description:
-    'Skeo — master the AI tools that matter. One platform. Every AI tool. Short challenges, real proof, real opportunities.',
+    'skeo — master the AI tools that matter. One platform. Every AI tool. Short challenges, real proof, real opportunities.',
   twitter: '@skeo',
 } as const
 
