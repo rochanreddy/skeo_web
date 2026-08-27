@@ -6,7 +6,7 @@ import { Modal, useDialogId } from './Modal'
 import { OtpInput } from '@/components/forms/OtpInput'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
 import { DEMO_OTP, OTP_LENGTH, RESEND_SECONDS, sendOtp, verifyOtp } from '@/lib/otp'
-import { MODULE_ROWS, money, type ModuleKey } from '@/lib/plans'
+import type { ModuleKey } from '@/lib/plans'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 
 type Field = 'name' | 'email' | 'phone'
@@ -14,15 +14,13 @@ type Errors = Partial<Record<Field, string>>
 
 /**
  * Step two of buying a module: say who you are, then prove you can be reached.
- * Nothing is charged here and no cart is changed — on a verified code the
- * details and the picked modules are handed to /checkout, which is the only
- * screen that talks about money.
+ * The cart was just picked on the page behind this dialog and the order is
+ * restated in full on /checkout, so this screen shows neither — only the
+ * modules it is carrying through, which it never displays.
  */
 export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClose: () => void }) {
   const titleId = useDialogId('verify-title')
   const router = useRouter()
-  const rows = MODULE_ROWS.filter((row) => modules.includes(row.key))
-  const total = rows.reduce((sum, row) => sum + row.amount, 0)
 
   const [step, setStep] = useState<'details' | 'code'>('details')
   const [values, setValues] = useState({ name: '', email: '', phone: '' })
@@ -108,40 +106,11 @@ export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClos
 
   return (
     <Modal labelledBy={titleId} onClose={onClose} className="verify-modal">
-      <ol className="step-track" aria-label="Checkout progress">
-        <li className="done">
-          <b aria-hidden="true">✓</b> Cart
-        </li>
-        <li className="current" aria-current="step">
-          <b aria-hidden="true">2</b> Verify
-        </li>
-        <li>
-          <b aria-hidden="true">3</b> Pay
-        </li>
-      </ol>
-
-      <div className="verify-cart">
-        <span className="eyebrow">YOUR CART</span>
-        <ul>
-          {rows.map((row) => (
-            <li key={row.key}>
-              <b>{row.title}</b>
-              <span>{row.price}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="verify-cart-total">
-          <span>Total</span>
-          <b>{money(total)}</b>
-        </div>
-      </div>
-
       {step === 'details' ? (
         <form className="verify-form" onSubmit={handleDetails} noValidate>
-          <h3 id={titleId} className="modal-title">
+          <h3 id={titleId} className="sr-only">
             Verify it&rsquo;s you
           </h3>
-          <p className="modal-sub">We&rsquo;ll send a one-time code before you pay.</p>
 
           <div className={`field${errors.name ? ' invalid' : ''}`}>
             <label htmlFor="verify-name">Full name</label>
