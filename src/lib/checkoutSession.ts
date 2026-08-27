@@ -11,6 +11,7 @@ import { MODULE_ROWS, type ModuleKey } from '@/lib/plans'
  */
 
 const KEY = 'skeo.checkout'
+const ORDER_KEY = 'skeo.order'
 
 export type CheckoutContact = {
   name: string
@@ -73,5 +74,55 @@ export function clearCheckoutSession() {
     sessionStorage.removeItem(KEY)
   } catch {
     // Nothing to clear if storage was unavailable in the first place.
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * The paid order, handed from /checkout to /thank-you.
+ * Separate from the checkout session because it outlives it: the
+ * checkout session is cleared the moment payment succeeds, precisely so
+ * the order cannot be paid for twice.
+ * ------------------------------------------------------------------ */
+
+export type CompletedOrder = {
+  orderId: string
+  modules: ModuleKey[]
+  /** Where the receipt and the LMS password were sent. */
+  email: string
+  paidAt: number
+}
+
+export function saveCompletedOrder(order: CompletedOrder) {
+  try {
+    sessionStorage.setItem(ORDER_KEY, JSON.stringify(order))
+  } catch {
+    // /thank-you sends them home rather than showing a blank confirmation.
+  }
+}
+
+export function readCompletedOrder(): CompletedOrder | null {
+  let raw: string | null = null
+  try {
+    raw = sessionStorage.getItem(ORDER_KEY)
+  } catch {
+    return null
+  }
+  if (!raw) return null
+
+  try {
+    const parsed: unknown = JSON.parse(raw)
+    if (typeof parsed !== 'object' || parsed === null) return null
+    const { orderId, modules, email, paidAt } = parsed as Partial<CompletedOrder>
+
+    if (!orderId || !email || typeof paidAt !== 'number') return null
+    if (!Array.isArray(modules)) return null
+    const keys = modules.filter(isModuleKey)
+    if (keys.length === 0) return null
+
+    // No expiry: unlike a verification, a receipt stays readable for as long as
+    // the tab that earned it is open.
+    return { orderId, modules: keys, email, paidAt }
+  } catch {
+    return null
   }
 }

@@ -1,3 +1,19 @@
+/**
+ * Where the LMS lives, and how someone who just paid gets into it.
+ *
+ * `web` and `mobile` are placeholders until the LMS is deployed and a mobile
+ * build is published — swapping these two URLs is the whole integration.
+ * `support` is deliberately empty: the thank-you page hides the "something not
+ * right?" line rather than pointing at an address nobody reads.
+ */
+export const lms = {
+  web: 'https://lms.skeo.com',
+  mobile: 'https://lms.skeo.com/download/skeo-lms.apk',
+  support: '',
+  /** How the thank-you page describes the wait for the credentials email. */
+  credentialsEta: 'within 5 minutes',
+} as const
+
 export const site = {
   name: 'skeo',
   url: 'https://skeo.com',
