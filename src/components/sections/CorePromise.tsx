@@ -1,4 +1,6 @@
 import { Reveal } from '@/components/Reveal'
+import { CountUp } from '@/components/ui/count-up'
+import { SpotlightCard } from '@/components/ui/spotlight-card'
 import { promiseStats } from '@/lib/content'
 
 export function CorePromise() {
@@ -17,10 +19,12 @@ export function CorePromise() {
           </p>
           <div className="promise-stats reveal-stagger">
             {promiseStats.map((stat) => (
-              <div className="stat-chip" key={stat.label}>
-                <b>{stat.value}</b>
-                <span>{stat.label}</span>
-              </div>
+              <SpotlightCard className="stat-chip" key={stat.label}>
+                <b>
+                  <CountUp to={stat.value} suffix={stat.suffix} />
+                </b>
+                <span className="stat-label">{stat.label}</span>
+              </SpotlightCard>
             ))}
           </div>
         </Reveal>
