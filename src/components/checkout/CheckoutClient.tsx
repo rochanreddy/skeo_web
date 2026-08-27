@@ -3,9 +3,23 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { clearCheckoutSession, readCheckoutSession, type CheckoutSession } from '@/lib/checkoutSession'
+import {
+  clearCheckoutSession,
+  readCheckoutSession,
+  saveCompletedOrder,
+  type CheckoutSession,
+} from '@/lib/checkoutSession'
 import { payForOrder } from '@/lib/payment'
-import { MODULE_ROWS, money } from '@/lib/plans'
+import { MODULE_ROWS, PLANS, money } from '@/lib/plans'
+import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+
+const MARKS = {
+  claude: ClaudeMark,
+  chatgpt: ChatGptMark,
+  gemini: GeminiMark,
+  n8n: N8nMark,
+  lovable: LovableMark,
+}
 
 /**
  * Step three: the order itself. Everything shown here was decided on the two
@@ -19,10 +33,8 @@ import { MODULE_ROWS, money } from '@/lib/plans'
 export function CheckoutClient() {
   const router = useRouter()
   const [session, setSession] = useState<CheckoutSession | null>(null)
-  const [state, setState] = useState<'loading' | 'ready' | 'paid'>('loading')
   const [paying, setPaying] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [orderId, setOrderId] = useState<string | null>(null)
 
   // /checkout is only reachable after verifying, so a direct visit — or a
   // verification that has since expired — goes back to the cart rather than
@@ -34,7 +46,6 @@ export function CheckoutClient() {
       return
     }
     setSession(found)
-    setState('ready')
   }, [router])
 
   if (!session) return null
@@ -42,6 +53,8 @@ export function CheckoutClient() {
   const rows = MODULE_ROWS.filter((row) => session.modules.includes(row.key))
   const subtotal = rows.reduce((sum, row) => sum + row.amount, 0)
   const total = subtotal
+
+  const contactEmail = session.contact.email
 
   async function pay() {
     setError(null)
@@ -53,42 +66,15 @@ export function CheckoutClient() {
       return
     }
     // The order is done: drop the session so a refresh or a back-button press
-    // cannot replay the same payment.
+    // cannot replay the same payment, and hand the receipt to /thank-you.
+    saveCompletedOrder({
+      orderId: result.orderId,
+      modules: rows.map((row) => row.key),
+      email: contactEmail,
+      paidAt: Date.now(),
+    })
     clearCheckoutSession()
-    setOrderId(result.orderId)
-    setState('paid')
-    window.scrollTo(0, 0)
-  }
-
-  if (state === 'paid') {
-    return (
-      <main className="checkout-done">
-        <div className="checkout-done-inner">
-          <div className="success-mark" aria-hidden="true">
-            ✓
-          </div>
-          <h1>You&rsquo;re in.</h1>
-          <p>
-            {rows.length === 1 ? 'Your module is' : `All ${rows.length} modules are`} unlocked. We&rsquo;ve sent the
-            receipt and your login link to <b>{session.contact.email}</b>.
-          </p>
-          <ul className="checkout-done-list">
-            {rows.map((row) => (
-              <li key={row.key}>
-                <b>{row.title}</b>
-                <span>{row.price}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="checkout-order-id">
-            Order <b>{orderId}</b>
-          </p>
-          <Link className="button" href="/">
-            <span className="btn-label">Back to skeo</span> <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-      </main>
-    )
+    router.replace('/thank-you')
   }
 
   return (
@@ -100,7 +86,7 @@ export function CheckoutClient() {
             ← Back to modules
           </Link>
 
-          <ol className="step-track on-dark" aria-label="Checkout progress">
+          <ol className="step-track" aria-label="Checkout progress">
             <li className="done">
               <b aria-hidden="true">✓</b> Cart
             </li>
@@ -111,6 +97,41 @@ export function CheckoutClient() {
               <b aria-hidden="true">3</b> Pay
             </li>
           </ol>
+
+          {/* What you are buying leads; the money is restated on the paper side
+              and the contact is a confirmation, so both come after it. */}
+          <h2 className="checkout-h">
+            {rows.length} module{rows.length > 1 ? 's' : ''} in your order
+          </h2>
+          <ul className="checkout-items">
+            {rows.map((row) => {
+              const plan = PLANS[row.key]
+              return (
+                <li key={row.key}>
+                  <div className="checkout-item-head">
+                    <span className="checkout-item-info">
+                      <b>
+                        {row.title}
+                        <span className="module-marks" aria-hidden="true">
+                          {row.marks.map((mark) => {
+                            const Mark = MARKS[mark]
+                            return <Mark key={mark} className="module-mark" />
+                          })}
+                        </span>
+                      </b>
+                      <small>{row.subtitle}</small>
+                    </span>
+                    <span className="checkout-item-price">{row.price}</span>
+                  </div>
+                  <ul className="checkout-item-features">
+                    {plan.features.map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                </li>
+              )
+            })}
+          </ul>
 
           <h2 className="checkout-h">
             Contact
@@ -132,21 +153,6 @@ export function CheckoutClient() {
               <dd>{session.contact.email}</dd>
             </div>
           </dl>
-
-          <h2 className="checkout-h">
-            {rows.length} module{rows.length > 1 ? 's' : ''} in your cart
-          </h2>
-          <ul className="checkout-items">
-            {rows.map((row) => (
-              <li key={row.key}>
-                <span className="checkout-item-info">
-                  <b>{row.title}</b>
-                  <small>{row.subtitle}</small>
-                </span>
-                <span className="checkout-item-price">{row.price}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
@@ -161,8 +167,10 @@ export function CheckoutClient() {
           </span>
 
           <span className="eyebrow">ORDER SUMMARY</span>
-          <p className="checkout-amount">{money(total)}</p>
 
+          {/* The amount used to be set large here as well as on the total line,
+              which printed the same figure three times down one short column.
+              The total is the only one that is large now. */}
           <ul className="checkout-lines">
             {rows.map((row) => (
               <li key={row.key}>
@@ -182,7 +190,7 @@ export function CheckoutClient() {
           </div>
           <div className="checkout-total">
             <span>Total</span>
-            <span>{money(total)}</span>
+            <b>{money(total)}</b>
           </div>
 
           <button type="button" className="button full checkout-pay" onClick={() => void pay()} disabled={paying}>
@@ -197,6 +205,13 @@ export function CheckoutClient() {
               {error}
             </p>
           )}
+
+          {/* Both claims come from the module's own pricing copy — nothing here
+              promises anything the pricing card does not. */}
+          <ul className="checkout-assurances">
+            <li>Pay once — the module is yours to keep</li>
+            <li>Certificate on completion</li>
+          </ul>
 
           {/* Honest about what this is: no gateway is connected yet. */}
           <p className="checkout-fine">Demo build — no gateway is connected and no card is charged.</p>
