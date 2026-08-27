@@ -21,7 +21,7 @@ export const promiseStats = [
   { value: 5, suffix: '+', label: 'AI Tools' },
   { value: 30, suffix: '', label: 'Minutes A Day' },
   { value: 100, suffix: '', label: 'Real Time Projects' },
-  { value: 1000, suffix: '+', label: 'Job & Monetization Opportunities' },
+  { value: 1000, suffix: '+', label: 'Job Opportunities' },
 ] as const
 
 /**
