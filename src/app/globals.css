@@ -4770,8 +4770,8 @@ details p {
 
 /* ============ BUYING A MODULE ============ */
 /* Three screens, one flow: the cart on the pricing card, the verify modal, and
-   /checkout. The step track and the money-line styles below are shared by the
-   last two so the same order reads the same way on both. */
+   /checkout. The money-line styles below are shared by the last two so the same
+   order reads the same way on both. */
 
 /* Inline text button — sits inside a sentence, not on its own row. */
 .link-button {
@@ -4794,65 +4794,6 @@ details p {
   color: var(--ink-5);
   cursor: default;
   text-decoration: none;
-}
-
-/* ---- step track (used on /checkout) ---- */
-.step-track {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  list-style: none;
-  margin: 0 0 16px;
-  padding: 0;
-}
-
-/* Reversed out: the finished steps read as quiet rather than as a second accent
-   competing with the current one. */
-.step-track li {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-  min-width: 0;
-  padding: 6px 9px;
-  border-radius: var(--r-pill);
-  background: #ffffff14;
-  font: 700 9.5px var(--mono);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--on-dark-3);
-  white-space: nowrap;
-}
-
-.step-track li b {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #ffffff1f;
-  color: var(--on-dark-2);
-  font-size: 9px;
-}
-
-.step-track li.done {
-  color: var(--on-dark-2);
-}
-
-.step-track li.done b {
-  background: var(--purple);
-  color: #fff;
-}
-
-.step-track li.current {
-  background: #fff;
-  color: var(--ink);
-}
-
-.step-track li.current b {
-  background: var(--lime);
-  color: var(--ink);
 }
 
 /* ---- step 2: verify ---- */
@@ -4995,6 +4936,11 @@ details p {
   color: #fff;
 }
 
+/* Contact opens the column now, directly under the back link. */
+.checkout-panel > .checkout-h:first-of-type {
+  margin-top: 4px;
+}
+
 .checkout-verified {
   font: 700 9px var(--mono);
   letter-spacing: 0.08em;
@@ -5112,6 +5058,95 @@ details p {
   font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.025em;
+}
+
+/* Quiet, and last inside the card — undoing a pick should be available without
+   competing with the module it belongs to. Hidden entirely on the last module,
+   since an empty cart would bounce the page back to pricing. */
+.checkout-item-remove {
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 11.5px;
+  color: var(--on-dark-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.checkout-item-remove:hover {
+  color: #fff;
+}
+
+/* The rest of the catalogue: title, what it covers, and its price on a button.
+   Deliberately flatter than a cart card — these are not in the order yet, and
+   should not read as though they were. */
+.checkout-add {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ffffff1f;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.checkout-add > li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ffffff14;
+}
+
+.checkout-add > li:last-child {
+  border-bottom: 0;
+}
+
+.checkout-add-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.checkout-add-info b {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.checkout-add-info small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--on-dark-3);
+}
+
+.checkout-add-btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 13px;
+  border: 1px solid #ffffff2e;
+  border-radius: var(--r-pill);
+  background: #ffffff12;
+  color: #fff;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.checkout-add-btn:hover {
+  background: #ffffff21;
+  border-color: #ffffff4d;
 }
 
 /* Paper side. */
@@ -5565,18 +5600,14 @@ details p {
     padding: 0;
     background: none;
   }
-  /* Flattened so the back link, the step track and the order detail become
-     orderable siblings of the summary card rather than being trapped inside
-     their own column. */
+  /* Flattened so the back link and the order detail become orderable siblings
+     of the summary card rather than being trapped inside their own column. */
   .checkout-detail,
   .checkout-detail > .checkout-panel {
     display: contents;
   }
   .checkout-back {
     order: -3;
-  }
-  .checkout-detail .step-track {
-    order: -2;
   }
   /* The price is what people came to check; it must not sit below a screenful
      of order detail. */
@@ -5642,19 +5673,6 @@ details p {
   .otp-boxes input {
     padding: 10px 0;
     font-size: 17px;
-  }
-}
-
-@media (max-width: 360px) {
-  /* Three labelled pills stop fitting here; the numbers stay. */
-  .step-track li {
-    justify-content: center;
-    padding: 6px;
-    font-size: 0;
-    gap: 0;
-  }
-  .step-track li b {
-    font-size: 9px;
   }
 }
 

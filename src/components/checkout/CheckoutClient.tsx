@@ -6,12 +6,13 @@ import { useRouter } from 'next/navigation'
 import {
   clearCheckoutSession,
   readCheckoutSession,
+  saveCheckoutSession,
   saveCompletedOrder,
   type CheckoutSession,
 } from '@/lib/checkoutSession'
 import { track } from '@/lib/analytics/track'
 import { payForOrder } from '@/lib/payment'
-import { MODULE_ROWS, PLANS, money } from '@/lib/plans'
+import { MODULE_ROWS, PLANS, money, type ModuleKey } from '@/lib/plans'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 const MARKS = {
@@ -22,10 +23,27 @@ const MARKS = {
   lovable: LovableMark,
 }
 
+/** The vendor logos beside a tool title, shared by the cart and the add list. */
+function Marks({ marks }: { marks: readonly (keyof typeof MARKS)[] }) {
+  return (
+    <span className="module-marks" aria-hidden="true">
+      {marks.map((mark) => {
+        const Mark = MARKS[mark]
+        return <Mark key={mark} className="module-mark" />
+      })}
+    </span>
+  )
+}
+
 /**
- * Step three: the order itself. Everything shown here was decided on the two
- * screens before it — this page only restates the cart, adds up the money and
- * takes the payment, so there is nothing to edit and nothing to re-enter.
+ * The last screen: who is buying, what they are buying, and what else they
+ * could add before paying.
+ *
+ * Contact leads because it is already settled — it confirms the verification
+ * that just happened and then gets out of the way. The cart follows, and the
+ * tools *not* in it come last: the only decision left on this page, and the
+ * only thing that would otherwise send someone back through pricing and verify
+ * a second time.
  *
  * The session is read once on mount rather than during render: sessionStorage
  * does not exist on the server, and reading it in an effect keeps the first
@@ -56,11 +74,38 @@ export function CheckoutClient() {
   if (!session) return null
 
   const rows = MODULE_ROWS.filter((row) => session.modules.includes(row.key))
+  const extras = MODULE_ROWS.filter((row) => !session.modules.includes(row.key))
   const subtotal = rows.reduce((sum, row) => sum + row.amount, 0)
   const total = subtotal
 
   const contactEmail = session.contact.email
   const contactName = session.contact.name
+
+  /* The cart is editable here, so every change is written back: a tool added
+     on this page has to survive a refresh the way the original pick does, and
+     the payment has to charge for it. */
+  function setModules(current: CheckoutSession, next: ModuleKey[]) {
+    const updated = { ...current, modules: next }
+    setSession(updated)
+    saveCheckoutSession(updated)
+  }
+
+  function addModule(current: CheckoutSession, key: ModuleKey) {
+    if (current.modules.includes(key)) return
+    setModules(current, [...current.modules, key])
+    track('module_add', { module: key })
+  }
+
+  // The last tool stays put: an empty cart has nothing to pay for, and the
+  // guard above would bounce the page back to pricing on the next read.
+  function removeModule(current: CheckoutSession, key: ModuleKey) {
+    if (current.modules.length < 2) return
+    setModules(
+      current,
+      current.modules.filter((item) => item !== key),
+    )
+    track('module_remove', { module: key })
+  }
 
   async function pay() {
     setError(null)
@@ -98,55 +143,8 @@ export function CheckoutClient() {
       <section className="checkout-detail" aria-label="Order details">
         <div className="checkout-panel">
           <Link className="checkout-back" href="/#pricing">
-            ← Back to modules
+            ← Back to tools
           </Link>
-
-          <ol className="step-track" aria-label="Checkout progress">
-            <li className="done">
-              <b aria-hidden="true">✓</b> Cart
-            </li>
-            <li className="done">
-              <b aria-hidden="true">✓</b> Verify
-            </li>
-            <li className="current" aria-current="step">
-              <b aria-hidden="true">3</b> Pay
-            </li>
-          </ol>
-
-          {/* What you are buying leads; the money is restated on the paper side
-              and the contact is a confirmation, so both come after it. */}
-          <h2 className="checkout-h">
-            {rows.length} module{rows.length > 1 ? 's' : ''} in your order
-          </h2>
-          <ul className="checkout-items">
-            {rows.map((row) => {
-              const plan = PLANS[row.key]
-              return (
-                <li key={row.key}>
-                  <div className="checkout-item-head">
-                    <span className="checkout-item-info">
-                      <b>
-                        {row.title}
-                        <span className="module-marks" aria-hidden="true">
-                          {row.marks.map((mark) => {
-                            const Mark = MARKS[mark]
-                            return <Mark key={mark} className="module-mark" />
-                          })}
-                        </span>
-                      </b>
-                      <small>{row.subtitle}</small>
-                    </span>
-                    <span className="checkout-item-price">{row.price}</span>
-                  </div>
-                  <ul className="checkout-item-features">
-                    {plan.features.map((feature) => (
-                      <li key={feature}>{feature}</li>
-                    ))}
-                  </ul>
-                </li>
-              )
-            })}
-          </ul>
 
           <h2 className="checkout-h">
             Contact
@@ -168,6 +166,72 @@ export function CheckoutClient() {
               <dd>{session.contact.email}</dd>
             </div>
           </dl>
+
+          <h2 className="checkout-h">
+            {rows.length} tool{rows.length > 1 ? 's' : ''} in your order
+          </h2>
+          <ul className="checkout-items">
+            {rows.map((row) => {
+              const plan = PLANS[row.key]
+              return (
+                <li key={row.key}>
+                  <div className="checkout-item-head">
+                    <span className="checkout-item-info">
+                      <b>
+                        {row.title}
+                        <Marks marks={row.marks} />
+                      </b>
+                      <small>{row.subtitle}</small>
+                    </span>
+                    <span className="checkout-item-price">{row.price}</span>
+                  </div>
+                  <ul className="checkout-item-features">
+                    {plan.features.map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                  {/* Only offered while something would be left to pay for. */}
+                  {rows.length > 1 && (
+                    <button
+                      type="button"
+                      className="checkout-item-remove"
+                      onClick={() => removeModule(session, row.key)}
+                      aria-label={`Remove ${row.title} from your order`}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+
+          {extras.length > 0 && (
+            <>
+              <h2 className="checkout-h">Add another tool</h2>
+              <ul className="checkout-add">
+                {extras.map((row) => (
+                  <li key={row.key}>
+                    <span className="checkout-add-info">
+                      <b>
+                        {row.title}
+                        <Marks marks={row.marks} />
+                      </b>
+                      <small>{row.subtitle}</small>
+                    </span>
+                    <button
+                      type="button"
+                      className="checkout-add-btn"
+                      onClick={() => addModule(session, row.key)}
+                      aria-label={`Add ${row.title} for ${row.price}`}
+                    >
+                      <span aria-hidden="true">+</span> {row.price}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </section>
 
@@ -221,10 +285,10 @@ export function CheckoutClient() {
             </p>
           )}
 
-          {/* Both claims come from the module's own pricing copy — nothing here
+          {/* Both claims come from the tool's own pricing copy — nothing here
               promises anything the pricing card does not. */}
           <ul className="checkout-assurances">
-            <li>Pay once — the module is yours to keep</li>
+            <li>Pay once — the tool is yours to keep</li>
             <li>Certificate on completion</li>
           </ul>
 
