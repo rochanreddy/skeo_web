@@ -15,8 +15,8 @@ const MARKS = {
 }
 
 /**
- * Step one of buying a module. Each row owns its own Add button, so there is no
- * separate "add the ticked ones" step between choosing a module and moving on —
+ * Step one of buying a tool. Each row owns its own Add button, so there is no
+ * separate "add the ticked ones" step between choosing a tool and moving on —
  * the footer holds the running total and Next, and nothing else. The rows
  * already show what is added, so the footer does not count them back.
  *
@@ -75,7 +75,7 @@ export function ModuleCart() {
       </ul>
 
       {/* Kept in the tree while empty: its min-height reserves the row so the
-          card does not jump the moment a first module is added. */}
+          card does not jump the moment a first tool is added. */}
       <div className="cart-actions">
         {cart.length > 0 && (
           <button

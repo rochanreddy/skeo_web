@@ -21,8 +21,8 @@ export function Pricing() {
 
         <div className="pricing-two">
           <Reveal as="article" className="modules-card">
-            <span className="plan">INDIVIDUAL MODULES</span>
-            <h3>Pay once, own the module</h3>
+            <span className="plan">INDIVIDUAL TOOLS</span>
+            <h3>Pay once, own the tool</h3>
             <p>Choose any tool, learn it end-to-end, build projects, earn your certification,<br/> and unlock opportunities</p>
             <ModuleCart />
           </Reveal>
@@ -34,7 +34,7 @@ export function Pricing() {
             <div className="price">
               {allAccess.price} <small>{allAccess.period}</small>
             </div>
-            <p>Every module, every tool, one membership.</p>
+            <p>Every tool, one membership.</p>
             <ul>
               {allAccess.features.map((feature) => (
                 <li key={feature}>{feature}</li>

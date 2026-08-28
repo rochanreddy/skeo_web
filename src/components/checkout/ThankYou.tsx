@@ -10,7 +10,7 @@ import { lms } from '@/lib/site'
 
 /**
  * What happens after the money: the receipt, and the three things someone has
- * to do to actually start the module they just bought.
+ * to do to actually start the tool they just bought.
  *
  * The order is read from the handoff /checkout writes on a successful payment,
  * so this page cannot be reached — or refreshed into — without one.
@@ -43,7 +43,7 @@ export function ThankYou() {
           </div>
           <h1>You&rsquo;re in.</h1>
           <p>
-            {one ? `${rows[0].title} is` : `All ${rows.length} modules are`} yours. The receipt is on its way to{' '}
+            {one ? `${rows[0].title} is` : `All ${rows.length} tools are`} yours. The receipt is on its way to{' '}
             <b>{order.email}</b>.
           </p>
         </header>
@@ -74,7 +74,7 @@ export function ThankYou() {
               <b>Open the LMS in your browser</b>
               <p>
                 Sign in with that email and temporary password, then set a password of your own.{' '}
-                {one ? 'Your module is' : 'Your modules are'} already unlocked on the account.
+                {one ? 'Your tool is' : 'Your tools are'} already unlocked on the account.
               </p>
               <a
                 className="button thanks-cta"
@@ -95,7 +95,7 @@ export function ThankYou() {
             <div className="thanks-step-body">
               <b>Or carry it on your phone</b>
               <p>
-                The mobile app runs the same modules and the same account — sign in with the credentials from step one
+                The mobile app runs the same tools and the same account — sign in with the credentials from step one
                 and your progress follows you between the two.
               </p>
               <a
@@ -154,7 +154,7 @@ export function ThankYou() {
  * only person whose answer is worth anything, and because the admin dashboard
  * has no other honest way to know what to build next.
  *
- * Only the modules they did not buy are offered, the answer is one tap, and
+ * Only the tools they did not buy are offered, the answer is one tap, and
  * nothing is promised in return beyond being told when it lands.
  */
 function NextUp({ bought, email }: { bought: ModuleKey[]; email: string }) {
@@ -168,7 +168,7 @@ function NextUp({ bought, email }: { bought: ModuleKey[]; email: string }) {
     const removing = picked.includes(key)
     setPicked((current) => (removing ? current.filter((k) => k !== key) : [...current, key]))
     // Only the positive answer is worth recording; un-ticking is someone
-    // correcting themselves, not a signal about the module.
+    // correcting themselves, not a signal about the tool.
     if (!removing) track('next_interest', { module: key, email })
   }
 

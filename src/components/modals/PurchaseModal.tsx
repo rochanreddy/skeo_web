@@ -82,7 +82,7 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
         ) : (
           <>
             <span className="eyebrow">YOUR CART</span>
-            <h3 id={titleId}>{plans.length} modules</h3>
+            <h3 id={titleId}>{plans.length} tools</h3>
             <ul className="purchase-cart">
               {plans.map((plan) => (
                 <li key={plan.title}>

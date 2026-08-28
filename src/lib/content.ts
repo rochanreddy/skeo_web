@@ -43,7 +43,7 @@ export const walkthrough = {
 export const toolsIntro = {
   eyebrow: 'Tool library',
   title: 'Start with one tool. Go deep.',
-  body: 'Every module takes a single tool from first principles to shipped work.',
+  body: 'Every tool is taken from first principles to shipped work.',
 } as const
 
 export const featuredTool = {
@@ -117,7 +117,7 @@ export const comparison = {
     'Limited ways to apply your skills',
   ],
   skeo: [
-    'Individual AI tools & modules',
+    'Individual AI tools',
     'Learn by building real projects',
     'Verified proof of practical skills',
     'Access jobs, internships & freelancing',
@@ -158,7 +158,7 @@ export const testimonials = [
   },
   {
     quote:
-      'My team ran the 28-day module together. We now have shared automations instead of shared bookmarks.',
+      'My team ran the 28-day tool together. We now have shared automations instead of shared bookmarks.',
     name: 'Ravi Menon',
     role: 'Engineering Manager, Bengaluru',
   },
@@ -170,7 +170,7 @@ export const faqs = [
     a: 'Not at all. skeo is designed to make practical AI accessible, whether you work in design, marketing, operations, or are just getting started.',
   },
   {
-    q: 'How much time does a module take?',
+    q: 'How much time does a tool take?',
     a: 'Most daily builds take 30–60 minutes. The pace is intentional: enough to make real progress without upending your life.',
   },
   {
@@ -178,7 +178,7 @@ export const faqs = [
     a: 'Every certificate links to the actual projects and assessments behind it — so it represents concrete proof, not just completion.',
   },
   {
-    q: 'Does completing a module guarantee a job?',
+    q: 'Does completing a tool guarantee a job?',
     a: 'No platform can promise that, and we won’t pretend otherwise. What you get is verified proof of work and access to the Job & Freelancing Board — real opportunities to apply to, not a guaranteed outcome.',
   },
   {
@@ -195,6 +195,6 @@ export const faqs = [
   },
   {
     q: 'The tools change every month. Does the content?',
-    a: 'Yes. Modules are revised as the tools shift, and your access covers those revisions — you are not buying a snapshot of how Claude or n8n worked this quarter.',
+    a: 'Yes. Every tool is revised as it shifts, and your access covers those revisions — you are not buying a snapshot of how Claude or n8n worked this quarter.',
   },
 ] as const

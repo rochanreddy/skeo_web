@@ -285,7 +285,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
         <Kpi
           label="Left in carts"
           value={money(t.abandonedValue)}
-          sub={`${num(t.abandonedCarts)} of ${num(t.cartAdders)} who picked a module`}
+          sub={`${num(t.abandonedCarts)} of ${num(t.cartAdders)} who picked a tool`}
           invert
           delta={null}
         />
@@ -333,13 +333,13 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
           )}
         </Panel>
 
-        {/* ---- Module performance ---- */}
-        <Panel title="Modules" hint="What sells, and what people ask for next">
+        {/* ---- Tool performance ---- */}
+        <Panel title="Tools" hint="What sells, and what people ask for next">
           <div className="table-scroll">
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>Module</th>
+                  <th>Tool</th>
                   <th className="n">Added</th>
                   <th className="n">Bought</th>
                   <th className="n">Conv.</th>
@@ -391,7 +391,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
                   <tr>
                     <th>Order</th>
                     <th>Customer</th>
-                    <th>Modules</th>
+                    <th>Tools</th>
                     <th className="n">Paid</th>
                   </tr>
                 </thead>
