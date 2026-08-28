@@ -37,7 +37,7 @@ export const sessionId = () => stored('session', SESSION_KEY)
 
 /**
  * Fire and forget: tracking must never block a click or surface an error to
- * someone buying a module. `keepalive` lets the request outlive the page when
+ * someone buying a tool. `keepalive` lets the request outlive the page when
  * the event is the last thing before a navigation.
  */
 export function track(type: EventType, props?: EventProps): void {

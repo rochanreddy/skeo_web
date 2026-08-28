@@ -1,7 +1,7 @@
 import { MODULE_ROWS, type ModuleKey } from '@/lib/plans'
 
 /**
- * The hand-off between the three steps of buying a module: the cart on the
+ * The hand-off between the three steps of buying a tool: the cart on the
  * pricing card, the OTP screen that verifies who is buying, and /checkout.
  *
  * It lives in sessionStorage rather than the URL because the contact details

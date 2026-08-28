@@ -64,7 +64,7 @@ export async function GET(request: Request) {
     name = 'skeo-events'
   } else {
     csv = toCsv(
-      ['When', 'Order', 'Email', 'Modules', 'Amount USD', 'Demo'],
+      ['When', 'Order', 'Email', 'Tools', 'Amount USD', 'Demo'],
       stats.orders.map((o) => [iso(o.at), o.orderId, o.email, o.modules.join(' + '), o.amount, o.demo]),
     )
     name = 'skeo-orders'

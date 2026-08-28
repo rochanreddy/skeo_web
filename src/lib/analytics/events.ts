@@ -16,7 +16,7 @@ export const EVENT_TYPES = [
   'signup',
   /** Signed back in from the auth dialog. */
   'signin',
-  /** A module was ticked on the pricing card — the earliest buying signal. */
+  /** A tool was ticked on the pricing card — the earliest buying signal. */
   'module_add',
   /** …and un-ticked again. Kept so "added" reflects real intent, not fidgeting. */
   'module_remove',
@@ -28,7 +28,7 @@ export const EVENT_TYPES = [
   'verify_ok',
   /** /checkout was rendered with a live cart. */
   'checkout_view',
-  /** Payment succeeded. Carries the order id, the modules and the amount. */
+  /** Payment succeeded. Carries the order id, the tools and the amount. */
   'purchase',
   /** A buyer clicked through to the LMS from the thank-you page. */
   'lms_open',
@@ -38,7 +38,7 @@ export const EVENT_TYPES = [
    * falls back to `lms_open`, and says so.
    */
   'lms_login',
-  /** A buyer told us which module they want next. */
+  /** A buyer told us which tool they want next. */
   'next_interest',
   /** The all-access / teams enquiry form was submitted. */
   'lead',

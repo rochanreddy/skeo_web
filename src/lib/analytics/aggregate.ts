@@ -42,7 +42,7 @@ export type Totals = {
   nextInterest: number
   leads: number
   cartAdders: number
-  /** Added a module but never paid, inside this window. */
+  /** Added a tool but never paid, inside this window. */
   abandonedCarts: number
   /** What those unpaid carts were worth, at list price. */
   abandonedValue: number
@@ -139,7 +139,7 @@ const DAY_MS = 86_400_000
 const HOUR_MS = 3_600_000
 const LIVE_WINDOW_MS = 5 * 60_000
 
-/** List price per module, for pricing carts that never became orders. */
+/** List price per tool, for pricing carts that never became orders. */
 const MODULE_PRICE = new Map<string, number>(MODULE_ROWS.map((row) => [row.key, row.amount]))
 
 const pct = (part: number, whole: number) => (whole > 0 ? Math.round((part / whole) * 1000) / 10 : 0)
@@ -176,7 +176,7 @@ function totalsFor(
   const buyers = new Set<string>()
   const cartAdders = new Set<string>()
   const live = new Set<string>()
-  /** Distinct modules each visitor showed intent on, for the abandoned total. */
+  /** Distinct tools each visitor showed intent on, for the abandoned total. */
   const wanted = new Map<string, Set<string>>()
   const lmsVisitors = new Set<string>()
   const nextInterestVisitors = new Set<string>()

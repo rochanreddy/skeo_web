@@ -4,7 +4,7 @@ import { site } from '@/lib/site'
 
 /**
  * JSON-LD for rich results: who we are, what the FAQ says, and what the
- * modules cost. Rendered server-side so crawlers see it without running JS.
+ * tools cost. Rendered server-side so crawlers see it without running JS.
  */
 export function StructuredData() {
   const graph = {
