@@ -2694,7 +2694,7 @@ h2 em {
 }
 
 .jobboard-chart {
-  margin-top: 10px;
+  margin-top: 9px;
 }
 
 .chart-head {
@@ -2755,7 +2755,7 @@ h2 em {
 
 .chart-plot {
   position: relative;
-  height: 88px;
+  height: 64px;
 }
 
 .chart-plot svg {

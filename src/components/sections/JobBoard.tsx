@@ -201,7 +201,7 @@ const MIX = [
   { key: 'internships', label: 'Internships', value: 18, color: '#d9cffa' },
 ]
 
-const CHART = { w: 320, h: 104, pad: 10 }
+const CHART = { w: 320, h: 78, pad: 8 }
 const RING = { size: 92, stroke: 13 }
 const CYCLE = 6000
 
