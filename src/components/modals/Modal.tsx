@@ -56,7 +56,10 @@ export function Modal({ labelledBy, onClose, className = '', children }: ModalPr
     return () => {
       body.style.overflow = prevOverflow
       body.style.paddingRight = prevPadding
-      restoreFocusTo.current?.focus?.()
+      // preventScroll, or the restore fights the page: the curriculum overlay's
+      // CTA jumps to #pricing, and focusing the trigger would drag the view
+      // straight back up to the card the dialog was opened from.
+      restoreFocusTo.current?.focus?.({ preventScroll: true })
     }
   }, [mounted])
 
