@@ -4191,11 +4191,6 @@ details p {
   margin-top: 22px;
 }
 
-.footer-cta > span {
-  font-size: 13px;
-  color: var(--on-dark-3);
-}
-
 /* The line closing the opening statement, before the brand and links. */
 .footer-rule {
   border: 0;
