@@ -2197,54 +2197,60 @@ h2 em {
 }
 
 /* ---- stage icons: each loops a small motion of its own ---- */
-/* Learn — progress sweeping round a playing lesson. */
-/* Mostly-closed ring with one gap running round it, so it still reads as a
-   ring when the motion is stopped. */
-.pi-learn .ring {
-  stroke-dasharray: 41 13;
-  animation: pi-sweep 3.4s linear infinite;
-}
-
-.pi-learn .play {
+/* Learn — a graduation cap, the tassel swinging after it settles. */
+.pi-learn .cap {
   transform-box: fill-box;
   transform-origin: center;
-  animation: pi-beat 3.4s ease-in-out infinite;
+  animation: pi-toss 3.4s ease-in-out infinite;
 }
 
-@keyframes pi-sweep {
-  to {
-    stroke-dashoffset: -54;
-  }
+.pi-learn .tassel {
+  /* Swings from where it is pinned to the board, not from its own centre. */
+  transform-box: view-box;
+  transform-origin: 19.9px 9.3px;
+  animation: pi-swing 3.4s ease-in-out infinite;
 }
 
-@keyframes pi-beat {
+@keyframes pi-toss {
   0%,
-  72%,
+  70%,
   100% {
-    transform: scale(1);
-  }
-  84% {
-    transform: scale(1.14);
-  }
-}
-
-/* Build — the pieces arriving one after another. */
-.pi-build .block {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: pi-assemble 3.4s ease-in-out infinite both;
-  animation-delay: calc(var(--i) * 0.17s);
-}
-
-@keyframes pi-assemble {
-  0% {
-    opacity: 0;
-    transform: scale(0.55);
-  }
-  18%,
-  100% {
-    opacity: 1;
     transform: none;
+  }
+  82% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes pi-swing {
+  0%,
+  64%,
+  100% {
+    transform: rotate(0deg);
+  }
+  76% {
+    transform: rotate(11deg);
+  }
+  88% {
+    transform: rotate(-6deg);
+  }
+}
+
+/* Build — the slash first, then the brackets drawing out around it. */
+.pi-build .stroke-in {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pi-draw 3.4s ease-in-out infinite both;
+  animation-delay: calc(var(--i) * 0.16s);
+}
+
+@keyframes pi-draw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  26%,
+  100% {
+    stroke-dashoffset: 0;
   }
 }
 

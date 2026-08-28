@@ -2,9 +2,9 @@ import type { CSSProperties } from 'react'
 
 /**
  * One icon per stage — learn, build, monetize. Minimal line art, each with a
- * small loop of its own (the ring sweeps, the blocks assemble, the bars grow),
- * driven by keyframes in globals.css so there is no animation library and
- * reduced-motion visitors land on the finished frame.
+ * small loop of its own (the cap's tassel swings, the brackets draw in, the
+ * bars grow), driven by keyframes in globals.css so there is no animation
+ * library and reduced-motion visitors land on the finished frame.
  */
 
 const common = {
@@ -19,29 +19,29 @@ const common = {
 
 const step = (n: number) => ({ '--i': n }) as CSSProperties
 
-/** Learn: a lesson playing, its progress sweeping round the ring. */
+/** Learn: a graduation cap, its tassel swinging. */
 function LearnIcon() {
   return (
     <svg {...common} className="pi pi-learn">
-      <circle className="ring" cx="12" cy="12" r="8.6" />
-      <path className="play" d="M10.2 8.4 15.8 12l-5.6 3.6Z" fill="currentColor" stroke="none" />
+      <g className="cap">
+        <path className="board" d="M12 4.2 21.6 8.5 12 12.8 2.4 8.5Z" />
+        <path className="brim" d="M6.6 10.4v4.3c0 .3 2.2 2.5 5.4 2.5s5.4-2.2 5.4-2.5v-4.3" />
+      </g>
+      <g className="tassel">
+        <path d="M19.9 9.3v4.4" />
+        <circle cx="19.9" cy="15.1" r="1.3" fill="currentColor" stroke="none" />
+      </g>
     </svg>
   )
 }
 
-/** Build: the pieces arriving one after another. */
+/** Build: the angle brackets closing in around the slash. */
 function BuildIcon() {
-  const blocks = [
-    { x: 3.4, y: 3.4, i: 0 },
-    { x: 13.2, y: 3.4, i: 1 },
-    { x: 3.4, y: 13.2, i: 2 },
-    { x: 13.2, y: 13.2, i: 3 },
-  ]
   return (
     <svg {...common} className="pi pi-build">
-      {blocks.map((block) => (
-        <rect key={block.i} className="block" x={block.x} y={block.y} width="7.4" height="7.4" rx="1.8" style={step(block.i)} />
-      ))}
+      <path className="stroke-in slash" d="M13.6 5.6 10.4 18.4" style={step(0)} pathLength={1} />
+      <path className="stroke-in left" d="M8.6 8 4.4 12l4.2 4" style={step(1)} pathLength={1} />
+      <path className="stroke-in right" d="M15.4 8l4.2 4-4.2 4" style={step(2)} pathLength={1} />
     </svg>
   )
 }
