@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Skeo — palettes: where they live and how to ship one
+   --------------------------------------------------------------------------
+   The colour values used to sit in this file. They now live in
+   src/app/globals.css, because a second copy here was guaranteed to drift the
+   first time a value got nudged. This file is the map.
+
+   THE EIGHT
+     Claude .......... the default. Anthropic's own design language: ivory
+                       paper, warm near-black, terracotta as the single hot
+                       accent, manilla and kraft as the warm neutrals under
+                       it. The deep band is book cloth, not another black.
+     Ivory & Indigo .. warm ivory page, but the light bands rotate in
+                       temperature — cool porcelain for the analytical
+                       sections, clay for the human ones, violet for the
+                       credential — and the deep band is a jewel indigo.
+     Original ........ exactly what was there before, restored from git, with
+                       the band system switched off.
+     Violet Paper .... the existing brand, banded and nothing more. The most
+                       conservative of the eight.
+     Ink & Oat ....... warm paper, oat and sand tints, one cool mist band.
+                       Editorial.
+     Graphite ........ neutral greys, near-black heavy band, violet held back
+                       to the two product sections.
+     Charcoal ........ every band dark. Works by elevation rather than tone.
+     Mono ............ black, white and greys, no hue at all. Old school.
+
+   WHERE EVERYTHING IS, in globals.css
+     :root ................. the Claude palette, and the fallback if the
+                             data-palette attribute is ever missing
+     ALTERNATE PALETTES .... the other seven, each scoped to
+                             :root[data-palette='...']. Four of them carry a
+                             patch block for the places that hardcode a
+                             colour and so cannot follow a token
+     second pass ........... the last of the hardcoded violets — the
+                             credential glow and foil, the pro card field,
+                             the meters, the focus outlines — redone for
+                             Claude and Mono
+     SECTION BANDS ......... which section stands on which band. Shared by
+                             all eight; never edited when a palette is
+                             swapped
+     PALETTE SWITCHER ...... styles for the preview control
+
+   HOW THE SWITCHING WORKS
+   layout.tsx serves data-palette="claude" on <html>, so the patch blocks
+   match from the first byte — with no attribute a palette gets its tokens but
+   not its patches. A boot script in <head> overrides it with any stored
+   choice before first paint. The control at the bottom-left writes both the
+   attribute and localStorage. src/components/PaletteSwitcher.tsx.
+
+   SHIPPING ONE
+   1. If you ship Claude, it is already in :root — go to step 3. Otherwise
+      fold the chosen :root[data-palette='...'] block into the main :root,
+      replacing the values it collides with, and retarget its patch blocks
+      from :root[data-palette='x'] .foo to plain .foo.
+   2. Delete the other palette blocks.
+   3. Delete the PALETTE SWITCHER style block, src/components/PaletteSwitcher.tsx,
+      and in src/app/layout.tsx the <PaletteSwitcher />, the <head> boot
+      script, and the data-palette attribute on <html>.
+   4. Charcoal only: move its `color-scheme: dark` into :root and set
+      `colorScheme: 'dark'` in the viewport export in layout.tsx.
+
+   The band system — four light tones and two dark ones, cycled so no two
+   neighbouring sections share a background — is independent of the palette.
+   Swapping one moves the colour; it never moves the rhythm. Original is the
+   one case that turns the rhythm off.
+   ========================================================================== */

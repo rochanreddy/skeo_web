@@ -9,41 +9,98 @@
    Fonts arrive as CSS variables from next/font (see app/layout.tsx).
    ========================================================================== */
 
+/* The layout ships data-palette="claude" on <html>, so an alternate block
+   below always wins when one is chosen. These values are also the fallback
+   if the attribute is ever missing. */
 :root {
   /* ---- Brand ---------------------------------------------------------- */
-  --ink: #14121c;
-  --purple: #6c4af2;
-  --lime: #dfff75;
-  --lav: #e9e4ff;
-  --yellow: #ffcf52;
-  --paper: #fff;
+  /* Palette: Claude.
+     Built from Anthropic's own design language rather than from a guess at
+     it — ivory paper, a warm near-black, terracotta as the single hot accent,
+     and manilla and kraft as the warm neutrals that sit under it. On a
+     product whose whole subject is Claude, and whose accreditation strip
+     already carries the Anthropic mark, this is the palette that is telling
+     the truth. The rest of the page is warm and quiet so the one hot colour
+     lands every time it appears.
+
+     Two decisions carry it:
+     - The page is never pure white. Cards are, and they are the only pure
+       white on it, which is exactly how claude.ai reads — white sheets on an
+       ivory ground.
+     - The deep band is book cloth, not another black, and the highlight on
+       it is manilla rather than a bright accent. Warm on warm, the way the
+       Anthropic covers work. */
+  --ink: #191817; /* warm near-black */
+  --purple: #bd5a38; /* the accent slot — Claude terracotta */
+  --lime: #ebdbbc; /* the highlight slot — Manilla */
+  --lav: #e5dfd2;
+  --yellow: #d4a27f; /* Kraft */
+  --paper: #fafaf7; /* Ivory light — the page */
 
   /* Ink ramp. Every piece of text on a light surface picks one of these five
      steps — before this the page carried ~28 one-off greys, which is what made
-     it read as assembled rather than designed. */
-  --ink-2: #46414f; /* body copy */
-  --ink-3: var(--ink-3); /* secondary copy */
-  --ink-4: #8a8497; /* tertiary, captions */
-  --ink-5: #aba5b8; /* faint labels, disabled */
+     it read as assembled rather than designed.
+     Warm greys, not neutral ones: a neutral grey on ivory reads as dirty. */
+  --ink-2: #4a4741; /* body copy — 8.9:1 on paper */
+  /* Both of the next two are set against the credential band, the darkest
+     light surface on the page. A ramp that only passes on its best
+     background is not a ramp. */
+  --ink-3: #625c53; /* secondary copy — 5.2:1 at worst */
+  --ink-4: #837d73; /* tertiary, captions — 3.2:1 at worst, large-text AA */
+  --ink-5: #a9a297; /* faint labels, disabled */
   --muted: var(--ink-3); /* legacy alias — used widely as a text colour */
 
-  /* Purple ramp, so the accent has somewhere to go besides one flat value. */
-  --purple-ink: #4d2fc9; /* accent text / hover, passes AA on white */
-  --purple-soft: #f4f0ff; /* tinted surface */
-  --purple-line: #ded3fb; /* tinted border */
+  /* Accent ramp. The recognisable terracotta is a fill and a mark; for
+     accent text it is too light on ivory, so that has its own darker step. */
+  --purple-ink: #96421f; /* accent text / hover — 5.3:1 at worst */
+  --purple-soft: #f7eae3; /* tinted surface */
+  --purple-line: #ebcfc1; /* tinted border */
 
   /* Surfaces and rules. */
-  --surface: #faf9fc; /* raised-but-quiet panel */
-  --surface-2: #f5f3f9; /* inset wells, tracks */
-  --line: #e8e5ed;
-  --line-soft: #f1eff6;
+  /* The paper-coloured surface a card sits on. Pure white here, and the only
+     pure white in the palette — see the note at the top of this block. */
+  --card-bg: #ffffff;
+  /* Text that sits on an --ink fill (the solid button). Inverts with the
+     palette; --ink alone cannot, since it is light in a dark palette. */
+  --on-ink: #fff;
+
+  --surface: #f2f0e9; /* raised-but-quiet panel */
+  --surface-2: #eae7de; /* inset wells, tracks */
+  --line: #e3e0d6;
+  --line-soft: #eeebe3;
 
   /* Ink surfaces, for the dark bands. */
-  --ink-bg: #17131e;
-  --ink-bg-2: #211b31;
+  --ink-bg: #141413;
+  --ink-bg-2: #262624;
   --on-dark: #ffffff;
-  --on-dark-2: #c4bdd4;
-  --on-dark-3: #9a92ad;
+  --on-dark-2: #c8c2b6;
+  --on-dark-3: #9a9488;
+
+  /* ---- Section bands -------------------------------------------------- */
+  /* Every section owns a background and no two neighbours share one, so the
+     page reads as chapters rather than one scroll with three dark slabs in
+     it. Four light tones and two dark ones, cycled — see the band wiring at
+     the foot of this file for which section takes which.
+
+     This palette is warm throughout, so the bands separate by weight and by
+     how much pigment is in them rather than by temperature:
+       paper  ivory light .... the default, the reading surface
+       soft   ivory medium ... the analytical sections (comparison, pricing)
+       alt    manilla ........ the human sections (the problem, the reviews)
+       tint   book cloth ..... the brand moment (the credential), the only
+                               light band carrying the accent's own hue */
+  --band-paper: #fafaf7;
+  --band-soft: #f0eee6;
+  --band-tint: #f0e1d6;
+  --band-alt: #efe6d2;
+
+  /* The dark bands are lit from the top edge rather than flat-filled, so a
+     full-bleed band reads as a surface with a light on it. Two characters,
+     not two shades: a warm near-black opens and closes the page, and book
+     cloth — a deep terracotta brown — carries the two product sections. The
+     manilla highlight exists for that brown. */
+  --band-ink-grad: radial-gradient(105% 130% at 50% 0%, #2b2a26 0%, #1b1a18 46%, #141413 100%);
+  --band-deep-grad: radial-gradient(90% 70% at 50% 0%, #7a4331 0%, #4e2a1e 58%, #331a12 100%);
 
   /* ---- Type ----------------------------------------------------------- */
   --font: var(--font-sans), 'Manrope', system-ui, sans-serif;
@@ -379,7 +436,7 @@ svg {
   height: 48px;
   padding: 0 22px;
   background: var(--ink);
-  color: #fff;
+  color: var(--on-ink);
   border: 1px solid transparent;
   border-radius: var(--r-md);
   font-family: var(--font);
@@ -703,7 +760,7 @@ h2 em {
   transform: translate(-50%, -50%);
   border: 1px solid #e4e0ee;
   border-radius: 28px;
-  background: linear-gradient(165deg, #fff, var(--surface));
+  background: linear-gradient(165deg, var(--card-bg), var(--surface));
   box-shadow: 0 34px 70px #2b1a6826;
   overflow: hidden;
   z-index: 1;
@@ -1659,7 +1716,7 @@ h2 em {
   padding: 26px 22px 24px;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  background: #fff;
+  background: var(--card-bg);
   transition: border-color 0.3s ease, box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
 
@@ -1889,7 +1946,7 @@ h2 em {
   padding: clamp(18px, 2.2vw, 26px);
   border: 1px solid #ffffff1a;
   border-radius: var(--r-2xl);
-  background: #fff;
+  background: var(--card-bg);
   box-shadow: 0 40px 90px #0c07254d, 0 8px 24px #0c07252e;
   overflow: hidden;
   /* Angles come from TiltCard as custom properties. */
@@ -2074,7 +2131,7 @@ h2 em {
   padding: 9px 15px;
   border: 1px solid var(--line);
   border-radius: var(--r-pill);
-  background: #fff;
+  background: var(--card-bg);
   color: var(--ink-2);
   font-size: 13.5px;
   font-weight: 600;
@@ -2462,7 +2519,7 @@ h2 em {
   color: var(--ink);
   border: 1px solid #e4e0ee;
   border-radius: 28px;
-  background: linear-gradient(165deg, #fff, var(--surface));
+  background: linear-gradient(165deg, var(--card-bg), var(--surface));
   box-shadow: 0 34px 70px #2b1a6840;
   animation: jb-float 7s ease-in-out infinite;
 }
@@ -2512,7 +2569,7 @@ h2 em {
   margin-left: 8px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid #ece8f2;
   font: 500 10px var(--mono);
   color: var(--ink-4);
@@ -2741,7 +2798,7 @@ h2 em {
 }
 
 .chart-range button.is-active {
-  background: #fff;
+  background: var(--card-bg);
   color: var(--purple);
   box-shadow: 0 1px 3px #1a142c14;
 }
@@ -3215,7 +3272,7 @@ h2 em {
 /* The Skeo column carries a violet tint, so the comparison resolves visually
    before the reader has finished the rows. */
 .compare-column.new {
-  background: linear-gradient(180deg, var(--purple-soft), #fff 62%);
+  background: linear-gradient(180deg, var(--purple-soft), var(--card-bg) 62%);
 }
 
 .column-title {
@@ -3407,7 +3464,7 @@ h2 em {
   padding: 8px 14px 8px 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: #fff;
+  background: var(--card-bg);
   font-size: 12px;
   font-weight: 600;
   color: var(--ink-2);
@@ -3453,7 +3510,7 @@ h2 em {
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   padding: 30px;
-  background: #fff;
+  background: var(--card-bg);
 }
 
 .modules-card > p {
@@ -3536,7 +3593,7 @@ h2 em {
   padding: 7px 0;
   border: 1px solid #ddd8e6;
   border-radius: 999px;
-  background: #fff;
+  background: var(--card-bg);
   font: 700 10px var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -3721,7 +3778,7 @@ h2 em {
 
 .arrows button {
   border: 1px solid #dcd8e0;
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 50%;
   width: 34px;
   height: 34px;
@@ -3759,7 +3816,7 @@ h2 em {
   min-height: 240px;
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--card-bg);
   box-shadow: var(--shadow-sm);
   animation: quote-in 0.4s ease both;
 }
@@ -3908,7 +3965,7 @@ button.video-poster {
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--card-bg);
   color: var(--ink);
   display: grid;
   place-items: center;
@@ -4005,7 +4062,7 @@ button.video-poster:hover .video-poster-play {
   flex-direction: column;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  background: #fff;
+  background: var(--card-bg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
@@ -4067,7 +4124,7 @@ summary b {
   height: 24px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--card-bg);
   display: grid;
   place-items: center;
   font-size: 15px;
@@ -4456,7 +4513,7 @@ details p {
 }
 
 .modal {
-  background: #fff;
+  background: var(--card-bg);
   border-radius: 16px;
   padding: 34px;
   width: 100%;
@@ -4481,7 +4538,7 @@ details p {
   height: 30px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--card-bg);
   font-size: 12px;
   cursor: pointer;
   color: var(--ink-3);
@@ -5051,7 +5108,7 @@ details p {
   outline: 2px solid #c8b9ff;
   outline-offset: 1px;
   border-color: var(--purple);
-  background: #fff;
+  background: var(--card-bg);
 }
 
 .otp-boxes.invalid input {
@@ -6357,4 +6414,1347 @@ details p {
   --radius-lg: var(--r-lg);
   --radius-xl: var(--r-xl);
   --radius-2xl: var(--r-2xl);
+}
+
+
+/* ============ ALTERNATE PALETTES ============ */
+/* Eight palettes in total: the :root block above (Claude) and the seven here.
+   Each is a complete swap for the colour half of :root, and the four that
+   hardcode colours outside the token set carry their own patch block.
+   Switched by the data-palette attribute on <html>; the PaletteSwitcher
+   component writes it, and the layout ships "claude" as the served default.
+
+   No palette ever edits the SECTION BANDS wiring below. Swapping a palette
+   moves the colour; it never moves the rhythm. Picking Original is the one
+   case that turns the rhythm off.
+
+   Ship note: pick one, fold it into :root, and delete the rest along with the
+   switcher — everything from here to the wiring is preview scaffolding. */
+
+/* ---- Claude patches ----------------------------------------------------- */
+/* The tokens above do most of it. These are the places that hardcode a violet
+   or a lime and so cannot follow a token. Scoped to the palette, so they cost
+   the other seven nothing.
+   The layout ships with data-palette="claude" on <html>, which is why these
+   apply by default. */
+
+/* The lime CTA becomes manilla on book cloth — warm on warm, the way the
+   Anthropic covers work. Its label goes to a deep brown rather than the
+   olive-green that was written for lime. */
+:root[data-palette='claude'] .button-lime,
+:root[data-palette='claude'] .jobs .button,
+:root[data-palette='claude'] .pro .button {
+  background: var(--lime);
+  color: #3a2a1c;
+}
+
+:root[data-palette='claude'] .button-lime:hover:not(:disabled),
+:root[data-palette='claude'] .jobs .button:hover:not(:disabled) {
+  background: #f3e6cc;
+}
+
+/* On the dark bands the highlight is kraft — the terracotta lifted until it
+   reads as warm light rather than as a second accent. */
+:root[data-palette='claude'] .promise h2 em,
+:root[data-palette='claude'] .job-card i {
+  color: #e0a47c;
+}
+
+:root[data-palette='claude'] .opportunity-list li::before {
+  background: #d9a279;
+}
+
+/* The two poster fields behind the tool and video art, in book cloth. */
+:root[data-palette='claude'] .tool-poster {
+  background: radial-gradient(120% 100% at 12% 8%, #a05a3c 0%, #6b3826 46%, #40211a 100%);
+}
+
+:root[data-palette='claude'] .video-poster {
+  background: radial-gradient(115% 90% at 22% 12%, #7d4530 0%, #3a2119 55%, var(--ink-bg) 100%);
+}
+
+:root[data-palette='claude'] .cert-inner p {
+  color: #cfc7b8;
+}
+
+:root[data-palette='claude'] .cert-inner > div {
+  border-top-color: #5c5347;
+}
+
+/* Hairlines written as light violet-greys rather than var(--line). */
+:root[data-palette='claude'] .stage-panel,
+:root[data-palette='claude'] .stage-card-face,
+:root[data-palette='claude'] .jobboard,
+:root[data-palette='claude'] .jobboard-bar span,
+:root[data-palette='claude'] .jobboard-bar,
+:root[data-palette='claude'] .module-add,
+:root[data-palette='claude'] .arrows button,
+:root[data-palette='claude'] .accred-item:hover,
+:root[data-palette='claude'] .button-outline:hover:not(:disabled) {
+  border-color: #e3e0d6;
+}
+
+:root[data-palette='claude'] .stage-orbit {
+  border-color: #eae6da;
+}
+
+:root[data-palette='claude'] .jobboard-rail button:hover,
+:root[data-palette='claude'] .jobboard-stats button:hover,
+:root[data-palette='claude'] .jobboard-float {
+  border-color: #e6d4c6;
+}
+
+/* The job board's violet "lit" states, in the accent's own wash. */
+:root[data-palette='claude'] .jobboard-stats button.is-active,
+:root[data-palette='claude'] .jobboard-roles li.is-lit button,
+:root[data-palette='claude'] .jobboard-roles button:focus-visible,
+:root[data-palette='claude'] .jobboard-list .chart-label em,
+:root[data-palette='claude'] .jobboard-roles em,
+:root[data-palette='claude'] .card-brand {
+  background: #f7eae3;
+}
+
+:root[data-palette='claude'] .jobboard-float {
+  background: linear-gradient(120deg, #faf6ef, var(--surface));
+}
+
+:root[data-palette='claude'] .float-meter {
+  background: #e8e3d6;
+}
+
+:root[data-palette='claude'] .jobboard-float em {
+  background: #f5ebe1;
+}
+
+:root[data-palette='claude'] .jobboard-roles {
+  scrollbar-color: #d9d3c6 transparent;
+}
+
+:root[data-palette='claude'] .jobboard-roles::-webkit-scrollbar-thumb {
+  background: #ded8cb;
+}
+
+:root[data-palette='claude'] .jobboard-roles::-webkit-scrollbar-thumb:hover {
+  background: #c9c2b2;
+}
+
+:root[data-palette='claude'] .jobboard-bar i {
+  background: #dedace;
+}
+
+/* The window chrome keeps its traffic lights, warmed into the palette. */
+:root[data-palette='claude'] .jobboard-bar i:first-child {
+  background: #e0a99a;
+}
+
+:root[data-palette='claude'] .jobboard-bar i:nth-child(2) {
+  background: #e8cfa0;
+}
+
+/* Up and down keep their hues — a signal, not decoration — but move into
+   Anthropic's cactus and clay rather than a stock green and pink. */
+:root[data-palette='claude'] .chart-label em.up,
+:root[data-palette='claude'] .success-mark {
+  background: #e6eddd;
+}
+
+:root[data-palette='claude'] .chart-label em.down {
+  background: #f7e7e0;
+}
+
+/* Tinted wells and hover fills. */
+:root[data-palette='claude'] .chart-range,
+:root[data-palette='claude'] .arrows button:hover,
+:root[data-palette='claude'] .modal-close:hover,
+:root[data-palette='claude'] .auth-tabs {
+  background: #f0ede4;
+}
+
+:root[data-palette='claude'] .purchase-plan {
+  background: #f2f0e9;
+}
+
+:root[data-palette='claude'] .quote.featured {
+  background: #f7efe4;
+  border-color: #e5d5c0;
+}
+
+:root[data-palette='claude'] .quote-dots button,
+:root[data-palette='claude'] .pw-meter i {
+  background: #ded9cc;
+}
+
+:root[data-palette='claude'] .syllabus-head {
+  background: linear-gradient(170deg, #f7f5ee, #ffffff);
+}
+
+/* The decorative blocks behind the job art, in kraft and manilla. */
+:root[data-palette='claude'] .art-pink {
+  background: #f0dacb;
+}
+
+:root[data-palette='claude'] .art-yellow {
+  background: #ebdbbc;
+}
+
+:root[data-palette='claude'] .pw-meter[data-score='2'] i:nth-child(-n + 2) {
+  background: #d4a27f;
+}
+
+
+/* ==========================================================================
+   IVORY & INDIGO — warm ivory page, cool bands, jewel indigo
+   --------------------------------------------------------------------------
+   Same governing idea as the Claude palette — the page is never pure white,
+   cards are — but the four light bands rotate in temperature instead of
+   staying warm, and the rotation carries meaning: cool porcelain for the
+   analytical sections, clay for the human ones, violet for the credential.
+   Two dark bands with different jobs: a sober near-black that opens and
+   closes the page, and a saturated jewel indigo under the two product
+   sections. The lime accent was tuned for that indigo.
+   ========================================================================== */
+:root[data-palette='indigo'] {
+  --ink: #191527;
+  --purple: #6844f4;
+  --lime: #ddfb6e;
+  --lav: #e7e1fa;
+  --yellow: #ffc94a;
+  --paper: #fbf9f5;
+
+  --ink-2: #494356;
+  --ink-3: #655f74;
+  --ink-4: #807a8d;
+  --ink-5: #b0aabc;
+
+  --purple-ink: #4a2cc9;
+  --purple-soft: #efeafe;
+  --purple-line: #d9cffb;
+
+  --card-bg: #ffffff;
+  --on-ink: #fff;
+
+  --surface: #f4f1eb;
+  --surface-2: #ede9e1;
+  --line: #e6e1d8;
+  --line-soft: #f0ece4;
+
+  --ink-bg: #12101e;
+  --ink-bg-2: #241d3e;
+  --on-dark: #ffffff;
+  --on-dark-2: #c7c0db;
+  --on-dark-3: #9a93b2;
+
+  --band-paper: #fbf9f5;
+  --band-soft: #eff1f6;
+  --band-tint: #e7e3f3;
+  --band-alt: #f5e8db;
+
+  --band-ink-grad: radial-gradient(105% 130% at 50% 0%, #2a2247 0%, #191430 46%, #12101e 100%);
+  --band-deep-grad: radial-gradient(90% 70% at 50% 0%, #4331a0 0%, #2c1f6e 58%, #1d144b 100%);
+}
+
+/* ==========================================================================
+   VIOLET PAPER — the first pass at banding the existing brand
+   --------------------------------------------------------------------------
+   Skeo's own violet, finished properly and nothing more. Pure white paper,
+   the light run walking white to violet haze to lavender, a warm ivory
+   dropped in twice as the counterweight, and both darks staying in the
+   brand's violet. The most conservative of the eight — it changes the
+   rhythm without changing the brand.
+   ========================================================================== */
+:root[data-palette='violet'] {
+  --ink: #14121c;
+  --purple: #6c4af2;
+  --lime: #dfff75;
+  --lav: #e9e4ff;
+  --yellow: #ffcf52;
+  --paper: #ffffff;
+
+  --ink-2: #46414f;
+  --ink-3: #6b6577;
+  --ink-4: #8a8497;
+  --ink-5: #aba5b8;
+
+  --purple-ink: #4d2fc9;
+  --purple-soft: #f4f0ff;
+  --purple-line: #ded3fb;
+
+  --card-bg: #ffffff;
+  --on-ink: #fff;
+
+  --surface: #faf9fc;
+  --surface-2: #f5f3f9;
+  --line: #e8e5ed;
+  --line-soft: #f1eff6;
+
+  --ink-bg: #17131e;
+  --ink-bg-2: #241d39;
+  --on-dark: #ffffff;
+  --on-dark-2: #c4bdd4;
+  --on-dark-3: #9a92ad;
+
+  --band-paper: #ffffff;
+  --band-soft: #f6f3fc;
+  --band-tint: #efe9fb;
+  --band-alt: #fdf7ec;
+
+  --band-ink-grad: radial-gradient(105% 130% at 50% 0%, #292150 0%, #1b1528 46%, #17131e 100%);
+  --band-deep-grad: radial-gradient(90% 70% at 50% 0%, #3a2a6e 0%, #251b50 58%, #1c1440 100%);
+}
+
+/* ==========================================================================
+   INK & OAT — warm, editorial
+   --------------------------------------------------------------------------
+   Warm paper, oat and sand tints, one cool mist band running opposite them.
+   Reads more like print than software. The violet accent lands on warm paper
+   here instead of disappearing into a violet-tinted one.
+   ========================================================================== */
+:root[data-palette='oat'] {
+  --ink: #1b1710;
+  --purple: #6c4af2;
+  --lime: #dfff75;
+  --lav: #e9e4ff;
+  --yellow: #ffcf52;
+  --paper: #fffdf8;
+
+  --ink-2: #4b4438;
+  --ink-3: #6f6757;
+  --ink-4: #8d8474;
+  --ink-5: #b0a897;
+
+  --purple-ink: #4d2fc9;
+  --purple-soft: #f2eeff;
+  --purple-line: #ddd2f8;
+
+  --card-bg: #ffffff;
+  --on-ink: #fff;
+
+  --surface: #faf6ef;
+  --surface-2: #f4efe4;
+  --line: #e7e0d3;
+  --line-soft: #f0eae0;
+
+  --ink-bg: #191510;
+  --ink-bg-2: #2a2136;
+  --on-dark: #ffffff;
+  --on-dark-2: #c8c0b4;
+  --on-dark-3: #9a9286;
+
+  --band-paper: #fffdf8;
+  --band-soft: #faf5ea;
+  --band-tint: #f1e8d8;
+  --band-alt: #ebedf6; /* cool mist — the counterweight in this palette */
+
+  --band-ink-grad: radial-gradient(105% 130% at 50% 0%, #2c2432 0%, #1e1820 46%, #191510 100%);
+  --band-deep-grad: radial-gradient(90% 70% at 50% 0%, #3f2c68 0%, #281d49 58%, #1f1739 100%);
+}
+
+/* ==========================================================================
+   GRAPHITE & VIOLET — cool, technical
+   --------------------------------------------------------------------------
+   Neutral greys for the light run and a near-black graphite for the heavy
+   band, with violet held back to the tool and job sections and the accent
+   itself. Uses less violet, which makes the violet count for more.
+   ========================================================================== */
+:root[data-palette='graphite'] {
+  --ink: #14151a;
+  --purple: #6c4af2;
+  --lime: #dfff75;
+  --lav: #e9e4ff;
+  --yellow: #ffcf52;
+  --paper: #ffffff;
+
+  --ink-2: #43474f;
+  --ink-3: #676b75;
+  --ink-4: #868b96;
+  --ink-5: #a9aeb9;
+
+  --purple-ink: #4a2ec6;
+  --purple-soft: #f2effe;
+  --purple-line: #dad2fa;
+
+  --card-bg: #ffffff;
+  --on-ink: #fff;
+
+  --surface: #f8f9fb;
+  --surface-2: #f2f4f7;
+  --line: #e4e7ec;
+  --line-soft: #eef0f4;
+
+  --ink-bg: #121316;
+  --ink-bg-2: #222533;
+  --on-dark: #ffffff;
+  --on-dark-2: #c2c5cc;
+  --on-dark-3: #92959e;
+
+  --band-paper: #ffffff;
+  --band-soft: #f4f6f9;
+  --band-tint: #e9edf3;
+  --band-alt: #f6f2fd; /* violet warmth against the greys */
+
+  --band-ink-grad: radial-gradient(105% 130% at 50% 0%, #262a33 0%, #181a20 46%, #121316 100%);
+  --band-deep-grad: radial-gradient(90% 70% at 50% 0%, #382a6f 0%, #241b4b 58%, #1a1339 100%);
+}
+
+/* ==========================================================================
+   CHARCOAL — every band dark
+   --------------------------------------------------------------------------
+   The whole page on charcoal. The band idea still holds, but it works by
+   elevation rather than by tone: each band is a step of grey and the cards
+   sit a step above the band they are on. --ink inverts to near-white here,
+   which is the reason --on-ink and --card-bg exist at all.
+   Preview quality, not shipping quality — the patch block below covers the
+   structural surfaces, but the long tail of hand-coloured detail in the job
+   board will still show light in places.
+   ========================================================================== */
+:root[data-palette='charcoal'] {
+  --ink: #f2f3f5; /* "ink" is the reading colour, so here it is the light end */
+  --purple: #8b6df5; /* lifted off #6c4af2, which goes muddy on charcoal */
+  --lime: #dfff75;
+  --lav: #2a2740;
+  --yellow: #ffcf52;
+  --paper: #131417;
+
+  --ink-2: #c3c6cd;
+  --ink-3: #999da6;
+  --ink-4: #7c8089;
+  --ink-5: #5f636c;
+  --on-ink: #131417; /* the solid button is light-on-dark now, inverted */
+
+  --purple-ink: #b6a1ff;
+  --purple-soft: #211f33;
+  --purple-line: #3a3352;
+
+  --card-bg: #1b1d22; /* a step above the band, not the same grey */
+  --surface: #1e2026;
+  --surface-2: #24262d;
+  --line: #2e3138;
+  --line-soft: #26282e;
+
+  --ink-bg: #0d0e10;
+  --ink-bg-2: #1a1c22;
+  --on-dark: #ffffff;
+  --on-dark-2: #c4bdd4;
+  --on-dark-3: #9a92ad;
+
+  --band-paper: #131417;
+  --band-soft: #17181c;
+  --band-tint: #1c1e23;
+  --band-alt: #1a1720;
+
+  --band-ink-grad: radial-gradient(105% 130% at 50% 0%, #1e2028 0%, #121316 46%, #0d0e10 100%);
+  --band-deep-grad: radial-gradient(90% 70% at 50% 0%, #2a2450 0%, #1b1836 58%, #14121f 100%);
+
+  /* Shadows tuned for a dark ground: the white-page shadows are invisible
+     here, so elevation has to come from real black. */
+  --shadow-sm: 0 1px 2px #00000059, 0 2px 6px #0000003d;
+  --shadow-md: 0 2px 4px #00000052, 0 8px 20px #00000047;
+  --shadow-lg: 0 4px 8px #0000005c, 0 18px 40px #00000052;
+  --shadow-xl: 0 8px 16px #00000066, 0 34px 70px #0000005c;
+
+  /* The browser's own furniture — scrollbar, select, spellcheck — goes dark
+     too. Without this it is the one thing that gives away a light design
+     wearing dark paint. */
+  color-scheme: dark;
+}
+
+/* ---- Charcoal patches --------------------------------------------------- */
+/* The glass pill is white translucent, which reads as a light bar floating on
+   a dark page. Same material, inverted. */
+:root[data-palette='charcoal'] .nav {
+  border-color: #ffffff1a;
+  background: #1b1d2299;
+  box-shadow: 0 1px 1px #0000004d, 0 6px 20px #00000059, inset 0 1px 0 #ffffff14;
+}
+
+:root[data-palette='charcoal'] .nav-shell.scrolled .nav {
+  background: #1b1d22e0;
+  border-color: #ffffff26;
+}
+
+/* A chip that is white on purpose — it sits on the poster image, not on a
+   band — so it keeps its fill and only the text inverts back. */
+:root[data-palette='charcoal'] .poster-title b {
+  color: #14121c;
+}
+
+:root[data-palette='charcoal'] .stage-panel,
+:root[data-palette='charcoal'] .stage-card-face,
+:root[data-palette='charcoal'] .jobboard,
+:root[data-palette='charcoal'] .jobboard-bar span,
+:root[data-palette='charcoal'] .module-add,
+:root[data-palette='charcoal'] .arrows button,
+:root[data-palette='charcoal'] .cert-tools li,
+:root[data-palette='charcoal'] .accred-item:hover,
+:root[data-palette='charcoal'] .button-outline:hover:not(:disabled) {
+  border-color: #33363e;
+}
+
+:root[data-palette='charcoal'] .stage-orbit {
+  border-color: #2a2c33;
+}
+
+:root[data-palette='charcoal'] .jobboard-bar {
+  border-bottom-color: #2c2f36;
+}
+
+:root[data-palette='charcoal'] .jobboard-bar i {
+  background: #3a3d45;
+}
+
+:root[data-palette='charcoal'] .jobboard-list .chart-label em,
+:root[data-palette='charcoal'] .jobboard-roles em,
+:root[data-palette='charcoal'] .jobboard-roles li.is-lit button,
+:root[data-palette='charcoal'] .jobboard-roles button:focus-visible,
+:root[data-palette='charcoal'] .jobboard-stats button.is-active,
+:root[data-palette='charcoal'] .card-brand {
+  background: #241f3c;
+}
+
+:root[data-palette='charcoal'] .jobboard-rail button:hover,
+:root[data-palette='charcoal'] .jobboard-stats button:hover {
+  border-color: #40396a;
+}
+
+:root[data-palette='charcoal'] .jobboard-float {
+  background: linear-gradient(120deg, #1e1b2e, var(--surface));
+  border-color: #332c4d;
+}
+
+:root[data-palette='charcoal'] .float-meter {
+  background: #2b2540;
+}
+
+:root[data-palette='charcoal'] .jobboard-float em {
+  background: #2a2344;
+}
+
+:root[data-palette='charcoal'] .jobboard-roles {
+  scrollbar-color: #3a3358 transparent;
+}
+
+:root[data-palette='charcoal'] .jobboard-roles::-webkit-scrollbar-thumb {
+  background: #3a3358;
+}
+
+:root[data-palette='charcoal'] .jobboard-roles::-webkit-scrollbar-thumb:hover {
+  background: #4a4272;
+}
+
+:root[data-palette='charcoal'] .chart-range {
+  background: #202228;
+}
+
+:root[data-palette='charcoal'] .chart-label em.up {
+  background: #16301c;
+}
+
+:root[data-palette='charcoal'] .chart-label em.down {
+  background: #33191f;
+}
+
+:root[data-palette='charcoal'] .success-mark {
+  background: #1c3320;
+}
+
+:root[data-palette='charcoal'] .field.invalid select,
+:root[data-palette='charcoal'] .otp-boxes.invalid input {
+  background: #2a191c;
+  border-color: #6b3a3a;
+}
+
+:root[data-palette='charcoal'] .arrows button:hover,
+:root[data-palette='charcoal'] .modal-close:hover {
+  background: #24262d;
+}
+
+:root[data-palette='charcoal'] .auth-tabs,
+:root[data-palette='charcoal'] .purchase-plan {
+  background: #1e2026;
+}
+
+:root[data-palette='charcoal'] .quote.featured {
+  background: #211d33;
+  border-color: #37305a;
+}
+
+:root[data-palette='charcoal'] .quote-dots button,
+:root[data-palette='charcoal'] .pw-meter i {
+  background: #2e3138;
+}
+
+:root[data-palette='charcoal'] .syllabus-head {
+  background: linear-gradient(170deg, #1d1f26, var(--card-bg));
+}
+
+:root[data-palette='charcoal'] .art-pink {
+  background: #5a2b3a;
+}
+
+:root[data-palette='charcoal'] .art-yellow {
+  background: #4d4222;
+}
+
+:root[data-palette='charcoal'] .avatars b:first-child {
+  background: #8a4f33;
+}
+
+
+/* ==========================================================================
+   ORIGINAL — the palette as it was before any of this
+   --------------------------------------------------------------------------
+   Restored from git, values and all, so there is a real baseline to judge
+   the others against rather than a memory of one. This turns the band system
+   off: every section goes back to the white it was on, and the four dark
+   gradients go back to their own hand-tuned values.
+
+   One thing is deliberately not restored — `--ink-3` was written as
+   `--ink-3: var(--ink-3)`, which is invalid, so every use of it silently fell
+   back to full --ink. Secondary copy across the whole page was rendering at
+   heading strength. That was a bug, not a colour choice.
+   ========================================================================== */
+:root[data-palette='original'] {
+  --ink: #14121c;
+  --purple: #6c4af2;
+  --lime: #dfff75;
+  --lav: #e9e4ff;
+  --yellow: #ffcf52;
+  --paper: #fff;
+
+  --ink-2: #46414f;
+  --ink-3: #6b6577;
+  --ink-4: #8a8497;
+  --ink-5: #aba5b8;
+
+  --purple-ink: #4d2fc9;
+  --purple-soft: #f4f0ff;
+  --purple-line: #ded3fb;
+
+  --card-bg: #fff;
+  --on-ink: #fff;
+
+  --surface: #faf9fc;
+  --surface-2: #f5f3f9;
+  --line: #e8e5ed;
+  --line-soft: #f1eff6;
+
+  --ink-bg: #17131e;
+  --ink-bg-2: #211b31;
+  --on-dark: #ffffff;
+  --on-dark-2: #c4bdd4;
+  --on-dark-3: #9a92ad;
+}
+
+/* ---- Original: bands off ------------------------------------------------ */
+/* Everything that took a band goes back to plain paper, and the two sections
+   that were re-tinted go back to their own values. */
+:root[data-palette='original'] .accred-strip,
+:root[data-palette='original'] .problem,
+:root[data-palette='original'] .comparison,
+:root[data-palette='original'] .pricing,
+:root[data-palette='original'] .logo-strip {
+  --band: var(--paper);
+}
+
+:root[data-palette='original'] .proof-section {
+  --band: #f2eefc;
+  border-top: 1px solid #e4dcf7;
+}
+
+:root[data-palette='original'] .testimonials {
+  --band: var(--surface);
+}
+
+/* The band wiring re-derives hairlines and wells from the band. With no
+   bands there is nothing to derive from, so they go back to flat values. */
+:root[data-palette='original'] .accred-strip,
+:root[data-palette='original'] .problem,
+:root[data-palette='original'] .proof-section,
+:root[data-palette='original'] .comparison,
+:root[data-palette='original'] .pricing,
+:root[data-palette='original'] .logo-strip,
+:root[data-palette='original'] .testimonials {
+  --line: #e8e5ed;
+  --line-soft: #f1eff6;
+  --surface: #faf9fc;
+  --surface-2: #f5f3f9;
+}
+
+/* No band means nothing to bleed to the viewport edge. */
+:root[data-palette='original'] .problem,
+:root[data-palette='original'] .comparison {
+  box-shadow: none;
+  clip-path: none;
+}
+
+/* The table was not a card here — the columns sat straight on the page. */
+:root[data-palette='original'] .compare-grid {
+  background: transparent;
+}
+
+:root[data-palette='original'] .accred-strip,
+:root[data-palette='original'] .logo-strip {
+  border-block: 1px solid var(--line);
+}
+
+/* The four dark sections, each with its own gradient rather than two shared
+   ones — this is what the page had. */
+:root[data-palette='original'] .promise {
+  background: radial-gradient(105% 130% at 50% 0%, #262046 0%, #1a1526 46%, var(--ink-bg) 100%);
+}
+
+:root[data-palette='original'] .tools {
+  background: radial-gradient(90% 70% at 50% 0%, #33255f 0%, #241a4d 58%, #1d1540 100%);
+}
+
+:root[data-palette='original'] .jobs {
+  background: radial-gradient(90% 70% at 68% 0%, #2e2547 0%, var(--ink-bg-2) 52%, #1a1528 100%);
+}
+
+:root[data-palette='original'] .footer {
+  background: radial-gradient(120% 90% at 50% -10%, #2b2340 0%, #1b1626 42%, #141019 100%);
+}
+
+:root[data-palette='original'] .certificate {
+  background: #241d39;
+}
+
+/* ==========================================================================
+   MONO — old school, black and white and nothing else
+   --------------------------------------------------------------------------
+   Swiss poster rules: no hue anywhere, so the bands have to work on lightness
+   alone and the accent collapses into the ink. Everything that was violet or
+   lime becomes a step of grey or plain white, which means the only colour
+   left on the page is the photography and the one red an error message needs
+   to stay readable as an error.
+
+   It asks more of the typography than any of the others, because tone is the
+   only variable left. Where it works it will look expensive; where the layout
+   was leaning on violet to carry a distinction, that distinction disappears
+   and you will see exactly which ones those were.
+   ========================================================================== */
+:root[data-palette='mono'] {
+  --ink: #0b0b0b;
+  --purple: #0b0b0b; /* the accent collapses into the ink */
+  --lime: #ffffff; /* the CTA on dark bands goes white-on-black */
+  --lav: #ededed;
+  --yellow: #e0e0e0;
+  --paper: #ffffff;
+
+  --ink-2: #3a3a3a;
+  /* Both set against #e1e1e1, the mono tint band, which is much darker than
+     any light band in the other two palettes — a grey that passes on white
+     here fails by the time it reaches the credential section. */
+  --ink-3: #646464; /* 4.5:1 at worst */
+  --ink-4: #7b7b7b; /* 3.2:1 at worst, large-text AA */
+  --ink-5: #a8a8a8;
+
+  --purple-ink: #0b0b0b;
+  --purple-soft: #f0f0f0;
+  --purple-line: #c9c9c9;
+
+  --card-bg: #ffffff;
+  --on-ink: #ffffff;
+
+  --surface: #f6f6f6;
+  --surface-2: #efefef;
+  --line: #d8d8d8;
+  --line-soft: #e9e9e9;
+
+  --ink-bg: #0b0b0b;
+  --ink-bg-2: #1c1c1c;
+  --on-dark: #ffffff;
+  --on-dark-2: #c4c4c4;
+  --on-dark-3: #949494;
+
+  /* Four steps of one grey. With no temperature to rotate through, the only
+     thing separating a band from its neighbour is lightness, so the steps are
+     wider here than in the other palettes — 3 to 5 points rather than 2. */
+  --band-paper: #ffffff;
+  --band-soft: #f7f7f7;
+  --band-tint: #e1e1e1;
+  --band-alt: #ececec;
+
+  /* Nearly flat. A pronounced gradient reads as a lighting effect, which is
+     the opposite of what a black-and-white page is claiming to be. */
+  --band-ink-grad: radial-gradient(105% 130% at 50% 0%, #1c1c1c 0%, #101010 55%, #0b0b0b 100%);
+  --band-deep-grad: radial-gradient(90% 70% at 50% 0%, #333333 0%, #1e1e1e 60%, #161616 100%);
+
+  /* Shadows go tight and neutral. The violet-tinted ambient shadows the rest
+     of the palettes use are a soft, modern, coloured-light idea, and it does
+     not belong here. */
+  --shadow-sm: 0 1px 2px #00000012;
+  --shadow-md: 0 2px 6px #0000001a;
+  --shadow-lg: 0 6px 18px #00000020;
+  --shadow-xl: 0 14px 40px #00000026;
+}
+
+/* ---- Mono patches ------------------------------------------------------- */
+/* The literals. Grouped by what they are rather than by where they live, so
+   it is obvious what rule each one is following. */
+
+/* Hairlines written as light violet-greys rather than var(--line). */
+:root[data-palette='mono'] .stage-panel,
+:root[data-palette='mono'] .stage-card-face,
+:root[data-palette='mono'] .jobboard,
+:root[data-palette='mono'] .jobboard-bar span,
+:root[data-palette='mono'] .jobboard-bar,
+:root[data-palette='mono'] .jobboard-rail button:hover,
+:root[data-palette='mono'] .jobboard-stats button:hover,
+:root[data-palette='mono'] .jobboard-float,
+:root[data-palette='mono'] .module-add,
+:root[data-palette='mono'] .arrows button,
+:root[data-palette='mono'] .quote.featured,
+:root[data-palette='mono'] .accred-item:hover,
+:root[data-palette='mono'] .button-outline:hover:not(:disabled) {
+  border-color: #dcdcdc;
+}
+
+:root[data-palette='mono'] .stage-orbit {
+  border-color: #e4e4e4;
+}
+
+/* The lime accent. It is the page's one shout, so in mono it becomes the
+   loudest thing black and white has: plain white on a black band. */
+:root[data-palette='mono'] .button-lime,
+:root[data-palette='mono'] .jobs .button,
+:root[data-palette='mono'] .pro .button {
+  background: #ffffff;
+  color: #0b0b0b;
+}
+
+:root[data-palette='mono'] .button-lime:hover:not(:disabled),
+:root[data-palette='mono'] .jobs .button:hover:not(:disabled) {
+  background: #ececec;
+}
+
+:root[data-palette='mono'] .promise h2 em,
+:root[data-palette='mono'] .job-card i {
+  color: #ffffff;
+}
+
+:root[data-palette='mono'] .opportunity-list li::before {
+  background: #ffffff;
+}
+
+/* The two violet poster fields behind the tool and video art. */
+:root[data-palette='mono'] .tool-poster {
+  background: radial-gradient(120% 100% at 12% 8%, #4a4a4a 0%, #2a2a2a 46%, #171717 100%);
+}
+
+:root[data-palette='mono'] .video-poster {
+  background: radial-gradient(115% 90% at 22% 12%, #3d3d3d 0%, #1f1f1f 55%, var(--ink-bg) 100%);
+}
+
+:root[data-palette='mono'] .cert-inner p {
+  color: #c4c4c4;
+}
+
+:root[data-palette='mono'] .cert-inner > div {
+  border-top-color: #4a4a4a;
+}
+
+/* Violet-tinted "lit" and active states across the job board. */
+:root[data-palette='mono'] .jobboard-stats button.is-active,
+:root[data-palette='mono'] .jobboard-roles li.is-lit button,
+:root[data-palette='mono'] .jobboard-roles button:focus-visible,
+:root[data-palette='mono'] .jobboard-list .chart-label em,
+:root[data-palette='mono'] .jobboard-roles em,
+:root[data-palette='mono'] .card-brand {
+  background: #f0f0f0;
+}
+
+:root[data-palette='mono'] .jobboard-float {
+  background: linear-gradient(120deg, #fafafa, var(--surface));
+}
+
+:root[data-palette='mono'] .float-meter {
+  background: #e4e4e4;
+}
+
+:root[data-palette='mono'] .jobboard-roles {
+  scrollbar-color: #d4d4d4 transparent;
+}
+
+:root[data-palette='mono'] .jobboard-roles::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+}
+
+:root[data-palette='mono'] .jobboard-roles::-webkit-scrollbar-thumb:hover {
+  background: #c0c0c0;
+}
+
+/* The window chrome dots on the job board panel. Their whole job is to look
+   like a browser, and a browser's traffic lights are the one place a reader
+   will not miss the colour. */
+:root[data-palette='mono'] .jobboard-bar i {
+  background: #dcdcdc;
+}
+
+:root[data-palette='mono'] .jobboard-bar i:first-child {
+  background: #b4b4b4;
+}
+
+:root[data-palette='mono'] .jobboard-bar i:nth-child(2) {
+  background: #cccccc;
+}
+
+/* Up and down were green and pink. In mono the arrow glyph has to carry it,
+   so both chips take the same neutral and the sign does the work. */
+:root[data-palette='mono'] .chart-label em.up,
+:root[data-palette='mono'] .chart-label em.down,
+:root[data-palette='mono'] .success-mark {
+  background: #ededed;
+}
+
+/* Tinted wells and hover fills. */
+:root[data-palette='mono'] .chart-range,
+:root[data-palette='mono'] .arrows button:hover,
+:root[data-palette='mono'] .modal-close:hover,
+:root[data-palette='mono'] .auth-tabs {
+  background: #f1f1f1;
+}
+
+:root[data-palette='mono'] .quote.featured {
+  background: #f2f2f2;
+}
+
+:root[data-palette='mono'] .purchase-plan {
+  background: #f4f4f4;
+}
+
+:root[data-palette='mono'] .quote-dots button,
+:root[data-palette='mono'] .pw-meter i {
+  background: #d4d4d4;
+}
+
+:root[data-palette='mono'] .syllabus-head {
+  background: linear-gradient(170deg, #fafafa, #ffffff);
+}
+
+/* The decorative blocks behind the job art. */
+:root[data-palette='mono'] .art-pink {
+  background: #e4e4e4;
+}
+
+:root[data-palette='mono'] .art-yellow {
+  background: #d6d6d6;
+}
+
+:root[data-palette='mono'] .avatars b:first-child {
+  background: #c4c4c4;
+}
+
+/* The password meter's mid step was amber. Strength now reads as how much of
+   the bar is filled, which is what the control was always really saying.
+   The error red stays red everywhere — it is a signal, not decoration. */
+:root[data-palette='mono'] .pw-meter[data-score='2'] i:nth-child(-n + 2) {
+  background: #8e8e8e;
+}
+
+/* ---- Claude and Mono: the second pass ----------------------------------- */
+/* The violets that are not in the token set and not in either patch block
+   above — the credential's glow and foil, the pro card's field, the skill
+   meters, the two focus outlines, the scroll progress bar. Every one of them
+   was written as a literal, and every one of them is the kind of small bright
+   thing that gives a palette away if it is left behind. Charcoal keeps its
+   violets because its dark bands are violet; these two cannot. */
+
+/* Credential card — its glow, foil mark and rules. */
+:root[data-palette='claude'] .cert-glow {
+  background: #b8542f;
+}
+
+:root[data-palette='claude'] .certificate {
+  box-shadow: inset 0 0 0 1px #4a3a2e;
+}
+
+:root[data-palette='claude'] .cert-inner {
+  border-color: #c9a68c;
+}
+
+:root[data-palette='claude'] .cert-mark {
+  background: #e8d5c2;
+  color: #3a2a1c;
+}
+
+:root[data-palette='claude'] .cert-inner small {
+  color: #cbbcac;
+}
+
+/* The eyebrow on the two dark product bands, warmed to sit on book cloth. */
+:root[data-palette='claude'] .tools-intro .eyebrow,
+:root[data-palette='claude'] .jobs .eyebrow {
+  color: #d3b9a6;
+}
+
+/* Job cards on the dark band. */
+:root[data-palette='claude'] .job-card {
+  border-color: #5c4436;
+}
+
+:root[data-palette='claude'] .job-card:hover {
+  border-color: #8a6349;
+}
+
+:root[data-palette='claude'] .jobboard-stats button.is-active {
+  border-color: #e0bda6;
+}
+
+/* Meters and the scroll bar: the accent running into a lighter tint of
+   itself, which in this palette is kraft rather than a pale violet. */
+:root[data-palette='claude'] .skill-bar i,
+:root[data-palette='claude'] .float-meter span {
+  background: linear-gradient(90deg, var(--purple), #e0a47c);
+}
+
+:root[data-palette='claude'] .scroll-progress {
+  background: linear-gradient(90deg, var(--purple), #d98f63 60%, var(--lime));
+}
+
+/* The pro price card's own dark field. */
+:root[data-palette='claude'] .price-card.pro {
+  background: radial-gradient(120% 100% at 50% 0%, #3a2a22 0%, var(--ink-bg-2) 62%);
+}
+
+:root[data-palette='claude'] .pro .plan {
+  color: #e0c4ab;
+}
+
+:root[data-palette='claude'] .avatars b {
+  background: #c07c56;
+}
+
+/* Focus outlines. These are the one place a stray violet is genuinely
+   disruptive, because they appear over the top of whatever is beneath. */
+:root[data-palette='claude'] .field select:focus,
+:root[data-palette='claude'] .otp-boxes input:focus {
+  outline-color: #e3b99e;
+}
+
+:root[data-palette='claude'] .syllabus-list article > ul li {
+  background: #e2c6b2;
+}
+
+/* ---- The same set, in mono ---------------------------------------------- */
+:root[data-palette='mono'] .cert-glow {
+  background: #4a4a4a;
+}
+
+:root[data-palette='mono'] .certificate {
+  box-shadow: inset 0 0 0 1px #3a3a3a;
+}
+
+:root[data-palette='mono'] .cert-inner {
+  border-color: #8e8e8e;
+}
+
+:root[data-palette='mono'] .cert-mark {
+  background: #e4e4e4;
+  color: #1c1c1c;
+}
+
+:root[data-palette='mono'] .cert-inner small {
+  color: #b5b5b5;
+}
+
+:root[data-palette='mono'] .tools-intro .eyebrow,
+:root[data-palette='mono'] .jobs .eyebrow {
+  color: #b0b0b0;
+}
+
+:root[data-palette='mono'] .job-card {
+  border-color: #3a3a3a;
+}
+
+:root[data-palette='mono'] .job-card:hover {
+  border-color: #5e5e5e;
+}
+
+:root[data-palette='mono'] .jobboard-stats button.is-active {
+  border-color: #c4c4c4;
+}
+
+:root[data-palette='mono'] .skill-bar i,
+:root[data-palette='mono'] .float-meter span {
+  background: linear-gradient(90deg, #0b0b0b, #6a6a6a);
+}
+
+:root[data-palette='mono'] .scroll-progress {
+  background: linear-gradient(90deg, #0b0b0b, #6a6a6a 60%, #b5b5b5);
+}
+
+:root[data-palette='mono'] .price-card.pro {
+  background: radial-gradient(120% 100% at 50% 0%, #2c2c2c 0%, var(--ink-bg-2) 62%);
+}
+
+:root[data-palette='mono'] .pro .plan {
+  color: #c4c4c4;
+}
+
+:root[data-palette='mono'] .avatars b {
+  background: #8e8e8e;
+}
+
+:root[data-palette='mono'] .field select:focus,
+:root[data-palette='mono'] .otp-boxes input:focus {
+  outline-color: #9a9a9a;
+}
+
+:root[data-palette='mono'] .syllabus-list article > ul li {
+  background: #d4d4d4;
+}
+
+
+/* ============ SECTION BANDS ============ */
+/* Which background each section stands on. Tokens are in :root at the top of
+   this file; skeo-palettes.css at the repo root holds two alternative
+   palettes that drop straight into that block and leave these rules alone.
+
+   The running order down the page:
+     hero            paper
+     accreditation   soft
+     problem         alt
+     core promise    INK
+     tools           DEEP
+     projects        paper
+     certification   tint
+     job board       DEEP
+     comparison      soft  -.  one band: the two are written to read as a
+     pricing         soft  -'  single thought, so they share a background
+     trust strip     paper
+     testimonials    alt
+     faq             paper
+     footer          INK */
+
+/* ---- 2.1 Which band each section takes ---------------------------------- */
+.accred-strip {
+  --band: var(--band-soft);
+}
+
+.problem {
+  --band: var(--band-alt);
+}
+
+.proof-section {
+  --band: var(--band-tint);
+}
+
+.comparison,
+.pricing {
+  --band: var(--band-soft);
+}
+
+.logo-strip {
+  --band: var(--band-paper);
+}
+
+.testimonials {
+  --band: var(--band-alt);
+}
+
+/* ---- 2.2 Painting the light bands --------------------------------------- */
+/* Hairlines and wells re-derive from whatever band they land on. Without this
+   a fixed --line goes invisible on the darker tints, and a fixed --surface
+   (which is within 2% of --band-soft) makes the recessed halves of cards
+   dissolve into the page. --surface is mixed from white rather than from the
+   band precisely so a well never matches the band it is sitting on. */
+.accred-strip,
+.problem,
+.proof-section,
+.comparison,
+.pricing,
+.logo-strip,
+.testimonials {
+  background: var(--band);
+
+  --line: color-mix(in oklab, var(--band), var(--ink) 12%);
+  --line-soft: color-mix(in oklab, var(--band), var(--ink) 6%);
+  --surface: color-mix(in oklab, var(--card-bg), var(--ink) 4%);
+  --surface-2: color-mix(in oklab, var(--card-bg), var(--ink) 7%);
+}
+
+/* The comparison table sat straight on the page when the page was white.
+   On a band its recessed "old" column lands within a couple of points of the
+   band itself, so the whole table dissolves. Making the grid a card fixes it
+   at the root: the table is now an object on the band, and the old/new split
+   happens inside it where it belongs. */
+.compare-grid {
+  background: var(--card-bg);
+}
+
+/* Problem and Comparison carry `wrap` on the <section> itself, so they are
+   1440px-wide centred boxes — a background on them would stop short of the
+   viewport edge. The spread shadow carries the band out to full width
+   (shadows create neither layout nor scrollbars) and the clip trims it flush
+   at the top and bottom so it cannot bleed into the neighbouring sections.
+   The alternative, if you would rather not carry this: move `wrap` off the
+   <section> and onto a <div> inside it in Problem.tsx and Comparison.tsx,
+   then delete this rule. */
+.problem,
+.comparison {
+  box-shadow: 0 0 0 100vmax var(--band);
+  clip-path: inset(0 -100vmax);
+}
+
+/* The tone change is the edge now, so the hairlines on the two thin strips
+   are a second divider doing a job that is already done. */
+.accred-strip,
+.logo-strip {
+  border-block: none;
+}
+
+.proof-section {
+  border-top: none;
+}
+
+/* ---- 2.3 The dark bands ------------------------------------------------- */
+/* Two dark tones, each used twice and never next to its own twin: ink opens
+   and closes the page, deep violet carries the two product sections. */
+.promise,
+.footer {
+  background: var(--band-ink-grad);
+}
+
+.tools,
+.jobs {
+  background: var(--band-deep-grad);
+}
+
+/* Dark cards sitting on light bands follow the same ink, so the certificate,
+   the Pro price card and the job panel read as one material. */
+.certificate {
+  background: var(--ink-bg-2);
+}
+
+/* ============ PALETTE SWITCHER (preview scaffolding) ============ */
+/* Every value here is a token, so the control re-colours itself with whatever
+   palette it is switching to — including mono, where a violet-tinted control
+   would be the one piece of colour left on the page.
+   Delete this block with the PaletteSwitcher component. */
+.palette-switcher {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  /* Above the nav (30) and the noise overlay (20), below the modals (100) so
+     it never sits on top of a dialog. */
+  z-index: 40;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: var(--font);
+}
+
+.palette-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 40px;
+  padding: 0 15px 0 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card-bg);
+  color: var(--ink-2);
+  font: 700 12.5px var(--font);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s ease;
+}
+
+.palette-toggle:hover {
+  transform: translateY(-1.5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--purple-line);
+}
+
+.palette-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  width: 216px;
+  /* Eight rows is taller than a short laptop window has room for above the
+     toggle, so the list scrolls rather than running off the top. */
+  max-height: min(420px, calc(100vh - 120px));
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-xl);
+}
+
+/* `hidden` is what React sets when the list is closed; without this the
+   display:flex above would keep overriding it. */
+.palette-list[hidden] {
+  display: none;
+}
+
+.palette-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink-2);
+  font: 600 13px var(--font);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.palette-option:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.palette-option[aria-pressed='true'] {
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+}
+
+.palette-option b {
+  font-weight: 700;
+}
+
+/* The one-word character note, pushed to the far edge as a quiet caption. */
+.palette-option i {
+  margin-left: auto;
+  font: 500 10px var(--mono);
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.palette-option[aria-pressed='true'] i {
+  color: var(--purple-ink);
+  opacity: 0.7;
+}
+
+/* Four bands of the palette shown as one stacked chip, which is a truer
+   preview than a single dot: what matters is how the tones sit together. */
+.palette-swatch {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 22px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.palette-swatch i {
+  flex: 1;
+}
+
+@media (max-width: 680px) {
+  .palette-switcher {
+    left: 14px;
+    bottom: 14px;
+  }
 }
