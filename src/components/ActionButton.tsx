@@ -28,6 +28,16 @@ export function AuthButton({ mode, children, className = 'button', arrow = '→'
   )
 }
 
+export function SyllabusButton({ children, className = 'button', arrow = '→' }: TriggerProps) {
+  const { openSyllabus } = useModal()
+  return (
+    <button type="button" className={className} onClick={openSyllabus}>
+      <span className="btn-label">{children}</span>
+      {arrow && <span aria-hidden="true">{arrow}</span>}
+    </button>
+  )
+}
+
 export function PurchaseButton({
   plan,
   children,

@@ -4711,6 +4711,185 @@ details p {
   justify-content: space-between;
 }
 
+/* ---- Curriculum overlay ---- */
+/* Wider than the form dialogs, because it is read rather than filled in. The
+   head and the foot stay put while the module list scrolls under them, so the
+   “what unlocks after enrolling” line and the CTA never scroll out of reach. */
+.syllabus-modal {
+  max-width: 720px;
+  padding: 0;
+  max-height: min(88vh, 860px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.syllabus-head {
+  flex: none;
+  padding: 30px 32px 22px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(170deg, #faf8ff, #fff);
+  border-radius: 16px 16px 0 0;
+}
+
+.syllabus-head h3 {
+  margin: 10px 0 8px;
+  font-size: 26px;
+  letter-spacing: -0.9px;
+  /* Clears the ✕ in the corner. */
+  padding-right: 34px;
+}
+
+.syllabus-head > p {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--ink-3);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.syllabus-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+}
+
+.syllabus-stats li {
+  padding: 6px 12px;
+  border: 1px solid var(--purple-line);
+  border-radius: var(--r-pill);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+  font: 700 10px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.syllabus-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  margin: 0;
+  padding: 6px 32px 22px;
+  counter-reset: none;
+}
+
+.syllabus-list > li {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.syllabus-list > li:last-child {
+  border-bottom: 0;
+  padding-bottom: 6px;
+}
+
+.syllabus-list article > header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+/* The module number, in the mono face the rest of the site counts with. */
+.syllabus-no {
+  flex: none;
+  width: 30px;
+  font: 700 13px var(--mono);
+  color: var(--purple);
+}
+
+.syllabus-list h4 {
+  margin: 0;
+  font-size: 16.5px;
+  letter-spacing: -0.35px;
+}
+
+.syllabus-list article > header small {
+  display: block;
+  margin-top: 3px;
+  font: 500 10px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.syllabus-list article > ul {
+  margin: 10px 0 0 44px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+
+.syllabus-list article > ul li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.syllabus-list article > ul li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #cfc3f4;
+}
+
+.syllabus-foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 18px 32px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 0 0 16px 16px;
+}
+
+.syllabus-foot p {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--ink-4);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  .syllabus-modal {
+    max-height: 92vh;
+  }
+  .syllabus-head {
+    padding: 26px 20px 18px;
+  }
+  .syllabus-head h3 {
+    font-size: 21px;
+  }
+  .syllabus-list {
+    padding: 4px 20px 18px;
+  }
+  .syllabus-list article > ul {
+    margin-left: 0;
+  }
+  .syllabus-foot {
+    padding: 16px 20px;
+  }
+  .syllabus-foot .button {
+    width: 100%;
+  }
+}
+
 /* Everything the checkout asks for has to be on screen at once — a scrollbar
    inside the panel hides the submit button and reads as a broken form. Every
    value below is tuned so the tallest state (cart + the background follow-up)

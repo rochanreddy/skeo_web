@@ -68,6 +68,111 @@ export const featuredTool = {
   blurb:
     'Master Claude from foundations to advanced, apply it to real-world problems, build powerful projects, and turn your skills into new opportunities.',
   cta: { label: 'Start Learning', href: '#pricing' },
+  /* The quiet half of the pair on the card — opens the curriculum overlay for
+     the reader who wants to see what is taught before paying for it. */
+  syllabus: { label: 'View Curriculum' },
+} as const
+
+/**
+ * The Claude curriculum, at overview depth.
+ *
+ * Deliberately not the full syllabus: each module lists what it covers, not
+ * every lesson and assignment inside it. The point of the overlay is to answer
+ * “what will I actually learn?” in a minute of reading — the lesson-by-lesson
+ * detail is what someone gets after enrolling.
+ */
+export const claudeSyllabus = {
+  eyebrow: 'Curriculum',
+  title: 'What you learn in Claude',
+  intro:
+    'Eight modules, from how the model actually works to a capstone you ship. Every lesson ends in an assignment on your own work.',
+  stats: ['8 modules', '41 lessons', 'Self-paced'],
+  modules: [
+    {
+      title: 'Foundations: how AI and Claude actually work',
+      meta: '8 lessons',
+      topics: [
+        'What generative AI is — and why sounding right is not being right',
+        'Tokens, context windows, and why Claude forgets',
+        'Hallucinations: why they happen and how to catch them',
+        'The surfaces: Chat, Projects, Artifacts, Cowork, Code',
+        'Choosing a model, and when to let Claude think longer',
+      ],
+    },
+    {
+      title: 'Working with Claude well',
+      meta: '9 lessons',
+      topics: [
+        'The 4D framework: delegation, description, discernment, diligence',
+        'Prompt craft: context, constraints, examples, chaining, iteration',
+        'Spotting prompt injection hidden inside content',
+        'Projects and Artifacts as a persistent workspace',
+        'Skills and Plugins — teaching Claude your way, once',
+      ],
+    },
+    {
+      title: 'The visual and creative layer',
+      meta: '5 lessons',
+      topics: [
+        'Feeding Claude screenshots, whiteboards and scanned pages',
+        'Diagrams, charts and interactive Artifacts',
+        'Claude Design for prototypes, decks and one-pagers',
+        'Turning transcripts into structured briefs',
+      ],
+    },
+    {
+      title: 'Reaching further: data, tools and research',
+      meta: '6 lessons',
+      topics: [
+        'Connectors and MCP — letting Claude reach your real tools',
+        'Research: cited, multi-source deep dives you can verify',
+        'Claude inside Chrome, Excel, Word, PowerPoint and Outlook',
+        'Cowork: working sessions on your actual files',
+      ],
+    },
+    {
+      title: 'Delegation, automation and building',
+      meta: '6 lessons',
+      topics: [
+        'Subagents, and delegating without losing the thread',
+        'Scheduled and recurring tasks that run without you',
+        'Claude Code: building real tools without deep coding',
+        'Knowing when a specialist tool beats Claude',
+      ],
+    },
+    {
+      title: 'Devices, teams and enterprise',
+      meta: '7 lessons',
+      topics: [
+        'Claude on mobile, desktop, and tagged into Slack',
+        'API basics: system prompts and citations',
+        'Team controls, data, privacy and permissions',
+        'Picking the right plan — and staying AI-literate after this course',
+      ],
+    },
+    {
+      title: 'Real-world use case library',
+      meta: '8 domains',
+      topics: [
+        'Personal productivity, inbox triage and meeting prep',
+        'Reports, decks, spreadsheets and research briefs',
+        'Study, freelance and small-business workflows',
+        'Claude as a thinking partner: debate, red-team, pressure-test',
+      ],
+    },
+    {
+      title: 'Capstone: ship your proof of work',
+      meta: '5 to choose from',
+      topics: [
+        'A personal AI operating system running your real week',
+        'A cited research brief on a decision that matters',
+        'An automation suite, or a tool built with Claude Code',
+        'A visual showcase you can put in front of someone',
+      ],
+    },
+  ],
+  footnote: 'Overview only — lessons, assignments and project briefs open up when you enrol.',
+  cta: { label: 'Start Learning', href: '#pricing' },
 } as const
 
 export const projects = [
@@ -162,6 +267,18 @@ export const testimonials = [
     name: 'Ravi Menon',
     role: 'Engineering Manager, Bengaluru',
   },
+  {
+    quote:
+      'I fit the builds between lectures. By the end of the semester I had six projects live and my classmates still had notes.',
+    name: 'Ananya Iyer',
+    role: 'Final-Year CS Student, Pune',
+  },
+  {
+    quote:
+      'My internship interview turned into a demo. I walked them through what I had shipped and nobody asked about my grades.',
+    name: 'Tomás Herrera',
+    role: 'Engineering Student, Madrid',
+  },
 ] as const
 
 export const faqs = [
@@ -196,17 +313,5 @@ export const faqs = [
   {
     q: 'The tools change every month. Does the content?',
     a: 'Yes. Every tool is revised as it shifts, and your access covers those revisions — you are not buying a snapshot of how Claude or n8n worked this quarter.',
-  },
-  {
-    quote:
-      'I fit the builds between lectures. By the end of the semester I had six projects live and my classmates still had notes.',
-    name: 'Ananya Iyer',
-    role: 'Final-Year CS Student, Pune',
-  },
-  {
-    quote:
-      'My internship interview turned into a demo. I walked them through what I had shipped and nobody asked about my grades.',
-    name: 'Tomás Herrera',
-    role: 'Engineering Student, Madrid',
   },
 ] as const
