@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 /**
@@ -214,6 +214,13 @@ export function JobBoard() {
   const [segment, setSegment] = useState<number | null>(null)
   // Set while a pointer or the keyboard is on the panel: the cycle waits.
   const [held, setHeld] = useState(false)
+  const listRef = useRef<HTMLUListElement>(null)
+
+  // A new track is a new list: start it at the top rather than wherever the
+  // last one was left scrolled to.
+  useEffect(() => {
+    listRef.current?.scrollTo({ top: 0 })
+  }, [track])
 
   // Steps the track the way the hero stage steps its tools.
   useEffect(() => {
@@ -408,6 +415,26 @@ export function JobBoard() {
             </div>
           </div>
 
+            {/* The whole list, not a top three — the column scrolls, so the
+              panel reads like a board you could actually work through. */}
+            <div className="jobboard-list">
+              <span className="chart-label">
+                Open roles <em>{data.roles.length}</em>
+              </span>
+              <ul className="jobboard-roles" ref={listRef}>
+                {data.roles.map((item, i) => (
+                  <li key={`${item.title}-${i}`} className={i === role ? 'is-lit' : undefined}>
+                    <button type="button" onMouseEnter={() => setRole(i)} onFocus={() => setRole(i)}>
+                      <span>
+                        <b>{item.title}</b>
+                        <small>{item.meta}</small>
+                      </span>
+                      <em>{item.match}%</em>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="jobboard-side">
@@ -480,36 +507,19 @@ export function JobBoard() {
                 )
               })}
             </div>
-          </div>
 
-          <div className="jobboard-foot">
-            <ul className="jobboard-roles">
-            {data.roles.map((item, i) => (
-              <li key={item.title} className={i === role ? 'is-lit' : undefined}>
-                <button type="button" onMouseEnter={() => setRole(i)} onFocus={() => setRole(i)}>
-                  <span>
-                    <b>{item.title}</b>
-                    <small>{item.meta}</small>
-                  </span>
-                  <em>{item.match}%</em>
-                </button>
-              </li>
-            ))}
-            </ul>
-
-            {/* The match card sits beside the roles rather than a card hanging off the corner, so
-              the whole thing stays one clean rectangle. Follows whichever role
-              is under the pointer. */}
-          <div className="jobboard-float">
-            <span className="float-head">
-              <i aria-hidden="true">✦</i> Best match
-            </span>
-            <span className="float-body">
-              <b>{featured.title}</b>
-              <span className="float-meter" aria-hidden="true">
-                <span style={{ width: `${featured.match}%` }} />
+            {/* Closes the side column, and follows whichever role is under
+              the pointer. */}
+            <div className="jobboard-float">
+              <span className="float-head">
+                <i aria-hidden="true">✦</i> Best match
               </span>
-            </span>
+              <span className="float-body">
+                <b>{featured.title}</b>
+                <span className="float-meter" aria-hidden="true">
+                  <span style={{ width: `${featured.match}%` }} />
+                </span>
+              </span>
               <em>{featured.match}%</em>
             </div>
           </div>

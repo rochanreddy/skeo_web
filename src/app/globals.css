@@ -2549,37 +2549,24 @@ h2 em {
   padding: 13px;
 }
 
-/* Two readout columns over one shared footer: the panel stays wide and low. */
+/* Two readout columns, each closing with its own block — the roles list under
+   the chart, the match card under the skills — so the two ends land level and
+   the panel stays wide and low. */
 .jobboard-main {
   display: grid;
   grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
-  grid-template-areas:
-    "trend side"
-    "roles roles";
   gap: 12px 14px;
   align-content: start;
 }
 
 .jobboard-trend {
-  grid-area: trend;
   min-width: 0;
 }
 
 .jobboard-side {
-  grid-area: side;
   min-width: 0;
   padding-left: 14px;
   border-left: 1px solid var(--line-soft);
-}
-
-.jobboard-foot {
-  grid-area: roles;
-  display: grid;
-  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
-  gap: 14px;
-  align-items: center;
-  padding-top: 11px;
-  border-top: 1px solid var(--line-soft);
 }
 
 .jobboard-rail {
@@ -3015,10 +3002,55 @@ h2 em {
   color: var(--ink-4);
 }
 
+/* The roles column holds the whole board, so it scrolls inside the panel
+   rather than stretching it. The height is cut to land mid-row: a half-visible
+   row is the cheapest way to say "there is more under this". */
+.jobboard-list {
+  min-width: 0;
+  margin-top: 11px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.jobboard-list .chart-label {
+  margin-bottom: 6px;
+}
+
+.jobboard-list .chart-label em {
+  font: 700 9px var(--mono);
+  font-style: normal;
+  padding: 2px 6px;
+  border-radius: 999px;
+  color: var(--purple);
+  background: #f1ecfe;
+}
+
 .jobboard-roles {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 4px 0 0;
+  max-height: 172px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #d9d1ef transparent;
+}
+
+.jobboard-roles::-webkit-scrollbar {
+  width: 6px;
+}
+
+.jobboard-roles::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.jobboard-roles::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #ded7f0;
+}
+
+.jobboard-roles::-webkit-scrollbar-thumb:hover {
+  background: #cbc0ea;
 }
 
 .jobboard-roles button {
@@ -3068,8 +3100,9 @@ h2 em {
   background: #f1ecfe;
 }
 
-/* The footer strip: in flow, inside the panel's own rectangle. */
+/* Closes the side column, in flow, inside the panel's own rectangle. */
 .jobboard-float {
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -6050,10 +6083,6 @@ details p {
   }
   .jobboard-main {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      'trend'
-      'side'
-      'roles';
   }
   .jobboard-side {
     padding-left: 0;
@@ -6061,8 +6090,8 @@ details p {
     border-left: 0;
     border-top: 1px solid var(--line-soft);
   }
-  .jobboard-foot {
-    grid-template-columns: 1fr;
+  .jobboard-roles {
+    max-height: 148px;
   }
 }
 
