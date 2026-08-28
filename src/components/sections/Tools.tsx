@@ -1,10 +1,11 @@
 import type { ReactElement } from 'react'
+import { SyllabusButton } from '@/components/ActionButton'
 import { Reveal } from '@/components/Reveal'
 import { TiltCard } from '@/components/sections/TiltCard'
 import { featuredTool, toolsIntro } from '@/lib/content'
 import { site } from '@/lib/site'
 
-const { badge, name, maker, tagline, poster, capsules, facts, blurb, cta } = featuredTool
+const { badge, name, maker, tagline, poster, capsules, facts, blurb, cta, syllabus } = featuredTool
 
 const iconMap: Record<string, ReactElement> = {
   book: (
@@ -37,8 +38,8 @@ const iconMap: Record<string, ReactElement> = {
 }
 
 /**
- * The featured tool on one white card floating on the violet field: the module
- * poster on the left, the detail rail on the right. Both panes stretch to the
+ * The featured tool on one white card floating on the violet field: the poster
+ * on the left, the detail rail on the right. Both panes stretch to the
  * same height, so the card has no dead margin at either end. The white-panel-on-
  * dark-field treatment is the same one the hero stage and the job board use.
  */
@@ -97,9 +98,12 @@ export function Tools() {
                 ))}
               </ul>
               <p className="tool-blurb">{blurb}</p>
-              <a className="button" href={cta.href}>
-                <span className="btn-label">{cta.label}</span> <span aria-hidden="true">↗</span>
-              </a>
+              <div className="tool-cta">
+                <a className="button" href={cta.href}>
+                  <span className="btn-label">{cta.label}</span> <span aria-hidden="true">↗</span>
+                </a>
+                <SyllabusButton className="button button-outline">{syllabus.label}</SyllabusButton>
+              </div>
             </div>
           </TiltCard>
         </Reveal>

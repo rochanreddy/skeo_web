@@ -2133,8 +2133,14 @@ h2 em {
   line-height: 1.6;
 }
 
-/* Pinned to the bottom, so it lines up with the poster's footer bar. */
-.tool-detail .button {
+/* Pinned to the bottom, so it lines up with the poster's footer bar. The pin
+   moved to the row when the card grew a second CTA — leaving it on .button
+   pushed the two apart to opposite ends of the card. */
+.tool-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   margin-top: auto;
 }
 
