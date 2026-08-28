@@ -197,4 +197,16 @@ export const faqs = [
     q: 'The tools change every month. Does the content?',
     a: 'Yes. Every tool is revised as it shifts, and your access covers those revisions — you are not buying a snapshot of how Claude or n8n worked this quarter.',
   },
+  {
+    quote:
+      'I fit the builds between lectures. By the end of the semester I had six projects live and my classmates still had notes.',
+    name: 'Ananya Iyer',
+    role: 'Final-Year CS Student, Pune',
+  },
+  {
+    quote:
+      'My internship interview turned into a demo. I walked them through what I had shipped and nobody asked about my grades.',
+    name: 'Tomás Herrera',
+    role: 'Engineering Student, Madrid',
+  },
 ] as const
