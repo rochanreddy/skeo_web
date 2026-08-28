@@ -14,44 +14,44 @@ export type Plan = {
 
 export const PLANS: Record<PlanKey, Plan> = {
   claude: {
-    eyebrow: 'CLAUDE MODULE',
+    eyebrow: 'CLAUDE TOOL',
     title: 'Claude',
     price: '$9',
     period: '/ one-time',
     amount: 9,
     billing: 'one-time',
     features: ['Prompts that hold up', 'Long-document research', 'Certificate on completion'],
-    cta: 'Confirm and start module',
+    cta: 'Confirm and start this tool',
   },
   chatgpt: {
-    eyebrow: 'CONTENT CREATION MODULE',
+    eyebrow: 'CONTENT CREATION TOOL',
     title: 'Content Creation',
     price: '$9',
     period: '/ one-time',
     amount: 9,
     billing: 'one-time',
     features: ['Everyday work, done faster', 'Custom GPTs and data analysis', 'Certificate on completion'],
-    cta: 'Confirm and start module',
+    cta: 'Confirm and start this tool',
   },
   lovable: {
-    eyebrow: 'VIBE CODING MODULE',
+    eyebrow: 'VIBE CODING TOOL',
     title: 'Vibe Coding',
     price: '$12',
     period: '/ one-time',
     amount: 12,
     billing: 'one-time',
     features: ['Ship a working app from a prompt', 'Iterate without touching code', 'Certificate on completion'],
-    cta: 'Confirm and start module',
+    cta: 'Confirm and start this tool',
   },
   n8n: {
-    eyebrow: 'AUTOMATIONS MODULE',
+    eyebrow: 'AUTOMATIONS TOOL',
     title: 'Automations',
     price: '$12',
     period: '/ one-time',
     amount: 12,
     billing: 'one-time',
     features: ['Automate the busywork', 'Wire AI into real workflows', 'Certificate on completion'],
-    cta: 'Confirm and start module',
+    cta: 'Confirm and start this tool',
   },
   member: {
     eyebrow: 'ALL ACCESS',
@@ -61,7 +61,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     amount: 19,
     billing: 'monthly',
     features: [
-      'All challenges & modules',
+      'All challenges & tools',
       'Certificates & portfolio',
       'Job & Freelancing Board access',
       'Weekly expert sessions',
@@ -80,12 +80,12 @@ export const PLANS: Record<PlanKey, Plan> = {
   },
 }
 
-/** The individually purchasable modules, in the order the pricing card lists them. */
+/** The individually purchasable tools, in the order the pricing card lists them. */
 export const MODULE_KEYS = ['claude', 'chatgpt', 'lovable', 'n8n'] as const
 
 export type ModuleKey = (typeof MODULE_KEYS)[number]
 
-/** `marks` names the tool logos shown beside the module title. */
+/** `marks` names the logos shown beside the tool's title. */
 export type ModuleRow = {
   key: ModuleKey
   title: string
