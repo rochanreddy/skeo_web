@@ -20,8 +20,8 @@ export function Projects() {
             <br />
             Build real projects and turn your skills into opportunities.
           </p>
-          <a href="#pricing" className="button button-outline">
-            <span className="btn-label">See all modules</span> <span aria-hidden="true">→</span>
+          <a href="#pricing" className="button">
+            <span className="btn-label">See all tools</span> <span aria-hidden="true">→</span>
           </a>
         </Reveal>
         <div className="project-list">
