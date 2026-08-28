@@ -19,6 +19,8 @@ import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/com
 
 type MetricKey = 'open' | 'match' | 'pay'
 
+type Role = { title: string; meta: string; match: number }
+
 type Track = {
   key: string
   label: string
@@ -26,7 +28,7 @@ type Track = {
   /** Twelve months, so the 6M / 12M range toggle has something to reveal. */
   series: Record<MetricKey, number[]>
   skills: { label: string; value: number; mark: keyof typeof MARKS }[]
-  roles: { title: string; meta: string; match: number }[]
+  roles: Role[]
 }
 
 const MARKS = {
@@ -38,6 +40,82 @@ const MARKS = {
 }
 
 const MONTHS = ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+
+/* The board itself. Each track carries its whole list rather than three
+   samples — the roles column scrolls — and "All" is genuinely every opening,
+   ordered by how well it matches. */
+const FREELANCE_ROLES: Role[] = [
+  { title: 'AI Content Freelancer', meta: 'Remote · Freelance', match: 94 },
+  { title: 'Automation Consultant', meta: 'Remote · Contract', match: 90 },
+  { title: 'Chatbot Builder', meta: 'Remote · Freelance', match: 89 },
+  { title: 'Prompt Copywriter', meta: 'Remote · Freelance', match: 87 },
+  { title: 'AI Video Editor', meta: 'Remote · Freelance', match: 85 },
+  { title: 'Newsletter Systems', meta: 'Remote · Project', match: 84 },
+  { title: 'n8n Workflow Setup', meta: 'Remote · Project', match: 83 },
+  { title: 'Lead-Gen Automation', meta: 'Remote · Contract', match: 82 },
+  { title: 'AI Social Manager', meta: 'Remote · Freelance', match: 80 },
+  { title: 'Notion AI Systems', meta: 'Remote · Project', match: 79 },
+  { title: 'SEO Brief Writer', meta: 'Remote · Freelance', match: 78 },
+  { title: 'Data Cleanup with AI', meta: 'Remote · Project', match: 76 },
+  { title: 'Landing Page in Lovable', meta: 'Remote · Project', match: 75 },
+  { title: 'CRM Automation', meta: 'Pune · Contract', match: 74 },
+  { title: 'Podcast Repurposing', meta: 'Remote · Freelance', match: 73 },
+  { title: 'Voice Agent Setup', meta: 'Remote · Project', match: 71 },
+  { title: 'Ecommerce Copy Refresh', meta: 'Remote · Freelance', match: 70 },
+  { title: 'Reporting Automation', meta: 'Remote · Contract', match: 68 },
+  { title: 'AI Course Assistant', meta: 'Remote · Freelance', match: 66 },
+  { title: 'Deck & Pitch Builder', meta: 'Remote · Project', match: 64 },
+]
+
+const INTERNSHIP_ROLES: Role[] = [
+  { title: 'Prompt Engineer Intern', meta: 'Remote · Internship', match: 86 },
+  { title: 'AI Content Intern', meta: 'Remote · Internship', match: 84 },
+  { title: 'Automation Intern', meta: 'Bengaluru · Internship', match: 82 },
+  { title: 'Marketing AI Intern', meta: 'Mumbai · Internship', match: 80 },
+  { title: 'AI Research Intern', meta: 'Hyderabad · Internship', match: 79 },
+  { title: 'Data Annotation Intern', meta: 'Remote · Internship', match: 78 },
+  { title: 'Chatbot Support Intern', meta: 'Remote · Internship', match: 77 },
+  { title: 'Product AI Intern', meta: 'Bengaluru · Internship', match: 75 },
+  { title: 'Growth & AI Intern', meta: 'Remote · Internship', match: 74 },
+  { title: 'Design + AI Intern', meta: 'Remote · Internship', match: 73 },
+  { title: 'AI Ops Trainee', meta: 'Pune · Internship', match: 72 },
+  { title: 'Community AI Intern', meta: 'Remote · Internship', match: 70 },
+  { title: 'Video AI Intern', meta: 'Delhi · Internship', match: 69 },
+  { title: 'Sales Enablement Intern', meta: 'Remote · Internship', match: 68 },
+  { title: 'AI QA Intern', meta: 'Chennai · Internship', match: 66 },
+  { title: 'Analytics Intern', meta: 'Remote · Internship', match: 65 },
+  { title: 'Docs & Prompt Intern', meta: 'Remote · Internship', match: 63 },
+  { title: 'HR Automation Intern', meta: 'Noida · Internship', match: 61 },
+  { title: 'Ops Research Intern', meta: 'Remote · Internship', match: 59 },
+  { title: 'Founders Office Intern', meta: 'Bengaluru · Internship', match: 57 },
+]
+
+const FULLTIME_ROLES: Role[] = [
+  { title: 'Junior AI Ops', meta: 'Bengaluru · Full-time', match: 88 },
+  { title: 'AI Product Associate', meta: 'Bengaluru · Full-time', match: 86 },
+  { title: 'Workflow Architect', meta: 'Remote · Full-time', match: 85 },
+  { title: 'AI Support Lead', meta: 'Hyderabad · Full-time', match: 83 },
+  { title: 'AI Solutions Analyst', meta: 'Pune · Full-time', match: 82 },
+  { title: 'Growth Automation Manager', meta: 'Mumbai · Full-time', match: 81 },
+  { title: 'Automation Engineer', meta: 'Remote · Full-time', match: 80 },
+  { title: 'Prompt Systems Engineer', meta: 'Remote · Full-time', match: 79 },
+  { title: 'AI Content Lead', meta: 'Remote · Full-time', match: 78 },
+  { title: 'Sales Ops (AI)', meta: 'Gurugram · Full-time', match: 76 },
+  { title: 'Implementation Specialist', meta: 'Bengaluru · Full-time', match: 75 },
+  { title: 'AI Marketing Executive', meta: 'Pune · Full-time', match: 74 },
+  { title: 'RevOps Analyst', meta: 'Remote · Full-time', match: 72 },
+  { title: 'Customer AI Engineer', meta: 'Chennai · Full-time', match: 71 },
+  { title: 'Internal Tools Developer', meta: 'Remote · Full-time', match: 70 },
+  { title: 'AI Trainer', meta: 'Delhi · Full-time', match: 68 },
+  { title: 'Ops Automation Lead', meta: 'Mumbai · Full-time', match: 67 },
+  { title: 'Data Workflow Analyst', meta: 'Remote · Full-time', match: 65 },
+  { title: 'AI Program Coordinator', meta: 'Bengaluru · Full-time', match: 63 },
+  { title: 'Knowledge Base Manager', meta: 'Remote · Full-time', match: 61 },
+]
+
+const ALL_ROLES: Role[] = [...FREELANCE_ROLES, ...FULLTIME_ROLES, ...INTERNSHIP_ROLES].sort(
+  (a, b) => b.match - a.match,
+)
 
 const TRACKS: Track[] = [
   {
@@ -55,11 +133,7 @@ const TRACKS: Track[] = [
       { label: 'ChatGPT', value: 78, mark: 'chatgpt' },
       { label: 'Lovable', value: 66, mark: 'lovable' },
     ],
-    roles: [
-      { title: 'AI Content Freelancer', meta: 'Remote · Freelance', match: 94 },
-      { title: 'Junior AI Ops', meta: 'Bengaluru · Full-time', match: 88 },
-      { title: 'Prompt Engineer Intern', meta: 'Remote · Internship', match: 81 },
-    ],
+    roles: ALL_ROLES,
   },
   {
     key: 'freelance',
@@ -76,11 +150,7 @@ const TRACKS: Track[] = [
       { label: 'Gemini', value: 71, mark: 'gemini' },
       { label: 'n8n', value: 62, mark: 'n8n' },
     ],
-    roles: [
-      { title: 'AI Content Freelancer', meta: 'Remote · Freelance', match: 94 },
-      { title: 'Automation Consultant', meta: 'Remote · Contract', match: 90 },
-      { title: 'Newsletter Systems', meta: 'Remote · Project', match: 84 },
-    ],
+    roles: FREELANCE_ROLES,
   },
   {
     key: 'internships',
@@ -97,11 +167,7 @@ const TRACKS: Track[] = [
       { label: 'Gemini', value: 69, mark: 'gemini' },
       { label: 'n8n', value: 48, mark: 'n8n' },
     ],
-    roles: [
-      { title: 'Prompt Engineer Intern', meta: 'Remote · Internship', match: 86 },
-      { title: 'AI Research Intern', meta: 'Hyderabad · Internship', match: 79 },
-      { title: 'Growth & AI Intern', meta: 'Remote · Internship', match: 74 },
-    ],
+    roles: INTERNSHIP_ROLES,
   },
   {
     key: 'fulltime',
@@ -118,11 +184,7 @@ const TRACKS: Track[] = [
       { label: 'Lovable', value: 72, mark: 'lovable' },
       { label: 'ChatGPT', value: 68, mark: 'chatgpt' },
     ],
-    roles: [
-      { title: 'Junior AI Ops', meta: 'Bengaluru · Full-time', match: 88 },
-      { title: 'AI Solutions Analyst', meta: 'Pune · Full-time', match: 82 },
-      { title: 'Automation Engineer', meta: 'Remote · Full-time', match: 80 },
-    ],
+    roles: FULLTIME_ROLES,
   },
 ]
 
