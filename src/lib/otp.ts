@@ -22,8 +22,11 @@ export async function sendOtp(_to: { email: string; phone: string }): Promise<vo
   await wait(700)
 }
 
+/* Short on purpose: this delay is pure theatre, and it sits directly between
+   the last digit typed and /checkout appearing — the one place in the flow
+   where invented latency is felt as the site being slow. */
 export async function verifyOtp(code: string): Promise<{ ok: true } | { ok: false; error: string }> {
-  await wait(600)
+  await wait(250)
   if (code.length < OTP_LENGTH) return { ok: false, error: 'Enter all six digits.' }
   if (code !== DEMO_OTP) return { ok: false, error: 'That code is not right. Check and try again.' }
   return { ok: true }
