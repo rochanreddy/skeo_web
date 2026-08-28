@@ -14,10 +14,10 @@ type Field = 'name' | 'email' | 'phone'
 type Errors = Partial<Record<Field, string>>
 
 /**
- * Step two of buying a module: say who you are, then prove you can be reached.
+ * Step two of buying a tool: say who you are, then prove you can be reached.
  * The cart was just picked on the page behind this dialog and the order is
  * restated in full on /checkout, so this screen shows neither — only the
- * modules it is carrying through, which it never displays.
+ * tools it is carrying through, which it never displays.
  */
 export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClose: () => void }) {
   const titleId = useDialogId('verify-title')
@@ -29,7 +29,15 @@ export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClos
   const [code, setCode] = useState('')
   const [codeError, setCodeError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const [leaving, setLeaving] = useState(false)
   const [cooldown, setCooldown] = useState(0)
+
+  // /checkout is never linked to, so Next has no reason to have fetched it —
+  // without this the route is only requested once the code is accepted, and the
+  // wait for it lands on the one screen where nothing else is happening.
+  useEffect(() => {
+    router.prefetch('/checkout')
+  }, [router])
 
   // Resend stays locked for a moment after each send, the way a real gateway
   // rate-limits it.
@@ -77,11 +85,15 @@ export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClos
     setCodeError(null)
     setBusy(true)
     const result = await verifyOtp(entered)
-    setBusy(false)
     if (!result.ok) {
+      setBusy(false)
       setCodeError(result.error)
       return
     }
+    // Deliberately still busy: the button keeps its spinner until the dialog
+    // closes, so the gap while /checkout renders reads as progress rather than
+    // as a press that did nothing.
+    setLeaving(true)
     track('verify_ok', { modules, email: values.email.trim(), name: values.name.trim() })
     // Verified: hand the cart and the contact to /checkout and get out of the
     // way — no success screen, the next page is the confirmation.
@@ -224,7 +236,9 @@ export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClos
           </p>
 
           <button type="submit" className="button modal-submit full" disabled={busy || code.length < OTP_LENGTH}>
-            <span className="btn-label">{busy ? 'Verifying…' : 'Verify and continue'}</span>
+            <span className="btn-label">
+              {leaving ? 'Opening checkout…' : busy ? 'Verifying…' : 'Verify and continue'}
+            </span>
             <span className={busy ? 'spinner' : ''} aria-hidden="true">
               {busy ? '' : '→'}
             </span>
