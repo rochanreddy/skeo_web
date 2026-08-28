@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react'
 import { Modal, useDialogId } from './Modal'
 import type { AuthMode } from './ModalProvider'
+import { track } from '@/lib/analytics/track'
 import { passwordStrength, validateEmail, validateName, validatePassword } from '@/lib/validation'
 
 type Errors = Partial<Record<'name' | 'email' | 'password', string>>
@@ -73,6 +74,12 @@ export function AuthModal({ initialMode, onClose }: { initialMode: AuthMode; onC
     // Stand-in for the real auth call.
     await new Promise((resolve) => setTimeout(resolve, 700))
     setSubmitting(false)
+    // Reported only once the account exists, so an abandoned half-filled form
+    // never counts as a registration. No password leaves this component.
+    track(isSignup ? 'signup' : 'signin', {
+      email: values.email.trim(),
+      ...(isSignup ? { name: values.name.trim() } : {}),
+    })
     setDone(true)
   }
 

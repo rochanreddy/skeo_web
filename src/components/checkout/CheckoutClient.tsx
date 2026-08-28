@@ -9,6 +9,7 @@ import {
   saveCompletedOrder,
   type CheckoutSession,
 } from '@/lib/checkoutSession'
+import { track } from '@/lib/analytics/track'
 import { payForOrder } from '@/lib/payment'
 import { MODULE_ROWS, PLANS, money } from '@/lib/plans'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
@@ -46,6 +47,10 @@ export function CheckoutClient() {
       return
     }
     setSession(found)
+    track('checkout_view', {
+      modules: found.modules,
+      email: found.contact.email,
+    })
   }, [router])
 
   if (!session) return null
@@ -55,6 +60,7 @@ export function CheckoutClient() {
   const total = subtotal
 
   const contactEmail = session.contact.email
+  const contactName = session.contact.name
 
   async function pay() {
     setError(null)
@@ -65,6 +71,15 @@ export function CheckoutClient() {
       setError(result.error)
       return
     }
+    // The one event the revenue column is built on, sent before the redirect so
+    // a slow network cannot lose the sale from the dashboard.
+    track('purchase', {
+      orderId: result.orderId,
+      modules: rows.map((row) => row.key),
+      amount: total,
+      email: contactEmail,
+      name: contactName,
+    })
     // The order is done: drop the session so a refresh or a back-button press
     // cannot replay the same payment, and hand the receipt to /thank-you.
     saveCompletedOrder({

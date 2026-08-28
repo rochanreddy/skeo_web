@@ -5393,6 +5393,112 @@ details p {
   color: var(--ink-2);
 }
 
+/* "What next?" — the one question asked on this page. It sits between the
+   receipt and the way out, and is deliberately lighter than both: answering is
+   a favour, not a step, so it never looks like something still owed. */
+.thanks-next {
+  margin-top: 30px;
+}
+
+.thanks-next-sub {
+  margin: 4px 0 14px;
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+
+.thanks-next-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.thanks-next-chip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 13px 40px 13px 15px;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition:
+    border-color 0.18s var(--ease),
+    background 0.18s var(--ease),
+    transform 0.18s var(--ease);
+}
+
+.thanks-next-chip:hover {
+  border-color: var(--purple-line);
+  transform: translateY(-1px);
+}
+
+.thanks-next-chip b {
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.thanks-next-chip small {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-4);
+}
+
+.thanks-next-chip.is-on {
+  border-color: var(--purple);
+  background: var(--purple-soft);
+}
+
+.thanks-next-chip.is-on small {
+  color: var(--purple-ink);
+}
+
+.thanks-next-mark {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink-4);
+  background: var(--surface-2);
+  transition:
+    background 0.18s var(--ease),
+    color 0.18s var(--ease);
+}
+
+.thanks-next-chip.is-on .thanks-next-mark {
+  background: var(--purple);
+  color: #fff;
+}
+
+.thanks-next-done {
+  margin: 12px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--purple-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thanks-next-chip:hover {
+    transform: none;
+  }
+}
+
 .thanks-foot {
   margin-top: 26px;
   text-align: center;

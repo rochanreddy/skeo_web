@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Modal, useDialogId } from './Modal'
 import { OtpInput } from '@/components/forms/OtpInput'
+import { track } from '@/lib/analytics/track'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
 import { DEMO_OTP, OTP_LENGTH, RESEND_SECONDS, sendOtp, verifyOtp } from '@/lib/otp'
 import type { ModuleKey } from '@/lib/plans'
@@ -63,6 +64,7 @@ export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClos
       return
     }
     setBusy(true)
+    track('verify_sent', { modules })
     await sendOtp({ email: values.email, phone: values.phone })
     setBusy(false)
     setCode('')
@@ -80,6 +82,7 @@ export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClos
       setCodeError(result.error)
       return
     }
+    track('verify_ok', { modules, email: values.email.trim(), name: values.name.trim() })
     // Verified: hand the cart and the contact to /checkout and get out of the
     // way — no success screen, the next page is the confirmation.
     saveCheckoutSession({

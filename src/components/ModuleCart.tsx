@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { track } from '@/lib/analytics/track'
 import { MODULE_ROWS, money, type ModuleKey } from '@/lib/plans'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { useModal } from './modals/ModalProvider'
@@ -30,6 +31,10 @@ export function ModuleCart() {
   const total = MODULE_ROWS.filter((row) => cart.includes(row.key)).reduce((sum, row) => sum + row.amount, 0)
 
   function toggle(key: ModuleKey) {
+    // Read before the update, and reported outside it: React may call a state
+    // updater twice, and a double-counted tick would overstate real interest.
+    const removing = cart.includes(key)
+    track(removing ? 'module_remove' : 'module_add', { module: key })
     setCart((current) => (current.includes(key) ? current.filter((k) => k !== key) : [...current, key]))
   }
 
@@ -73,7 +78,14 @@ export function ModuleCart() {
           card does not jump the moment a first module is added. */}
       <div className="cart-actions">
         {cart.length > 0 && (
-          <button type="button" className="button button-small cart-checkout" onClick={() => openVerify(cart)}>
+          <button
+            type="button"
+            className="button button-small cart-checkout"
+            onClick={() => {
+              track('checkout_intent', { modules: cart, amount: total })
+              openVerify(cart)
+            }}
+          >
             <span className="btn-label">Next · {money(total)}</span>
             <span aria-hidden="true">→</span>
           </button>

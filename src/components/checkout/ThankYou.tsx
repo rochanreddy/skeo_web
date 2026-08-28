@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { track } from '@/lib/analytics/track'
 import { readCompletedOrder, type CompletedOrder } from '@/lib/checkoutSession'
-import { MODULE_ROWS, money } from '@/lib/plans'
+import { MODULE_ROWS, money, type ModuleKey } from '@/lib/plans'
 import { lms } from '@/lib/site'
 
 /**
@@ -75,7 +76,13 @@ export function ThankYou() {
                 Sign in with that email and temporary password, then set a password of your own.{' '}
                 {one ? 'Your module is' : 'Your modules are'} already unlocked on the account.
               </p>
-              <a className="button thanks-cta" href={lms.web} target="_blank" rel="noreferrer">
+              <a
+                className="button thanks-cta"
+                href={lms.web}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => track('lms_open', { target: 'web', orderId: order.orderId, email: order.email })}
+              >
                 <span className="btn-label">Open the LMS</span> <span aria-hidden="true">↗</span>
               </a>
             </div>
@@ -91,7 +98,13 @@ export function ThankYou() {
                 The mobile app runs the same modules and the same account — sign in with the credentials from step one
                 and your progress follows you between the two.
               </p>
-              <a className="button button-outline thanks-cta" href={lms.mobile} target="_blank" rel="noreferrer">
+              <a
+                className="button button-outline thanks-cta"
+                href={lms.mobile}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => track('lms_open', { target: 'mobile', orderId: order.orderId, email: order.email })}
+              >
                 <span className="btn-label">Download the app</span> <span aria-hidden="true">↓</span>
               </a>
             </div>
@@ -117,6 +130,8 @@ export function ThankYou() {
           </p>
         </div>
 
+        <NextUp bought={order.modules} email={order.email} />
+
         <footer className="thanks-foot">
           {/* Rendered only once there is an address worth pointing at. */}
           {lms.support && (
@@ -131,5 +146,66 @@ export function ThankYou() {
         </footer>
       </div>
     </main>
+  )
+}
+
+/**
+ * "Which one next?" — asked here because someone who has just bought is the
+ * only person whose answer is worth anything, and because the admin dashboard
+ * has no other honest way to know what to build next.
+ *
+ * Only the modules they did not buy are offered, the answer is one tap, and
+ * nothing is promised in return beyond being told when it lands.
+ */
+function NextUp({ bought, email }: { bought: ModuleKey[]; email: string }) {
+  const [picked, setPicked] = useState<ModuleKey[]>([])
+  const remaining = MODULE_ROWS.filter((row) => !bought.includes(row.key))
+
+  // They bought everything — there is nothing left to ask about.
+  if (remaining.length === 0) return null
+
+  function toggle(key: ModuleKey) {
+    const removing = picked.includes(key)
+    setPicked((current) => (removing ? current.filter((k) => k !== key) : [...current, key]))
+    // Only the positive answer is worth recording; un-ticking is someone
+    // correcting themselves, not a signal about the module.
+    if (!removing) track('next_interest', { module: key, email })
+  }
+
+  return (
+    <section className="thanks-next" aria-labelledby="thanks-next-h">
+      <h2 className="thanks-h" id="thanks-next-h">
+        What should we teach you next?
+      </h2>
+      <p className="thanks-next-sub">
+        Tap anything you want. We will email you the moment it opens — no charge for saying so.
+      </p>
+      <ul className="thanks-next-list">
+        {remaining.map((row) => {
+          const on = picked.includes(row.key)
+          return (
+            <li key={row.key}>
+              <button
+                type="button"
+                className={`thanks-next-chip${on ? ' is-on' : ''}`}
+                onClick={() => toggle(row.key)}
+                aria-pressed={on}
+              >
+                <b>{row.title}</b>
+                <small>{row.subtitle}</small>
+                <span className="thanks-next-mark" aria-hidden="true">
+                  {on ? '✓' : '+'}
+                </span>
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+      {picked.length > 0 && (
+        <p className="thanks-next-done" role="status">
+          Noted — we will let you know about {picked.length === 1 ? 'that one' : `all ${picked.length}`} first.
+        </p>
+      )}
+    </section>
   )
 }

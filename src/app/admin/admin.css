@@ -1,0 +1,878 @@
+/* ==========================================================================
+   Admin — the operator's side of skeo.
+
+   Reads the same tokens as the marketing site (globals.css owns them), so the
+   brand carries through, but everything here is scoped under .admin-shell and
+   named apart from the public classes. The marketing page is built to persuade;
+   this is built to be read quickly, so it trades the display type and the
+   generous rhythm for density and a lot of tabular numbers.
+   ========================================================================== */
+
+.admin-shell {
+  --admin-bg: #f7f6fa;
+  --admin-card: var(--paper);
+  --admin-line: var(--line);
+  --admin-good: #1a8f5c;
+  --admin-bad: #c8402f;
+
+  min-height: 100dvh;
+  background: var(--admin-bg);
+  color: var(--ink);
+}
+
+.admin {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px clamp(16px, 3vw, 32px) 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---- Top bar --------------------------------------------------------- */
+
+.admin-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 calc(clamp(16px, 3vw, 32px) * -1);
+  padding: 12px clamp(16px, 3vw, 32px);
+  background: color-mix(in srgb, var(--admin-bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--admin-line);
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-brand > div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.admin-brand b {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.admin-brand small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--admin-good);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--admin-good) 60%, transparent);
+  animation: admin-pulse 2.4s var(--ease) infinite;
+}
+
+@keyframes admin-pulse {
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- Buttons, segmented controls ------------------------------------- */
+
+.admin-btn,
+.range-picker button,
+.seg button {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--admin-card);
+  border: 1px solid var(--admin-line);
+  border-radius: var(--r-sm);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.admin-btn:hover,
+.range-picker button:hover,
+.seg button:hover {
+  background: var(--surface-2);
+  border-color: var(--ink-5);
+}
+
+.admin-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-btn-quiet {
+  background: transparent;
+  color: var(--ink-3);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.admin-btn-danger {
+  color: var(--admin-bad);
+  border-color: color-mix(in srgb, var(--admin-bad) 30%, var(--admin-line));
+}
+
+.admin-btn-danger:hover {
+  background: color-mix(in srgb, var(--admin-bad) 8%, var(--paper));
+  border-color: var(--admin-bad);
+}
+
+.range-picker,
+.seg {
+  display: inline-flex;
+  background: var(--admin-card);
+  border: 1px solid var(--admin-line);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.range-picker button,
+.seg button {
+  border: 0;
+  border-radius: 0;
+  border-right: 1px solid var(--admin-line);
+}
+
+.range-picker button:last-child,
+.seg button:last-child {
+  border-right: 0;
+}
+
+.range-picker button.is-on,
+.seg button.is-on {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.admin-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-toggle input {
+  accent-color: var(--purple);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* ---- Notices --------------------------------------------------------- */
+
+.admin-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 11px 14px;
+  border-radius: var(--r-md);
+  font-size: 13.5px;
+  line-height: 1.5;
+  border: 1px solid;
+}
+
+.admin-notice b {
+  font-weight: 700;
+}
+
+.admin-notice code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: #0000000d;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.admin-notice button {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-left: auto;
+  padding: 5px 11px;
+  border-radius: var(--r-sm);
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.admin-notice button:hover {
+  background: #ffffff8c;
+}
+
+.admin-notice.is-warn {
+  background: #fff8e6;
+  border-color: #f0d79a;
+  color: #7a5a10;
+}
+
+.admin-notice.is-demo {
+  background: var(--purple-soft);
+  border-color: var(--purple-line);
+  color: var(--purple-ink);
+}
+
+.admin-notice.is-error {
+  background: #fdf0ee;
+  border-color: #f0bdb4;
+  color: var(--admin-bad);
+}
+
+/* ---- KPI cards ------------------------------------------------------- */
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 12px;
+}
+
+.kpi {
+  position: relative;
+  background: var(--admin-card);
+  border: 1px solid var(--admin-line);
+  border-radius: var(--r-lg);
+  padding: 15px 16px 13px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* A hairline of colour on the two cards that matter most, rather than tinting
+   whole cards and turning the grid into a paint chart. */
+.kpi-purple::before,
+.kpi-lime::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+}
+
+.kpi-purple::before {
+  background: var(--purple);
+}
+
+.kpi-lime::before {
+  background: var(--lime);
+}
+
+.kpi h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.kpi-value {
+  margin-top: 6px;
+  font-size: clamp(26px, 2.5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 7px;
+}
+
+.kpi-sub {
+  font-size: 12.5px;
+  color: var(--ink-4);
+  line-height: 1.35;
+}
+
+.kpi-delta {
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+.kpi-delta.is-up {
+  color: var(--admin-good);
+  background: #1a8f5c14;
+}
+
+.kpi-delta.is-down {
+  color: var(--admin-bad);
+  background: #c8402f14;
+}
+
+.kpi-delta.is-flat,
+.kpi-delta.is-new {
+  color: var(--ink-4);
+  background: var(--surface-2);
+}
+
+/* ---- Panels ---------------------------------------------------------- */
+
+.admin-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 12px;
+}
+
+.admin-thirds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--admin-card);
+  border: 1px solid var(--admin-line);
+  border-radius: var(--r-lg);
+  padding: 16px 18px 18px;
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.panel-head h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.panel-head p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.panel-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-4);
+  padding-top: 11px;
+  border-top: 1px dashed var(--admin-line);
+}
+
+.panel-note code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  background: var(--surface-2);
+  padding: 1px 4px;
+  border-radius: 4px;
+  color: var(--ink-2);
+}
+
+.admin-empty {
+  margin: 0;
+  padding: 26px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-5);
+}
+
+/* ---- Trend chart ----------------------------------------------------- */
+
+.chart-wrap {
+  position: relative;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+}
+
+.chart-grid {
+  stroke: var(--line-soft);
+  stroke-width: 1;
+}
+
+.chart-axis {
+  fill: var(--ink-5);
+  font-size: 11px;
+  font-family: var(--font);
+  font-weight: 600;
+}
+
+.chart-area {
+  stroke: none;
+}
+
+.chart-line {
+  fill: none;
+  stroke: var(--purple);
+  stroke-width: 2.25;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-bar {
+  fill: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.chart-cursor {
+  stroke: var(--ink-5);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.chart-dot {
+  fill: var(--paper);
+  stroke: var(--purple);
+  stroke-width: 2.5;
+}
+
+.chart-tip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+  padding: 7px 11px;
+  background: var(--ink);
+  color: var(--on-dark);
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+.chart-tip b {
+  font-weight: 800;
+}
+
+.chart-tip span {
+  color: var(--on-dark-2);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-note {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.swatch {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.swatch-line {
+  background: var(--purple);
+}
+
+.swatch-bar {
+  height: 10px;
+  width: 7px;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+/* ---- Funnel ---------------------------------------------------------- */
+
+.funnel {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.funnel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 5px;
+}
+
+.funnel-label {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.funnel-label b {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.funnel-label small,
+.funnel-figures small {
+  font-size: 11.5px;
+  color: var(--ink-5);
+}
+
+.funnel-figures {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.funnel-figures b {
+  font-size: 16px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.funnel-track {
+  height: 9px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.funnel-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  /* Later steps read cooler, so the drop-off is visible as colour as well as
+     length when you skim the panel. */
+  background: linear-gradient(90deg, var(--purple), color-mix(in srgb, var(--purple) 55%, var(--lav)));
+  transition: width 0.5s var(--ease);
+}
+
+.funnel-drop {
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  color: var(--ink-4);
+}
+
+.funnel-lost {
+  color: var(--admin-bad);
+}
+
+/* ---- Bar lists ------------------------------------------------------- */
+
+.barlist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.barlist li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  overflow: hidden;
+}
+
+.barlist-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--purple-soft);
+  border-radius: var(--r-sm);
+  transition: width 0.5s var(--ease);
+}
+
+.barlist-label {
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.barlist-count {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.barlist-count small {
+  font-weight: 600;
+  color: var(--ink-5);
+  font-size: 11.5px;
+}
+
+/* ---- Tables ---------------------------------------------------------- */
+
+.table-scroll {
+  /* Wide tables scroll inside the panel; the page itself never does. */
+  overflow-x: auto;
+  margin: 0 -4px;
+  padding: 0 4px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.admin-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+  padding: 0 10px 8px;
+  border-bottom: 1px solid var(--admin-line);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.admin-table td b {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.admin-table td small {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ink-5);
+  margin-top: 1px;
+}
+
+.admin-table .n {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.admin-table .wrap {
+  word-break: break-word;
+  color: var(--ink-2);
+}
+
+.admin-table .mono {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  color: var(--ink-3);
+}
+
+.tag-signup {
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+}
+
+.tag-lead {
+  background: #fff5d6;
+  color: #7a5a10;
+}
+
+.muted-inline {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ink-5);
+  margin-top: 3px;
+}
+
+/* ---- Footer ---------------------------------------------------------- */
+
+.admin-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--admin-line);
+}
+
+.admin-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-foot p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-5);
+}
+
+.admin-loading {
+  display: grid;
+  place-items: center;
+  min-height: 60dvh;
+  color: var(--ink-4);
+}
+
+.admin-error {
+  color: var(--admin-bad);
+  font-weight: 600;
+}
+
+/* ---- Login ----------------------------------------------------------- */
+
+.login {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 24px;
+  /* The one place the admin borrows the marketing site's warmth: it is the
+     first screen, and a bare form on grey reads like an error page. */
+  background:
+    radial-gradient(60ch 40ch at 50% -10%, var(--purple-soft), transparent 70%),
+    var(--admin-bg);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--paper);
+  border: 1px solid var(--admin-line);
+  border-radius: var(--r-xl);
+  padding: 30px 28px 26px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.login-card .brand-mark {
+  margin: 0 auto 14px;
+}
+
+.login-card h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.login-sub {
+  margin: 5px 0 22px;
+  font-size: 14px;
+  color: var(--ink-4);
+}
+
+.login-card .field {
+  text-align: left;
+}
+
+.login-hint {
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px dashed var(--admin-line);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-4);
+}
+
+.login-hint code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  background: var(--surface-2);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+@media (max-width: 700px) {
+  .admin-bar {
+    position: static;
+  }
+
+  .admin-actions {
+    width: 100%;
+  }
+
+  .range-picker {
+    flex: 1;
+  }
+
+  .range-picker button {
+    flex: 1;
+    padding: 7px 6px;
+  }
+}

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { DM_Mono, Manrope } from 'next/font/google'
+import { Analytics } from '@/components/Analytics'
 import { ModalProvider } from '@/components/modals/ModalProvider'
 import { StructuredData } from '@/components/StructuredData'
 import { site } from '@/lib/site'
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <div className="noise" aria-hidden="true" />
         <ModalProvider>{children}</ModalProvider>
+        <Analytics />
         <StructuredData />
       </body>
     </html>
