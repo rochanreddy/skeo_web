@@ -22,7 +22,7 @@ export function Pricing() {
         <div className="pricing-two">
           <Reveal as="article" className="modules-card">
             <span className="plan">INDIVIDUAL TOOLS</span>
-            <h3>Pay once, own the tool</h3>
+            <h3>Learn What You Need. Unlock What&rsquo;s Next.</h3>
             <p>Choose any tool, learn it end-to-end, build projects, earn your certification,<br/> and unlock opportunities</p>
             <ModuleCart />
           </Reveal>
@@ -34,7 +34,7 @@ export function Pricing() {
             <div className="price">
               {allAccess.price} <small>{allAccess.period}</small>
             </div>
-            <p>Every tool, one membership.</p>
+            <p>Get access to every tool, every module, every project, and everything Skeo has to offer.</p>
             <ul>
               {allAccess.features.map((feature) => (
                 <li key={feature}>{feature}</li>

@@ -907,10 +907,11 @@ h2 em {
 }
 
 /* -- scenes -- */
-/* n8n — a slice of its canvas, on the panel's own background. Wider than the
-   other scenes because it is a screenshot rather than a diagram. */
+/* n8n — a slice of its canvas, on the panel's own background. Still the widest
+   of the five, because it is a screenshot rather than a diagram, but not so
+   wide that the graph runs to the panel's edges. */
 .scene-art.scene-n8n {
-  width: 92%;
+  width: 76%;
 }
 
 .scene-n8n .card {
@@ -1555,6 +1556,28 @@ h2 em {
   gap: 20px 56px;
 }
 
+/* Sits between the label and the marks, carrying the eye across the gap, and
+   runs the full depth of the strip — top hairline to bottom hairline. The
+   negative block margin cancels the strip's 29px padding, so the arrow reaches
+   both lines without the band growing to make room for it. */
+.logo-strip-cue {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-block: -29px;
+  margin-left: -34px;
+}
+
+/* 84px against a 90px band — the strip's 32px row plus its 29px of padding
+   top and bottom — so it clears both hairlines by a few pixels. */
+.logo-strip-arrow {
+  width: 84px;
+  height: 84px;
+  /* Deliberately off the palette: a blue that reads as a signpost rather than
+     as one more accent, and holds up on both the light and dark bands. */
+  color: #2b6cf6;
+}
+
 /* Transform-driven marquee (JS in LogoRail) — not a scroll container, so it
    never stops on touch or hover. touch-action keeps vertical page scroll. */
 .logo-rail {
@@ -1590,19 +1613,16 @@ h2 em {
   min-width: 120px;
 }
 
-/* Static row for the employer strip — logos stay put, no marquee. */
-/* Takes the width the label leaves and distributes the marks across it, so the
-   last logo lands on the right edge of the column rather than trailing off. */
-.logo-static-row {
-  display: flex;
+/* The employer rail takes the width the label and the arrow leave. min-width
+   keeps the flex item from being sized by its (very wide) three-copy track. */
+.employer-rail {
   flex: 1 1 auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px 40px;
+  min-width: 0;
 }
 
-.logo-static-row .logo-item {
-  min-width: 0;
+/* Tighter than the quote rail: these are marks, not cards. */
+.employer-rail .logo-rail-track > span {
+  margin-right: 52px;
 }
 
 .logo-item img {
@@ -3341,9 +3361,10 @@ h2 em {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 16px;
-  /* Not stretch: the modules card changes height as the cart fills, and the
-     all-access card should keep its own size rather than follow it. */
-  align-items: start;
+  /* The two cards run to the same depth. The modules card sets the height —
+     it grows as the cart fills — and the all-access card follows it, pinning
+     its CTA to the bottom rather than leaving the pair ragged. */
+  align-items: stretch;
 }
 
 .price-card {
@@ -3446,7 +3467,7 @@ h2 em {
   padding-right: 9px;
 }
 
-/* The tool marks standing in for the old sample-profile link. */
+/* The tools a certificate can name — each pill rewrites the specimen beside it. */
 .cert-tools {
   display: flex;
   flex-wrap: wrap;
@@ -3457,23 +3478,34 @@ h2 em {
 }
 
 .cert-tools li {
+  display: block;
+  margin: 0;
+}
+
+.cert-tool {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin: 0;
   padding: 8px 14px 8px 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--card-bg);
-  font-size: 12px;
-  font-weight: 600;
+  font: 600 12px var(--font);
   color: var(--ink-2);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.cert-tools li:hover {
+.cert-tool:hover {
   border-color: #cdc6dc;
   transform: translateY(-1px);
+}
+
+/* The tool the certificate currently names. */
+.cert-tool[aria-pressed='true'] {
+  border-color: var(--purple-line);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
 }
 
 .cert-tool-mark {
@@ -3657,6 +3689,24 @@ h2 em {
 
 .allaccess-card {
   transform: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Six bullets have to fit the depth the modules card asks for, so the list
+   runs a little tighter here than on the single-tool cards. */
+.allaccess-card ul {
+  margin: 20px 0 18px;
+}
+
+.allaccess-card li {
+  margin: 9px 0;
+}
+
+/* Held at the foot of the card so it ends flush with the modules card beside
+   it, however tall the cart has made that one. */
+.allaccess-card .button {
+  margin-top: auto;
 }
 
 /* ============ CERTIFICATION ============ */
@@ -3720,6 +3770,11 @@ h2 em {
   color: #bfb4dc;
   display: block;
   margin-top: 32px;
+}
+
+/* Kept quiet: it only hands the eye to the name below it. */
+.cert-presented {
+  margin-top: 16px;
 }
 
 .cert-inner h3 {
@@ -6129,14 +6184,24 @@ details p {
     align-items: flex-start;
     gap: 17px;
   }
-  .logo-static-row {
+  /* Stacked here: there is no row depth to span, so the arrow goes back to its
+     own size and turns to point down the column instead. */
+  .logo-strip-cue {
+    align-self: auto;
+    margin: 0;
+  }
+  .logo-strip-arrow {
+    width: 24px;
+    height: 24px;
+    transform: rotate(90deg);
+  }
+  /* Stacked under the label, so it takes the whole column. */
+  .employer-rail {
     width: 100%;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 20px 32px;
   }
   /* The rail keeps scrolling on phones — the marks just ride closer together. */
-  .logo-rail-track > span {
+  .logo-rail-track > span,
+  .employer-rail .logo-rail-track > span {
     margin-right: 44px;
   }
   .logo-item {
@@ -6884,7 +6949,7 @@ details p {
 :root[data-palette='charcoal'] .jobboard-bar span,
 :root[data-palette='charcoal'] .module-add,
 :root[data-palette='charcoal'] .arrows button,
-:root[data-palette='charcoal'] .cert-tools li,
+:root[data-palette='charcoal'] .cert-tool:not([aria-pressed='true']),
 :root[data-palette='charcoal'] .accred-item:hover,
 :root[data-palette='charcoal'] .button-outline:hover:not(:disabled) {
   border-color: #33363e;
