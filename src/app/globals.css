@@ -3503,9 +3503,9 @@ h2 em {
 
 /* The tool the certificate currently names. */
 .cert-tool[aria-pressed='true'] {
-  border-color: var(--purple-line);
-  background: var(--purple-soft);
-  color: var(--purple-ink);
+  border-color: color-mix(in srgb, var(--cert-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--cert-accent) 10%, transparent);
+  color: var(--ink);
 }
 
 .cert-tool-mark {
@@ -3723,12 +3723,16 @@ h2 em {
 }
 
 .certificate {
+  /* Falls back to the house violet, so the card is never unstyled if a tool
+     forgets to name an accent. */
+  --cert-accent: #6746ec;
   background: #241d39;
   padding: 30px;
   border-radius: 15px;
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 0 0 1px #43345e;
+  transition: box-shadow 0.5s ease;
 }
 
 .cert-glow {
@@ -3736,25 +3740,70 @@ h2 em {
   width: 300px;
   height: 300px;
   border-radius: 50%;
-  background: #6746ec;
+  background: var(--cert-accent);
   filter: blur(70px);
   right: -30px;
   top: -80px;
   opacity: 0.85;
+  transition: background 0.5s ease;
 }
 
 .cert-inner {
-  border: 1px solid #ac98f8;
+  /* colour-mix keeps the rule readable on the dark card whatever the accent is:
+     a straight brand colour is too dark for a hairline here. */
+  border: 1px solid color-mix(in srgb, var(--cert-accent) 55%, #e6dcff);
   padding: 32px;
   color: #fff;
   min-height: 350px;
   position: relative;
   background: #2e2548b3;
+  transition: border-color 0.5s ease;
+}
+
+/* Issuer on the left, credential on the right: skeo awards it, the tool is what
+   it is in. */
+.cert-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cert-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px 6px 9px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--cert-accent) 60%, transparent);
+  background: color-mix(in srgb, var(--cert-accent) 18%, transparent);
+  font: 700 11px var(--font);
+  letter-spacing: -0.1px;
+  color: #fff;
+  animation: cert-swap 0.45s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+}
+
+@keyframes cert-swap {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cert-badge-mark {
+  width: 15px;
+  height: 15px;
+  flex: none;
 }
 
 .cert-mark {
   font: 500 19px var(--mono);
   display: block;
+  flex: none;
   width: 34px;
   height: 34px;
   line-height: 34px;
@@ -3762,6 +3811,8 @@ h2 em {
   border-radius: 10px;
   background: #c8baff;
   color: #352758;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cert-accent) 30%, transparent);
+  transition: box-shadow 0.5s ease;
 }
 
 .cert-inner small {
@@ -3769,7 +3820,7 @@ h2 em {
   letter-spacing: 1px;
   color: #bfb4dc;
   display: block;
-  margin-top: 32px;
+  margin-top: 28px;
 }
 
 /* Kept quiet: it only hands the eye to the name below it. */
@@ -3791,7 +3842,11 @@ h2 em {
   max-width: 320px;
 }
 
-.cert-inner > div {
+.cert-inner p b {
+  color: color-mix(in srgb, var(--cert-accent) 45%, #fff);
+}
+
+.cert-foot {
   position: absolute;
   bottom: 25px;
   left: 32px;
@@ -4420,7 +4475,6 @@ details p {
   gap: 12px 24px;
   flex-wrap: wrap;
   padding-top: 12px;
-  border-top: 1px solid #ffffff14;
   color: var(--on-dark-3);
   font-size: 12.5px;
 }
@@ -6053,7 +6107,7 @@ details p {
   .cert-inner {
     padding: 25px;
   }
-  .cert-inner > div {
+  .cert-foot {
     left: 25px;
     right: 25px;
   }
@@ -6542,7 +6596,7 @@ details p {
   color: #cfc7b8;
 }
 
-:root[data-palette='claude'] .cert-inner > div {
+:root[data-palette='claude'] .cert-foot {
   border-top-color: #5c5347;
 }
 
@@ -7315,7 +7369,7 @@ details p {
   color: #c4c4c4;
 }
 
-:root[data-palette='mono'] .cert-inner > div {
+:root[data-palette='mono'] .cert-foot {
   border-top-color: #4a4a4a;
 }
 
@@ -7427,7 +7481,7 @@ details p {
 
 /* Credential card — its glow, foil mark and rules. */
 :root[data-palette='claude'] .cert-glow {
-  background: #b8542f;
+  background: var(--cert-accent, #b8542f);
 }
 
 :root[data-palette='claude'] .certificate {
@@ -7435,7 +7489,7 @@ details p {
 }
 
 :root[data-palette='claude'] .cert-inner {
-  border-color: #c9a68c;
+  border-color: color-mix(in srgb, var(--cert-accent, #b8542f) 55%, #e6dcff);
 }
 
 :root[data-palette='claude'] .cert-mark {
@@ -7503,7 +7557,7 @@ details p {
 
 /* ---- The same set, in mono ---------------------------------------------- */
 :root[data-palette='mono'] .cert-glow {
-  background: #4a4a4a;
+  background: var(--cert-accent, #4a4a4a);
 }
 
 :root[data-palette='mono'] .certificate {
@@ -7511,7 +7565,7 @@ details p {
 }
 
 :root[data-palette='mono'] .cert-inner {
-  border-color: #8e8e8e;
+  border-color: color-mix(in srgb, var(--cert-accent, #4a4a4a) 55%, #e6dcff);
 }
 
 :root[data-palette='mono'] .cert-mark {
