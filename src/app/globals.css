@@ -639,7 +639,7 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 32px 0 40px;
+  margin: 28px 0 32px;
   flex-wrap: wrap;
 }
 
@@ -1635,7 +1635,7 @@ h2 em {
 /* Vertical rhythm scales with the viewport instead of holding 126px down to a
    phone, where it left the page reading as a stack of unrelated slabs. */
 .section {
-  padding: clamp(76px, 8.5vw, 128px) 0;
+  padding: clamp(58px, 6.4vw, 96px) 0;
 }
 
 .section-intro h2,
@@ -1647,7 +1647,7 @@ h2 em {
   font-size: var(--t-h2);
   line-height: 1.06;
   letter-spacing: -0.03em;
-  margin: 16px 0 20px;
+  margin: 14px 0 16px;
 }
 
 .section-intro p,
@@ -1679,7 +1679,7 @@ h2 em {
 
 /* ============ PROBLEM ============ */
 .problem .center-heading {
-  margin-bottom: 50px;
+  margin-bottom: 38px;
 }
 
 .problem .center-heading .eyebrow {
@@ -1789,7 +1789,7 @@ h2 em {
      reads as lit rather than as a flat black slab. */
   background: radial-gradient(105% 130% at 50% 0%, #262046 0%, #1a1526 46%, var(--ink-bg) 100%);
   color: #f9f8fa;
-  padding: clamp(76px, 7.5vw, 110px) 0;
+  padding: clamp(58px, 6vw, 90px) 0;
 }
 
 .promise-inner {
@@ -1837,7 +1837,7 @@ h2 em {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
-  margin-top: 38px;
+  margin-top: 30px;
   /* Breaks out past the 640px copy column, so four chips hold one row. */
   position: relative;
   left: 50%;
@@ -1929,13 +1929,18 @@ h2 em {
 .tools {
   --tool-field: #241a4d;
   --tool-accent: var(--purple);
+  /* The band is violet in every palette, so the beam is too. The core has to
+     carry against a white card as well as a dark one, which rules out white
+     here — charcoal, the one palette with a dark card, overrides it below. */
+  --beam-core: #8b5cf6;
+  --beam-tail: #5f3fc4;
 
-  padding: clamp(76px, 8vw, 118px) 0;
+  padding: clamp(58px, 6.2vw, 94px) 0;
   background: radial-gradient(90% 70% at 50% 0%, #33255f 0%, var(--tool-field) 58%, #1d1540 100%);
 }
 
 .tools-intro {
-  margin-bottom: clamp(34px, 4vw, 52px);
+  margin-bottom: clamp(28px, 3vw, 40px);
 }
 
 .tools-intro h2 {
@@ -1955,6 +1960,24 @@ h2 em {
   max-width: 1180px;
   margin-inline: auto;
   perspective: 1400px;
+  /* Driven here and inherited, so the ring and its spill never drift apart. */
+  animation: tool-beam 5.5s linear infinite;
+}
+
+/* A light that travels the card's own edge. Registering the angle is what
+   makes it animatable at all — a plain custom property is a string to the
+   interpolator, so the conic gradient would jump rather than sweep. Where
+   @property is unsupported the beam simply rests at its initial angle. */
+@property --beam {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: true;
+}
+
+@keyframes tool-beam {
+  to {
+    --beam: 360deg;
+  }
 }
 
 .tool-card {
@@ -1974,6 +1997,58 @@ h2 em {
   transform-style: preserve-3d;
   transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
   will-change: transform;
+}
+
+/* The beam itself: a short bright arc of a conic gradient, clipped to a hairline
+   ring by masking the card's own fill out of it, so it rides the rounded corners
+   exactly rather than approximating them. */
+.tool-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  /* The reset's `*` does not reach pseudo-elements, so this box would size its
+     padding outside the card and the ring would sit 1.5px proud all round. */
+  box-sizing: border-box;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 232deg,
+    var(--beam-tail, #6b4ae0) 282deg,
+    var(--beam-core, #ffffff) 320deg,
+    var(--beam-tail, #6b4ae0) 344deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* The same sweep again on the shell, blurred and sitting a little proud of the
+   card, so the edge light spills onto the field instead of stopping dead at the
+   border. On the shell rather than the card because the card clips its own
+   overflow. */
+.tool-shell::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--r-2xl) + 2px);
+  background: conic-gradient(
+    from var(--beam),
+    transparent 0deg,
+    transparent 244deg,
+    var(--beam-tail, #6b4ae0) 292deg,
+    var(--beam-core, #ffffff) 320deg,
+    var(--beam-tail, #6b4ae0) 342deg,
+    transparent 360deg
+  );
+  filter: blur(11px);
+  opacity: 0.65;
+  pointer-events: none;
 }
 
 .tool-card:hover {
@@ -2225,7 +2300,7 @@ h2 em {
 .project-layout {
   display: grid;
   grid-template-columns: 2fr 3fr;
-  gap: 70px;
+  gap: 52px;
 }
 
 .sticky-copy {
@@ -2426,7 +2501,7 @@ h2 em {
   /* The panel takes the wider half so it reads as a landscape window rather
      than the near-square it became at 50/50. */
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 44px;
+  gap: 36px;
   align-items: center;
 }
 
@@ -2722,36 +2797,25 @@ h2 em {
   }
 }
 
-/* Tiles double as the chart's control: the selected one names the series. */
+/* A three-figure readout above the list. It selected the chart's series once;
+   with the chart gone it is a statement, so nothing here is clickable. */
 .jobboard-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 7px;
 }
 
-.jobboard-stats button {
-  padding: 8px 10px;
+.stat-tile {
+  padding: 9px 11px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
   background: var(--surface);
   text-align: left;
-  font-family: var(--font);
-  cursor: pointer;
-  transition: border-color 0.18s ease, background 0.18s ease;
-}
-
-.jobboard-stats button:hover {
-  border-color: #d6cdf0;
-}
-
-.jobboard-stats button.is-active {
-  background: #f4f0fe;
-  border-color: #c9bbf5;
 }
 
 .jobboard-stats b {
   display: block;
-  font-size: 15px;
+  font-size: 17px;
   letter-spacing: -0.5px;
 }
 
@@ -2763,205 +2827,10 @@ h2 em {
   color: var(--ink-4);
 }
 
-.jobboard-chart {
-  margin-top: 9px;
-}
-
-.chart-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
 .chart-label {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-}
-
-.chart-label em {
-  font: 700 9px var(--mono);
-  font-style: normal;
-  padding: 2px 6px;
-  border-radius: 999px;
-}
-
-.chart-label em.up {
-  color: #3f8f52;
-  background: #e8f6ea;
-}
-
-.chart-label em.down {
-  color: #b1495d;
-  background: #fbecef;
-}
-
-.chart-range {
-  display: flex;
-  gap: 3px;
-  padding: 2px;
-  border-radius: 8px;
-  background: #f3f0f8;
-}
-
-.chart-range button {
-  padding: 3px 8px;
-  border: 0;
-  border-radius: 6px;
-  background: none;
-  font: 700 9px var(--mono);
-  color: var(--ink-4);
-  cursor: pointer;
-  transition: background 0.18s ease, color 0.18s ease;
-}
-
-.chart-range button.is-active {
-  background: var(--card-bg);
-  color: var(--purple);
-  box-shadow: 0 1px 3px #1a142c14;
-}
-
-.chart-plot {
-  position: relative;
-  height: 64px;
-}
-
-.chart-plot svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.chart-line {
-  fill: none;
-  stroke: var(--purple);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  /* Redraws itself on every data change — the path is re-keyed in the
-     component, so the animation restarts from nothing. */
-  animation: jb-draw 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) both;
-}
-
-@keyframes jb-draw {
-  from {
-    stroke-dasharray: 0 1200;
-  }
-  to {
-    stroke-dasharray: 1200 0;
-  }
-}
-
-.chart-area {
-  animation: jb-rise 0.7s ease both;
-}
-
-@keyframes jb-rise {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.chart-cross {
-  stroke: #cdc4e6;
-  stroke-width: 1;
-  stroke-dasharray: 3 3;
-  vector-effect: non-scaling-stroke;
-}
-
-.chart-dot {
-  fill: #fff;
-  stroke: var(--purple);
-  stroke-width: 2.5;
-  vector-effect: non-scaling-stroke;
-}
-
-/* A rider that walks the line while the panel is playing on its own. */
-.chart-rider {
-  fill: var(--purple);
-  animation: jb-blink 1.6s ease-in-out infinite;
-}
-
-@keyframes jb-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-
-/* Invisible per-month hit areas, so hover and keyboard both reach the data. */
-.chart-hits {
-  position: absolute;
-  inset: 0;
-  display: flex;
-}
-
-.chart-hits button {
-  flex: 1;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: crosshair;
-}
-
-.chart-hits button:focus-visible {
-  outline: 2px solid var(--purple);
-  outline-offset: -2px;
-  border-radius: 4px;
-}
-
-.chart-tip {
-  position: absolute;
-  transform: translate(-50%, calc(-100% - 12px));
-  padding: 5px 9px;
-  border-radius: 8px;
-  background: var(--ink);
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  pointer-events: none;
-  animation: jb-rise 0.18s ease both;
-}
-
-.chart-tip b {
-  display: block;
-  font-size: 11px;
-}
-
-.chart-tip i {
-  font: 500 9px var(--mono);
-  font-style: normal;
-  color: #ffffff8f;
-}
-
-.chart-axis {
-  display: flex;
-  margin-top: 5px;
-}
-
-.chart-axis span {
-  flex: 1;
-  text-align: center;
-  font: 500 9px var(--mono);
-  color: var(--ink-5);
-  transition: color 0.18s ease;
-}
-
-.chart-axis span.is-lit {
-  color: var(--purple);
-  font-weight: 700;
 }
 
 .jobboard-skills {
@@ -3090,19 +2959,20 @@ h2 em {
    row is the cheapest way to say "there is more under this". */
 .jobboard-list {
   min-width: 0;
-  margin-top: 11px;
-  padding-top: 11px;
+  margin-top: 13px;
+  padding-top: 13px;
   border-top: 1px solid var(--line-soft);
 }
 
 .jobboard-list .chart-label {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  font-size: 10px;
 }
 
 .jobboard-list .chart-label em {
-  font: 700 9px var(--mono);
+  font: 700 10px var(--mono);
   font-style: normal;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: 999px;
   color: var(--purple);
   background: #f1ecfe;
@@ -3112,7 +2982,9 @@ h2 em {
   list-style: none;
   margin: 0;
   padding: 0 4px 0 0;
-  max-height: 172px;
+  /* Six rows plus half of the seventh: ~55px a row, so the cut lands mid-row
+     and the column still reads as a list with more under it. */
+  max-height: 358px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -3142,7 +3014,7 @@ h2 em {
   justify-content: space-between;
   gap: 12px;
   width: 100%;
-  padding: 6px 8px;
+  padding: 9px 10px;
   margin: 1px 0;
   border: 0;
   border-radius: 9px;
@@ -3161,26 +3033,91 @@ h2 em {
 
 .jobboard-roles li.is-lit button {
   background: #f4f0fe;
+  box-shadow: inset 2px 0 0 var(--purple);
+}
+
+.jobboard-roles button > span {
+  min-width: 0;
 }
 
 .jobboard-roles b {
   display: block;
-  font-size: 12px;
+  font-size: 13.5px;
+  line-height: 1.35;
   letter-spacing: -0.2px;
 }
 
 .jobboard-roles small {
-  font-size: 10.5px;
+  font-size: 11.5px;
   color: var(--ink-4);
 }
 
 .jobboard-roles em {
+  flex: none;
   font-style: normal;
-  font: 700 10px var(--mono);
+  font: 700 11px var(--mono);
   color: var(--purple);
-  padding: 4px 8px;
+  padding: 5px 9px;
   border-radius: 999px;
   background: #f1ecfe;
+}
+
+/* The pointer that demonstrates the panel. Positioned by transform from the
+   panel's own top-left, which is why .jobboard is the relative ancestor. The
+   easing is deliberately not linear — a constant-speed cursor reads as a
+   machine, and the point is that this looks like someone using it. */
+.jb-ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 6;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 7px #2b1a6840);
+  transition: transform 0.82s cubic-bezier(0.42, 0, 0.18, 1), opacity 0.32s ease;
+}
+
+.jb-ghost.is-shown {
+  opacity: 1;
+}
+
+.jb-ghost svg {
+  display: block;
+  transition: transform 0.16s ease;
+}
+
+/* The click: the arrow dips as a real one does under a press. */
+.jb-ghost.is-tap svg {
+  transform: scale(0.84);
+}
+
+/* …and the press leaves a ring behind, so the click is legible even if the eye
+   was elsewhere when the cursor arrived. */
+.jb-ghost i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 2px solid var(--purple);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.jb-ghost.is-tap i {
+  animation: jb-tap 0.52s ease-out;
+}
+
+@keyframes jb-tap {
+  from {
+    transform: scale(0.25);
+    opacity: 0.75;
+  }
+  to {
+    transform: scale(1.3);
+    opacity: 0;
+  }
 }
 
 /* Closes the side column, in flow, inside the panel's own rectangle. */
@@ -3259,9 +3196,10 @@ h2 em {
   /* fr, not %: percentage tracks summing to 100% plus a gap overflow by the gap. */
   grid-template-columns: 44fr 56fr;
   gap: 35px;
-  /* The table and the pricing heading read as one thought, so the default
-     126px here plus 126px there left a visible hole between them. */
-  padding-bottom: 60px;
+  /* The table and the pricing heading read as one thought, so the section's
+     own padding here plus the same again there left a visible hole between
+     them. Trimmed alongside .section, which it exists to offset. */
+  padding-bottom: 44px;
 }
 
 /* The intro copy is written as two rows, so it gets the whole column
@@ -3342,11 +3280,11 @@ h2 em {
 
 /* ============ PRICING ============ */
 .pricing {
-  padding-top: 60px;
+  padding-top: 40px;
 }
 
 .pricing .center-heading {
-  margin-bottom: 42px;
+  margin-bottom: 36px;
 }
 
 .pricing .center-heading .eyebrow {
@@ -3369,7 +3307,7 @@ h2 em {
 
 .price-card {
   position: relative;
-  padding: 30px;
+  padding: 34px 32px;
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   background: #fff;
@@ -3409,9 +3347,9 @@ h2 em {
 }
 
 .price-card h3 {
-  font-size: 23px;
+  font-size: 25px;
   letter-spacing: -0.025em;
-  margin: 14px 0 20px;
+  margin: 12px 0 16px;
 }
 
 .price {
@@ -3430,10 +3368,10 @@ h2 em {
 }
 
 .price-card > p {
-  font-size: 14.5px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--ink-3);
-  margin: 16px 0;
+  margin: 14px 0;
 }
 
 .pro > p,
@@ -3445,7 +3383,7 @@ h2 em {
 .price-card ul {
   list-style: none;
   padding: 0;
-  margin: 26px 0;
+  margin: 20px 0;
 }
 
 .credential-copy li,
@@ -3541,15 +3479,23 @@ h2 em {
 .modules-card {
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
-  padding: 30px;
+  padding: 34px 32px;
   background: var(--card-bg);
 }
 
+/* Matches .price-card h3 — the two cards sit side by side, so their headings
+   have to land on the same line of the scale. */
+.modules-card h3 {
+  font-size: 25px;
+  letter-spacing: -0.025em;
+  margin: 14px 0 0;
+}
+
 .modules-card > p {
-  font-size: 14.5px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--ink-3);
-  margin: 14px 0 22px;
+  margin: 12px 0 20px;
 }
 
 /* ---- module picker + cart ---- */
@@ -3564,14 +3510,14 @@ h2 em {
 .module-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 13px 0;
+  gap: 14px;
+  padding: 16px 0;
   border-top: 1px solid var(--line-soft);
 }
 
 .module-index {
   flex: none;
-  font: 600 10px var(--mono);
+  font: 600 11px var(--mono);
   letter-spacing: 0.06em;
   color: var(--ink-5);
 }
@@ -3589,7 +3535,7 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14.5px;
+  font-size: 16px;
   letter-spacing: -0.015em;
 }
 
@@ -3600,29 +3546,30 @@ h2 em {
 }
 
 .module-mark {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   flex: none;
 }
 
 .module-row small {
-  font-size: 13px;
+  font-size: 13.5px;
+  line-height: 1.5;
   color: var(--ink-4);
   display: block;
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .module-price {
   font-weight: 800;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: -0.025em;
 }
 
 /* Fixed width so the column stays straight whichever rows are added. */
 .module-add {
   flex: none;
-  width: 74px;
-  padding: 7px 0;
+  width: 84px;
+  padding: 9px 0;
   border: 1px solid #ddd8e6;
   border-radius: 999px;
   background: var(--card-bg);
@@ -3657,7 +3604,7 @@ h2 em {
   align-items: center;
   gap: 14px;
   min-height: 38px;
-  padding-top: 18px;
+  padding-top: 20px;
   border-top: 1px solid var(--line-soft);
 }
 
@@ -3694,9 +3641,11 @@ h2 em {
 }
 
 /* Six bullets have to fit the depth the modules card asks for, so the list
-   runs a little tighter here than on the single-tool cards. */
+   runs a little tighter here than on the single-tool cards. Flex items do not
+   collapse margins, so this stacks on the paragraph's own 14px rather than
+   overlapping it — hence the small number. */
 .allaccess-card ul {
-  margin: 20px 0 18px;
+  margin: 8px 0 14px;
 }
 
 .allaccess-card li {
@@ -3719,7 +3668,7 @@ h2 em {
   display: grid;
   grid-template-columns: 53fr 47fr;
   align-items: center;
-  gap: 50px;
+  gap: 40px;
 }
 
 .certificate {
@@ -3873,7 +3822,7 @@ h2 em {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 39px;
+  margin-bottom: 32px;
 }
 
 .heading-row h2 {
@@ -3904,13 +3853,26 @@ h2 em {
 
 /* Cards ride the marquee instead of sitting in a paged three-up grid. */
 .quote-rail {
-  margin-top: 34px;
+  margin-top: 28px;
 }
 
 /* Wider than the logo rail's spacing: these are cards with their own borders
    and shadows, not free-floating marks. */
 .quote-rail .logo-rail-track > span {
   margin-right: 20px;
+}
+
+/* The track centres its items, which suits free-floating logos but not cards:
+   a quote that ran to four lines grew past its neighbours at both ends and
+   broke the row. Cards stretch to the tallest one instead, so the row is flush
+   top and bottom and the footers (already pinned with margin-top: auto) line
+   up across it. The span is the flex item, so it has to stretch too. */
+.quote-rail .logo-rail-track {
+  align-items: stretch;
+}
+
+.quote-rail .logo-rail-track > span {
+  display: flex;
 }
 
 .quote-rail .quote {
@@ -4017,7 +3979,7 @@ h2 em {
 .faq {
   display: grid;
   grid-template-columns: 40fr 60fr;
-  gap: clamp(28px, 3.4vw, 54px);
+  gap: clamp(26px, 3vw, 44px);
   align-items: start;
 }
 
@@ -4297,7 +4259,7 @@ details p {
 .footer {
   position: relative;
   margin-top: 10px;
-  padding: clamp(48px, 5vw, 68px) 0 14px;
+  padding: clamp(42px, 4.2vw, 58px) 0 18px;
   background: radial-gradient(120% 90% at 50% -10%, #2b2340 0%, #1b1626 42%, #141019 100%);
   color: #fff;
   overflow: hidden;
@@ -4446,21 +4408,44 @@ details p {
   transform: translateX(3px);
 }
 
-/* Oversized wordmark, cropped by the bottom edge. Sized well under the old
-   19vw/250px: at that scale it claimed a third of the footer's height on its own
-   and stopped reading as texture behind the bottom bar. Pulled tight to the row
-   above rather than floating in its own gap, so the mark reads as texture caught
-   mid-word rather than a header of its own. */
+/* Oversized wordmark. Sized well under the old 19vw/250px: at that scale it
+   claimed a third of the footer's height on its own and stopped reading as
+   texture behind the bottom bar. Pulled tight to the row above rather than
+   floating in its own gap, so the mark reads as texture rather than a header of
+   its own — but sat high enough that the whole word is on the page. The old
+   -0.5em bottom pull dragged the bottom bar up over its lower half and the
+   footer's own overflow cropped the rest — where -0.16em showed all of it.
+   The ink runs about 0.86em tall here, so each 0.088em of extra pull buries
+   another tenth of the word: -0.55em leaves a little over half on the page.
+   The bottom bar rides across the letters at this depth, which is why it keeps
+   its own stacking context below. */
 .footer-mark {
   display: block;
-  margin: -0.1em 0 -0.5em;
+  margin: -0.06em 0 -0.55em;
   font-size: clamp(70px, 14vw, 180px);
-  line-height: 0.72;
+  line-height: 0.86;
   font-weight: 800;
   /* Opened up rather than tucked tight — it reads as a mark, not a word. */
   letter-spacing: 0.04em;
   color: transparent;
-  background: linear-gradient(180deg, #ffffff1f 0%, #ffffff06 68%, transparent 100%);
+  /* The glow is a text-shadow rather than a filter: the fill is transparent and
+     the paint arrives through background-clip, so the shadow renders the glyph
+     silhouette behind it and haloes the letters without touching their edges.
+     Neutral white at both stops — any hue here tints the whole word.
+
+     The fill is banded rather than a straight fade: bright, dip, bright, dip is
+     what reads as brushed metal. Every stop is plain white at a different alpha,
+     so the silver comes from the banding, not from a colour. It stands still —
+     nothing here moves. */
+  text-shadow: 0 0 30px #ffffff30, 0 0 72px #ffffff1c;
+  background-image: linear-gradient(
+    180deg,
+    #ffffff8f 0%,
+    #ffffff4d 24%,
+    #ffffffb8 45%,
+    #ffffff40 63%,
+    #ffffff26 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   user-select: none;
@@ -6077,11 +6062,11 @@ details p {
     padding-top: 34px;
   }
   .hero-copy {
-    padding: 10px 0 42px;
+    padding: 10px 0 32px;
   }
   .tool-stage-frame {
     min-width: 0;
-    margin-bottom: 36px;
+    margin-bottom: 30px;
   }
   /* The stage now has the full column, so the cards grow into it rather than
      sitting marooned at their two-column size. */
@@ -6218,7 +6203,7 @@ details p {
   }
   .tool-stage-frame {
     min-width: 0;
-    margin-bottom: 48px;
+    margin-bottom: 34px;
   }
   .tool-stage {
     /* Cards shrink faster than the column so the ring still fits across a
@@ -6300,7 +6285,7 @@ details p {
   .steps {
     grid-template-columns: 1fr;
     gap: 14px;
-    margin-top: 40px;
+    margin-top: 28px;
   }
   .sticky-copy {
     position: static;
@@ -6417,6 +6402,22 @@ details p {
   .module-row {
     flex-wrap: wrap;
   }
+  /* The desktop card has room for the larger scale; a phone does not, so the
+     row steps back down rather than wrapping the name onto three lines. */
+  .modules-card,
+  .price-card {
+    padding: 26px 22px;
+  }
+  .modules-card h3,
+  .price-card h3 {
+    font-size: 22px;
+  }
+  .module-row b {
+    font-size: 15px;
+  }
+  .module-price {
+    font-size: 17px;
+  }
 
   /* The job board is a desktop dashboard — two readout columns beside a rail.
      On a phone that left the legend and skill rows narrower than their own
@@ -6447,7 +6448,7 @@ details p {
     border-top: 1px solid var(--line-soft);
   }
   .jobboard-roles {
-    max-height: 148px;
+    max-height: 250px;
   }
 }
 
@@ -6470,6 +6471,12 @@ details p {
   }
   .stage-card {
     animation: none;
+  }
+  /* Frozen mid-sweep the beam is just a bright smear on one edge, so it goes
+     rather than sitting there. */
+  .tool-shell::before,
+  .tool-card::before {
+    display: none;
   }
 }
 
@@ -6618,13 +6625,11 @@ details p {
 }
 
 :root[data-palette='claude'] .jobboard-rail button:hover,
-:root[data-palette='claude'] .jobboard-stats button:hover,
 :root[data-palette='claude'] .jobboard-float {
   border-color: #e6d4c6;
 }
 
 /* The job board's violet "lit" states, in the accent's own wash. */
-:root[data-palette='claude'] .jobboard-stats button.is-active,
 :root[data-palette='claude'] .jobboard-roles li.is-lit button,
 :root[data-palette='claude'] .jobboard-roles button:focus-visible,
 :root[data-palette='claude'] .jobboard-list .chart-label em,
@@ -6670,19 +6675,11 @@ details p {
   background: #e8cfa0;
 }
 
-/* Up and down keep their hues — a signal, not decoration — but move into
-   Anthropic's cactus and clay rather than a stock green and pink. */
-:root[data-palette='claude'] .chart-label em.up,
 :root[data-palette='claude'] .success-mark {
   background: #e6eddd;
 }
 
-:root[data-palette='claude'] .chart-label em.down {
-  background: #f7e7e0;
-}
-
 /* Tinted wells and hover fills. */
-:root[data-palette='claude'] .chart-range,
 :root[data-palette='claude'] .arrows button:hover,
 :root[data-palette='claude'] .modal-close:hover,
 :root[data-palette='claude'] .auth-tabs {
@@ -7025,19 +7022,23 @@ details p {
 :root[data-palette='charcoal'] .jobboard-roles em,
 :root[data-palette='charcoal'] .jobboard-roles li.is-lit button,
 :root[data-palette='charcoal'] .jobboard-roles button:focus-visible,
-:root[data-palette='charcoal'] .jobboard-stats button.is-active,
 :root[data-palette='charcoal'] .card-brand {
   background: #241f3c;
 }
 
-:root[data-palette='charcoal'] .jobboard-rail button:hover,
-:root[data-palette='charcoal'] .jobboard-stats button:hover {
+:root[data-palette='charcoal'] .jobboard-rail button:hover {
   border-color: #40396a;
 }
 
 :root[data-palette='charcoal'] .jobboard-float {
   background: linear-gradient(120deg, #1e1b2e, var(--surface));
   border-color: #332c4d;
+}
+
+/* The only palette whose tool card is dark, so the beam can run white-hot. */
+:root[data-palette='charcoal'] .tools {
+  --beam-core: #ffffff;
+  --beam-tail: #7b5cf0;
 }
 
 :root[data-palette='charcoal'] .float-meter {
@@ -7058,18 +7059,6 @@ details p {
 
 :root[data-palette='charcoal'] .jobboard-roles::-webkit-scrollbar-thumb:hover {
   background: #4a4272;
-}
-
-:root[data-palette='charcoal'] .chart-range {
-  background: #202228;
-}
-
-:root[data-palette='charcoal'] .chart-label em.up {
-  background: #16301c;
-}
-
-:root[data-palette='charcoal'] .chart-label em.down {
-  background: #33191f;
 }
 
 :root[data-palette='charcoal'] .success-mark {
@@ -7319,7 +7308,6 @@ details p {
 :root[data-palette='mono'] .jobboard-bar span,
 :root[data-palette='mono'] .jobboard-bar,
 :root[data-palette='mono'] .jobboard-rail button:hover,
-:root[data-palette='mono'] .jobboard-stats button:hover,
 :root[data-palette='mono'] .jobboard-float,
 :root[data-palette='mono'] .module-add,
 :root[data-palette='mono'] .arrows button,
@@ -7374,7 +7362,6 @@ details p {
 }
 
 /* Violet-tinted "lit" and active states across the job board. */
-:root[data-palette='mono'] .jobboard-stats button.is-active,
 :root[data-palette='mono'] .jobboard-roles li.is-lit button,
 :root[data-palette='mono'] .jobboard-roles button:focus-visible,
 :root[data-palette='mono'] .jobboard-list .chart-label em,
@@ -7418,16 +7405,11 @@ details p {
   background: #cccccc;
 }
 
-/* Up and down were green and pink. In mono the arrow glyph has to carry it,
-   so both chips take the same neutral and the sign does the work. */
-:root[data-palette='mono'] .chart-label em.up,
-:root[data-palette='mono'] .chart-label em.down,
 :root[data-palette='mono'] .success-mark {
   background: #ededed;
 }
 
 /* Tinted wells and hover fills. */
-:root[data-palette='mono'] .chart-range,
 :root[data-palette='mono'] .arrows button:hover,
 :root[data-palette='mono'] .modal-close:hover,
 :root[data-palette='mono'] .auth-tabs {
@@ -7516,10 +7498,6 @@ details p {
   border-color: #8a6349;
 }
 
-:root[data-palette='claude'] .jobboard-stats button.is-active {
-  border-color: #e0bda6;
-}
-
 /* Meters and the scroll bar: the accent running into a lighter tint of
    itself, which in this palette is kraft rather than a pale violet. */
 :root[data-palette='claude'] .skill-bar i,
@@ -7588,10 +7566,6 @@ details p {
 
 :root[data-palette='mono'] .job-card:hover {
   border-color: #5e5e5e;
-}
-
-:root[data-palette='mono'] .jobboard-stats button.is-active {
-  border-color: #c4c4c4;
 }
 
 :root[data-palette='mono'] .skill-bar i,

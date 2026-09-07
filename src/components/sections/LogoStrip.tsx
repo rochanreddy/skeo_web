@@ -39,7 +39,7 @@ export function LogoStrip() {
                 d="M3 2 11 12 3 22M12.5 2 20.5 12l-8 10"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="3.4"
+                strokeWidth="2.3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -47,7 +47,7 @@ export function LogoStrip() {
           </span>
           {/* The marks ride the same rail the quotes do, in the width the label
               and the arrow leave. */}
-          <LogoRail className="employer-rail" speed={0.35}>
+          <LogoRail className="employer-rail" speed={0.35} direction="right">
             {EMPLOYERS.map((item) => (
               <span key={item.name} className="logo-item" title={item.name}>
                 <Image src={item.logo} alt="" style={{ height: item.height, width: 'auto' }} />

@@ -1,23 +1,24 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 /**
  * The Job & Freelancing Board, shown rather than described.
  *
  * Built to behave like the hero's tool stage: it plays on its own, stepping
- * through the tracks on a six-second timer with the line redrawing and the bars
- * re-growing each time, and holds still the moment a pointer or keyboard lands
- * on it. Everything also answers directly — the rail re-cuts every figure, the
- * stat tiles pick which series the chart draws, the chart follows the pointer
- * with a crosshair and readout, the ring selects a track when a segment is
- * clicked, and hovering a role hands the match card over to it.
+ * through the tracks on a six-second timer with the bars re-growing each time,
+ * and holds still the moment a pointer or keyboard lands on it. Everything also
+ * answers directly — the rail re-cuts every figure, the ring selects a track
+ * when a segment is clicked, and hovering a role hands the match card over to
+ * it.
+ *
+ * The roles list is the point of the panel, so it gets the room: no trend chart
+ * competing with it, and enough height that six openings read at once with the
+ * seventh cut mid-row to say there is more under it.
  *
  * All local state over static data: a product shot you can poke at.
  */
-
-type MetricKey = 'open' | 'match' | 'pay'
 
 type Role = { title: string; meta: string; match: number }
 
@@ -25,8 +26,8 @@ type Track = {
   key: string
   label: string
   count: string
-  /** Twelve months, so the 6M / 12M range toggle has something to reveal. */
-  series: Record<MetricKey, number[]>
+  /** The three headline figures, as the tiles above the list read them. */
+  stats: { open: number; match: number; pay: number }
   skills: { label: string; value: number; mark: keyof typeof MARKS }[]
   roles: Role[]
 }
@@ -39,12 +40,15 @@ const MARKS = {
   lovable: LovableMark,
 }
 
-const MONTHS = ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
-
 /* The board itself. Each track carries its whole list rather than three
    samples — the roles column scrolls — and "All" is genuinely every opening,
    ordered by how well it matches. */
 const FREELANCE_ROLES: Role[] = [
+  { title: 'AI Automation Architect', meta: 'Remote · Contract', match: 99 },
+  { title: 'Claude Prompt Specialist', meta: 'Remote · Freelance', match: 98 },
+  { title: 'GenAI Content Systems Lead', meta: 'Remote · Contract', match: 97 },
+  { title: 'AI Workflow Designer', meta: 'Remote · Project', match: 96 },
+  { title: 'Agent Build Freelancer', meta: 'Remote · Freelance', match: 95 },
   { title: 'AI Content Freelancer', meta: 'Remote · Freelance', match: 94 },
   { title: 'Automation Consultant', meta: 'Remote · Contract', match: 90 },
   { title: 'Chatbot Builder', meta: 'Remote · Freelance', match: 89 },
@@ -68,6 +72,10 @@ const FREELANCE_ROLES: Role[] = [
 ]
 
 const INTERNSHIP_ROLES: Role[] = [
+  { title: 'GenAI Product Intern', meta: 'Bengaluru · Internship', match: 95 },
+  { title: 'AI Automation Intern', meta: 'Remote · Internship', match: 93 },
+  { title: 'Claude Systems Intern', meta: 'Remote · Internship', match: 91 },
+  { title: 'Agent Ops Intern', meta: 'Hyderabad · Internship', match: 88 },
   { title: 'Prompt Engineer Intern', meta: 'Remote · Internship', match: 86 },
   { title: 'AI Content Intern', meta: 'Remote · Internship', match: 84 },
   { title: 'Automation Intern', meta: 'Bengaluru · Internship', match: 82 },
@@ -91,6 +99,12 @@ const INTERNSHIP_ROLES: Role[] = [
 ]
 
 const FULLTIME_ROLES: Role[] = [
+  { title: 'AI Implementation Lead', meta: 'Bengaluru · Full-time', match: 98 },
+  { title: 'Head of AI Operations', meta: 'Remote · Full-time', match: 96 },
+  { title: 'Senior Automation Engineer', meta: 'Remote · Full-time', match: 95 },
+  { title: 'AI Systems Manager', meta: 'Hyderabad · Full-time', match: 93 },
+  { title: 'GenAI Platform Engineer', meta: 'Bengaluru · Full-time', match: 91 },
+  { title: 'AI Delivery Manager', meta: 'Pune · Full-time', match: 89 },
   { title: 'Junior AI Ops', meta: 'Bengaluru · Full-time', match: 88 },
   { title: 'AI Product Associate', meta: 'Bengaluru · Full-time', match: 86 },
   { title: 'Workflow Architect', meta: 'Remote · Full-time', match: 85 },
@@ -122,11 +136,7 @@ const TRACKS: Track[] = [
     key: 'all',
     label: 'All',
     count: '1,024',
-    series: {
-      open: [612, 640, 668, 705, 726, 774, 802, 838, 866, 905, 964, 1024],
-      match: [71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 85, 86],
-      pay: [31, 33, 34, 36, 37, 39, 41, 42, 44, 45, 47, 48],
-    },
+    stats: { open: 1024, match: 86, pay: 48 },
     skills: [
       { label: 'Claude', value: 92, mark: 'claude' },
       { label: 'n8n', value: 84, mark: 'n8n' },
@@ -139,11 +149,7 @@ const TRACKS: Track[] = [
     key: 'freelance',
     label: 'Freelance',
     count: '412',
-    series: {
-      open: [188, 204, 219, 236, 248, 267, 284, 301, 322, 348, 379, 412],
-      match: [74, 76, 78, 80, 82, 83, 85, 86, 88, 89, 90, 91],
-      pay: [18, 19, 21, 22, 24, 25, 26, 28, 29, 30, 31, 32],
-    },
+    stats: { open: 412, match: 91, pay: 32 },
     skills: [
       { label: 'Claude', value: 95, mark: 'claude' },
       { label: 'ChatGPT', value: 88, mark: 'chatgpt' },
@@ -156,11 +162,7 @@ const TRACKS: Track[] = [
     key: 'internships',
     label: 'Internships',
     count: '188',
-    series: {
-      open: [74, 79, 86, 92, 101, 112, 124, 133, 145, 158, 172, 188],
-      match: [62, 63, 65, 66, 68, 69, 71, 72, 74, 75, 77, 78],
-      pay: [8, 9, 10, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-    },
+    stats: { open: 188, match: 78, pay: 18 },
     skills: [
       { label: 'ChatGPT', value: 81, mark: 'chatgpt' },
       { label: 'Claude', value: 74, mark: 'claude' },
@@ -173,11 +175,7 @@ const TRACKS: Track[] = [
     key: 'fulltime',
     label: 'Full time',
     count: '424',
-    series: {
-      open: [204, 216, 231, 248, 262, 279, 296, 312, 334, 361, 392, 424],
-      match: [66, 68, 69, 71, 72, 74, 75, 77, 78, 80, 81, 83],
-      pay: [44, 46, 49, 52, 54, 57, 60, 62, 65, 67, 69, 72],
-    },
+    stats: { open: 424, match: 83, pay: 72 },
     skills: [
       { label: 'n8n', value: 90, mark: 'n8n' },
       { label: 'Claude', value: 85, mark: 'claude' },
@@ -188,7 +186,9 @@ const TRACKS: Track[] = [
   },
 ]
 
-const METRICS: { key: MetricKey; label: string; format: (v: number) => string }[] = [
+/* The three tiles above the list — a readout now the trend chart is gone, so
+   they state the figure rather than selecting a series to draw. */
+const METRICS: { key: keyof Track['stats']; label: string; format: (v: number) => string }[] = [
   { key: 'open', label: 'Open roles', format: (v) => v.toLocaleString('en-IN') },
   { key: 'match', label: 'Match rate', format: (v) => `${v}%` },
   { key: 'pay', label: 'Avg / mo', format: (v) => `₹${v}k` },
@@ -201,20 +201,144 @@ const MIX = [
   { key: 'internships', label: 'Internships', value: 18, color: '#d9cffa' },
 ]
 
-const CHART = { w: 320, h: 78, pad: 8 }
 const RING = { size: 92, stroke: 13 }
 const CYCLE = 6000
 
+/* The self-demo, as a script rather than a nest of setTimeouts. Each cue is
+   "at this many ms, do this" — reading the timeline top to bottom is how you
+   check the pacing. Positions are measured from the real controls at run time,
+   so the pointer lands on them at any panel size. */
+type Ghost = { x: number; y: number; shown: boolean; tap: boolean }
+
+const DEMO = {
+  /* One beat after the panel settles into view, so it is not competing with
+     the reveal animation. */
+  enter: 420,
+  toTab: 700,
+  tapAt: 1560,
+  tapFor: 340,
+  toRole: 2050,
+  hoverAt: 2760,
+  leave: 3700,
+  clear: 4200,
+}
+
 export function JobBoard() {
   const [track, setTrack] = useState(0)
-  const [metric, setMetric] = useState(0)
-  const [months, setMonths] = useState(6)
-  const [point, setPoint] = useState<number | null>(null)
   const [role, setRole] = useState(0)
   const [segment, setSegment] = useState<number | null>(null)
   // Set while a pointer or the keyboard is on the panel: the cycle waits.
   const [held, setHeld] = useState(false)
   const listRef = useRef<HTMLUListElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  /* The panel shows what it can do rather than captioning it: a pointer glides
+     in, clicks a track, then picks out a role while the match card answers —
+     then gets out of the way. Seeing the panel respond to a click is the only
+     thing that reliably reads as "this responds to yours". */
+  const [ghost, setGhost] = useState<Ghost | null>(null)
+  const [demo, setDemo] = useState(false)
+  const timers = useRef<number[]>([])
+
+  const stopDemo = useCallback(() => {
+    timers.current.forEach((id) => window.clearTimeout(id))
+    timers.current = []
+    setDemo(false)
+    setGhost(null)
+  }, [])
+
+  useEffect(() => {
+    const panel = panelRef.current
+    if (!panel) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let played = false
+    const at = (el: Element, box: DOMRect) => {
+      const r = el.getBoundingClientRect()
+      return { x: r.left - box.left + r.width * 0.5, y: r.top - box.top + r.height * 0.5 }
+    }
+
+    const play = () => {
+      const box = panel.getBoundingClientRect()
+      const tab = panel.querySelectorAll('.jobboard-rail button')[1]
+      const row = panel.querySelectorAll('.jobboard-roles button')[2]
+      if (!tab || !row) return
+      const tabAt = at(tab, box)
+      const rowAt = at(row, box)
+
+      setDemo(true)
+      // Starts low and to the right of the rail, so the first move reads as
+      // travel rather than a jump-cut.
+      setGhost({ x: tabAt.x + 96, y: tabAt.y + 132, shown: false, tap: false })
+
+      const cue = (ms: number, run: () => void) => {
+        timers.current.push(window.setTimeout(run, ms))
+      }
+      cue(DEMO.enter, () => setGhost((g) => g && { ...g, shown: true }))
+      cue(DEMO.toTab, () => setGhost((g) => g && { ...g, ...tabAt }))
+      cue(DEMO.tapAt, () => {
+        setGhost((g) => g && { ...g, tap: true })
+        setTrack(1)
+        setRole(0)
+      })
+      cue(DEMO.tapAt + DEMO.tapFor, () => setGhost((g) => g && { ...g, tap: false }))
+      cue(DEMO.toRole, () => setGhost((g) => g && { ...g, ...rowAt }))
+      cue(DEMO.hoverAt, () => setRole(2))
+      cue(DEMO.leave, () => setGhost((g) => g && { ...g, shown: false }))
+      cue(DEMO.clear, () => {
+        setGhost(null)
+        setDemo(false)
+      })
+    }
+
+    /* Waits for the whole panel to be on screen, not just most of it: someone
+       still scrolling past a half-visible board is not watching it, and the
+       demo only plays once.
+
+       Two traps here, both of which silently mean "never plays":
+
+       A threshold of exactly 1 is not reachable. The panel runs jb-float, so
+       its box is drifting a few px the whole time, and sub-pixel layout does
+       the rest — the ratio tops out a hair under 1 and a [1] threshold fires
+       no callback at all. Hence 0.98 as "fully visible", with a spread of
+       thresholds below it so the callback actually runs and can decide.
+
+       And an element taller than the window can never exceed viewport/element,
+       so on a short viewport a fixed bar would strand it. The requirement is
+       recomputed per callback — which also means a resize mid-scroll can no
+       longer leave it waiting on a number that stopped being achievable. */
+    const need = () => {
+      const fit = panel.getBoundingClientRect().height
+      return Math.min(0.98, (window.innerHeight * 0.94) / Math.max(fit, 1))
+    }
+
+    const watch = new IntersectionObserver(
+      ([entry]) => {
+        if (played || !entry.isIntersecting) return
+        if (entry.intersectionRatio < need()) return
+        played = true
+        watch.disconnect()
+        play()
+      },
+      /* Every 5%. A sparse set stalls whenever the requirement falls between
+         two of its steps: the callback fires below the bar, is rejected, and
+         nothing fires again. */
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) },
+    )
+    watch.observe(panel)
+
+    return () => {
+      watch.disconnect()
+      timers.current.forEach((id) => window.clearTimeout(id))
+      timers.current = []
+    }
+  }, [])
+
+  // The moment a real pointer or key arrives the demo is redundant: it hands
+  // over mid-step rather than talking over the person now driving.
+  useEffect(() => {
+    if (held && demo) stopDemo()
+  }, [held, demo, stopDemo])
 
   // A new track is a new list: start it at the top rather than wherever the
   // last one was left scrolled to.
@@ -224,61 +348,57 @@ export function JobBoard() {
 
   // Steps the track the way the hero stage steps its tools.
   useEffect(() => {
-    if (held) return
+    if (held || demo) return
     const timer = window.setTimeout(() => {
       setTrack((current) => (current + 1) % TRACKS.length)
       setRole(0)
     }, CYCLE)
     return () => window.clearTimeout(timer)
-  }, [track, held])
+  }, [track, held, demo])
 
   const data = TRACKS[track]
-  const active = METRICS[metric]
-  const values = data.series[active.key].slice(-months)
-  const labels = MONTHS.slice(-months)
   const featured = data.roles[role] ?? data.roles[0]
-
-  // Growth across the visible window — the figure beside the chart title.
-  const delta = Math.round(((values[values.length - 1] - values[0]) / values[0]) * 100)
-
-  const { line, area, dots } = useMemo(() => {
-    const min = Math.min(...values)
-    const max = Math.max(...values)
-    const span = max - min || 1
-    const step = (CHART.w - CHART.pad * 2) / (values.length - 1)
-    const points = values.map((v, i) => {
-      const x = CHART.pad + i * step
-      const y = CHART.h - CHART.pad - ((v - min) / span) * (CHART.h - CHART.pad * 2)
-      return [x, y] as const
-    })
-    const path = points.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ')
-    return {
-      line: path,
-      area: `${path} L${CHART.w - CHART.pad} ${CHART.h} L${CHART.pad} ${CHART.h} Z`,
-      dots: points,
-    }
-  }, [values])
 
   const radius = (RING.size - RING.stroke) / 2
   const circumference = 2 * Math.PI * radius
   let sweep = 0
 
-  // While nothing is being hovered the last point carries a blinking rider, so
-  // the chart still reads as live.
-  const rider = dots[dots.length - 1]
-
   return (
+    <>
     <div
+      ref={panelRef}
       className={`jobboard${held ? ' is-held' : ''}`}
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => {
         setHeld(false)
-        setPoint(null)
         setRole(0)
       }}
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
     >
+      {/* The demo pointer. Decorative and inert — it never intercepts a real
+          one, and the panel is fully usable whether or not it ever plays. The
+          arrow is drawn with its tip at the origin, so the transform is the
+          point it is aiming at. */}
+      {ghost && (
+        <span
+          className={`jb-ghost${ghost.shown ? ' is-shown' : ''}${ghost.tap ? ' is-tap' : ''}`}
+          style={{ transform: `translate3d(${ghost.x}px, ${ghost.y}px, 0)` }}
+          aria-hidden="true"
+        >
+          <i />
+          <svg viewBox="0 0 20 22" width="20" height="22" focusable="false">
+            <path
+              d="M0.9 0.8 L0.9 16.6 L5.3 12.6 L8.1 19.1 L11.2 17.7 L8.4 11.4 L14.2 10.8 Z"
+              fill="#fff"
+              stroke="#2a2140"
+              strokeWidth="1.3"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      )}
+
       <div className="jobboard-bar" aria-hidden="true">
         <i />
         <i />
@@ -298,7 +418,6 @@ export function JobBoard() {
               className={i === track ? 'is-active' : undefined}
               onClick={() => {
                 setTrack(i)
-                setPoint(null)
                 setRole(0)
               }}
             >
@@ -310,113 +429,20 @@ export function JobBoard() {
 
         <div className="jobboard-main">
           <div className="jobboard-trend">
-            {/* Tiles are the chart's legend as well as its control. */}
-            <div className="jobboard-stats" role="tablist" aria-label="Metric">
-            {METRICS.map((item, i) => {
-              const series = data.series[item.key]
-              return (
-                <button
-                  key={item.key}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === metric}
-                  className={i === metric ? 'is-active' : undefined}
-                  onClick={() => {
-                    setMetric(i)
-                    setPoint(null)
-                  }}
-                >
-                  <b>{item.format(series[series.length - 1])}</b>
+            {/* A plain readout of the three headline figures — nothing to pick
+                now the trend chart is gone, so nothing here is a control. */}
+            <div className="jobboard-stats">
+              {METRICS.map((item) => (
+                <div className="stat-tile" key={item.key}>
+                  <b>{item.format(data.stats[item.key])}</b>
                   <small>{item.label}</small>
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="jobboard-chart">
-            <div className="chart-head">
-              <span className="chart-label">
-                {active.label} · trend
-                <em className={delta >= 0 ? 'up' : 'down'}>
-                  {delta >= 0 ? '▲' : '▼'} {Math.abs(delta)}%
-                </em>
-              </span>
-              <div className="chart-range">
-                {[6, 12].map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    className={n === months ? 'is-active' : undefined}
-                    onClick={() => {
-                      setMonths(n)
-                      setPoint(null)
-                    }}
-                  >
-                    {n}M
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="chart-plot" onMouseLeave={() => setPoint(null)}>
-              <svg viewBox={`0 0 ${CHART.w} ${CHART.h}`} preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="jb-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#7453e9" stopOpacity="0.32" />
-                    <stop offset="100%" stopColor="#7453e9" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                {/* Re-keyed so the line redraws itself whenever the data changes. */}
-                <path key={`a-${track}-${metric}-${months}`} className="chart-area" d={area} fill="url(#jb-fill)" />
-                <path key={`l-${track}-${metric}-${months}`} className="chart-line" d={line} />
-                {point === null && <circle className="chart-rider" cx={rider[0]} cy={rider[1]} r="3.5" />}
-                {point !== null && (
-                  <>
-                    <line className="chart-cross" x1={dots[point][0]} y1={0} x2={dots[point][0]} y2={CHART.h} />
-                    <circle className="chart-dot" cx={dots[point][0]} cy={dots[point][1]} r="4" />
-                  </>
-                )}
-              </svg>
-
-              {/* One hit area per month, so the chart is keyboard-reachable too. */}
-              <div className="chart-hits">
-                {values.map((value, i) => (
-                  <button
-                    key={labels[i]}
-                    type="button"
-                    onMouseEnter={() => setPoint(i)}
-                    onFocus={() => setPoint(i)}
-                    onBlur={() => setPoint(null)}
-                    aria-label={`${labels[i]}: ${active.format(value)}`}
-                  />
-                ))}
-              </div>
-
-              {point !== null && (
-                <span
-                  className="chart-tip"
-                  style={{
-                    left: `${(dots[point][0] / CHART.w) * 100}%`,
-                    top: `${(dots[point][1] / CHART.h) * 100}%`,
-                  }}
-                >
-                  <b>{active.format(values[point])}</b>
-                  <i>{labels[point]}</i>
-                </span>
-              )}
-            </div>
-
-            <div className="chart-axis" aria-hidden="true">
-              {labels.map((month, i) => (
-                <span key={month} className={point === i ? 'is-lit' : undefined}>
-                  {month}
-                </span>
+                </div>
               ))}
             </div>
-          </div>
 
-            {/* The whole list, not a top three — the column scrolls, so the
-              panel reads like a board you could actually work through. */}
+            {/* The whole list, not a top three — six openings read at once and
+                the column scrolls, so the panel reads like a board you could
+                actually work through. */}
             <div className="jobboard-list">
               <span className="chart-label">
                 Open roles <em>{data.roles.length}</em>
@@ -526,5 +552,7 @@ export function JobBoard() {
         </div>
       </div>
     </div>
+
+    </>
   )
 }

@@ -10,14 +10,19 @@ import { useEffect, useRef, type ReactNode } from 'react'
  * stops on hover or touch and loops with no visible seam. Dragging follows the
  * pointer and auto-advance resumes on release — a resting finger doesn't stop
  * it either.
+ *
+ * `direction` is which way the marks travel. Both directions share one wrap
+ * range, so the rail loops the same either way.
  */
 export function LogoRail({
   children,
   speed = 0.5,
+  direction = 'left',
   className = '',
 }: {
   children: ReactNode[]
   speed?: number
+  direction?: 'left' | 'right'
   className?: string
 }) {
   const trackRef = useRef<HTMLDivElement>(null)
@@ -63,7 +68,7 @@ export function LogoRail({
 
     const tick = () => {
       if (onScreen && copy > 0 && !dragging && !document.hidden) {
-        offset -= speed
+        offset += direction === 'right' ? speed : -speed
         wrap()
         apply()
       }
@@ -106,7 +111,7 @@ export function LogoRail({
       window.removeEventListener('pointerup', onUp)
       window.removeEventListener('pointercancel', onUp)
     }
-  }, [speed, children.length])
+  }, [speed, direction, children.length])
 
   // Three copies: one on screen, one entering, one leaving.
   const copies = [0, 1, 2]
