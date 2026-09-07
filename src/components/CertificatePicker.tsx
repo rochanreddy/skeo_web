@@ -1,8 +1,25 @@
 'use client'
 
+import Image, { type StaticImageData } from 'next/image'
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { ChatGptMark, ClaudeMark, GeminiMark, N8nMark } from '@/components/tools/marks'
+import anthropic from '@/assets/accreditation/anthropic.webp'
+import googleEducation from '@/assets/accreditation/google-education.webp'
+import msme from '@/assets/accreditation/msme.webp'
+import startupIndia from '@/assets/accreditation/startup-india.png'
+
+/* The bodies that stand behind the credential. These are the same four marks
+ * the accreditation strip under the hero carries, so the claim made at the top
+ * of the page and the claim printed on the certificate are the same claim.
+ * Heights are per-mark because the files ship trimmed of their whitespace, so
+ * a single height would make them read at wildly different visual sizes. */
+const CERT_ACCREDITORS: { name: string; logo: StaticImageData; height: number }[] = [
+  { name: 'Startup India', logo: startupIndia, height: 13 },
+  { name: 'Ministry of MSME, Government of India', logo: msme, height: 24 },
+  { name: 'Google for Education', logo: googleEducation, height: 18 },
+  { name: 'Anthropic', logo: anthropic, height: 8 },
+]
 
 /* The tools a certificate can vouch for.
  *
@@ -82,6 +99,22 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
           <p aria-live="polite">
             for demonstrating practical proficiency as a <b>{tool.award}</b> — {tool.skills}.
           </p>
+
+          <div className="cert-accred">
+            <span>Accredited by</span>
+            <div>
+              {CERT_ACCREDITORS.map((body) => (
+                <Image
+                  key={body.name}
+                  src={body.logo}
+                  alt={body.name}
+                  title={body.name}
+                  className="cert-accred-logo"
+                  style={{ height: body.height, width: 'auto' }}
+                />
+              ))}
+            </div>
+          </div>
 
           <div className="cert-foot">
             <span>Issued Jun 2026 · {tool.detail}</span>

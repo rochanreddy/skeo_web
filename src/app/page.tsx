@@ -5,6 +5,7 @@ import { Certification } from '@/components/sections/Certification'
 import { Comparison } from '@/components/sections/Comparison'
 import { Faq } from '@/components/sections/Faq'
 import { Hero } from '@/components/sections/Hero'
+import { Included } from '@/components/sections/Included'
 import { Jobs } from '@/components/sections/Jobs'
 import { LogoStrip } from '@/components/sections/LogoStrip'
 import { Pricing } from '@/components/sections/Pricing'
@@ -26,6 +27,7 @@ export default function Home() {
         <Tools />
         <Projects />
         <Certification />
+        <Included />
         <Jobs />
         <Comparison />
         <Pricing />

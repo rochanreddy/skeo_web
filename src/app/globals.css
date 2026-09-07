@@ -1635,7 +1635,7 @@ h2 em {
 /* Vertical rhythm scales with the viewport instead of holding 126px down to a
    phone, where it left the page reading as a stack of unrelated slabs. */
 .section {
-  padding: clamp(76px, 8.5vw, 128px) 0;
+  padding: clamp(54px, 6vw, 96px) 0;
 }
 
 .section-intro h2,
@@ -3342,11 +3342,24 @@ h2 em {
 
 /* ============ PRICING ============ */
 .pricing {
-  padding-top: 60px;
+  padding-top: 36px;
+  padding-bottom: 44px;
 }
 
 .pricing .center-heading {
-  margin-bottom: 42px;
+  margin-bottom: 20px;
+}
+
+/* The pricing heading is a label above the cards, not a section opener — the
+   cards are what has to fit. */
+.pricing .center-heading h2 {
+  font-size: clamp(28px, 3vw, 38px);
+  margin: 10px 0 12px;
+}
+
+.pricing .center-heading p {
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .pricing .center-heading .eyebrow {
@@ -3541,15 +3554,15 @@ h2 em {
 .modules-card {
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
-  padding: 30px;
+  padding: 22px 24px;
   background: var(--card-bg);
 }
 
 .modules-card > p {
-  font-size: 14.5px;
-  line-height: 1.55;
+  font-size: 13.5px;
+  line-height: 1.5;
   color: var(--ink-3);
-  margin: 14px 0 22px;
+  margin: 10px 0 16px;
 }
 
 /* ---- module picker + cart ---- */
@@ -3696,11 +3709,11 @@ h2 em {
 /* Six bullets have to fit the depth the modules card asks for, so the list
    runs a little tighter here than on the single-tool cards. */
 .allaccess-card ul {
-  margin: 20px 0 18px;
+  margin: 14px 0 12px;
 }
 
 .allaccess-card li {
-  margin: 9px 0;
+  margin: 6px 0;
 }
 
 /* Held at the foot of the card so it ends flush with the modules card beside
@@ -3754,7 +3767,7 @@ h2 em {
   border: 1px solid color-mix(in srgb, var(--cert-accent) 55%, #e6dcff);
   padding: 32px;
   color: #fff;
-  min-height: 350px;
+  min-height: 396px;
   position: relative;
   background: #2e2548b3;
   transition: border-color 0.5s ease;
@@ -3844,6 +3857,39 @@ h2 em {
 
 .cert-inner p b {
   color: color-mix(in srgb, var(--cert-accent) 45%, #fff);
+}
+
+/* Held above the foot rule, like the seals along the bottom of a real one. */
+.cert-accred {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  bottom: 74px;
+}
+
+.cert-accred > span {
+  display: block;
+  font: 9px var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a99ccb;
+}
+
+.cert-accred > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 9px;
+  flex-wrap: wrap;
+}
+
+.cert-accred-logo {
+  display: block;
+  box-sizing: content-box;
+  padding: 5px 7px;
+  border-radius: 5px;
+  background: #fff;
+  object-fit: contain;
 }
 
 .cert-foot {
@@ -6265,7 +6311,7 @@ details p {
     height: 22px !important;
   }
   .section {
-    padding: 78px 0;
+    padding: 56px 0;
   }
   .comparison,
   .project-layout,
@@ -7875,5 +7921,106 @@ details p {
   .palette-switcher {
     left: 14px;
     bottom: 14px;
+  }
+}
+
+
+/* ============ WHAT YOU GET ============ */
+/* Six cards on a three-up grid, then the overflow as a plain row of chips.
+   Deliberately flat — it sits between the certificate and the job board, both
+   of which are heavy visuals, so a third showpiece would fight them. */
+.included-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.included-card {
+  padding: 22px 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--card-bg);
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.included-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--purple) 34%, var(--line));
+  box-shadow: 0 14px 30px rgb(38 22 92 / 8%);
+}
+
+.included-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--purple-soft);
+  color: var(--purple);
+}
+
+.included-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.included-card h3 {
+  margin: 15px 0 7px;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+
+.included-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.included-more {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.included-more > span {
+  font: 10px var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.included-more ul {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.included-more li {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card-bg);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+@media (max-width: 900px) {
+  .included-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .included-grid {
+    grid-template-columns: 1fr;
   }
 }
