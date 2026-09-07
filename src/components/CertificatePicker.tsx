@@ -2,49 +2,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
-import { ChatGptMark, ClaudeMark, GeminiMark, N8nMark } from '@/components/tools/marks'
-
-/* The tools a certificate can vouch for.
- *
- * Picking one rewrites the specimen rather than swapping a single word: each
- * carries its own mark, its own accent — taken from the tool's real brand
- * colour — the credential it awards, and what that credential says was
- * demonstrated. A certificate for n8n should not look like a certificate for
- * Claude with the noun changed. */
-const CERT_TOOLS = [
-  {
-    name: 'Claude',
-    Mark: ClaudeMark,
-    accent: '#d97757',
-    award: 'Claude Practitioner',
-    skills: 'prompt design, research and shipped work',
-    detail: '12 lessons · 4 projects',
-  },
-  {
-    name: 'ChatGPT',
-    Mark: ChatGptMark,
-    accent: '#10a37f',
-    award: 'ChatGPT Practitioner',
-    skills: 'everyday workflows, custom GPTs and analysis',
-    detail: '10 lessons · 3 projects',
-  },
-  {
-    name: 'Gemini',
-    Mark: GeminiMark,
-    accent: '#4285f4',
-    award: 'Gemini Practitioner',
-    skills: 'multimodal prompting, image and video',
-    detail: '9 lessons · 3 projects',
-  },
-  {
-    name: 'n8n',
-    Mark: N8nMark,
-    accent: '#ea4b71',
-    award: 'Automation Practitioner',
-    skills: 'workflow automation and AI agents',
-    detail: '11 lessons · 4 projects',
-  },
-]
+import { CERT_TOOLS } from '@/lib/cert-tools'
 
 /**
  * The specimen certificate and the tool pills that rewrite it. They sit in
