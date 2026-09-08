@@ -5671,48 +5671,85 @@ details p {
 }
 
 /* ---- after the money: /thank-you ---- */
+/* A split screen, sized to land inside one viewport. Everything here matters
+   at once — the password instruction most of all — so nothing is put below a
+   fold. The confirmation and the receipt take the left panel, the steps take
+   the right, and the vertical rhythm is measured in vh so a short laptop
+   compresses rather than overflows. */
 .thanks {
-  display: grid;
-  place-items: start center;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: clamp(32px, 6vw, 72px) 20px clamp(48px, 8vw, 96px);
+  display: grid;
+  grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+  background: var(--paper);
+}
+
+.thanks-hero {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3.4vh, 44px) clamp(22px, 2vw, 36px);
+  /* Clears the fixed palette switcher parked in this corner. */
+  padding-bottom: clamp(78px, 9vh, 96px);
   background: var(--surface);
-}
-
-.thanks-card {
-  width: 100%;
-  max-width: 560px;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: var(--r-2xl);
-  padding: clamp(28px, 4vw, 44px) clamp(22px, 4vw, 40px);
-  box-shadow: var(--shadow-lg);
-}
-
-.thanks-head {
+  border-right: 1px solid var(--line);
   text-align: center;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--line-soft);
 }
 
-.thanks-head h1 {
-  font-size: clamp(30px, 5vw, 40px);
-  letter-spacing: -0.04em;
-  margin-bottom: 10px;
+/* Takes the slack, so the headline sits on the optical centre of the panel
+   however tall the screen is. */
+.thanks-hero-inner {
+  flex: 1;
+  display: grid;
+  align-content: center;
+  padding-bottom: clamp(18px, 3vh, 34px);
 }
 
-.thanks-head p {
+/* Scoped — .success-mark is shared with the modals. */
+.thanks-hero .success-mark {
+  width: clamp(46px, 5.4vh, 58px);
+  height: clamp(46px, 5.4vh, 58px);
+  margin-bottom: clamp(12px, 2vh, 20px);
+  font-size: clamp(22px, 2.6vh, 27px);
+}
+
+.thanks-hero h1 {
+  font-size: clamp(30px, 4.4vh, 46px);
+  line-height: 1.03;
+  letter-spacing: -0.045em;
+  margin-bottom: clamp(8px, 1.4vh, 13px);
+}
+
+.thanks-hero p {
   font-size: 14px;
   line-height: 1.6;
   color: var(--ink-3);
-  max-width: 400px;
-  margin: 0 auto;
 }
 
-.thanks-head b {
+.thanks-hero b {
   color: var(--ink);
   word-break: break-word;
+}
+
+.thanks-hero-foot {
+  text-align: left;
+}
+
+/* The right half centres on its own axis so the two columns read as one
+   composition rather than as a panel with a document stapled beside it. */
+.thanks-body {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: clamp(18px, 3vh, 48px) clamp(24px, 3.6vw, 64px);
+}
+
+.thanks-main {
+  width: 100%;
+  max-width: 760px;
+}
+
+.thanks-main > .thanks-h:first-child {
+  margin-top: 0;
 }
 
 .thanks-h {
@@ -5720,17 +5757,18 @@ details p {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-4);
-  margin: 28px 0 16px;
+  margin: clamp(18px, 2.6vh, 28px) 0 clamp(11px, 1.8vh, 16px);
 }
 
 /* The order is load-bearing: nothing in steps two or three works until the
    password from step one has arrived. */
 .thanks-steps {
+  --step-gap: clamp(15px, 2.4vh, 22px);
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 22px;
+  gap: var(--step-gap);
 }
 
 .thanks-steps > li {
@@ -5745,7 +5783,7 @@ details p {
   position: absolute;
   left: 13px;
   top: 32px;
-  bottom: -22px;
+  bottom: calc(var(--step-gap) * -1);
   width: 1px;
   background: var(--line);
 }
@@ -5791,14 +5829,13 @@ details p {
 }
 
 .thanks-cta {
-  margin-top: 13px;
+  margin-top: clamp(9px, 1.4vh, 13px);
 }
 
 /* The receipt itself — quieter than the steps, since it is a record rather than
    something to act on. */
 .thanks-order {
-  margin-top: 30px;
-  padding: 4px 18px 18px;
+  padding: 2px 16px 15px;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   background: var(--surface-2);
@@ -5860,11 +5897,11 @@ details p {
    receipt and the way out, and is deliberately lighter than both: answering is
    a favour, not a step, so it never looks like something still owed. */
 .thanks-next {
-  margin-top: 30px;
+  margin-top: clamp(20px, 3vh, 38px);
 }
 
 .thanks-next-sub {
-  margin: 4px 0 14px;
+  margin: 4px 0 clamp(8px, 1.4vh, 14px);
   font-size: 13.5px;
   color: var(--ink-3);
 }
@@ -5874,7 +5911,7 @@ details p {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
 }
 
@@ -5886,7 +5923,7 @@ details p {
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  padding: 13px 40px 13px 15px;
+  padding: clamp(10px, 1.6vh, 13px) 38px clamp(10px, 1.6vh, 13px) 15px;
   font: inherit;
   text-align: left;
   color: var(--ink);
@@ -5962,16 +5999,45 @@ details p {
   }
 }
 
+/* Under this the left panel starves the steps beside it, so the two stack and
+   the page goes back to scrolling — one viewport is not worth crushing the
+   type for. */
+@media (max-width: 900px) {
+  .thanks {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .thanks-hero {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: clamp(24px, 3.4vh, 44px);
+  }
+
+  .thanks-hero-inner {
+    padding-block: clamp(16px, 4vw, 30px);
+  }
+
+  .thanks-hero-foot {
+    max-width: 420px;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .thanks-body {
+    justify-items: start;
+    padding-bottom: clamp(72px, 12vw, 104px);
+  }
+}
+
 .thanks-foot {
-  margin-top: 26px;
-  text-align: center;
+  margin-top: clamp(13px, 2vh, 20px);
 }
 
 .thanks-foot p {
   font-size: 12.5px;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--ink-4);
-  margin-bottom: 16px;
+  margin-bottom: clamp(9px, 1.4vh, 14px);
 }
 
 .thanks-foot a {
@@ -5985,9 +6051,6 @@ details p {
 }
 
 @media (max-width: 480px) {
-  .thanks-card {
-    border-radius: var(--r-xl);
-  }
   .thanks-steps > li {
     gap: 12px;
   }
