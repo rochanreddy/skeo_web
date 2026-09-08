@@ -7909,31 +7909,48 @@ details p {
 
 
 /* ============ WHAT YOU GET ============ */
-/* Six cards on a three-up grid, then the overflow as a plain row of chips.
-   Deliberately flat — it sits between the certificate and the job board, both
-   of which are heavy visuals, so a third showpiece would fight them. */
-.included-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-top: 34px;
+/* One panel holding six categories, each an icon, a heading and the specifics
+   underneath it. Deliberately flat — it sits between the certificate and the
+   job board, both of which are heavy visuals, so a third showpiece would fight
+   them. The panel's single border does all the containing, which is why the
+   categories inside carry none of their own. */
+.fg-head {
+  margin-bottom: clamp(24px, 2.6vw, 34px);
 }
 
-.included-card {
-  padding: 22px 22px 24px;
+/* With an illustration the heading gives up the centre and sits beside it. */
+.fg-head-split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(24px, 3vw, 44px);
+  text-align: left;
+}
+
+.fg-head-split p {
+  margin-inline: 0;
+}
+
+.fg-illustration {
+  flex-shrink: 0;
+  width: clamp(120px, 16vw, 190px);
+  height: auto;
+}
+
+.fg-panel {
+  padding: clamp(22px, 2.6vw, 34px);
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   background: var(--card-bg);
-  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.included-card:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--purple) 34%, var(--line));
-  box-shadow: 0 14px 30px rgb(38 22 92 / 8%);
+.fg-categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 3vw, 36px) clamp(20px, 2.4vw, 34px);
 }
 
-.included-icon {
+.fg-icon {
   display: grid;
   place-items: center;
   width: 40px;
@@ -7943,67 +7960,81 @@ details p {
   color: var(--purple);
 }
 
-.included-icon svg {
+.fg-icon svg {
   width: 21px;
   height: 21px;
 }
 
-.included-card h3 {
-  margin: 15px 0 7px;
+.fg-category h3 {
+  margin: 15px 0 9px;
   font-size: 17px;
   letter-spacing: -0.02em;
 }
 
-.included-card p {
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--ink-3);
-}
-
-.included-more {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-}
-
-.included-more > span {
-  font: 10px var(--mono);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.included-more ul {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.fg-category ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.included-more li {
-  padding: 7px 12px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--card-bg);
-  font-size: 12.5px;
-  font-weight: 600;
+.fg-category li {
+  position: relative;
+  margin: 6px 0;
+  padding-left: 15px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+/* A dot rather than a tick — these are contents, not a list of things already
+   done. */
+.fg-category li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--purple) 55%, transparent);
+}
+
+/* The three lines that have a whole section of their own further down. A quiet
+   rule rather than an underline, so the list still reads as a list instead of
+   as a row of links. */
+.fg-category a {
   color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--purple) 30%, transparent);
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+
+.fg-category a:hover {
+  color: var(--purple);
+  border-bottom-color: var(--purple);
+}
+
+.fg-cta {
+  margin-top: clamp(26px, 3vw, 36px);
 }
 
 @media (max-width: 900px) {
-  .included-grid {
+  .fg-categories {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 620px) {
-  .included-grid {
+  .fg-categories {
     grid-template-columns: 1fr;
+  }
+
+  .fg-head-split {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .fg-head-split p {
+    margin-inline: auto;
   }
 }

@@ -1,14 +1,18 @@
-import type { ReactElement } from 'react'
-import { Reveal } from '@/components/Reveal'
+import { FeatureGrid, type FeatureCategory } from '@/components/ui/feature-section'
 
 /**
  * What a seat actually contains. It sits between the certificate and the job
  * board, at the point where someone has been told what they will earn and is
  * asking what they are getting for the money — so it answers that in one grid
  * instead of leaving it spread across the page.
+ *
+ * Each heading now carries the two or three specifics behind it rather than a
+ * single sentence, which is what the grid is shaped for. The three claims that
+ * have their own section further down link to it, so the list is checkable
+ * rather than just asserted.
  */
 
-const icons: Record<string, ReactElement> = {
+const icons = {
   tools: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
@@ -49,72 +53,76 @@ const icons: Record<string, ReactElement> = {
   ),
 }
 
-const INCLUDED = [
+const INCLUDED: FeatureCategory[] = [
   {
-    icon: 'tools',
+    icon: icons.tools,
     title: 'Every AI tool',
-    detail: 'Claude, ChatGPT, Gemini, n8n, Lovable and more — new ones added every month.',
+    items: [
+      { text: 'Claude, ChatGPT and Gemini' },
+      { text: 'n8n, Lovable and more' },
+      { text: 'New tools added every month' },
+    ],
   },
   {
-    icon: 'lms',
+    icon: icons.lms,
     title: 'Full LMS access',
-    detail: 'Every lesson, project and submission in one place, with your progress tracked.',
+    items: [
+      { text: 'Every lesson and project in one place' },
+      { text: 'Your progress tracked as you go' },
+      { text: 'Verified certificates', href: '#certification' },
+    ],
   },
   {
-    icon: 'mentor',
+    icon: icons.mentor,
     title: 'Mentor guidance',
-    detail: 'Get unstuck by people who build with these tools for a living, not just teach them.',
+    items: [
+      { text: 'People who build with these tools for a living' },
+      { text: 'A community working alongside you' },
+      { text: 'Job board access', href: '#jobs' },
+    ],
   },
   {
-    icon: 'playbook',
+    icon: icons.playbook,
     title: 'Playbooks',
-    detail: 'Step-by-step guides for real tasks, yours to keep and reuse long after the module.',
+    items: [
+      { text: 'Step-by-step guides for real tasks' },
+      { text: 'Yours to keep long after the module' },
+      { text: 'Real projects, not exercises' },
+    ],
   },
   {
-    icon: 'reading',
+    icon: icons.reading,
     title: 'Reading material',
-    detail: 'Curated notes, prompt libraries and references for every tool you take on.',
+    items: [
+      { text: 'Curated notes for every tool' },
+      { text: 'Prompt libraries you can lift' },
+      { text: 'References worth coming back to' },
+    ],
   },
   {
-    icon: 'video',
+    icon: icons.video,
     title: 'Video lessons',
-    detail: 'Short, built-along videos you can pause, rewind and follow at your own pace.',
+    items: [
+      { text: 'Short, built-along recordings' },
+      { text: 'Pause, rewind, follow at your pace' },
+      { text: 'Watchable on anything you own' },
+    ],
   },
-] as const
-
-const MORE = ['Real projects', 'Verified certificates', 'Job board access', 'Community', 'New tools monthly']
+]
 
 export function Included() {
   return (
-    <section className="section included" id="included" aria-labelledby="included-title">
-      <div className="wrap">
-        <Reveal className="center-heading">
-          <span className="eyebrow">WHAT ALL YOU GET</span>
-          <h2 id="included-title">Everything you need. In one place.</h2>
-          <p>One seat covers the tools, the teaching, the material and the people.</p>
-        </Reveal>
-
-        <div className="included-grid reveal-stagger">
-          {INCLUDED.map((item) => (
-            <Reveal as="article" className="included-card" key={item.title}>
-              <span className="included-icon" aria-hidden="true">
-                {icons[item.icon]}
-              </span>
-              <h3>{item.title}</h3>
-              <p>{item.detail}</p>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal className="included-more">
-          <span>And more</span>
-          <ul>
-            {MORE.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </Reveal>
-      </div>
-    </section>
+    <FeatureGrid
+      className="included"
+      id="included"
+      aria-labelledby="included-title"
+      titleId="included-title"
+      eyebrow="WHAT ALL YOU GET"
+      title="Everything you need. In one place."
+      subtitle="One seat covers the tools, the teaching, the material and the people."
+      categories={INCLUDED}
+      buttonText="See the plans"
+      buttonHref="#pricing"
+    />
   )
 }
