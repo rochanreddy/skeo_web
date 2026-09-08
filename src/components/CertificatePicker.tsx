@@ -12,13 +12,13 @@ import startupIndia from '@/assets/accreditation/startup-india.png'
 /* The bodies that stand behind the credential. These are the same four marks
  * the accreditation strip under the hero carries, so the claim made at the top
  * of the page and the claim printed on the certificate are the same claim.
- * Heights are per-mark because the files ship trimmed of their whitespace, so
- * a single height would make them read at wildly different visual sizes. */
-const CERT_ACCREDITORS: { name: string; logo: StaticImageData; height: number }[] = [
-  { name: 'Startup India', logo: startupIndia, height: 15 },
-  { name: 'Ministry of MSME, Government of India', logo: msme, height: 26 },
-  { name: 'Google for Education', logo: googleEducation, height: 20 },
-  { name: 'Anthropic', logo: anthropic, height: 10 },
+ * Every one gets the same box and is scaled to fit inside it — see
+ * .cert-accred-logo, which is where the sizing lives now. */
+const CERT_ACCREDITORS: { name: string; logo: StaticImageData }[] = [
+  { name: 'Startup India', logo: startupIndia },
+  { name: 'Ministry of MSME, Government of India', logo: msme },
+  { name: 'Google for Education', logo: googleEducation },
+  { name: 'Anthropic', logo: anthropic },
 ]
 
 /* The tools a certificate can vouch for.
@@ -110,7 +110,6 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
                   alt={body.name}
                   title={body.name}
                   className="cert-accred-logo"
-                  style={{ height: body.height, width: 'auto' }}
                 />
               ))}
             </div>

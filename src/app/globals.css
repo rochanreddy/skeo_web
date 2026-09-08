@@ -3767,7 +3767,7 @@ h2 em {
   border: 1px solid color-mix(in srgb, var(--cert-accent) 55%, #e6dcff);
   padding: 32px;
   color: #fff;
-  min-height: 396px;
+  min-height: 424px;
   position: relative;
   background: #2e2548b3;
   transition: border-color 0.5s ease;
@@ -3878,11 +3878,11 @@ h2 em {
 }
 
 .cert-accred > div {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
-  gap: 26px;
+  gap: 12px;
   margin-top: 12px;
-  flex-wrap: wrap;
 }
 
 /* One ink, no box. brightness(0) flattens each mark to black and invert(1)
@@ -3890,10 +3890,15 @@ h2 em {
    transparent background — google-education is the knocked-out copy for
    exactly this reason. Held under full white so the marks sit beneath the
    name rather than competing with it. */
+/* One box for all four. Their aspects run from 2:1 to 9:1, so matching their
+   heights would leave one mark three times the width of another; matching the
+   box and containing the artwork is what reads as equal. */
 .cert-accred-logo {
   display: block;
-  width: auto;
+  width: 100%;
+  height: 26px;
   object-fit: contain;
+  object-position: center;
   filter: brightness(0) invert(1);
   opacity: 0.68;
 }
