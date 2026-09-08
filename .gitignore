@@ -13,3 +13,6 @@ next-env.d.ts
 
 # Analytics events written by /api/track — local data, never committed.
 .data
+
+# Certificate PDFs/PNGs rendered from /certificate/print — regenerable output.
+exports
