@@ -1635,7 +1635,7 @@ h2 em {
 /* Vertical rhythm scales with the viewport instead of holding 126px down to a
    phone, where it left the page reading as a stack of unrelated slabs. */
 .section {
-  padding: clamp(54px, 6vw, 96px) 0;
+  padding: clamp(44px, 4.4vw, 72px) 0;
 }
 
 .section-intro h2,
@@ -1789,7 +1789,7 @@ h2 em {
      reads as lit rather than as a flat black slab. */
   background: radial-gradient(105% 130% at 50% 0%, #262046 0%, #1a1526 46%, var(--ink-bg) 100%);
   color: #f9f8fa;
-  padding: clamp(76px, 7.5vw, 110px) 0;
+  padding: clamp(48px, 4.8vw, 76px) 0;
 }
 
 .promise-inner {
@@ -1930,7 +1930,7 @@ h2 em {
   --tool-field: #241a4d;
   --tool-accent: var(--purple);
 
-  padding: clamp(76px, 8vw, 118px) 0;
+  padding: clamp(48px, 4.8vw, 76px) 0;
   background: radial-gradient(90% 70% at 50% 0%, #33255f 0%, var(--tool-field) 58%, #1d1540 100%);
 }
 
@@ -6311,7 +6311,7 @@ details p {
     height: 22px !important;
   }
   .section {
-    padding: 56px 0;
+    padding: 44px 0;
   }
   .comparison,
   .project-layout,
