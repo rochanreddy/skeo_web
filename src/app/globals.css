@@ -3881,8 +3881,9 @@ h2 em {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
-  gap: 12px;
-  margin-top: 12px;
+  gap: 14px;
+  max-width: 380px;
+  margin-top: 11px;
 }
 
 /* One ink, no box. brightness(0) flattens each mark to black and invert(1)
@@ -3896,7 +3897,7 @@ h2 em {
 .cert-accred-logo {
   display: block;
   width: 100%;
-  height: 26px;
+  height: 17px;
   object-fit: contain;
   object-position: center;
   filter: brightness(0) invert(1);
