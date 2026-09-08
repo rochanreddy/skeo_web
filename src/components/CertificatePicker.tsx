@@ -5,7 +5,7 @@ import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { ChatGptMark, ClaudeMark, GeminiMark, N8nMark } from '@/components/tools/marks'
 import anthropic from '@/assets/accreditation/anthropic.webp'
-import googleEducation from '@/assets/accreditation/google-education.webp'
+import googleEducation from '@/assets/accreditation/google-education-cut.png'
 import msme from '@/assets/accreditation/msme.webp'
 import startupIndia from '@/assets/accreditation/startup-india.png'
 
@@ -15,10 +15,10 @@ import startupIndia from '@/assets/accreditation/startup-india.png'
  * Heights are per-mark because the files ship trimmed of their whitespace, so
  * a single height would make them read at wildly different visual sizes. */
 const CERT_ACCREDITORS: { name: string; logo: StaticImageData; height: number }[] = [
-  { name: 'Startup India', logo: startupIndia, height: 13 },
-  { name: 'Ministry of MSME, Government of India', logo: msme, height: 24 },
-  { name: 'Google for Education', logo: googleEducation, height: 18 },
-  { name: 'Anthropic', logo: anthropic, height: 8 },
+  { name: 'Startup India', logo: startupIndia, height: 15 },
+  { name: 'Ministry of MSME, Government of India', logo: msme, height: 26 },
+  { name: 'Google for Education', logo: googleEducation, height: 20 },
+  { name: 'Anthropic', logo: anthropic, height: 10 },
 ]
 
 /* The tools a certificate can vouch for.

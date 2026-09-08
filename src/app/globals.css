@@ -3869,27 +3869,33 @@ h2 em {
 
 .cert-accred > span {
   display: block;
+  padding-top: 13px;
+  border-top: 1px solid #ffffff1f;
   font: 9px var(--mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #a99ccb;
+  color: #9b8fbd;
 }
 
 .cert-accred > div {
   display: flex;
   align-items: center;
-  gap: 7px;
-  margin-top: 9px;
+  gap: 26px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 
+/* One ink, no box. brightness(0) flattens each mark to black and invert(1)
+   lifts it to white, which only works because every one of them now has a
+   transparent background — google-education is the knocked-out copy for
+   exactly this reason. Held under full white so the marks sit beneath the
+   name rather than competing with it. */
 .cert-accred-logo {
   display: block;
-  box-sizing: content-box;
-  padding: 5px 7px;
-  border-radius: 5px;
-  background: #fff;
+  width: auto;
   object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.68;
 }
 
 .cert-foot {
