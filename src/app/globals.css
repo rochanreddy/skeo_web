@@ -1635,7 +1635,7 @@ h2 em {
 /* Vertical rhythm scales with the viewport instead of holding 126px down to a
    phone, where it left the page reading as a stack of unrelated slabs. */
 .section {
-  padding: clamp(58px, 6.4vw, 96px) 0;
+  padding: clamp(44px, 4.4vw, 72px) 0;
 }
 
 .section-intro h2,
@@ -1789,7 +1789,7 @@ h2 em {
      reads as lit rather than as a flat black slab. */
   background: radial-gradient(105% 130% at 50% 0%, #262046 0%, #1a1526 46%, var(--ink-bg) 100%);
   color: #f9f8fa;
-  padding: clamp(58px, 6vw, 90px) 0;
+  padding: clamp(48px, 4.8vw, 76px) 0;
 }
 
 .promise-inner {
@@ -1935,7 +1935,7 @@ h2 em {
   --beam-core: #8b5cf6;
   --beam-tail: #5f3fc4;
 
-  padding: clamp(58px, 6.2vw, 94px) 0;
+  padding: clamp(48px, 4.8vw, 76px) 0;
   background: radial-gradient(90% 70% at 50% 0%, #33255f 0%, var(--tool-field) 58%, #1d1540 100%);
 }
 
@@ -3280,11 +3280,19 @@ h2 em {
 
 /* ============ PRICING ============ */
 .pricing {
-  padding-top: 40px;
+  padding-top: 36px;
+  padding-bottom: 44px;
 }
 
 .pricing .center-heading {
-  margin-bottom: 36px;
+  margin-bottom: 20px;
+}
+
+/* The pricing heading is a label above the cards, not a section opener — the
+   cards are what has to fit. */
+.pricing .center-heading h2 {
+  font-size: clamp(28px, 3vw, 38px);
+  margin: 10px 0 12px;
 }
 
 .pricing .center-heading .eyebrow {
@@ -3292,6 +3300,8 @@ h2 em {
 }
 
 .pricing .center-heading p {
+  font-size: 15px;
+  line-height: 1.5;
   color: var(--muted);
 }
 
@@ -3479,7 +3489,7 @@ h2 em {
 .modules-card {
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
-  padding: 34px 32px;
+  padding: 22px 24px;
   background: var(--card-bg);
 }
 
@@ -3492,10 +3502,10 @@ h2 em {
 }
 
 .modules-card > p {
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 13.5px;
+  line-height: 1.5;
   color: var(--ink-3);
-  margin: 12px 0 20px;
+  margin: 10px 0 16px;
 }
 
 /* ---- module picker + cart ---- */
@@ -3649,7 +3659,7 @@ h2 em {
 }
 
 .allaccess-card li {
-  margin: 9px 0;
+  margin: 6px 0;
 }
 
 /* Held at the foot of the card so it ends flush with the modules card beside
@@ -3703,7 +3713,7 @@ h2 em {
   border: 1px solid color-mix(in srgb, var(--cert-accent) 55%, #e6dcff);
   padding: 32px;
   color: #fff;
-  min-height: 350px;
+  min-height: 424px;
   position: relative;
   background: #2e2548b3;
   transition: border-color 0.5s ease;
@@ -3793,6 +3803,51 @@ h2 em {
 
 .cert-inner p b {
   color: color-mix(in srgb, var(--cert-accent) 45%, #fff);
+}
+
+/* Held above the foot rule, like the seals along the bottom of a real one. */
+.cert-accred {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  bottom: 74px;
+}
+
+.cert-accred > span {
+  display: block;
+  padding-top: 13px;
+  border-top: 1px solid #ffffff1f;
+  font: 9px var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9b8fbd;
+}
+
+.cert-accred > div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 14px;
+  max-width: 380px;
+  margin-top: 11px;
+}
+
+/* One ink, no box. brightness(0) flattens each mark to black and invert(1)
+   lifts it to white, which only works because every one of them now has a
+   transparent background — google-education is the knocked-out copy for
+   exactly this reason. Held under full white so the marks sit beneath the
+   name rather than competing with it. */
+/* One box for all four. Their aspects run from 2:1 to 9:1, so matching their
+   heights would leave one mark three times the width of another; matching the
+   box and containing the artwork is what reads as equal. */
+.cert-accred-logo {
+  display: block;
+  width: 100%;
+  height: 17px;
+  object-fit: contain;
+  object-position: center;
+  filter: brightness(0) invert(1);
+  opacity: 0.68;
 }
 
 .cert-foot {
@@ -6250,7 +6305,7 @@ details p {
     height: 22px !important;
   }
   .section {
-    padding: 78px 0;
+    padding: 44px 0;
   }
   .comparison,
   .project-layout,
@@ -7849,5 +7904,106 @@ details p {
   .palette-switcher {
     left: 14px;
     bottom: 14px;
+  }
+}
+
+
+/* ============ WHAT YOU GET ============ */
+/* Six cards on a three-up grid, then the overflow as a plain row of chips.
+   Deliberately flat — it sits between the certificate and the job board, both
+   of which are heavy visuals, so a third showpiece would fight them. */
+.included-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.included-card {
+  padding: 22px 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--card-bg);
+  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.included-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--purple) 34%, var(--line));
+  box-shadow: 0 14px 30px rgb(38 22 92 / 8%);
+}
+
+.included-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--purple-soft);
+  color: var(--purple);
+}
+
+.included-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.included-card h3 {
+  margin: 15px 0 7px;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+
+.included-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+.included-more {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.included-more > span {
+  font: 10px var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.included-more ul {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.included-more li {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card-bg);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+@media (max-width: 900px) {
+  .included-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .included-grid {
+    grid-template-columns: 1fr;
   }
 }

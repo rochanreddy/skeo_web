@@ -1,11 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { navLinks } from '@/lib/site'
-import { useModal } from './modals/ModalProvider'
+import { lms, navLinks } from '@/lib/site'
 
 export function Nav() {
-  const { openAuth } = useModal()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -98,10 +96,10 @@ export function Nav() {
         </nav>
 
         <div className="nav-actions">
-          <button type="button" className="button button-small" onClick={() => openAuth('signup')}>
-            <span className="btn-label">Start Learning</span>
+          <a className="button button-small" href={lms.web} target="_blank" rel="noopener noreferrer">
+            <span className="btn-label">Sign in to LMS</span>
             <span aria-hidden="true">→</span>
-          </button>
+          </a>
         </div>
 
         <button

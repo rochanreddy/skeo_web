@@ -1,8 +1,25 @@
 'use client'
 
+import Image, { type StaticImageData } from 'next/image'
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { CERT_TOOLS } from '@/lib/cert-tools'
+import anthropic from '@/assets/accreditation/anthropic.webp'
+import googleEducation from '@/assets/accreditation/google-education-cut.png'
+import msme from '@/assets/accreditation/msme.webp'
+import startupIndia from '@/assets/accreditation/startup-india.png'
+
+/* The bodies that stand behind the credential. These are the same four marks
+ * the accreditation strip under the hero carries, so the claim made at the top
+ * of the page and the claim printed on the certificate are the same claim.
+ * Every one gets the same box and is scaled to fit inside it — see
+ * .cert-accred-logo, which is where the sizing lives now. */
+const CERT_ACCREDITORS: { name: string; logo: StaticImageData }[] = [
+  { name: 'Startup India', logo: startupIndia },
+  { name: 'Ministry of MSME, Government of India', logo: msme },
+  { name: 'Google for Education', logo: googleEducation },
+  { name: 'Anthropic', logo: anthropic },
+]
 
 /**
  * The specimen certificate and the tool pills that rewrite it. They sit in
@@ -40,6 +57,21 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
           <p aria-live="polite">
             for demonstrating practical proficiency as a <b>{tool.award}</b> — {tool.skills}.
           </p>
+
+          <div className="cert-accred">
+            <span>Accredited by</span>
+            <div>
+              {CERT_ACCREDITORS.map((body) => (
+                <Image
+                  key={body.name}
+                  src={body.logo}
+                  alt={body.name}
+                  title={body.name}
+                  className="cert-accred-logo"
+                />
+              ))}
+            </div>
+          </div>
 
           <div className="cert-foot">
             <span>Issued Jun 2026 · {tool.detail}</span>

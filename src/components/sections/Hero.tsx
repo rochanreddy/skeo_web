@@ -1,4 +1,3 @@
-import { AuthButton } from '@/components/ActionButton'
 import { Reveal } from '@/components/Reveal'
 import { ToolStage } from '@/components/sections/ToolStage'
 
@@ -20,7 +19,13 @@ export function Hero() {
           Learn by doing, build real proof of work, and unlock opportunities.
         </p>
         <div className="hero-buttons">
-          <AuthButton mode="signup">Start Learning</AuthButton>
+          {/* Straight to the tools and prices. /checkout itself is only
+              reachable from a filled cart — it bounces back to #pricing — so
+              #pricing is the purchase page for someone arriving cold. */}
+          <a className="button" href="#pricing">
+            <span className="btn-label">Start Learning</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
         <div className="proof">
           <div className="avatars" aria-hidden="true">
