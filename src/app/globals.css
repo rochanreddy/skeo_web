@@ -816,7 +816,8 @@ h2 em {
 }
 
 .panel-caption span {
-  font: 500 8px var(--mono);
+  /* Sentence-case copy, not a label — the 9px kicker scale does not apply. */
+  font: 500 10px var(--mono);
   letter-spacing: 0.5px;
   color: #8b8593;
   display: block;
@@ -2643,7 +2644,9 @@ h2 em {
 }
 
 .jobboard-trend {
+  display: flex;
   min-width: 0;
+  flex-direction: column;
 }
 
 .jobboard-side {
@@ -2764,14 +2767,55 @@ h2 em {
 }
 
 .jobboard-chart {
-  margin-top: 9px;
+  margin-top: 0;
+}
+
+/* Was the chart's job when it sat mid-column; the ring inherits it now that
+   the chart is the first thing in this column. */
+.jobboard-mix {
+  margin-top: 12px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* The money line under the chart. Three even cells so the figures line up on
+   a grid rather than drifting with their own widths. */
+.chart-pay {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.chart-pay span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chart-pay small {
+  font: 500 9px var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-5);
+}
+
+.chart-pay b {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
 .chart-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 6px 10px;
   margin-bottom: 6px;
 }
 
@@ -2782,6 +2826,9 @@ h2 em {
 }
 
 .chart-label em {
+  /* Holds the arrow and the figure together — the column is narrow enough
+     that they would otherwise break onto separate lines. */
+  white-space: nowrap;
   font: 700 9px var(--mono);
   font-style: normal;
   padding: 2px 6px;
@@ -2807,11 +2854,12 @@ h2 em {
 }
 
 .chart-range button {
-  padding: 3px 8px;
+  min-height: 30px;
+  padding: 3px 12px;
   border: 0;
   border-radius: 6px;
   background: none;
-  font: 700 9px var(--mono);
+  font: 700 10px var(--mono);
   color: var(--ink-4);
   cursor: pointer;
   transition: background 0.18s ease, color 0.18s ease;
@@ -3089,7 +3137,11 @@ h2 em {
    rather than stretching it. The height is cut to land mid-row: a half-visible
    row is the cheapest way to say "there is more under this". */
 .jobboard-list {
+  display: flex;
   min-width: 0;
+  /* Takes whatever height the side column ends up needing. */
+  flex: 1 1 auto;
+  flex-direction: column;
   margin-top: 11px;
   padding-top: 11px;
   border-top: 1px solid var(--line-soft);
@@ -3112,7 +3164,13 @@ h2 em {
   list-style: none;
   margin: 0;
   padding: 0 4px 0 0;
-  max-height: 172px;
+  /* Flexes to fill the height the side column sets, and scrolls past it.
+     The cap is what stops the list driving the panel instead: uncapped it
+     grows to all twenty roles and stretches the shot to twice its height.
+     457px is where the two columns come out level — below it the left column
+     ends in dead space, above it the left starts pushing the panel taller. */
+  flex: 1 1 auto;
+  max-height: 457px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -3878,11 +3936,10 @@ h2 em {
 }
 
 .cert-accred > div {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 14px;
-  max-width: 380px;
+  gap: clamp(12px, 3.4vw, 20px);
   margin-top: 11px;
 }
 
@@ -3896,12 +3953,29 @@ h2 em {
    box and containing the artwork is what reads as equal. */
 .cert-accred-logo {
   display: block;
-  width: 100%;
+  /* Height is the constant and width follows the artwork, so the air between
+     the marks is the same everywhere. The ceiling is for the long wordmarks:
+     Anthropic is nearly 10:1 and at a shared height alone it runs to 154px,
+     twice Startup India's, and takes the row over. Clamped, it scales down
+     inside its own width and the four keep the weight they had. */
+  width: auto;
+  max-width: 86px;
+  /* Lets a mark give up width on a narrow card rather than force a wrap;
+     object-fit keeps it in proportion as it goes. */
+  min-width: 0;
   height: 17px;
   object-fit: contain;
   object-position: center;
   filter: brightness(0) invert(1);
   opacity: 0.68;
+}
+
+/* A square mark set to a wordmark's height reads as much smaller than it is:
+   it fills a fraction of the area a wordmark covers at the same height. The
+   shared box exists to make the row look even, so the one icon in it gets the
+   few pixels back that its shape costs. */
+.cert-accred-logo--square {
+  height: 25px;
 }
 
 .cert-foot {
@@ -4546,8 +4620,8 @@ details p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 31px;
-  height: 31px;
+  width: 36px;
+  height: 36px;
   border: 1px solid #ffffff24;
   border-radius: 50%;
   color: #ffffffab;
@@ -6164,6 +6238,12 @@ details p {
   }
   .cert-inner {
     padding: 25px;
+    /* The accreditation strip and the issued line are both positioned against
+       the card's bottom edge, while the body copy flows. On a phone that copy
+       runs to twice the lines it takes on a desktop and ran straight under
+       them. Reserve the height the two strips occupy so the text stops above
+       them instead of printing through them. */
+    padding-bottom: 150px;
   }
   .cert-foot {
     left: 25px;
@@ -6233,8 +6313,14 @@ details p {
   .menu {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 5px;
+    /* 44x44 is the tap target; the bars inside stay 21px. */
+    min-width: 44px;
+    min-height: 44px;
     padding: 8px;
+    margin-right: -8px;
     cursor: pointer;
   }
   .menu i {
@@ -6450,6 +6536,12 @@ details p {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px 28px;
   }
+  .footer-nav nav {
+    gap: 0;
+  }
+  .footer-nav a {
+    padding: 7px 0;
+  }
   .footer-mark {
     margin-top: 16px;
   }
@@ -6505,7 +6597,7 @@ details p {
     border-top: 1px solid var(--line-soft);
   }
   .jobboard-roles {
-    max-height: 148px;
+    min-height: 148px;
   }
 }
 

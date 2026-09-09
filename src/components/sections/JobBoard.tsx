@@ -27,6 +27,9 @@ type Track = {
   count: string
   /** Twelve months, so the 6M / 12M range toggle has something to reveal. */
   series: Record<MetricKey, number[]>
+  /* What the track actually pays, in thousands per month. The series above is
+     the average; these two are the shape of the distribution around it. */
+  earnings: { median: number; top10: number }
   skills: { label: string; value: number; mark: keyof typeof MARKS }[]
   roles: Role[]
 }
@@ -127,6 +130,7 @@ const TRACKS: Track[] = [
       match: [71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 85, 86],
       pay: [31, 33, 34, 36, 37, 39, 41, 42, 44, 45, 47, 48],
     },
+    earnings: { median: 42, top10: 120 },
     skills: [
       { label: 'Claude', value: 92, mark: 'claude' },
       { label: 'n8n', value: 84, mark: 'n8n' },
@@ -144,6 +148,7 @@ const TRACKS: Track[] = [
       match: [74, 76, 78, 80, 82, 83, 85, 86, 88, 89, 90, 91],
       pay: [18, 19, 21, 22, 24, 25, 26, 28, 29, 30, 31, 32],
     },
+    earnings: { median: 28, top10: 85 },
     skills: [
       { label: 'Claude', value: 95, mark: 'claude' },
       { label: 'ChatGPT', value: 88, mark: 'chatgpt' },
@@ -161,6 +166,7 @@ const TRACKS: Track[] = [
       match: [62, 63, 65, 66, 68, 69, 71, 72, 74, 75, 77, 78],
       pay: [8, 9, 10, 10, 11, 12, 13, 14, 15, 16, 17, 18],
     },
+    earnings: { median: 16, top10: 38 },
     skills: [
       { label: 'ChatGPT', value: 81, mark: 'chatgpt' },
       { label: 'Claude', value: 74, mark: 'claude' },
@@ -178,6 +184,7 @@ const TRACKS: Track[] = [
       match: [66, 68, 69, 71, 72, 74, 75, 77, 78, 80, 81, 83],
       pay: [44, 46, 49, 52, 54, 57, 60, 62, 65, 67, 69, 72],
     },
+    earnings: { median: 64, top10: 175 },
     skills: [
       { label: 'n8n', value: 90, mark: 'n8n' },
       { label: 'Claude', value: 85, mark: 'claude' },
@@ -202,6 +209,10 @@ const MIX = [
 ]
 
 const CHART = { w: 320, h: 78, pad: 8 }
+
+// Money in the units the reader thinks in: thousands up to a lakh, then lakhs.
+// Takes thousands, so 48 -> ₹48k and 576 -> ₹5.8L.
+const inr = (k: number) => (k >= 100 ? `₹${(k / 100).toFixed(k % 100 ? 1 : 0)}L` : `₹${Math.round(k)}k`)
 const RING = { size: 92, stroke: 13 }
 const CYCLE = 6000
 
@@ -237,6 +248,10 @@ export function JobBoard() {
   const values = data.series[active.key].slice(-months)
   const labels = MONTHS.slice(-months)
   const featured = data.roles[role] ?? data.roles[0]
+
+  // What the track pays, held separately from the metric the chart is drawing:
+  // the money stays on screen even when the line is showing open roles.
+  const payNow = data.series.pay[data.series.pay.length - 1]
 
   // Growth across the visible window — the figure beside the chart title.
   const delta = Math.round(((values[values.length - 1] - values[0]) / values[0]) * 100)
@@ -333,88 +348,6 @@ export function JobBoard() {
             })}
           </div>
 
-          <div className="jobboard-chart">
-            <div className="chart-head">
-              <span className="chart-label">
-                {active.label} · trend
-                <em className={delta >= 0 ? 'up' : 'down'}>
-                  {delta >= 0 ? '▲' : '▼'} {Math.abs(delta)}%
-                </em>
-              </span>
-              <div className="chart-range">
-                {[6, 12].map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    className={n === months ? 'is-active' : undefined}
-                    onClick={() => {
-                      setMonths(n)
-                      setPoint(null)
-                    }}
-                  >
-                    {n}M
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="chart-plot" onMouseLeave={() => setPoint(null)}>
-              <svg viewBox={`0 0 ${CHART.w} ${CHART.h}`} preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="jb-fill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#7453e9" stopOpacity="0.32" />
-                    <stop offset="100%" stopColor="#7453e9" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                {/* Re-keyed so the line redraws itself whenever the data changes. */}
-                <path key={`a-${track}-${metric}-${months}`} className="chart-area" d={area} fill="url(#jb-fill)" />
-                <path key={`l-${track}-${metric}-${months}`} className="chart-line" d={line} />
-                {point === null && <circle className="chart-rider" cx={rider[0]} cy={rider[1]} r="3.5" />}
-                {point !== null && (
-                  <>
-                    <line className="chart-cross" x1={dots[point][0]} y1={0} x2={dots[point][0]} y2={CHART.h} />
-                    <circle className="chart-dot" cx={dots[point][0]} cy={dots[point][1]} r="4" />
-                  </>
-                )}
-              </svg>
-
-              {/* One hit area per month, so the chart is keyboard-reachable too. */}
-              <div className="chart-hits">
-                {values.map((value, i) => (
-                  <button
-                    key={labels[i]}
-                    type="button"
-                    onMouseEnter={() => setPoint(i)}
-                    onFocus={() => setPoint(i)}
-                    onBlur={() => setPoint(null)}
-                    aria-label={`${labels[i]}: ${active.format(value)}`}
-                  />
-                ))}
-              </div>
-
-              {point !== null && (
-                <span
-                  className="chart-tip"
-                  style={{
-                    left: `${(dots[point][0] / CHART.w) * 100}%`,
-                    top: `${(dots[point][1] / CHART.h) * 100}%`,
-                  }}
-                >
-                  <b>{active.format(values[point])}</b>
-                  <i>{labels[point]}</i>
-                </span>
-              )}
-            </div>
-
-            <div className="chart-axis" aria-hidden="true">
-              {labels.map((month, i) => (
-                <span key={month} className={point === i ? 'is-lit' : undefined}>
-                  {month}
-                </span>
-              ))}
-            </div>
-          </div>
-
             {/* The whole list, not a top three — the column scrolls, so the
               panel reads like a board you could actually work through. */}
             <div className="jobboard-list">
@@ -438,6 +371,109 @@ export function JobBoard() {
           </div>
 
           <div className="jobboard-side">
+            {/* The trend lives on this side of the panel, above the ring —
+              the tiles opposite stay the headline figures and double as its
+              controls. */}
+            <div className="jobboard-chart">
+              <div className="chart-head">
+                <span className="chart-label">
+                  {active.label}
+                  <em className={delta >= 0 ? 'up' : 'down'}>
+                    {delta >= 0 ? '▲' : '▼'} {Math.abs(delta)}%
+                  </em>
+                </span>
+                <div className="chart-range">
+                  {[6, 12].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      className={n === months ? 'is-active' : undefined}
+                      onClick={() => {
+                        setMonths(n)
+                        setPoint(null)
+                      }}
+                    >
+                      {n}M
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="chart-plot" onMouseLeave={() => setPoint(null)}>
+                <svg viewBox={`0 0 ${CHART.w} ${CHART.h}`} preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="jb-fill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#7453e9" stopOpacity="0.32" />
+                      <stop offset="100%" stopColor="#7453e9" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  {/* Re-keyed so the line redraws itself whenever the data changes. */}
+                  <path key={`a-${track}-${metric}-${months}`} className="chart-area" d={area} fill="url(#jb-fill)" />
+                  <path key={`l-${track}-${metric}-${months}`} className="chart-line" d={line} />
+                  {point === null && <circle className="chart-rider" cx={rider[0]} cy={rider[1]} r="3.5" />}
+                  {point !== null && (
+                    <>
+                      <line className="chart-cross" x1={dots[point][0]} y1={0} x2={dots[point][0]} y2={CHART.h} />
+                      <circle className="chart-dot" cx={dots[point][0]} cy={dots[point][1]} r="4" />
+                    </>
+                  )}
+                </svg>
+
+                {/* One hit area per month, so the chart is keyboard-reachable too. */}
+                <div className="chart-hits">
+                  {values.map((value, i) => (
+                    <button
+                      key={labels[i]}
+                      type="button"
+                      onMouseEnter={() => setPoint(i)}
+                      onFocus={() => setPoint(i)}
+                      onBlur={() => setPoint(null)}
+                      aria-label={`${labels[i]}: ${active.format(value)}`}
+                    />
+                  ))}
+                </div>
+
+                {point !== null && (
+                  <span
+                    className="chart-tip"
+                    style={{
+                      left: `${(dots[point][0] / CHART.w) * 100}%`,
+                      top: `${(dots[point][1] / CHART.h) * 100}%`,
+                    }}
+                  >
+                    <b>{active.format(values[point])}</b>
+                    <i>{labels[point]}</i>
+                  </span>
+                )}
+              </div>
+
+              <div className="chart-axis" aria-hidden="true">
+                {labels.map((month, i) => (
+                  <span key={month} className={point === i ? 'is-lit' : undefined}>
+                    {month}
+                  </span>
+                ))}
+              </div>
+
+              {/* What the board pays, always on show. The line above can be
+                switched to open roles or match rate; this stays put, because
+                the money is the reason anyone reads the panel at all. */}
+              <div className="chart-pay">
+                <span>
+                  <small>Median</small>
+                  <b>{inr(data.earnings.median)}</b>
+                </span>
+                <span>
+                  <small>Top 10%</small>
+                  <b>{inr(data.earnings.top10)}</b>
+                </span>
+                <span>
+                  <small>Per year</small>
+                  <b>{inr(payNow * 12)}</b>
+                </span>
+              </div>
+            </div>
+
             {/* Mix ring — clicking a segment jumps the whole panel to that track. */}
             <div className="jobboard-mix">
               <span className="chart-label">Board mix</span>

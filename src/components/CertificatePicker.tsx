@@ -5,19 +5,21 @@ import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
 import { ChatGptMark, ClaudeMark, GeminiMark, N8nMark } from '@/components/tools/marks'
 import anthropic from '@/assets/accreditation/anthropic.webp'
-import googleEducation from '@/assets/accreditation/google-education-cut.png'
+import sarvam from '@/assets/accreditation/sarvam-cut.png'
 import msme from '@/assets/accreditation/msme.webp'
 import startupIndia from '@/assets/accreditation/startup-india.png'
 
-/* The bodies that stand behind the credential. These are the same four marks
- * the accreditation strip under the hero carries, so the claim made at the top
- * of the page and the claim printed on the certificate are the same claim.
- * Every one gets the same box and is scaled to fit inside it — see
- * .cert-accred-logo, which is where the sizing lives now. */
-const CERT_ACCREDITORS: { name: string; logo: StaticImageData }[] = [
+/* The bodies that stand behind the credential. Every one gets the same box and
+ * is scaled to fit inside it — see .cert-accred-logo, where the sizing lives.
+ *
+ * Note this row and the hero's accreditation strip have diverged: the strip
+ * still carries Google for Education where this one carries Sarvam. If the two
+ * are meant to make the same claim, the strip needs the same swap. */
+const CERT_ACCREDITORS: { name: string; logo: StaticImageData; square?: boolean }[] = [
   { name: 'Startup India', logo: startupIndia },
   { name: 'Ministry of MSME, Government of India', logo: msme },
-  { name: 'Google for Education', logo: googleEducation },
+  // Icon only, where the rest are wordmarks — see .cert-accred-logo--square.
+  { name: 'Sarvam AI', logo: sarvam, square: true },
   { name: 'Anthropic', logo: anthropic },
 ]
 
@@ -109,7 +111,7 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
                   src={body.logo}
                   alt={body.name}
                   title={body.name}
-                  className="cert-accred-logo"
+                  className={body.square ? 'cert-accred-logo cert-accred-logo--square' : 'cert-accred-logo'}
                 />
               ))}
             </div>
