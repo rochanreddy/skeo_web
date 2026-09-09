@@ -7,10 +7,11 @@ import { Reveal } from '@/components/Reveal'
  * asking what they are getting for the money — so it answers that in one grid
  * instead of leaving it spread across the page.
  *
- * The six are the whole offer, in the order someone lives it: learn the tools,
- * get credited for it, find the work, and have people around you while you do.
- * Certificate, jobs and community used to be chips in the "and more" row, which
- * buried three of the strongest reasons to buy under the weakest heading.
+ * The six are the whole offer. The learning system and the community lead
+ * because they are what a seat gives you on day one; the credential, the board,
+ * the mentors and the library are what it goes on to give you. Certificate,
+ * jobs and community used to be chips in the "and more" row, which buried three
+ * of the strongest reasons to buy under the weakest heading.
  */
 
 const icons: Record<string, ReactElement> = {
@@ -56,8 +57,13 @@ const icons: Record<string, ReactElement> = {
 const INCLUDED = [
   {
     icon: 'tools',
-    title: 'Tool Learning System',
+    title: 'AI Learning System',
     detail: 'Claude, ChatGPT, Gemini, n8n, Lovable and more — taught in order, so each tool builds on the last.',
+  },
+  {
+    icon: 'community',
+    title: 'AI Builder Community',
+    detail: 'A working group of learners and builders — ask, share and ship alongside people doing the same.',
   },
   {
     icon: 'certificate',
@@ -68,11 +74,6 @@ const INCLUDED = [
     icon: 'jobs',
     title: 'Jobs Opportunities',
     detail: 'A live board of freelance, internship and full-time roles, matched against what you have learned.',
-  },
-  {
-    icon: 'community',
-    title: 'Community',
-    detail: 'A working group of learners and builders — ask, share and ship alongside people doing the same.',
   },
   {
     icon: 'mentorship',
