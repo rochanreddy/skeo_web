@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 /**
@@ -13,12 +13,18 @@ import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/com
  * when a segment is clicked, and hovering a role hands the match card over to
  * it.
  *
- * The roles list is the point of the panel, so it gets the room: no trend chart
- * competing with it, and enough height that six openings read at once with the
- * seventh cut mid-row to say there is more under it.
+ * The trend chart sits in the side column above the mix ring and carries the
+ * money with it, because the pay is the reason anyone reads the panel.
+ *
+ * The roles list still gets its room rather than flexing to level the columns:
+ * enough height that six openings read at once with the seventh cut mid-row,
+ * to say there is more under it. The left column ends a little short of the
+ * right as a result, which is the trade this branch takes.
  *
  * All local state over static data: a product shot you can poke at.
  */
+
+type MetricKey = 'open' | 'match' | 'pay'
 
 type Role = { title: string; meta: string; match: number }
 
@@ -26,8 +32,11 @@ type Track = {
   key: string
   label: string
   count: string
-  /** The three headline figures, as the tiles above the list read them. */
-  stats: { open: number; match: number; pay: number }
+  /** Twelve months, so the 6M / 12M range toggle has something to reveal. */
+  series: Record<MetricKey, number[]>
+  /* What the track actually pays, in thousands per month. The series above is
+     the average; these two are the shape of the distribution around it. */
+  earnings: { median: number; top10: number }
   skills: { label: string; value: number; mark: keyof typeof MARKS }[]
   roles: Role[]
 }
@@ -39,6 +48,8 @@ const MARKS = {
   n8n: N8nMark,
   lovable: LovableMark,
 }
+
+const MONTHS = ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
 
 /* The board itself. Each track carries its whole list rather than three
    samples — the roles column scrolls — and "All" is genuinely every opening,
@@ -136,7 +147,12 @@ const TRACKS: Track[] = [
     key: 'all',
     label: 'All',
     count: '1,024',
-    stats: { open: 1024, match: 86, pay: 48 },
+    series: {
+      open: [612, 640, 668, 705, 726, 774, 802, 838, 866, 905, 964, 1024],
+      match: [71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 85, 86],
+      pay: [31, 33, 34, 36, 37, 39, 41, 42, 44, 45, 47, 48],
+    },
+    earnings: { median: 42, top10: 120 },
     skills: [
       { label: 'Claude', value: 92, mark: 'claude' },
       { label: 'n8n', value: 84, mark: 'n8n' },
@@ -149,7 +165,12 @@ const TRACKS: Track[] = [
     key: 'freelance',
     label: 'Freelance',
     count: '412',
-    stats: { open: 412, match: 91, pay: 32 },
+    series: {
+      open: [188, 204, 219, 236, 248, 267, 284, 301, 322, 348, 379, 412],
+      match: [74, 76, 78, 80, 82, 83, 85, 86, 88, 89, 90, 91],
+      pay: [18, 19, 21, 22, 24, 25, 26, 28, 29, 30, 31, 32],
+    },
+    earnings: { median: 28, top10: 85 },
     skills: [
       { label: 'Claude', value: 95, mark: 'claude' },
       { label: 'ChatGPT', value: 88, mark: 'chatgpt' },
@@ -162,7 +183,12 @@ const TRACKS: Track[] = [
     key: 'internships',
     label: 'Internships',
     count: '188',
-    stats: { open: 188, match: 78, pay: 18 },
+    series: {
+      open: [74, 79, 86, 92, 101, 112, 124, 133, 145, 158, 172, 188],
+      match: [62, 63, 65, 66, 68, 69, 71, 72, 74, 75, 77, 78],
+      pay: [8, 9, 10, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    },
+    earnings: { median: 16, top10: 38 },
     skills: [
       { label: 'ChatGPT', value: 81, mark: 'chatgpt' },
       { label: 'Claude', value: 74, mark: 'claude' },
@@ -175,7 +201,12 @@ const TRACKS: Track[] = [
     key: 'fulltime',
     label: 'Full time',
     count: '424',
-    stats: { open: 424, match: 83, pay: 72 },
+    series: {
+      open: [204, 216, 231, 248, 262, 279, 296, 312, 334, 361, 392, 424],
+      match: [66, 68, 69, 71, 72, 74, 75, 77, 78, 80, 81, 83],
+      pay: [44, 46, 49, 52, 54, 57, 60, 62, 65, 67, 69, 72],
+    },
+    earnings: { median: 64, top10: 175 },
     skills: [
       { label: 'n8n', value: 90, mark: 'n8n' },
       { label: 'Claude', value: 85, mark: 'claude' },
@@ -186,9 +217,7 @@ const TRACKS: Track[] = [
   },
 ]
 
-/* The three tiles above the list — a readout now the trend chart is gone, so
-   they state the figure rather than selecting a series to draw. */
-const METRICS: { key: keyof Track['stats']; label: string; format: (v: number) => string }[] = [
+const METRICS: { key: MetricKey; label: string; format: (v: number) => string }[] = [
   { key: 'open', label: 'Open roles', format: (v) => v.toLocaleString('en-IN') },
   { key: 'match', label: 'Match rate', format: (v) => `${v}%` },
   { key: 'pay', label: 'Avg / mo', format: (v) => `₹${v}k` },
@@ -201,6 +230,11 @@ const MIX = [
   { key: 'internships', label: 'Internships', value: 18, color: '#d9cffa' },
 ]
 
+const CHART = { w: 320, h: 78, pad: 8 }
+
+// Money in the units the reader thinks in: thousands up to a lakh, then lakhs.
+// Takes thousands, so 48 -> ₹48k and 576 -> ₹5.8L.
+const inr = (k: number) => (k >= 100 ? `₹${(k / 100).toFixed(k % 100 ? 1 : 0)}L` : `₹${Math.round(k)}k`)
 const RING = { size: 92, stroke: 13 }
 const CYCLE = 6000
 
@@ -225,6 +259,9 @@ const DEMO = {
 
 export function JobBoard() {
   const [track, setTrack] = useState(0)
+  const [metric, setMetric] = useState(0)
+  const [months, setMonths] = useState(6)
+  const [point, setPoint] = useState<number | null>(null)
   const [role, setRole] = useState(0)
   const [segment, setSegment] = useState<number | null>(null)
   // Set while a pointer or the keyboard is on the panel: the cycle waits.
@@ -357,11 +394,43 @@ export function JobBoard() {
   }, [track, held, demo])
 
   const data = TRACKS[track]
+  const active = METRICS[metric]
+  const values = data.series[active.key].slice(-months)
+  const labels = MONTHS.slice(-months)
   const featured = data.roles[role] ?? data.roles[0]
+
+  // What the track pays, held separately from the metric the chart is drawing:
+  // the money stays on screen even when the line is showing open roles.
+  const payNow = data.series.pay[data.series.pay.length - 1]
+
+  // Growth across the visible window — the figure beside the chart title.
+  const delta = Math.round(((values[values.length - 1] - values[0]) / values[0]) * 100)
+
+  const { line, area, dots } = useMemo(() => {
+    const min = Math.min(...values)
+    const max = Math.max(...values)
+    const span = max - min || 1
+    const step = (CHART.w - CHART.pad * 2) / (values.length - 1)
+    const points = values.map((v, i) => {
+      const x = CHART.pad + i * step
+      const y = CHART.h - CHART.pad - ((v - min) / span) * (CHART.h - CHART.pad * 2)
+      return [x, y] as const
+    })
+    const path = points.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ')
+    return {
+      line: path,
+      area: `${path} L${CHART.w - CHART.pad} ${CHART.h} L${CHART.pad} ${CHART.h} Z`,
+      dots: points,
+    }
+  }, [values])
 
   const radius = (RING.size - RING.stroke) / 2
   const circumference = 2 * Math.PI * radius
   let sweep = 0
+
+  // While nothing is being hovered the last point carries a blinking rider, so
+  // the chart still reads as live.
+  const rider = dots[dots.length - 1]
 
   return (
     <>
@@ -429,15 +498,27 @@ export function JobBoard() {
 
         <div className="jobboard-main">
           <div className="jobboard-trend">
-            {/* A plain readout of the three headline figures — nothing to pick
-                now the trend chart is gone, so nothing here is a control. */}
-            <div className="jobboard-stats">
-              {METRICS.map((item) => (
-                <div className="stat-tile" key={item.key}>
-                  <b>{item.format(data.stats[item.key])}</b>
-                  <small>{item.label}</small>
-                </div>
-              ))}
+            {/* Tiles are the chart's legend as well as its control. */}
+            <div className="jobboard-stats" role="tablist" aria-label="Metric">
+              {METRICS.map((item, i) => {
+                const series = data.series[item.key]
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === metric}
+                    className={i === metric ? 'is-active' : undefined}
+                    onClick={() => {
+                      setMetric(i)
+                      setPoint(null)
+                    }}
+                  >
+                    <b>{item.format(series[series.length - 1])}</b>
+                    <small>{item.label}</small>
+                  </button>
+                )
+              })}
             </div>
 
             {/* The whole list, not a top three — six openings read at once and
@@ -464,6 +545,109 @@ export function JobBoard() {
           </div>
 
           <div className="jobboard-side">
+            {/* The trend lives on this side of the panel, above the ring —
+              the tiles opposite stay the headline figures and double as its
+              controls. */}
+            <div className="jobboard-chart">
+              <div className="chart-head">
+                <span className="chart-label">
+                  {active.label}
+                  <em className={delta >= 0 ? 'up' : 'down'}>
+                    {delta >= 0 ? '▲' : '▼'} {Math.abs(delta)}%
+                  </em>
+                </span>
+                <div className="chart-range">
+                  {[6, 12].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      className={n === months ? 'is-active' : undefined}
+                      onClick={() => {
+                        setMonths(n)
+                        setPoint(null)
+                      }}
+                    >
+                      {n}M
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="chart-plot" onMouseLeave={() => setPoint(null)}>
+                <svg viewBox={`0 0 ${CHART.w} ${CHART.h}`} preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="jb-fill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#7453e9" stopOpacity="0.32" />
+                      <stop offset="100%" stopColor="#7453e9" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  {/* Re-keyed so the line redraws itself whenever the data changes. */}
+                  <path key={`a-${track}-${metric}-${months}`} className="chart-area" d={area} fill="url(#jb-fill)" />
+                  <path key={`l-${track}-${metric}-${months}`} className="chart-line" d={line} />
+                  {point === null && <circle className="chart-rider" cx={rider[0]} cy={rider[1]} r="3.5" />}
+                  {point !== null && (
+                    <>
+                      <line className="chart-cross" x1={dots[point][0]} y1={0} x2={dots[point][0]} y2={CHART.h} />
+                      <circle className="chart-dot" cx={dots[point][0]} cy={dots[point][1]} r="4" />
+                    </>
+                  )}
+                </svg>
+
+                {/* One hit area per month, so the chart is keyboard-reachable too. */}
+                <div className="chart-hits">
+                  {values.map((value, i) => (
+                    <button
+                      key={labels[i]}
+                      type="button"
+                      onMouseEnter={() => setPoint(i)}
+                      onFocus={() => setPoint(i)}
+                      onBlur={() => setPoint(null)}
+                      aria-label={`${labels[i]}: ${active.format(value)}`}
+                    />
+                  ))}
+                </div>
+
+                {point !== null && (
+                  <span
+                    className="chart-tip"
+                    style={{
+                      left: `${(dots[point][0] / CHART.w) * 100}%`,
+                      top: `${(dots[point][1] / CHART.h) * 100}%`,
+                    }}
+                  >
+                    <b>{active.format(values[point])}</b>
+                    <i>{labels[point]}</i>
+                  </span>
+                )}
+              </div>
+
+              <div className="chart-axis" aria-hidden="true">
+                {labels.map((month, i) => (
+                  <span key={month} className={point === i ? 'is-lit' : undefined}>
+                    {month}
+                  </span>
+                ))}
+              </div>
+
+              {/* What the board pays, always on show. The line above can be
+                switched to open roles or match rate; this stays put, because
+                the money is the reason anyone reads the panel at all. */}
+              <div className="chart-pay">
+                <span>
+                  <small>Median</small>
+                  <b>{inr(data.earnings.median)}</b>
+                </span>
+                <span>
+                  <small>Top 10%</small>
+                  <b>{inr(data.earnings.top10)}</b>
+                </span>
+                <span>
+                  <small>Per year</small>
+                  <b>{inr(payNow * 12)}</b>
+                </span>
+              </div>
+            </div>
+
             {/* Mix ring — clicking a segment jumps the whole panel to that track. */}
             <div className="jobboard-mix">
               <span className="chart-label">Board mix</span>
