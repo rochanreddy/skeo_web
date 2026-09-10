@@ -862,6 +862,11 @@ h2 em {
 .stage-card-mark {
   width: 44%;
   height: auto;
+  /* The OpenAI mark is the one here drawn in currentColor, and these faces are
+     white while the hero's text is not — without a colour of its own it
+     inherited the hero's and vanished into the tile. The other marks carry
+     their own fills, so this reaches only the one that needs it. */
+  color: #0d0d0d;
 }
 
 .stage-card.is-active .stage-card-face {
@@ -1602,7 +1607,7 @@ h2 em {
 /* Tighter than the quote rail: these are marks, not cards. This is now the
    only thing setting the space between them, so it is the whole rhythm. */
 .employer-rail .logo-rail-track > span {
-  margin-right: 44px;
+  margin-right: 58px;
 }
 
 .logo-item img {
@@ -1769,7 +1774,11 @@ h2 em {
      reads as lit rather than as a flat black slab. */
   background: radial-gradient(105% 130% at 50% 0%, #262046 0%, #1a1526 46%, var(--ink-bg) 100%);
   color: #f9f8fa;
-  padding: clamp(48px, 4.8vw, 76px) 0;
+  /* Asymmetric on purpose. The band opens the moment the section above ends —
+     they touch, with no margin between — so its top padding is the whole of
+     the empty space before the eyebrow, and at 4.8vw that was ~76px of unlit
+     band. The foot keeps the original figure: nothing is crowding it there. */
+  padding: clamp(28px, 2.8vw, 44px) 0 clamp(48px, 4.8vw, 76px);
 }
 
 .promise-inner {
@@ -2754,8 +2763,8 @@ h2 em {
 /* Was the chart's job when it sat mid-column; the ring inherits it now that
    the chart is the first thing in this column. */
 .jobboard-mix {
-  margin-top: 9px;
-  padding-top: 9px;
+  margin-top: 6px;
+  padding-top: 6px;
   border-top: 1px solid var(--line-soft);
 }
 
@@ -2765,8 +2774,8 @@ h2 em {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
-  margin-top: 8px;
-  padding-top: 8px;
+  margin-top: 6px;
+  padding-top: 6px;
   border-top: 1px solid var(--line-soft);
 }
 
@@ -2854,7 +2863,7 @@ h2 em {
 
 .chart-plot {
   position: relative;
-  height: 54px;
+  height: 40px;
 }
 
 .chart-plot svg {
@@ -2994,8 +3003,8 @@ h2 em {
 }
 
 .jobboard-skills {
-  margin-top: 9px;
-  padding-top: 9px;
+  margin-top: 6px;
+  padding-top: 6px;
   border-top: 1px solid var(--line-soft);
 }
 
@@ -3003,12 +3012,12 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 11px;
-  margin-top: 7px;
+  margin-top: 5px;
 }
 
 .mix-ring {
-  width: 64px;
-  height: 64px;
+  width: 50px;
+  height: 50px;
   flex: none;
   /* Start at twelve o'clock rather than three. */
   transform: rotate(-90deg);
@@ -3071,7 +3080,7 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 5px;
+  margin-top: 2px;
   font-size: 10.5px;
   color: var(--ink-3);
 }
@@ -3144,35 +3153,7 @@ h2 em {
 .jobboard-roles {
   list-style: none;
   margin: 0;
-  padding: 0 4px 0 0;
-  /* Flexes to fill the height the side column sets, and scrolls past it.
-     The cap is what stops the list driving the panel instead: uncapped it
-     grows to all twenty roles and stretches the shot to twice its height.
-     457px is where the two columns come out level — below it the left column
-     ends in dead space, above it the left starts pushing the panel taller. */
-  flex: 1 1 auto;
-  max-height: 405px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: #d9d1ef transparent;
-}
-
-.jobboard-roles::-webkit-scrollbar {
-  width: 6px;
-}
-
-.jobboard-roles::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.jobboard-roles::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: #ded7f0;
-}
-
-.jobboard-roles::-webkit-scrollbar-thumb:hover {
-  background: #cbc0ea;
+  padding: 0;
 }
 
 .jobboard-roles button {
@@ -3224,12 +3205,12 @@ h2 em {
 
 /* Closes the side column, in flow, inside the panel's own rectangle. */
 .jobboard-float {
-  margin-top: 9px;
+  margin-top: 6px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 7px;
-  padding: 12px 13px;
+  gap: 5px;
+  padding: 8px 12px;
   border: 1px solid #e7e1f6;
   border-radius: 12px;
   background: linear-gradient(120deg, #f7f4fe, var(--surface));
@@ -3804,10 +3785,11 @@ h2 em {
   /* colour-mix keeps the rule readable on the dark card whatever the accent is:
      a straight brand colour is too dark for a hairline here. */
   border: 1px solid color-mix(in srgb, var(--cert-accent) 55%, #e6dcff);
-  /* A4 landscape, the proportion a real certificate is printed at. Only where
-     the card is wide enough to hold the copy at that shape — the ratio is
-     applied in a min-width block below rather than here, because on a phone a
-     1.41:1 box is 200px tall and the text would spill straight out of it. */
+  /* A4 landscape, the proportion a real certificate is printed at. It holds at
+     every width now: on a phone the card is not narrowed, it is scaled down
+     whole (see the mobile block), so the copy never has to reflow into a tall
+     portrait box to fit. */
+  aspect-ratio: 1.41;
   padding: 32px;
   color: #fff;
   min-height: 424px;
@@ -5452,11 +5434,18 @@ details p {
 
 .checkout-back {
   display: inline-block;
+  /* A button carries the browser's own chrome; this one has to look like the
+     link it replaced. */
+  padding: 0;
+  border: 0;
   margin-bottom: 20px;
+  background: none;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 700;
   color: var(--on-dark-2);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .checkout-back:hover {
@@ -6262,52 +6251,6 @@ details p {
   .certificate {
     padding: 18px;
   }
-  .cert-inner {
-    padding: 25px;
-  }
-  /* The brand and the accreditation cannot share a row on a card this narrow:
-     the four marks ran off the right edge and the tagline broke into three
-     lines to make room. Stacked, each gets the full width. */
-  .cert-head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 13px;
-  }
-  .cert-accred-row {
-    flex-wrap: wrap;
-    gap: 14px;
-    padding-top: 0;
-  }
-  /* A sixth off the height puts all four on one line on a phone. They wrap
-     rather than overflow if a longer mark is ever added, but at these sizes
-     they do not need to. */
-  .cert-accred-logo {
-    height: 14px;
-    max-width: 72px;
-  }
-  .cert-accred-logo--square {
-    height: 21px;
-  }
-  .cert-brand em {
-    white-space: nowrap;
-  }
-  /* Out of the corner and back into the flow — see the note above .cert-foot.
-     Stacked too: the issue line and two signature blocks cannot share a row
-     here without the labels breaking mid-word. */
-  .cert-foot {
-    position: static;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-    margin-top: 26px;
-  }
-  .cert-signs {
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .cert-inner h3 {
-    font-size: 30px;
-  }
   .problem-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -6351,6 +6294,23 @@ details p {
     padding: 11px 14px;
     border-radius: var(--r-sm);
   }
+  /* Night mode: the pill above this is dark, so a near-white dropdown read as
+     a different object hanging off it — and worse, the link colour here is the
+     palette's LIGHT ink, which on a near-white panel was invisible. Matching
+     the pill fixes the mismatch and the contrast in one go. */
+  :root[data-palette='charcoal'] .nav-links {
+    border-color: #ffffff1f;
+    background: #1b1d22f2;
+    box-shadow: 0 10px 34px #00000073;
+  }
+  :root[data-palette='charcoal'] .nav-links a {
+    color: var(--ink-2);
+  }
+  :root[data-palette='charcoal'] .nav-links a:hover,
+  :root[data-palette='charcoal'] .nav-links a.active {
+    color: #fff;
+    background: #ffffff14;
+  }
   .nav-links a.active::after {
     left: 14px;
     right: auto;
@@ -6365,6 +6325,17 @@ details p {
   .login,
   .nav-actions .button {
     display: none;
+  }
+  /* Pinned against the menu button. The auto margin is what puts it there:
+     the pill is space-between and the links are out of flow at this size, so
+     without it the toggle is stranded midway down the bar.
+     The negative margin trims the pill's 20px flex gap by half. Bear in mind
+     the menu button is 44px of tap target around 21px of bars, so roughly
+     11px of what looks like space beside it is really its own padding — the
+     gap you see is always wider than the gap between the boxes. */
+  .nav-actions {
+    margin-left: auto;
+    margin-right: -10px;
   }
   .menu {
     display: flex;
@@ -6445,7 +6416,7 @@ details p {
   /* The rail keeps scrolling on phones — the marks just ride closer together. */
   .logo-rail-track > span,
   .employer-rail .logo-rail-track > span {
-    margin-right: 44px;
+    margin-right: 58px;
   }
   .logo-item {
     min-width: 84px;
@@ -6617,33 +6588,6 @@ details p {
      On a phone that left the legend and skill rows narrower than their own
      labels, which pushed the whole document into a horizontal scroll. One
      column here, with the track rail as a swipeable row above it. */
-  .jobboard-body {
-    grid-template-columns: 1fr;
-  }
-  .jobboard-rail {
-    flex-direction: row;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .jobboard-rail::-webkit-scrollbar {
-    display: none;
-  }
-  .jobboard-rail button {
-    flex: 0 0 auto;
-  }
-  .jobboard-main {
-    grid-template-columns: 1fr;
-  }
-  .jobboard-side {
-    padding-left: 0;
-    padding-top: 12px;
-    border-left: 0;
-    border-top: 1px solid var(--line-soft);
-  }
-  .jobboard-roles {
-    min-height: 148px;
-  }
 }
 
 /* ============ MOTION & PRINT ============ */
@@ -6840,18 +6784,6 @@ details p {
 
 :root[data-palette='claude'] .jobboard-float em {
   background: #f5ebe1;
-}
-
-:root[data-palette='claude'] .jobboard-roles {
-  scrollbar-color: #d9d3c6 transparent;
-}
-
-:root[data-palette='claude'] .jobboard-roles::-webkit-scrollbar-thumb {
-  background: #ded8cb;
-}
-
-:root[data-palette='claude'] .jobboard-roles::-webkit-scrollbar-thumb:hover {
-  background: #c9c2b2;
 }
 
 :root[data-palette='claude'] .jobboard-bar i {
@@ -7257,18 +7189,6 @@ details p {
   background: #2a2344;
 }
 
-:root[data-palette='charcoal'] .jobboard-roles {
-  scrollbar-color: #3a3358 transparent;
-}
-
-:root[data-palette='charcoal'] .jobboard-roles::-webkit-scrollbar-thumb {
-  background: #3a3358;
-}
-
-:root[data-palette='charcoal'] .jobboard-roles::-webkit-scrollbar-thumb:hover {
-  background: #4a4272;
-}
-
 :root[data-palette='charcoal'] .chart-range {
   background: #202228;
 }
@@ -7598,18 +7518,6 @@ details p {
 
 :root[data-palette='mono'] .float-meter {
   background: #e4e4e4;
-}
-
-:root[data-palette='mono'] .jobboard-roles {
-  scrollbar-color: #d4d4d4 transparent;
-}
-
-:root[data-palette='mono'] .jobboard-roles::-webkit-scrollbar-thumb {
-  background: #d4d4d4;
-}
-
-:root[data-palette='mono'] .jobboard-roles::-webkit-scrollbar-thumb:hover {
-  background: #c0c0c0;
 }
 
 /* The window chrome dots on the job board panel. Their whole job is to look
@@ -8152,10 +8060,6 @@ details p {
    transform, so the panel re-lays out at the smaller size and the type stays
    crisp instead of being scaled bitmap-wise. */
 @media (min-width: 1024px) {
-  .cert-inner {
-    aspect-ratio: 1.41;
-  }
-
   .jobboard {
     zoom: 0.94;
   }
@@ -8174,4 +8078,207 @@ details p {
   padding: 7px 11px;
   border-radius: 8px;
   background: #f4f4f6;
+}
+
+/* ============ LEAVE-CHECKOUT DIALOG ============ */
+/* Staying is the default, so it takes the solid button and sits first. */
+.leave-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.leave-actions .button {
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+/* ============ MOBILE: HOLD THE DESKTOP SHAPE ============ */
+/* Both of these are product shots — a certificate and a dashboard — and a shot
+   that reflows is a different object, not a smaller one. Below the desktop
+   layout they keep their full width and are scaled down whole, so the
+   proportions a reader recognises survive to the phone.
+   zoom rather than transform: zoom re-lays the element out at the smaller size,
+   so the space it occupies is the space it takes. transform would scale the
+   pixels and leave the original footprint behind it. */
+@media (max-width: 900px) {
+  .certificate,
+  .jobboard {
+    /* Slack falls either side rather than all on the right. */
+    margin-inline: auto;
+  }
+  .certificate {
+    width: 620px;
+    zoom: 0.84;
+  }
+  .jobboard {
+    width: 760px;
+    zoom: 0.69;
+  }
+}
+
+@media (max-width: 560px) {
+  .certificate {
+    zoom: 0.78;
+  }
+  .jobboard {
+    zoom: 0.63;
+  }
+}
+
+@media (max-width: 520px) {
+  .certificate {
+    zoom: 0.71;
+  }
+  .jobboard {
+    zoom: 0.58;
+  }
+}
+
+@media (max-width: 480px) {
+  .certificate {
+    zoom: 0.65;
+  }
+  .jobboard {
+    zoom: 0.53;
+  }
+}
+
+@media (max-width: 440px) {
+  .certificate {
+    zoom: 0.58;
+  }
+  .jobboard {
+    zoom: 0.48;
+  }
+}
+
+@media (max-width: 400px) {
+  .certificate {
+    zoom: 0.52;
+  }
+  .jobboard {
+    zoom: 0.42;
+  }
+}
+
+@media (max-width: 360px) {
+  .certificate {
+    zoom: 0.46;
+  }
+  .jobboard {
+    zoom: 0.37;
+  }
+}
+
+@media (max-width: 320px) {
+  .certificate {
+    zoom: 0.42;
+  }
+  .jobboard {
+    zoom: 0.34;
+  }
+}
+
+/* Staying is the safe choice, so it keeps the solid button and leaving is
+   quieted to an outline. Scoped here because .button-outline is drawn for
+   light bands and reads as a second solid button on this dark dialog. */
+.leave-actions .button-outline {
+  border: 1px solid #ffffff3d;
+  background: transparent;
+  color: #fff;
+}
+
+.leave-actions .button-outline:hover:not(:disabled) {
+  border-color: #ffffff6b;
+  background: #ffffff14;
+}
+
+/* ============ FEATURED TOOL CARD: TRAVELLING GLOW ============ */
+/* A light arc that runs around the card's edge, rather than a halo sitting on
+   the violet poster inside it.
+
+   Drawn as a ring INSIDE the border rather than a shadow outside it, because
+   .tool-card clips its overflow — anything beyond the edge is sliced off
+   square. The mask pair is what turns a filled shape into a ring: one layer
+   covers the padding box, the other the whole element, and excluding one from
+   the other leaves just the band between them.
+
+   The angle is a registered property; without @property a custom property is
+   an unanimatable string and the conic gradient would jump rather than turn. */
+@property --tool-glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.tool-card::before {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--tool-glow-angle),
+    transparent 0deg,
+    #ffffff00 40deg,
+    #ffffffe6 68deg,
+    #ffffff40 96deg,
+    transparent 140deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: tool-card-glow 6s linear infinite;
+  pointer-events: none;
+}
+
+/* The bloom. Same gradient on the same clock, but a wider band and blurred, so
+   the two travel together and the crisp arc always rides the middle of a soft
+   one. Blur spreads both ways and the card clips the outward half, which is
+   what makes this read as light coming off the edge rather than a ring
+   hovering around it. */
+.tool-card::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  padding: 9px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--tool-glow-angle),
+    transparent 0deg,
+    #ffffff00 30deg,
+    #c9b6ffb3 68deg,
+    #ffffff2e 110deg,
+    transparent 160deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: blur(7px);
+  animation: tool-card-glow 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes tool-card-glow {
+  to {
+    --tool-glow-angle: 360deg;
+  }
+}
+
+/* A light that never stops circling is the kind of motion this setting is for. */
+@media (prefers-reduced-motion: reduce) {
+  .tool-card::before,
+  .tool-card::after {
+    animation: none;
+    background: none;
+  }
 }

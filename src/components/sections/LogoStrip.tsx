@@ -39,7 +39,9 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
   // Trimming turned this from a padded square into a 2:1 wordmark, so it needs
   // less height than it did to sit level with the rest.
   { name: 'PwC', logo: pwc, height: 24 },
-  { name: 'McKinsey & Company', logo: mckinsey, height: 26 },
+  // A two-line lockup in fine type, where the rest are single bold wordmarks —
+  // at a shared height it reads as half their size, so it gets more.
+  { name: 'McKinsey & Company', logo: mckinsey, height: 34 },
   { name: 'Zendesk', logo: zendesk, height: 28 },
   { name: 'Nutanix', logo: nutanix, height: 28 },
 ]

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 /**
@@ -27,7 +27,7 @@ type Track = {
   count: string
   /** Twelve months, so the 6M / 12M range toggle has something to reveal. */
   series: Record<MetricKey, number[]>
-  /* What the track actually pays, in thousands per month. The series above is
+  /* What the track actually pays, in dollars per month. The series above is
      the average; these two are the shape of the distribution around it. */
   earnings: { median: number; top10: number }
   skills: { label: string; value: number; mark: keyof typeof MARKS }[]
@@ -128,9 +128,9 @@ const TRACKS: Track[] = [
     series: {
       open: [612, 640, 668, 705, 726, 774, 802, 838, 866, 905, 964, 1024],
       match: [71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 85, 86],
-      pay: [31, 33, 34, 36, 37, 39, 41, 42, 44, 45, 47, 48],
+      pay: [375, 400, 410, 435, 445, 470, 495, 505, 530, 545, 565, 580],
     },
-    earnings: { median: 42, top10: 120 },
+    earnings: { median: 505, top10: 1450 },
     skills: [
       { label: 'Claude', value: 92, mark: 'claude' },
       { label: 'n8n', value: 84, mark: 'n8n' },
@@ -146,9 +146,9 @@ const TRACKS: Track[] = [
     series: {
       open: [188, 204, 219, 236, 248, 267, 284, 301, 322, 348, 379, 412],
       match: [74, 76, 78, 80, 82, 83, 85, 86, 88, 89, 90, 91],
-      pay: [18, 19, 21, 22, 24, 25, 26, 28, 29, 30, 31, 32],
+      pay: [215, 230, 255, 265, 290, 300, 315, 340, 350, 360, 375, 385],
     },
-    earnings: { median: 28, top10: 85 },
+    earnings: { median: 340, top10: 1030 },
     skills: [
       { label: 'Claude', value: 95, mark: 'claude' },
       { label: 'ChatGPT', value: 88, mark: 'chatgpt' },
@@ -164,9 +164,9 @@ const TRACKS: Track[] = [
     series: {
       open: [74, 79, 86, 92, 101, 112, 124, 133, 145, 158, 172, 188],
       match: [62, 63, 65, 66, 68, 69, 71, 72, 74, 75, 77, 78],
-      pay: [8, 9, 10, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+      pay: [95, 110, 120, 120, 135, 145, 155, 170, 180, 195, 205, 215],
     },
-    earnings: { median: 16, top10: 38 },
+    earnings: { median: 195, top10: 460 },
     skills: [
       { label: 'ChatGPT', value: 81, mark: 'chatgpt' },
       { label: 'Claude', value: 74, mark: 'claude' },
@@ -182,9 +182,9 @@ const TRACKS: Track[] = [
     series: {
       open: [204, 216, 231, 248, 262, 279, 296, 312, 334, 361, 392, 424],
       match: [66, 68, 69, 71, 72, 74, 75, 77, 78, 80, 81, 83],
-      pay: [44, 46, 49, 52, 54, 57, 60, 62, 65, 67, 69, 72],
+      pay: [530, 555, 590, 625, 650, 685, 725, 745, 785, 805, 830, 870],
     },
-    earnings: { median: 64, top10: 175 },
+    earnings: { median: 770, top10: 2100 },
     skills: [
       { label: 'n8n', value: 90, mark: 'n8n' },
       { label: 'Claude', value: 85, mark: 'claude' },
@@ -198,7 +198,7 @@ const TRACKS: Track[] = [
 const METRICS: { key: MetricKey; label: string; format: (v: number) => string }[] = [
   { key: 'open', label: 'Open roles', format: (v) => v.toLocaleString('en-IN') },
   { key: 'match', label: 'Match rate', format: (v) => `${v}%` },
-  { key: 'pay', label: 'Avg / mo', format: (v) => `₹${v}k` },
+  { key: 'pay', label: 'Avg / mo', format: (v) => usd(v) },
 ]
 
 /* The mix ring: share of the board by track, in the rail's own order. */
@@ -208,11 +208,23 @@ const MIX = [
   { key: 'internships', label: 'Internships', value: 18, color: '#d9cffa' },
 ]
 
+/* How many roles the column shows. Six is what fits beside the side column at
+   its current height — the two are meant to end level, so if either changes,
+   this is the other half of that sum. */
+const VISIBLE_ROLES = 6
+
 const CHART = { w: 320, h: 78, pad: 8 }
 
-// Money in the units the reader thinks in: thousands up to a lakh, then lakhs.
-// Takes thousands, so 48 -> ₹48k and 576 -> ₹5.8L.
-const inr = (k: number) => (k >= 100 ? `₹${(k / 100).toFixed(k % 100 ? 1 : 0)}L` : `₹${Math.round(k)}k`)
+// Dollars per month, written the way a reader scans them: in full up to a
+// thousand, in thousands above it. Takes whole dollars, so 505 -> $505 and
+// 6960 -> $7k.
+const usd = (n: number) => {
+  const v = Math.round(n)
+  if (v < 1000) return `$${v}`
+  const k = v / 1000
+  return `$${k >= 10 ? Math.round(k) : Number(k.toFixed(1))}k`
+}
+
 const RING = { size: 92, stroke: 13 }
 const CYCLE = 6000
 
@@ -225,14 +237,6 @@ export function JobBoard() {
   const [segment, setSegment] = useState<number | null>(null)
   // Set while a pointer or the keyboard is on the panel: the cycle waits.
   const [held, setHeld] = useState(false)
-  const listRef = useRef<HTMLUListElement>(null)
-
-  // A new track is a new list: start it at the top rather than wherever the
-  // last one was left scrolled to.
-  useEffect(() => {
-    listRef.current?.scrollTo({ top: 0 })
-  }, [track])
-
   // Steps the track the way the hero stage steps its tools.
   useEffect(() => {
     if (held) return
@@ -348,14 +352,17 @@ export function JobBoard() {
             })}
           </div>
 
-            {/* The whole list, not a top three — the column scrolls, so the
-              panel reads like a board you could actually work through. */}
+            {/* As many roles as the column holds, and no scrollbar. The count
+              beside the label is still the real total for the track, so the
+              panel shows a sample of the board without misstating its size —
+              the list used to scroll through all of them, which set the panel's
+              height by how long a track happened to be. */}
             <div className="jobboard-list">
               <span className="chart-label">
                 Open roles <em>{data.roles.length}</em>
               </span>
-              <ul className="jobboard-roles" ref={listRef}>
-                {data.roles.map((item, i) => (
+              <ul className="jobboard-roles">
+                {data.roles.slice(0, VISIBLE_ROLES).map((item, i) => (
                   <li key={`${item.title}-${i}`} className={i === role ? 'is-lit' : undefined}>
                     <button type="button" onMouseEnter={() => setRole(i)} onFocus={() => setRole(i)}>
                       <span>
@@ -461,15 +468,15 @@ export function JobBoard() {
               <div className="chart-pay">
                 <span>
                   <small>Median</small>
-                  <b>{inr(data.earnings.median)}</b>
+                  <b>{usd(data.earnings.median)}</b>
                 </span>
                 <span>
                   <small>Top 10%</small>
-                  <b>{inr(data.earnings.top10)}</b>
+                  <b>{usd(data.earnings.top10)}</b>
                 </span>
                 <span>
                   <small>Per year</small>
-                  <b>{inr(payNow * 12)}</b>
+                  <b>{usd(payNow * 12)}</b>
                 </span>
               </div>
             </div>

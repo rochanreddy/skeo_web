@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useId, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Modal } from '@/components/modals/Modal'
 import {
   clearCheckoutSession,
   readCheckoutSession,
@@ -54,6 +54,8 @@ export function CheckoutClient() {
   const [session, setSession] = useState<CheckoutSession | null>(null)
   const [paying, setPaying] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [confirmLeave, setConfirmLeave] = useState(false)
+  const leaveTitleId = useId()
 
   // /checkout is only reachable after verifying, so a direct visit — or a
   // verification that has since expired — goes back to the cart rather than
@@ -70,6 +72,25 @@ export function CheckoutClient() {
       email: found.contact.email,
     })
   }, [router])
+
+  /* The browser's own Back is the same intent as the Back link, so it asks the
+     same question. Leaving here costs the visitor their verification — they
+     would have to enter the code again — which is worth a moment's pause but
+     not a warning they cannot dismiss.
+     Pushing a duplicate entry is what gives popstate something to catch: the
+     press pops that copy rather than the page, and pushing another keeps the
+     guard armed if they press it again. Only while a session exists — with
+     nothing to lose there is nothing to ask about. */
+  useEffect(() => {
+    if (!session) return undefined
+    window.history.pushState(null, '', window.location.href)
+    const onPop = () => {
+      window.history.pushState(null, '', window.location.href)
+      setConfirmLeave(true)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [session])
 
   if (!session) return null
 
@@ -142,9 +163,11 @@ export function CheckoutClient() {
       {/* LEFT — ink panel: who is buying, and what they picked. */}
       <section className="checkout-detail" aria-label="Order details">
         <div className="checkout-panel">
-          <Link className="checkout-back" href="/#pricing">
+          {/* A button rather than a link: leaving is a decision here, not a
+              navigation, because the verification does not survive it. */}
+          <button type="button" className="checkout-back" onClick={() => setConfirmLeave(true)}>
             ← Back to tools
-          </Link>
+          </button>
 
           <h2 className="checkout-h">
             Contact
@@ -296,6 +319,28 @@ export function CheckoutClient() {
           <p className="checkout-fine">Demo build — no gateway is connected and no card is charged.</p>
         </div>
       </section>
+
+      {/* Raised by the Back link and by the browser's Back alike. Staying is the
+          default action, since arriving here at all took a verified code. */}
+      {confirmLeave && (
+        <Modal labelledBy={leaveTitleId} onClose={() => setConfirmLeave(false)} className="leave-modal">
+          <h3 id={leaveTitleId} className="modal-title">
+            Leave checkout?
+          </h3>
+          <p className="modal-sub">
+            You are verified and your tools are picked. Go back and you will need to enter a new code
+            before you can pay.
+          </p>
+          <div className="leave-actions">
+            <button type="button" className="button" onClick={() => setConfirmLeave(false)}>
+              Stay here
+            </button>
+            <button type="button" className="button button-quiet" onClick={() => router.push('/#pricing')}>
+              Go back
+            </button>
+          </div>
+        </Modal>
+      )}
     </main>
   )
 }
