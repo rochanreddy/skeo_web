@@ -1557,28 +1557,6 @@ h2 em {
   gap: 20px 56px;
 }
 
-/* Sits between the label and the marks, carrying the eye across the gap, and
-   runs the full depth of the strip — top hairline to bottom hairline. The
-   negative block margin cancels the strip's 29px padding, so the arrow reaches
-   both lines without the band growing to make room for it. */
-.logo-strip-cue {
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
-  margin-block: -29px;
-  margin-left: -34px;
-}
-
-/* 84px against a 90px band — the strip's 32px row plus its 29px of padding
-   top and bottom — so it clears both hairlines by a few pixels. */
-.logo-strip-arrow {
-  width: 84px;
-  height: 84px;
-  /* Deliberately off the palette: a blue that reads as a signpost rather than
-     as one more accent, and holds up on both the light and dark bands. */
-  color: #2b6cf6;
-}
-
 /* Transform-driven marquee (JS in LogoRail) — not a scroll container, so it
    never stops on touch or hover. touch-action keeps vertical page scroll. */
 .logo-rail {
@@ -2539,7 +2517,9 @@ h2 em {
   /* The section around it is dark; nothing inside should inherit that. */
   color: var(--ink);
   border: 1px solid #e4e0ee;
-  border-radius: 28px;
+  /* Squarer than it was: 28px read as a rounded card, and this is meant to
+     read as a screen. */
+  border-radius: 14px;
   background: linear-gradient(165deg, var(--card-bg), var(--surface));
   box-shadow: 0 34px 70px #2b1a6840;
   animation: jb-float 7s ease-in-out infinite;
@@ -3823,6 +3803,10 @@ h2 em {
   /* colour-mix keeps the rule readable on the dark card whatever the accent is:
      a straight brand colour is too dark for a hairline here. */
   border: 1px solid color-mix(in srgb, var(--cert-accent) 55%, #e6dcff);
+  /* A4 landscape, the proportion a real certificate is printed at. Only where
+     the card is wide enough to hold the copy at that shape — the ratio is
+     applied in a min-width block below rather than here, because on a phone a
+     1.41:1 box is 200px tall and the text would spill straight out of it. */
   padding: 32px;
   color: #fff;
   min-height: 424px;
@@ -6453,17 +6437,6 @@ details p {
     align-items: flex-start;
     gap: 17px;
   }
-  /* Stacked here: there is no row depth to span, so the arrow goes back to its
-     own size and turns to point down the column instead. */
-  .logo-strip-cue {
-    align-self: auto;
-    margin: 0;
-  }
-  .logo-strip-arrow {
-    width: 24px;
-    height: 24px;
-    transform: rotate(90deg);
-  }
   /* Stacked under the label, so it takes the whole column. */
   .employer-rail {
     width: 100%;
@@ -6761,15 +6734,17 @@ details p {
 /* Eight palettes in total: the :root block above (Claude) and the seven here.
    Each is a complete swap for the colour half of :root, and the four that
    hardcode colours outside the token set carry their own patch block.
-   Switched by the data-palette attribute on <html>; the PaletteSwitcher
-   component writes it, and the layout ships "claude" as the served default.
+   Switched by the data-palette attribute on <html>.
+
+   TWO of these ship: Claude is day and Charcoal is night, and ThemeToggle in
+   the nav moves between them. The other six are no longer reachable from the
+   UI — they are kept because each is a working alternative, but only Claude
+   and Charcoal are maintained against new work, so treat the rest as stale
+   until proven otherwise.
 
    No palette ever edits the SECTION BANDS wiring below. Swapping a palette
    moves the colour; it never moves the rhythm. Picking Original is the one
-   case that turns the rhythm off.
-
-   Ship note: pick one, fold it into :root, and delete the rest along with the
-   switcher — everything from here to the wiring is preview scaffolding. */
+   case that turns the rhythm off. */
 
 /* ---- Claude patches ----------------------------------------------------- */
 /* The tokens above do most of it. These are the places that hardcode a violet
@@ -7249,6 +7224,18 @@ details p {
 :root[data-palette='charcoal'] .jobboard-stats button.is-active,
 :root[data-palette='charcoal'] .card-brand {
   background: #241f3c;
+}
+
+/* The wordmark chip is `background: var(--ink); color: #fff`, which is a dark
+   chip with a white glyph by day. Here "ink" IS the light end, so the chip
+   turned white and took the glyph with it — the mark vanished from the nav.
+   Only the glyph is wrong: darkening it gives the proper inverse.
+
+   Scoped to the nav on purpose. The footer carries a second .brand-mark that
+   paints its own translucent-white chip on the dark footer, so it still wants
+   the white glyph — darkening that one puts it back to invisible. */
+:root[data-palette='charcoal'] .nav .brand-mark {
+  color: var(--paper);
 }
 
 :root[data-palette='charcoal'] .jobboard-rail button:hover,
@@ -7967,135 +7954,84 @@ details p {
   background: var(--ink-bg-2);
 }
 
-/* ============ PALETTE SWITCHER (preview scaffolding) ============ */
-/* Every value here is a token, so the control re-colours itself with whatever
-   palette it is switching to — including mono, where a violet-tinted control
-   would be the one piece of colour left on the page.
-   Delete this block with the PaletteSwitcher component. */
-.palette-switcher {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  /* Above the nav (30) and the noise overlay (20), below the modals (100) so
-     it never sits on top of a dialog. */
-  z-index: 40;
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: flex-start;
-  gap: 8px;
-  font-family: var(--font);
-}
+/* ============ DAY / NIGHT ============ */
+/* The site ships two palettes and this is the control for them: Claude by day,
+   Charcoal by night. It replaced the palette preview switcher, which was
+   scaffolding for comparing eight of them and was still floating over the
+   corner of the live page.
 
-.palette-toggle {
+   Both icons sit at fixed ends of the track and the knob slides beneath the
+   active one, which is then painted in the paper colour so it reads out of the
+   knob. That is why the icons carry a z-index and the knob does not. */
+.theme-toggle {
   display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  height: 40px;
-  padding: 0 15px 0 10px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  background: var(--card-bg);
-  color: var(--ink-2);
-  font: 700 12.5px var(--font);
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s ease;
-}
-
-.palette-toggle:hover {
-  transform: translateY(-1.5px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--purple-line);
-}
-
-.palette-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 6px;
-  width: 216px;
-  /* Eight rows is taller than a short laptop window has room for above the
-     toggle, so the list scrolls rather than running off the top. */
-  max-height: min(420px, calc(100vh - 120px));
-  overflow-y: auto;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  background: var(--card-bg);
-  box-shadow: var(--shadow-xl);
-}
-
-/* `hidden` is what React sets when the list is closed; without this the
-   display:flex above would keep overriding it. */
-.palette-list[hidden] {
-  display: none;
-}
-
-.palette-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px 10px;
+  padding: 0;
   border: 0;
-  border-radius: var(--r-sm);
-  background: transparent;
-  color: var(--ink-2);
-  font: 600 13px var(--font);
-  text-align: left;
+  border-radius: 999px;
+  background: none;
   cursor: pointer;
-  transition: background 0.14s ease, color 0.14s ease;
 }
 
-.palette-option:hover {
-  background: var(--surface-2);
-  color: var(--ink);
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
 }
 
-.palette-option[aria-pressed='true'] {
-  background: var(--purple-soft);
-  color: var(--purple-ink);
-}
-
-.palette-option b {
-  font-weight: 700;
-}
-
-/* The one-word character note, pushed to the far edge as a quiet caption. */
-.palette-option i {
-  margin-left: auto;
-  font: 500 10px var(--mono);
-  font-style: normal;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-4);
-}
-
-.palette-option[aria-pressed='true'] i {
-  color: var(--purple-ink);
-  opacity: 0.7;
-}
-
-/* Four bands of the palette shown as one stacked chip, which is a truer
-   preview than a single dot: what matters is how the tones sit together. */
-.palette-swatch {
+.theme-toggle-track {
+  position: relative;
   display: inline-flex;
-  flex: 0 0 auto;
-  width: 44px;
-  height: 22px;
-  border-radius: 6px;
-  overflow: hidden;
+  width: 56px;
+  height: 30px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7px;
   border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
-.palette-swatch i {
-  flex: 1;
+.theme-toggle:hover .theme-toggle-track {
+  border-color: color-mix(in srgb, var(--purple) 34%, var(--line));
 }
 
-@media (max-width: 680px) {
-  .palette-switcher {
-    left: 14px;
-    bottom: 14px;
+.theme-toggle-track svg {
+  position: relative;
+  z-index: 1;
+  width: 13px;
+  height: 13px;
+  flex: none;
+  color: var(--ink-4);
+  transition: color 0.25s ease;
+}
+
+/* Whichever the knob is under is the live one, so it is lifted out of the
+   knob rather than left as a silhouette against it. */
+.theme-toggle[aria-checked='false'] .theme-toggle-track svg:nth-of-type(1),
+.theme-toggle[aria-checked='true'] .theme-toggle-track svg:nth-of-type(2) {
+  color: var(--paper);
+}
+
+.theme-toggle-knob {
+  position: absolute;
+  z-index: 0;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 2px 6px rgb(20 12 45 / 22%);
+  transition: transform 0.28s var(--ease-out), background 0.25s ease;
+}
+
+.theme-toggle[aria-checked='true'] .theme-toggle-knob {
+  transform: translateX(24px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-knob {
+    transition: none;
   }
 }
 
@@ -8197,5 +8133,29 @@ details p {
 @media (max-width: 620px) {
   .included-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ============ CERTIFICATE SHAPE / PANEL SCALE ============ */
+/* Both are shape decisions that only hold where there is room for them, so
+   they live in a min-width block rather than beside their base rules.
+
+   The certificate takes A4's landscape proportion, 1.41:1 — the shape the
+   thing would actually be printed at. Narrower than this the card is close to
+   a phone's width, where a 1.41:1 box is barely 200px tall and the copy would
+   spill out of it, so below the breakpoint height stays driven by content.
+
+   The job panel loses a little size with it: it is a screenshot of a product
+   sitting in a section that is otherwise argument, and at full column width it
+   was competing with the copy instead of illustrating it. zoom rather than
+   transform, so the panel re-lays out at the smaller size and the type stays
+   crisp instead of being scaled bitmap-wise. */
+@media (min-width: 1024px) {
+  .cert-inner {
+    aspect-ratio: 1.41;
+  }
+
+  .jobboard {
+    zoom: 0.94;
   }
 }

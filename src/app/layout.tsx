@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import { DM_Mono, Manrope } from 'next/font/google'
 import { Analytics } from '@/components/Analytics'
 import { ModalProvider } from '@/components/modals/ModalProvider'
-import { PaletteSwitcher } from '@/components/PaletteSwitcher'
 import { StructuredData } from '@/components/StructuredData'
 import { site } from '@/lib/site'
 import './globals.css'
@@ -69,24 +68,27 @@ export const viewport: Viewport = {
   themeColor: '#14121c',
   width: 'device-width',
   initialScale: 1,
-  colorScheme: 'light',
+  // Both, now that the site ships a night palette — this is what tells the
+  // browser to render form controls, scrollbars and caret to match.
+  colorScheme: 'light dark',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-palette="claude" className={cn(manrope.variable, dmMono.variable)}>
-      {/* Preview scaffolding. data-palette is served on <html> rather than
-          written by the script, so the patch blocks in globals.css match from
-          the very first byte — with no attribute a palette would get its
-          tokens but not its patches. The script only overrides it with a
-          stored choice, before first paint, so a reload does not flash the
-          default on the way to the chosen one.
-          Delete both with the PaletteSwitcher once a palette is picked. */}
+      {/* data-palette is served on <html> rather than written by the script, so
+          the patch blocks in globals.css match from the very first byte — with
+          no attribute a palette gets its tokens but not its patches.
+
+          The script only overrides it, and it has to run here in <head>, before
+          first paint: a returning night-mode reader would otherwise get a full
+          white page for one frame on the way to their theme. Falls back to the
+          system preference so a first visit at night opens dark. */}
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var p=localStorage.getItem('skeo-palette');if(p&&['claude','indigo','violet','oat','graphite','charcoal','original','mono'].indexOf(p)>-1)document.documentElement.dataset.palette=p}catch(e){}",
+              "try{var s=localStorage.getItem('skeo-palette');var p=(s==='charcoal'||s==='claude')?s:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'charcoal':'claude');document.documentElement.dataset.palette=p}catch(e){}",
           }}
         />
       </head>
@@ -98,7 +100,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ModalProvider>{children}</ModalProvider>
         <Analytics />
         <StructuredData />
-        <PaletteSwitcher />
       </body>
     </html>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import { lms, navLinks } from '@/lib/site'
 
 export function Nav() {
@@ -96,6 +97,7 @@ export function Nav() {
         </nav>
 
         <div className="nav-actions">
+          <ThemeToggle />
           <a className="button button-small" href={lms.web} target="_blank" rel="noopener noreferrer">
             <span className="btn-label">Sign in to LMS</span>
             <span aria-hidden="true">→</span>

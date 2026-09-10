@@ -42,7 +42,11 @@ export function ClaudeMark({ className }: MarkProps) {
 export function ChatGptMark({ className }: MarkProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path d={OPENAI_PATH} fill="#0d0d0d" />
+      {/* The one monochrome mark here, so it takes the colour of whatever it
+          sits on rather than a fixed near-black. It appears on light chips and
+          on the dark certificate card, and in both palettes — a hardcoded fill
+          was invisible on half of those. */}
+      <path d={OPENAI_PATH} fill="currentColor" />
     </svg>
   )
 }

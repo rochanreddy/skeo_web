@@ -4,14 +4,23 @@ import { LogoRail } from '@/components/sections/LogoRail'
 import accenture from '@/assets/employers/accenture.webp'
 import cognizant from '@/assets/employers/cognizant.webp'
 import flipkart from '@/assets/employers/flipkart.webp'
+import mckinsey from '@/assets/employers/mckinsey.webp'
 import microsoft from '@/assets/employers/microsoft.webp'
+import nutanix from '@/assets/employers/nutanix.webp'
 import adobe from '@/assets/employers/adobe.webp'
+import pwc from '@/assets/employers/pwc.webp'
 import razorpay from '@/assets/employers/razorpay.webp'
+import tcs from '@/assets/employers/tcs_new.webp'
+import zendesk from '@/assets/employers/Zendesk.webp'
 
 /**
  * Where builders end up. Real marks rather than set text, trimmed of their
- * whitespace so the per-logo `height` here is the mark itself — the six are
- * drawn at very different scales otherwise.
+ * whitespace so the per-logo `height` here is the mark itself — they are drawn
+ * at very different scales otherwise.
+ *
+ * Eleven rather than six: the rail scrolls, so a short list loops visibly and
+ * reads as a short list. This is a claim about where people were hired, so it
+ * is a list to keep true rather than to lengthen for the look of it.
  */
 
 const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
@@ -21,6 +30,11 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
   { name: 'Flipkart', logo: flipkart, height: 32 },
   { name: 'Adobe', logo: adobe, height: 28 },
   { name: 'Cognizant', logo: cognizant, height: 30 },
+  { name: 'TCS', logo: tcs, height: 30 },
+  { name: 'PwC', logo: pwc, height: 34 },
+  { name: 'McKinsey & Company', logo: mckinsey, height: 26 },
+  { name: 'Zendesk', logo: zendesk, height: 28 },
+  { name: 'Nutanix', logo: nutanix, height: 28 },
 ]
 
 export function LogoStrip() {
@@ -29,24 +43,8 @@ export function LogoStrip() {
       <div className="wrap">
         <Reveal className="logo-strip-row">
           <p>skeo builders go on to teams at</p>
-          {/* Points the label at the marks — decorative, so it stays out of the
-              accessibility tree and the sentence reads straight through. */}
-          <span className="logo-strip-cue" aria-hidden="true">
-            <svg className="logo-strip-arrow" viewBox="0 0 24 24" focusable="false">
-              {/* Drawn to the edges of the viewBox — the glyph is the box, so the
-                  rendered size is the size it actually reads at. */}
-              <path
-                d="M3 2 11 12 3 22M12.5 2 20.5 12l-8 10"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
           {/* The marks ride the same rail the quotes do, in the width the label
-              and the arrow leave. */}
+              leaves. */}
           <LogoRail className="employer-rail" speed={0.35}>
             {EMPLOYERS.map((item) => (
               <span key={item.name} className="logo-item" title={item.name}>
