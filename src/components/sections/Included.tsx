@@ -2,10 +2,10 @@ import type { ReactElement } from 'react'
 import { Reveal } from '@/components/Reveal'
 
 /**
- * What a seat actually contains. It sits between the certificate and the job
- * board, at the point where someone has been told what they will earn and is
- * asking what they are getting for the money — so it answers that in one grid
- * instead of leaving it spread across the page.
+ * What a seat actually contains. It follows the tool library, at the point
+ * where someone has just seen what is taught and is asking what else comes
+ * with it — so it answers that in one grid instead of leaving the answer
+ * spread across the projects, certificate and job board sections below.
  *
  * The six are the whole offer. The learning system and the community lead
  * because they are what a seat gives you on day one; the credential, the board,

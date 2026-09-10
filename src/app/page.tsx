@@ -25,9 +25,9 @@ export default function Home() {
         <Problem />
         <CorePromise />
         <Tools />
+        <Included />
         <Projects />
         <Certification />
-        <Included />
         <Jobs />
         <Comparison />
         <Pricing />
