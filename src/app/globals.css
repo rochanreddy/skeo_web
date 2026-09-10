@@ -2754,8 +2754,8 @@ h2 em {
 /* Was the chart's job when it sat mid-column; the ring inherits it now that
    the chart is the first thing in this column. */
 .jobboard-mix {
-  margin-top: 12px;
-  padding-top: 11px;
+  margin-top: 9px;
+  padding-top: 9px;
   border-top: 1px solid var(--line-soft);
 }
 
@@ -2765,8 +2765,8 @@ h2 em {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px solid var(--line-soft);
 }
 
@@ -2854,7 +2854,7 @@ h2 em {
 
 .chart-plot {
   position: relative;
-  height: 64px;
+  height: 54px;
 }
 
 .chart-plot svg {
@@ -2994,8 +2994,8 @@ h2 em {
 }
 
 .jobboard-skills {
-  margin-top: 12px;
-  padding-top: 11px;
+  margin-top: 9px;
+  padding-top: 9px;
   border-top: 1px solid var(--line-soft);
 }
 
@@ -3007,8 +3007,8 @@ h2 em {
 }
 
 .mix-ring {
-  width: 76px;
-  height: 76px;
+  width: 64px;
+  height: 64px;
   flex: none;
   /* Start at twelve o'clock rather than three. */
   transform: rotate(-90deg);
@@ -3071,7 +3071,7 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 7px;
+  margin-top: 5px;
   font-size: 10.5px;
   color: var(--ink-3);
 }
@@ -3151,7 +3151,7 @@ h2 em {
      457px is where the two columns come out level — below it the left column
      ends in dead space, above it the left starts pushing the panel taller. */
   flex: 1 1 auto;
-  max-height: 457px;
+  max-height: 405px;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -3224,7 +3224,7 @@ h2 em {
 
 /* Closes the side column, in flow, inside the panel's own rectangle. */
 .jobboard-float {
-  margin-top: 12px;
+  margin-top: 9px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
