@@ -1,7 +1,7 @@
 import Image, { type StaticImageData } from 'next/image'
 import { Reveal } from '@/components/Reveal'
 import anthropic from '@/assets/accreditation/anthropic.webp'
-import googleEducation from '@/assets/accreditation/google-education.webp'
+import sarvam from '@/assets/accreditation/sarvam-cut.png'
 import msme from '@/assets/accreditation/msme.webp'
 import startupIndia from '@/assets/accreditation/startup-india.png'
 
@@ -16,7 +16,9 @@ import startupIndia from '@/assets/accreditation/startup-india.png'
 const ACCREDITORS: { name: string; logo: StaticImageData; height: number }[] = [
   { name: 'Startup India', logo: startupIndia, height: 24 },
   { name: 'Ministry of MSME, Government of India', logo: msme, height: 46 },
-  { name: 'Google for Education', logo: googleEducation, height: 34 },
+  // Square where the rest are wordmarks, so it needs more height than a
+  // wordmark to carry the same weight — see the same note on the certificate.
+  { name: 'Sarvam AI', logo: sarvam, height: 42 },
   { name: 'Anthropic', logo: anthropic, height: 15 },
 ]
 

@@ -12,9 +12,9 @@ import startupIndia from '@/assets/accreditation/startup-india.png'
 /* The bodies that stand behind the credential. Every one gets the same box and
  * is scaled to fit inside it — see .cert-accred-logo, where the sizing lives.
  *
- * Note this row and the hero's accreditation strip have diverged: the strip
- * still carries Google for Education where this one carries Sarvam. If the two
- * are meant to make the same claim, the strip needs the same swap. */
+ * These are the same four the accreditation strip under the hero carries, so
+ * the claim made at the top of the page and the claim printed on the
+ * certificate are the same claim. Change one and change the other. */
 const CERT_ACCREDITORS: { name: string; logo: StaticImageData; square?: boolean }[] = [
   { name: 'Startup India', logo: startupIndia },
   { name: 'Ministry of MSME, Government of India', logo: msme },

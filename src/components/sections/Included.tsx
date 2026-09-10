@@ -7,11 +7,12 @@ import { Reveal } from '@/components/Reveal'
  * with it — so it answers that in one grid instead of leaving the answer
  * spread across the projects, certificate and job board sections below.
  *
- * The six are the whole offer. The learning system and the community lead
- * because they are what a seat gives you on day one; the credential, the board,
- * the mentors and the library are what it goes on to give you. Certificate,
- * jobs and community used to be chips in the "and more" row, which buried three
- * of the strongest reasons to buy under the weakest heading.
+ * The six are the whole offer, ordered by how soon a seat delivers them: the
+ * system and the community from day one, the mentors as soon as you are stuck,
+ * then the board, the library and — last, because it comes last — the
+ * credential. Certificate, jobs and community used to be chips in the "and
+ * more" row, which buried three of the strongest reasons to buy under the
+ * weakest heading.
  */
 
 const icons: Record<string, ReactElement> = {
@@ -66,9 +67,9 @@ const INCLUDED = [
     detail: 'A working group of learners and builders — ask, share and ship alongside people doing the same.',
   },
   {
-    icon: 'certificate',
-    title: 'Certificate',
-    detail: 'A verified credential for every track you finish, shareable on LinkedIn and yours to keep.',
+    icon: 'mentorship',
+    title: 'Mentorship',
+    detail: 'Get unstuck by people who build with these tools for a living, not just teach them.',
   },
   {
     icon: 'jobs',
@@ -76,14 +77,14 @@ const INCLUDED = [
     detail: 'A live board of freelance, internship and full-time roles, matched against what you have learned.',
   },
   {
-    icon: 'mentorship',
-    title: 'Mentorship',
-    detail: 'Get unstuck by people who build with these tools for a living, not just teach them.',
-  },
-  {
     icon: 'library',
     title: 'Library',
     detail: 'Playbooks, prompt libraries, notes and references for every tool, to reuse long after the module.',
+  },
+  {
+    icon: 'certificate',
+    title: 'Certificate',
+    detail: 'A verified credential for every track you finish, shareable on LinkedIn and yours to keep.',
   },
 ] as const
 
