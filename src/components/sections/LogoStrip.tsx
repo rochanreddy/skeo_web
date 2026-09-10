@@ -6,12 +6,12 @@ import cognizant from '@/assets/employers/cognizant.webp'
 import flipkart from '@/assets/employers/flipkart.webp'
 import mckinsey from '@/assets/employers/mckinsey.webp'
 import microsoft from '@/assets/employers/microsoft.webp'
-import nutanix from '@/assets/employers/nutanix.webp'
+import nutanix from '@/assets/employers/nutanix-cut.png'
 import adobe from '@/assets/employers/adobe.webp'
-import pwc from '@/assets/employers/pwc.webp'
+import pwc from '@/assets/employers/pwc-cut.png'
 import razorpay from '@/assets/employers/razorpay.webp'
 import tcs from '@/assets/employers/tcs_new.webp'
-import zendesk from '@/assets/employers/Zendesk.webp'
+import zendesk from '@/assets/employers/Zendesk-cut.png'
 
 /**
  * Where builders end up. Real marks rather than set text, trimmed of their
@@ -21,6 +21,11 @@ import zendesk from '@/assets/employers/Zendesk.webp'
  * Eleven rather than six: the rail scrolls, so a short list loops visibly and
  * reads as a short list. This is a claim about where people were hired, so it
  * is a list to keep true rather than to lengthen for the look of it.
+ *
+ * The three `-cut` files ship on an opaque white plate in their original form.
+ * That plate is invisible on the light band and a white rectangle around the
+ * mark on the charcoal one, so it has been knocked out to alpha — colour kept,
+ * only the plate removed. Any mark added here wants the same treatment.
  */
 
 const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
@@ -31,7 +36,9 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
   { name: 'Adobe', logo: adobe, height: 28 },
   { name: 'Cognizant', logo: cognizant, height: 30 },
   { name: 'TCS', logo: tcs, height: 30 },
-  { name: 'PwC', logo: pwc, height: 34 },
+  // Trimming turned this from a padded square into a 2:1 wordmark, so it needs
+  // less height than it did to sit level with the rest.
+  { name: 'PwC', logo: pwc, height: 24 },
   { name: 'McKinsey & Company', logo: mckinsey, height: 26 },
   { name: 'Zendesk', logo: zendesk, height: 28 },
   { name: 'Nutanix', logo: nutanix, height: 28 },

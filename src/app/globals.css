@@ -1589,7 +1589,7 @@ h2 em {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
+  min-width: 0;
 }
 
 /* The employer rail takes the width the label and the arrow leave. min-width
@@ -1599,9 +1599,10 @@ h2 em {
   min-width: 0;
 }
 
-/* Tighter than the quote rail: these are marks, not cards. */
+/* Tighter than the quote rail: these are marks, not cards. This is now the
+   only thing setting the space between them, so it is the whole rhythm. */
 .employer-rail .logo-rail-track > span {
-  margin-right: 52px;
+  margin-right: 44px;
 }
 
 .logo-item img {
@@ -8158,4 +8159,19 @@ details p {
   .jobboard {
     zoom: 0.94;
   }
+}
+
+/* Employer marks on the night band.
+   The eleven are a mix: full-colour marks that read fine on dark, and dark-ink
+   wordmarks (PwC, Zendesk, Nutanix) that disappear into it. Three of them
+   shipped on an opaque white plate, which hid the problem on the dark band by
+   accident and showed as a white rectangle for it; knocking the plate out
+   fixed the rectangle and exposed the ink.
+   A light tile behind every mark settles both at once and needs no per-logo
+   treatment — the same answer the accreditation strip already uses. Padding is
+   deliberately small so the row keeps the tight rhythm it just gained. */
+:root[data-palette='charcoal'] .logo-item {
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: #f4f4f6;
 }
