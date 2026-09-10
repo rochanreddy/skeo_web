@@ -3835,9 +3835,49 @@ h2 em {
    it is in. */
 .cert-head {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ffffff1f;
+}
+
+.cert-brand b {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+/* The house line, set the way a certificate sets a motto: small, italic and
+   clearly subordinate to the mark above it. */
+.cert-brand em {
+  display: block;
+  margin-top: 3px;
+  font-size: 9.5px;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  color: #b3a7d2;
+}
+
+/* Nothing wraps: the row shares the header with the brand, and a mark that
+   dropped to a second line would push the rule down with it. */
+.cert-accred-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: clamp(10px, 2.6vw, 18px);
+  padding-top: 3px;
+}
+
+/* Title on the left, the tool it vouches for on the right. */
+.cert-title-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  margin-top: 26px;
 }
 
 .cert-badge {
@@ -3871,27 +3911,11 @@ h2 em {
   flex: none;
 }
 
-.cert-mark {
-  font: 500 19px var(--mono);
-  display: block;
-  flex: none;
-  width: 34px;
-  height: 34px;
-  line-height: 34px;
-  text-align: center;
-  border-radius: 10px;
-  background: #c8baff;
-  color: #352758;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cert-accent) 30%, transparent);
-  transition: box-shadow 0.5s ease;
-}
-
 .cert-inner small {
   font: 500 8px var(--mono);
   letter-spacing: 1px;
   color: #bfb4dc;
   display: block;
-  margin-top: 28px;
 }
 
 /* Kept quiet: it only hands the eye to the name below it. */
@@ -3915,32 +3939,6 @@ h2 em {
 
 .cert-inner p b {
   color: color-mix(in srgb, var(--cert-accent) 45%, #fff);
-}
-
-/* Held above the foot rule, like the seals along the bottom of a real one. */
-.cert-accred {
-  position: absolute;
-  left: 32px;
-  right: 32px;
-  bottom: 74px;
-}
-
-.cert-accred > span {
-  display: block;
-  padding-top: 13px;
-  border-top: 1px solid #ffffff1f;
-  font: 9px var(--mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #9b8fbd;
-}
-
-.cert-accred > div {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: clamp(12px, 3.4vw, 20px);
-  margin-top: 11px;
 }
 
 /* One ink, no box. brightness(0) flattens each mark to black and invert(1)
@@ -3986,9 +3984,52 @@ h2 em {
   border-top: 1px solid #746898;
   padding-top: 12px;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
+  gap: 16px;
   color: #c4bbdc;
   font: 10px var(--mono);
+}
+
+.cert-meta {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* The id is the part someone would quote to check a certificate, so it is set
+   apart from the issue line rather than run on after it. */
+.cert-id {
+  color: #8d81ae;
+  letter-spacing: 0.04em;
+}
+
+.cert-signs {
+  display: flex;
+  flex: none;
+  gap: 22px;
+  text-align: right;
+}
+
+/* The rule above each block is the line a signature would sit on. */
+.cert-sign {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 7px;
+  border-top: 1px solid #ffffff2e;
+  min-width: 92px;
+}
+
+.cert-sign b {
+  font: 700 10px var(--font);
+  color: #fff;
+}
+
+.cert-sign span {
+  font: 9px var(--mono);
+  color: #a99ccb;
 }
 
 .cert-inner i {
@@ -6238,16 +6279,46 @@ details p {
   }
   .cert-inner {
     padding: 25px;
-    /* The accreditation strip and the issued line are both positioned against
-       the card's bottom edge, while the body copy flows. On a phone that copy
-       runs to twice the lines it takes on a desktop and ran straight under
-       them. Reserve the height the two strips occupy so the text stops above
-       them instead of printing through them. */
-    padding-bottom: 150px;
   }
+  /* The brand and the accreditation cannot share a row on a card this narrow:
+     the four marks ran off the right edge and the tagline broke into three
+     lines to make room. Stacked, each gets the full width. */
+  .cert-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+  }
+  .cert-accred-row {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding-top: 0;
+  }
+  /* A sixth off the height puts all four on one line on a phone. They wrap
+     rather than overflow if a longer mark is ever added, but at these sizes
+     they do not need to. */
+  .cert-accred-logo {
+    height: 14px;
+    max-width: 72px;
+  }
+  .cert-accred-logo--square {
+    height: 21px;
+  }
+  .cert-brand em {
+    white-space: nowrap;
+  }
+  /* Out of the corner and back into the flow — see the note above .cert-foot.
+     Stacked too: the issue line and two signature blocks cannot share a row
+     here without the labels breaking mid-word. */
   .cert-foot {
-    left: 25px;
-    right: 25px;
+    position: static;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-top: 26px;
+  }
+  .cert-signs {
+    justify-content: space-between;
+    gap: 16px;
   }
   .cert-inner h3 {
     font-size: 30px;

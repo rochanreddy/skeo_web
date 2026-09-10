@@ -38,6 +38,8 @@ const CERT_TOOLS = [
     award: 'Claude Practitioner',
     skills: 'prompt design, research and shipped work',
     detail: '12 lessons · 4 projects',
+    /* Goes into the credential id, so two certificates never read alike. */
+    code: 'CL',
   },
   {
     name: 'ChatGPT',
@@ -46,6 +48,7 @@ const CERT_TOOLS = [
     award: 'ChatGPT Practitioner',
     skills: 'everyday workflows, custom GPTs and analysis',
     detail: '10 lessons · 3 projects',
+    code: 'GP',
   },
   {
     name: 'Gemini',
@@ -54,6 +57,7 @@ const CERT_TOOLS = [
     award: 'Gemini Practitioner',
     skills: 'multimodal prompting, image and video',
     detail: '9 lessons · 3 projects',
+    code: 'GM',
   },
   {
     name: 'n8n',
@@ -62,6 +66,7 @@ const CERT_TOOLS = [
     award: 'Automation Practitioner',
     skills: 'workflow automation and AI agents',
     detail: '11 lessons · 4 projects',
+    code: 'N8',
   },
 ]
 
@@ -81,30 +86,16 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
       <Reveal className="certificate" style={{ '--cert-accent': tool.accent } as CSSProperties}>
         <div className="cert-glow" aria-hidden="true" />
         <div className="cert-inner">
+          {/* The mark and the tagline on the left, the bodies that stand behind
+              the credential on the right — a printed certificate heads itself
+              this way, and it puts the accreditation where it is read as a
+              claim rather than as a footnote. */}
           <div className="cert-head">
-            <span className="cert-mark" aria-hidden="true">
-              S
+            <span className="cert-brand">
+              <b>skeo</b>
+              <em>Learn. Build. Monetize.</em>
             </span>
-            {/* Re-keyed so the badge replays its entrance on every change — the
-                one part of the card the eye is most likely to be resting on. */}
-            <span className="cert-badge" key={tool.name}>
-              <Mark className="cert-badge-mark" />
-              {tool.name}
-            </span>
-          </div>
-
-          <small>CERTIFICATE OF PROFICIENCY</small>
-          <p className="cert-presented">This certificate is presented to</p>
-          <h3>Your Name</h3>
-
-          {/* Announced on change: the pills are the only thing that rewrites it. */}
-          <p aria-live="polite">
-            for demonstrating practical proficiency as a <b>{tool.award}</b> — {tool.skills}.
-          </p>
-
-          <div className="cert-accred">
-            <span>Accredited by</span>
-            <div>
+            <span className="cert-accred-row">
               {CERT_ACCREDITORS.map((body) => (
                 <Image
                   key={body.name}
@@ -114,12 +105,44 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
                   className={body.square ? 'cert-accred-logo cert-accred-logo--square' : 'cert-accred-logo'}
                 />
               ))}
-            </div>
+            </span>
           </div>
 
+          <div className="cert-title-row">
+            <small>CERTIFICATE OF PROFICIENCY</small>
+            {/* Re-keyed so the badge replays its entrance on every change — the
+                one part of the card the eye is most likely to be resting on. */}
+            <span className="cert-badge" key={tool.name}>
+              <Mark className="cert-badge-mark" />
+              {tool.name}
+            </span>
+          </div>
+
+          <p className="cert-presented">This certificate is presented to</p>
+          <h3>Your Name</h3>
+
+          {/* Announced on change: the pills are the only thing that rewrites it. */}
+          <p aria-live="polite">
+            for demonstrating practical proficiency as a <b>{tool.award}</b> — {tool.skills}.
+          </p>
+
+          {/* What makes it checkable on the left, who stands behind it on the
+              right. The id is per-tool so two certificates never read alike. */}
           <div className="cert-foot">
-            <span>Issued Jun 2026 · {tool.detail}</span>
-            <i>skeo</i>
+            <span className="cert-meta">
+              Issued Jun 2026 · {tool.detail}
+              <span className="cert-id">SKEO-{tool.code}-2606-0000</span>
+            </span>
+            <span className="cert-signs">
+              <span className="cert-sign">
+                <b>Programme Director</b>
+                <span>skeo</span>
+              </span>
+              <span className="cert-sign">
+                <b>Founder</b>
+                <span>skeo</span>
+              </span>
+            </span>
           </div>
         </div>
       </Reveal>
