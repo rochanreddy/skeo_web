@@ -7357,18 +7357,6 @@ details p {
   background: #241f3c;
 }
 
-/* The wordmark chip is `background: var(--ink); color: #fff`, which is a dark
-   chip with a white glyph by day. Here "ink" IS the light end, so the chip
-   turned white and took the glyph with it — the mark vanished from the nav.
-   Only the glyph is wrong: darkening it gives the proper inverse.
-
-   Scoped to the nav on purpose. The footer carries a second .brand-mark that
-   paints its own translucent-white chip on the dark footer, so it still wants
-   the white glyph — darkening that one puts it back to invisible. */
-:root[data-palette='charcoal'] .nav .brand-mark {
-  color: var(--paper);
-}
-
 :root[data-palette='charcoal'] .jobboard-rail button:hover,
 :root[data-palette='charcoal'] .jobboard-stats button:hover {
   border-color: #40396a;
