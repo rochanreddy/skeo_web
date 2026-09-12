@@ -3,7 +3,7 @@
 import Image, { type StaticImageData } from 'next/image'
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
-import { ChatGptMark, ClaudeMark, GeminiMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import anthropic from '@/assets/accreditation/anthropic.webp'
 import sarvam from '@/assets/accreditation/sarvam-cut.png'
 import msme from '@/assets/accreditation/msme.webp'
@@ -59,6 +59,15 @@ const CERT_TOOLS = [
     accent: '#ea4b71',
     detail: '11 lessons · 4 projects',
     code: 'N8',
+  },
+  {
+    name: 'Lovable',
+    Mark: LovableMark,
+    // The mark is a three-stop gradient; this is its middle stop, which is the
+    // colour the logo actually reads as at pill size.
+    accent: '#ff7eb0',
+    detail: '10 lessons · 4 projects',
+    code: 'LV',
   },
 ]
 
