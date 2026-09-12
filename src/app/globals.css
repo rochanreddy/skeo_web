@@ -3642,6 +3642,27 @@ h2 em {
   padding-right: 9px;
 }
 
+/* ---- the all-access card, at its own tighter rhythm ---- */
+.price-card.pro {
+  padding: 24px;
+}
+
+.pro h3 {
+  margin: 10px 0 14px;
+}
+
+.pro > p {
+  margin: 12px 0;
+}
+
+.pro ul {
+  margin: 18px 0;
+}
+
+.pro li {
+  margin: 9px 0;
+}
+
 /* The tools a certificate can name — each pill rewrites the specimen beside it. */
 .cert-tools {
   display: flex;
@@ -4229,7 +4250,11 @@ h2 em {
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   padding: 26px;
-  min-height: 240px;
+  /* Fixed, not a floor: on a moving rail a card that grew to fit a longer
+     quote read as a different size rather than a longer one. The longest
+     quote sets this figure; the attribution is pinned to the floor either
+     way, so the slack falls in the middle where nothing is looking. */
+  height: 250px;
   display: flex;
   flex-direction: column;
   background: var(--card-bg);
@@ -4274,21 +4299,65 @@ h2 em {
   padding-top: 16px;
   border-top: 1px solid var(--line-soft);
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  align-items: center;
+  gap: 11px;
 }
 
-.quote footer b {
+/* The same initials chip the hero's proof row uses, at the size an attribution
+   line wants. Colour comes off the name via nth-child below, so a rail of them
+   is not one flat block of violet. */
+.quote-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font: 700 12px var(--font);
+  letter-spacing: 0.02em;
+  /* Fixed, like the chip's own colour: these tiles do not follow the palette,
+     so a token here would turn the initials white on white in Charcoal. */
+  color: #fff;
+  background: #7657eb;
+}
+
+/* Four tints, cycling, so neighbouring cards on the rail never match.
+   The index has to come off the rail's wrapper: each card is the only child of
+   its own <span>, so nth-child on .quote matches every one of them. */
+.quote-rail .logo-rail-track > span:nth-child(4n + 1) .quote-avatar {
+  background: #ee956f;
+}
+
+.quote-rail .logo-rail-track > span:nth-child(4n + 3) .quote-avatar {
+  background: #4a3f8f;
+}
+
+.quote-rail .logo-rail-track > span:nth-child(4n) .quote-avatar {
+  background: #2f8f7a;
+}
+
+.quote-who {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.quote-who b {
   font-size: 14.5px;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
 
-.quote footer span {
+.quote-who span {
   font-size: 13px;
   font-weight: 500;
   color: var(--ink-4);
+  /* The role can be long; it stays on its one line. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .quote-dots {
@@ -8228,10 +8297,40 @@ details p {
 }
 
 .included-more > span {
+  position: relative;
+  padding: 7px 14px;
+  border-radius: 999px;
   font: 10px var(--mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-3);
+}
+
+/* The same ring the cards above wear, at the smallest weight on the page. It
+   closes the list rather than decorating it — see the tool card's glow for how
+   the mask pair makes a ring, and for where --glow-core comes from. */
+.included-more > span::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--tool-glow-angle),
+    rgb(var(--glow-core) / 0) 0deg,
+    rgb(var(--glow-core) / 0) 52deg,
+    rgb(var(--glow-core) / 0.45) 74deg,
+    rgb(var(--glow-core) / 0.1) 100deg,
+    rgb(var(--glow-core) / 0) 142deg,
+    rgb(var(--glow-core) / 0) 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: tool-card-glow 9s linear infinite;
+  pointer-events: none;
 }
 
 .included-more ul {
@@ -8287,17 +8386,21 @@ details p {
 
 /* Employer marks on the night band.
    The eleven are a mix: full-colour marks that read fine on dark, and dark-ink
-   wordmarks (PwC, Zendesk, Nutanix) that disappear into it. Three of them
-   shipped on an opaque white plate, which hid the problem on the dark band by
-   accident and showed as a white rectangle for it; knocking the plate out
-   fixed the rectangle and exposed the ink.
-   A light tile behind every mark settles both at once and needs no per-logo
-   treatment — the same answer the accreditation strip already uses. Padding is
-   deliberately small so the row keeps the tight rhythm it just gained. */
-:root[data-palette='charcoal'] .logo-item {
-  padding: 7px 11px;
-  border-radius: 8px;
-  background: #f4f4f6;
+   wordmarks that disappear into it.
+
+   The tile behind every mark is gone — it settled both cases at once but put
+   eleven white rectangles across a black band, which is a row of boxes rather
+   than a row of logos. Instead the colour marks are left exactly as they are,
+   and only the ink ones are turned white.
+
+   `brightness(0) invert(1)` is how: brightness(0) crushes every pixel to black
+   while keeping its alpha, then invert lifts that to white — so a wordmark
+   becomes a white wordmark and its transparent surround stays transparent. It
+   is applied per mark rather than to the row, because on a colour logo it
+   would flatten the brand to a white silhouette. Any dark-ink mark added to
+   the strip wants `ink` set on it in LogoStrip. */
+:root[data-palette='charcoal'] .logo-item--ink img {
+  filter: brightness(0) invert(1);
 }
 
 /* ============ LEAVE-CHECKOUT DIALOG ============ */
@@ -8596,7 +8699,8 @@ details p {
    default — so the light is terracotta here and only turns white on Charcoal,
    where the cards are dark. */
 .tool-card,
-.included-card {
+.included-card,
+.included-more > span {
   /* The DEEP step of the accent, not the recognisable one.
      These cards are white in Claude, and #d97757 laid on white composited to
      rgb(235 188 171) against rgb(254 254 254) — 1.35:1, which is a colour the
@@ -8609,7 +8713,8 @@ details p {
 }
 
 :root[data-palette='charcoal'] .tool-card,
-:root[data-palette='charcoal'] .included-card {
+:root[data-palette='charcoal'] .included-card,
+:root[data-palette='charcoal'] .included-more > span {
   --glow-core: 255 255 255;
   --glow-bloom: 201 182 255;
 }
@@ -8680,7 +8785,8 @@ details p {
 @media (prefers-reduced-motion: reduce) {
   .tool-card::before,
   .tool-card::after,
-  .included-card::before {
+  .included-card::before,
+  .included-more > span::before {
     animation: none;
     background: none;
   }

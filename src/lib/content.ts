@@ -61,7 +61,7 @@ export const featuredTool = {
   capsules: ['Claude Chat', 'Claude Cowork', 'Claude Code'],
   facts: [
     { icon: 'book', label: '12 lessons' },
-    { icon: 'clock', label: '3.5 hours' },
+    { icon: 'clock', label: '15 hours' },
     { icon: 'rocket', label: '4 projects' },
     { icon: 'compass', label: 'Self-paced' },
   ],

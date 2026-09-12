@@ -386,7 +386,7 @@ export function JobBoard() {
         <i />
         <i />
         <i />
-        <span>skeoai.io/jobs</span>
+        <span>skeoai.com/jobs</span>
         <em>Live</em>
       </div>
 

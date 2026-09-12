@@ -2,6 +2,25 @@ import { Reveal } from '@/components/Reveal'
 import { LogoRail } from '@/components/sections/LogoRail'
 import { testimonials } from '@/lib/content'
 
+/* The initials that stand in for a face.
+ *
+ * Initials rather than photographs: a portrait on a testimonial is a claim
+ * that this is what the person looks like, and there is no photograph of any
+ * of them to make that claim with. The mark is the same one the hero's proof
+ * row uses, so it reads as this site's way of showing a person rather than as
+ * a missing image.
+ *
+ * Takes the first letter of the first two words, so "Priya Shah" gives PS and
+ * a single-word name still gives something. */
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase()
+
 /**
  * The quotes ride the same continuous rail the logo strip uses, rather than
  * paging three at a time: every testimonial comes past on its own, and the row
@@ -29,8 +48,13 @@ export function Testimonials() {
               </div>
               <blockquote>“{item.quote}”</blockquote>
               <footer>
-                <b>{item.name}</b>
-                <span>{item.role}</span>
+                <span className="quote-avatar" aria-hidden="true">
+                  {initials(item.name)}
+                </span>
+                <span className="quote-who">
+                  <b>{item.name}</b>
+                  <span>{item.role}</span>
+                </span>
               </footer>
             </article>
           ))}

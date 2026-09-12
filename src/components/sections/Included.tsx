@@ -95,8 +95,6 @@ const MORE = [
   'Real projects',
   'Assignments',
   'Progress tracking',
-  'Portfolio you own',
-  'New tools monthly',
   'Free content updates',
 ]
 

@@ -26,9 +26,14 @@ import zendesk from '@/assets/employers/Zendesk-cut.png'
  * That plate is invisible on the light band and a white rectangle around the
  * mark on the charcoal one, so it has been knocked out to alpha — colour kept,
  * only the plate removed. Any mark added here wants the same treatment.
+ *
+ * `ink` marks the ones drawn in near-black with no colour of their own. They
+ * are invisible on the night band, so there they are turned white — see
+ * .logo-item--ink. A colour mark must NOT be flagged: the same treatment would
+ * flatten it to a white silhouette and lose the brand.
  */
 
-const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
+const EMPLOYERS: { name: string; logo: StaticImageData; height: number; ink?: boolean }[] = [
   { name: 'Microsoft', logo: microsoft, height: 30 },
   { name: 'Accenture', logo: accenture, height: 28 },
   { name: 'Razorpay', logo: razorpay, height: 32 },
@@ -38,12 +43,12 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number }[] = [
   { name: 'TCS', logo: tcs, height: 30 },
   // Trimming turned this from a padded square into a 2:1 wordmark, so it needs
   // less height than it did to sit level with the rest.
-  { name: 'PwC', logo: pwc, height: 24 },
+  { name: 'PwC', logo: pwc, height: 24, ink: true },
   // A two-line lockup in fine type, where the rest are single bold wordmarks —
   // at a shared height it reads as half their size, so it gets more.
-  { name: 'McKinsey & Company', logo: mckinsey, height: 34 },
-  { name: 'Zendesk', logo: zendesk, height: 28 },
-  { name: 'Nutanix', logo: nutanix, height: 28 },
+  { name: 'McKinsey & Company', logo: mckinsey, height: 34, ink: true },
+  { name: 'Zendesk', logo: zendesk, height: 28, ink: true },
+  { name: 'Nutanix', logo: nutanix, height: 28, ink: true },
 ]
 
 export function LogoStrip() {
@@ -56,7 +61,11 @@ export function LogoStrip() {
               leaves. */}
           <LogoRail className="employer-rail" speed={0.35} direction="right">
             {EMPLOYERS.map((item) => (
-              <span key={item.name} className="logo-item" title={item.name}>
+              <span
+                key={item.name}
+                className={item.ink ? 'logo-item logo-item--ink' : 'logo-item'}
+                title={item.name}
+              >
                 <Image src={item.logo} alt="" style={{ height: item.height, width: 'auto' }} />
               </span>
             ))}
