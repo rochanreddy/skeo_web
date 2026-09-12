@@ -21,7 +21,7 @@ export function Testimonials() {
 
       {/* Full bleed: the rail should run off both edges, not stop at the column. */}
       <Reveal delay={1}>
-        <LogoRail className="quote-rail" speed={0.35}>
+        <LogoRail className="quote-rail" speed={0.35} direction="right">
           {testimonials.map((item) => (
             <article key={item.name} className="quote">
               <div className="stars" role="img" aria-label="Rated 5 out of 5">

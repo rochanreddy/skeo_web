@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { GhostCursor } from '@/components/sections/GhostCursor'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 /**
@@ -228,6 +229,38 @@ const usd = (n: number) => {
 const RING = { size: 92, stroke: 13 }
 const CYCLE = 6000
 
+/* One lap of the demonstration pointer, laid over one turn of CYCLE.
+ *
+ * `at` is milliseconds into the lap, `find` picks the control to sit on, and
+ * `press` draws the tap. The lap opens on the track the panel has just switched
+ * to, so the pointer is seen clicking the thing that visibly changed, then
+ * works across to the chart and the ring. Every stop is a control that already
+ * exists and already responds — the pointer is not miming over a static image.
+ *
+ * `act` is what the panel does when the pointer arrives. The hover stops set
+ * the chart's read-out themselves rather than dispatching synthetic pointer
+ * events, which would fight the real ones and would not work on touch at all. */
+type GhostStop = {
+  at: number
+  find: (root: HTMLElement, track: number) => Element | null | undefined
+  press?: boolean
+  act?: (api: { setPoint: (i: number | null) => void; setMetric: (i: number) => void }) => void
+}
+
+const pick = (root: HTMLElement, selector: string, nth: number) => root.querySelectorAll(selector)[nth]
+
+const GHOST_LAP: GhostStop[] = [
+  // On the track the panel has just stepped to.
+  { at: 0, find: (r, track) => pick(r, '.jobboard-rail button', track), press: true },
+  // Across to the chart, reading a month off the line.
+  { at: 1300, find: (r) => pick(r, '.chart-hits button', 2), act: (a) => a.setPoint(2) },
+  // A tile, which re-draws the line as a different series.
+  { at: 2600, find: (r) => pick(r, '.jobboard-stats button', 1), press: true, act: (a) => { a.setMetric(1); a.setPoint(null) } },
+  { at: 3900, find: (r) => pick(r, '.chart-hits button', 5), act: (a) => a.setPoint(5) },
+  // Resting on the mix ring as the lap runs out.
+  { at: 5200, find: (r) => r.querySelector('.mix-ring'), act: (a) => a.setPoint(null) },
+]
+
 export function JobBoard() {
   const [track, setTrack] = useState(0)
   const [metric, setMetric] = useState(0)
@@ -237,6 +270,8 @@ export function JobBoard() {
   const [segment, setSegment] = useState<number | null>(null)
   // Set while a pointer or the keyboard is on the panel: the cycle waits.
   const [held, setHeld] = useState(false)
+  const boardRef = useRef<HTMLDivElement>(null)
+  const [ghost, setGhost] = useState<{ x: number; y: number; press: boolean } | null>(null)
   // Steps the track the way the hero stage steps its tools.
   useEffect(() => {
     if (held) return
@@ -245,6 +280,52 @@ export function JobBoard() {
       setRole(0)
     }, CYCLE)
     return () => window.clearTimeout(timer)
+  }, [track, held])
+
+  /* The demonstration pointer. Keyed on `track` so a lap starts every time the
+     panel steps, which is what keeps the two in step without a second clock.
+
+     It stands down the moment a real pointer or the keyboard arrives — two
+     cursors on one panel is worse than none — and never runs for a reader who
+     has asked for reduced motion. */
+  useEffect(() => {
+    const board = boardRef.current
+    if (!board) return
+    if (held) {
+      setGhost(null)
+      return
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const api = { setPoint, setMetric }
+    const timers = GHOST_LAP.map((stop) =>
+      window.setTimeout(() => {
+        const target = stop.find(board, track)
+        if (!target) return
+        const b = board.getBoundingClientRect()
+        const r = target.getBoundingClientRect()
+        /* The panel is scaled with `zoom` on narrow screens. Both rects come
+           back already scaled, but this overlay's transform is applied inside
+           that scale, so the difference has to be divided back out or the
+           pointer lands progressively further off the smaller the screen. */
+        const scale = parseFloat(getComputedStyle(board).zoom) || 1
+        setGhost({
+          x: (r.left - b.left + r.width / 2) / scale,
+          y: (r.top - b.top + r.height / 2) / scale,
+          press: Boolean(stop.press),
+        })
+        stop.act?.(api)
+      }, stop.at),
+    )
+    // The tap is a flash, not a state: released shortly after each press.
+    const releases = GHOST_LAP.filter((s) => s.press).map((s) =>
+      window.setTimeout(() => setGhost((g) => (g ? { ...g, press: false } : g)), s.at + 420),
+    )
+
+    return () => {
+      timers.forEach(window.clearTimeout)
+      releases.forEach(window.clearTimeout)
+    }
   }, [track, held])
 
   const data = TRACKS[track]
@@ -288,6 +369,7 @@ export function JobBoard() {
 
   return (
     <div
+      ref={boardRef}
       className={`jobboard${held ? ' is-held' : ''}`}
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => {
@@ -298,6 +380,8 @@ export function JobBoard() {
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
     >
+      {ghost && <GhostCursor x={ghost.x} y={ghost.y} press={ghost.press} hidden={held} />}
+
       <div className="jobboard-bar" aria-hidden="true">
         <i />
         <i />

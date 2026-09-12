@@ -89,7 +89,16 @@ const INCLUDED = [
 ] as const
 
 /* What did not need a card of its own. Nothing here repeats one above it. */
-const MORE = ['LMS access', 'Video lessons', 'Real projects', 'Progress tracking', 'New tools monthly']
+const MORE = [
+  'LMS access',
+  'Video lessons',
+  'Real projects',
+  'Assignments',
+  'Progress tracking',
+  'Portfolio you own',
+  'New tools monthly',
+  'Free content updates',
+]
 
 export function Included() {
   return (
@@ -114,12 +123,12 @@ export function Included() {
         </div>
 
         <Reveal className="included-more">
-          <span>And more</span>
           <ul>
             {MORE.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
+          <span>and more</span>
         </Reveal>
       </div>
     </section>

@@ -54,7 +54,7 @@ export function LogoStrip() {
           <p>skeo builders go on to teams at</p>
           {/* The marks ride the same rail the quotes do, in the width the label
               leaves. */}
-          <LogoRail className="employer-rail" speed={0.35}>
+          <LogoRail className="employer-rail" speed={0.35} direction="right">
             {EMPLOYERS.map((item) => (
               <span key={item.name} className="logo-item" title={item.name}>
                 <Image src={item.logo} alt="" style={{ height: item.height, width: 'auto' }} />

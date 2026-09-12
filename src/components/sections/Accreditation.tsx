@@ -13,12 +13,20 @@ import startupIndia from '@/assets/accreditation/startup-india.png'
  * mark itself and the four read as one row despite their different shapes.
  */
 
-const ACCREDITORS: { name: string; logo: StaticImageData; height: number }[] = [
+const ACCREDITORS: {
+  name: string
+  logo: StaticImageData
+  height: number
+  /** Set where the supplied artwork is an icon with no name in it. */
+  wordmark?: string
+}[] = [
   { name: 'Startup India', logo: startupIndia, height: 24 },
   { name: 'Ministry of MSME, Government of India', logo: msme, height: 46 },
-  // Square where the rest are wordmarks, so it needs more height than a
-  // wordmark to carry the same weight — see the same note on the certificate.
-  { name: 'Sarvam AI', logo: sarvam, height: 42 },
+  // The only one shipped as a bare icon, so the name is set beside it rather
+  // than left off — a mark nobody can read is not an accreditation. It also
+  // drops to a wordmark's height now the text is carrying the name; at 42 it
+  // was oversized precisely because it had to say everything on its own.
+  { name: 'Sarvam AI', logo: sarvam, height: 27, wordmark: 'Sarvam' },
   { name: 'Anthropic', logo: anthropic, height: 15 },
 ]
 
@@ -32,10 +40,14 @@ export function Accreditation() {
             <span key={item.name} className="accred-item">
               <Image
                 src={item.logo}
-                alt={item.name}
+                alt={item.wordmark ? '' : item.name}
                 className="accred-logo"
                 style={{ height: item.height, width: 'auto' }}
               />
+              {/* The name in text, where the artwork does not carry it. The
+                  image's alt goes empty in that case: the pair would otherwise
+                  announce the name twice to a screen reader. */}
+              {item.wordmark && <b className="accred-word">{item.wordmark}</b>}
             </span>
           ))}
         </div>

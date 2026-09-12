@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { track } from '@/lib/analytics/track'
 import { readCompletedOrder, type CompletedOrder } from '@/lib/checkoutSession'
-import { MODULE_ROWS, money, type ModuleKey } from '@/lib/plans'
+import { price, useCurrency } from '@/lib/currency'
+import { MODULE_ROWS, type ModuleKey } from '@/lib/plans'
 import { lms } from '@/lib/site'
 
 /**
@@ -27,6 +28,9 @@ export function ThankYou() {
     }
     setOrder(found)
   }, [router])
+
+  // Above the bail-out below: hooks cannot run conditionally.
+  const currency = useCurrency()
 
   if (!order) return null
 
@@ -117,13 +121,13 @@ export function ThankYou() {
             {rows.map((row) => (
               <li key={row.key}>
                 <span>{row.title}</span>
-                <span>{row.price}</span>
+                <span>{price(row.amount, currency)}</span>
               </li>
             ))}
           </ul>
           <div className="thanks-total">
             <span>Paid</span>
-            <b>{money(total)}</b>
+            <b>{price(total, currency)}</b>
           </div>
           <p className="thanks-ref">
             Order <b>{order.orderId}</b>

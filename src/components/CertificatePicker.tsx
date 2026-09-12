@@ -35,8 +35,6 @@ const CERT_TOOLS = [
     name: 'Claude',
     Mark: ClaudeMark,
     accent: '#d97757',
-    award: 'Claude Practitioner',
-    skills: 'prompt design, research and shipped work',
     detail: '12 lessons · 4 projects',
     /* Goes into the credential id, so two certificates never read alike. */
     code: 'CL',
@@ -45,8 +43,6 @@ const CERT_TOOLS = [
     name: 'ChatGPT',
     Mark: ChatGptMark,
     accent: '#10a37f',
-    award: 'ChatGPT Practitioner',
-    skills: 'everyday workflows, custom GPTs and analysis',
     detail: '10 lessons · 3 projects',
     code: 'GP',
   },
@@ -54,8 +50,6 @@ const CERT_TOOLS = [
     name: 'Gemini',
     Mark: GeminiMark,
     accent: '#4285f4',
-    award: 'Gemini Practitioner',
-    skills: 'multimodal prompting, image and video',
     detail: '9 lessons · 3 projects',
     code: 'GM',
   },
@@ -63,8 +57,6 @@ const CERT_TOOLS = [
     name: 'n8n',
     Mark: N8nMark,
     accent: '#ea4b71',
-    award: 'Automation Practitioner',
-    skills: 'workflow automation and AI agents',
     detail: '11 lessons · 4 projects',
     code: 'N8',
   },
@@ -86,14 +78,13 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
       <Reveal className="certificate" style={{ '--cert-accent': tool.accent } as CSSProperties}>
         <div className="cert-glow" aria-hidden="true" />
         <div className="cert-inner">
-          {/* The mark and the tagline on the left, the bodies that stand behind
-              the credential on the right — a printed certificate heads itself
-              this way, and it puts the accreditation where it is read as a
-              claim rather than as a footnote. */}
+          {/* The mark on the left, the bodies that stand behind the credential
+              on the right — a printed certificate heads itself this way, and it
+              puts the accreditation where it is read as a claim rather than as
+              a footnote. */}
           <div className="cert-head">
             <span className="cert-brand">
               <b>skeo</b>
-              <em>Learn. Build. Monetize.</em>
             </span>
             <span className="cert-accred-row">
               {CERT_ACCREDITORS.map((body) => (
@@ -109,7 +100,7 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
           </div>
 
           <div className="cert-title-row">
-            <small>CERTIFICATE OF PROFICIENCY</small>
+            <small>CERTIFICATE OF PROFICIENCY — {tool.name.toUpperCase()}</small>
             {/* Re-keyed so the badge replays its entrance on every change — the
                 one part of the card the eye is most likely to be resting on. */}
             <span className="cert-badge" key={tool.name}>
@@ -118,31 +109,38 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
             </span>
           </div>
 
-          <p className="cert-presented">This certificate is presented to</p>
-          <h3>Your Name</h3>
+          {/* Grouped so the three lines that name the holder can be centred as
+              one block in whatever height is left between the title row and the
+              foot — see .cert-body. Without the wrapper they stack against the
+              title row and leave the space below them empty, which is what the
+              departed signature blocks used to fill. */}
+          <div className="cert-body">
+            <p className="cert-presented">This certificate is proudly presented to</p>
+            <h3>Your Name</h3>
 
-          {/* Announced on change: the pills are the only thing that rewrites it. */}
-          <p aria-live="polite">
-            for demonstrating practical proficiency as a <b>{tool.award}</b> — {tool.skills}.
-          </p>
+            {/* One citation for every tool, with the name dropped into it —
+                the same words a real certificate would carry whichever course
+                it was awarded for. Announced on change: the pills are the only
+                thing that rewrites it. */}
+            <div className="cert-citation" aria-live="polite">
+              <p>
+                for successfully demonstrating practical proficiency in <b>{tool.name}</b>, including its
+                core capabilities, features, and real-world applications.
+              </p>
+              <p>
+                This recognition reflects the ability to apply {tool.name} effectively to solve problems,
+                enhance productivity, and create meaningful outcomes.
+              </p>
+            </div>
+          </div>
 
-          {/* What makes it checkable on the left, who stands behind it on the
-              right. The id is per-tool so two certificates never read alike. */}
+          {/* What makes the credential checkable: when it was issued, what it
+              took, and the id someone would quote to verify it. The signature
+              blocks that sat opposite are gone — unsigned is honest for a
+              specimen, where two named roles were a claim about people. */}
           <div className="cert-foot">
-            <span className="cert-meta">
-              Issued Jun 2026 · {tool.detail}
-              <span className="cert-id">SKEO-{tool.code}-2606-0000</span>
-            </span>
-            <span className="cert-signs">
-              <span className="cert-sign">
-                <b>Programme Director</b>
-                <span>skeo</span>
-              </span>
-              <span className="cert-sign">
-                <b>Founder</b>
-                <span>skeo</span>
-              </span>
-            </span>
+            <span className="cert-meta">Issued Jun 2026 · {tool.detail}</span>
+            <span className="cert-id">SKEO-{tool.code}-2606-0000</span>
           </div>
         </div>
       </Reveal>

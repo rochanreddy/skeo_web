@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { track } from '@/lib/analytics/track'
-import { MODULE_ROWS, money, type ModuleKey } from '@/lib/plans'
+import { price, useCurrency } from '@/lib/currency'
+import { COMING_SOON, MODULE_ROWS, type ModuleKey } from '@/lib/plans'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { useModal } from './modals/ModalProvider'
 
@@ -26,6 +27,7 @@ const MARKS = {
  */
 export function ModuleCart() {
   const { openVerify } = useModal()
+  const currency = useCurrency()
   const [cart, setCart] = useState<ModuleKey[]>([])
 
   const total = MODULE_ROWS.filter((row) => cart.includes(row.key)).reduce((sum, row) => sum + row.amount, 0)
@@ -60,7 +62,7 @@ export function ModuleCart() {
                 </b>
                 <small>{row.subtitle}</small>
               </span>
-              <span className="module-price">{row.price}</span>
+              <span className="module-price">{price(row.amount, currency)}</span>
               <button
                 type="button"
                 className={`module-add${inCart ? ' is-added' : ''}`}
@@ -72,6 +74,28 @@ export function ModuleCart() {
             </li>
           )
         })}
+
+        {/* The catalogue's near future, listed but not for sale — no price, no
+            Add, and no key that could reach the cart. It sits last because it
+            is the only row that cannot be acted on. */}
+        <li className="module-row is-soon">
+          <span className="module-index" aria-hidden="true">
+            {String(MODULE_ROWS.length + 1).padStart(2, '0')}
+          </span>
+          <span className="module-name">
+            <b>
+              {COMING_SOON.title}
+              <span className="module-marks" aria-hidden="true">
+                {COMING_SOON.marks.map((mark) => {
+                  const Mark = MARKS[mark]
+                  return <Mark key={mark} className="module-mark" />
+                })}
+              </span>
+            </b>
+            <small>{COMING_SOON.subtitle}</small>
+          </span>
+          <span className="module-soon">Coming soon</span>
+        </li>
       </ul>
 
       {/* Kept in the tree while empty: its min-height reserves the row so the
@@ -86,7 +110,7 @@ export function ModuleCart() {
               openVerify(cart)
             }}
           >
-            <span className="btn-label">Next · {money(total)}</span>
+            <span className="btn-label">Next · {price(total, currency)}</span>
             <span aria-hidden="true">→</span>
           </button>
         )}

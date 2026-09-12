@@ -10,14 +10,20 @@ import { useEffect, useRef, type ReactNode } from 'react'
  * stops on hover or touch and loops with no visible seam. Dragging follows the
  * pointer and auto-advance resumes on release — a resting finger doesn't stop
  * it either.
+ *
+ * `direction` is which way the CONTENT travels, not which way the track is
+ * pushed — the two are opposite, and naming the visible one keeps the call
+ * sites readable.
  */
 export function LogoRail({
   children,
   speed = 0.5,
+  direction = 'left',
   className = '',
 }: {
   children: ReactNode[]
   speed?: number
+  direction?: 'left' | 'right'
   className?: string
 }) {
   const trackRef = useRef<HTMLDivElement>(null)
@@ -61,9 +67,13 @@ export function LogoRail({
     })
     visibility.observe(track)
 
+    // Content travelling right means the track's offset climbing. wrap()
+    // already folds the offset back either way, so the sign is the whole of it.
+    const step = direction === 'right' ? speed : -speed
+
     const tick = () => {
       if (onScreen && copy > 0 && !dragging && !document.hidden) {
-        offset -= speed
+        offset += step
         wrap()
         apply()
       }
@@ -106,7 +116,7 @@ export function LogoRail({
       window.removeEventListener('pointerup', onUp)
       window.removeEventListener('pointercancel', onUp)
     }
-  }, [speed, children.length])
+  }, [speed, direction, children.length])
 
   // Three copies: one on screen, one entering, one leaving.
   const copies = [0, 1, 2]

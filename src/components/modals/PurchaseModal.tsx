@@ -3,7 +3,8 @@
 import { useState, type FormEvent } from 'react'
 import { Modal, useDialogId } from './Modal'
 import { BackgroundField } from '@/components/forms/BackgroundField'
-import { PLANS, money, type PlanKey } from '@/lib/plans'
+import { price, useCurrency } from '@/lib/currency'
+import { PLANS, type PlanKey } from '@/lib/plans'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 
 type Field = 'name' | 'email' | 'phone' | 'background'
@@ -17,6 +18,7 @@ type Errors = Partial<Record<Field, string>>
  */
 export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onClose: () => void }) {
   const titleId = useDialogId('purchase-title')
+  const currency = useCurrency()
   const plans = planKeys.map((key) => PLANS[key])
   // A cart of one behaves exactly as the old single-plan checkout did.
   const single = plans.length === 1 ? plans[0] : null
@@ -68,7 +70,7 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
             <span className="eyebrow">{single.eyebrow}</span>
             <h3 id={titleId}>{single.title}</h3>
             <div className="purchase-price">
-              <span>{single.price}</span>
+              <span>{price(single.amount, currency)}</span>
               <small>{single.period}</small>
             </div>
             <ul>
@@ -87,12 +89,12 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
               {plans.map((plan) => (
                 <li key={plan.title}>
                   <b>{plan.title}</b>
-                  <span>{plan.price}</span>
+                  <span>{price(plan.amount, currency)}</span>
                 </li>
               ))}
             </ul>
             <div className="purchase-price">
-              <span>{money(cartTotal)}</span>
+              <span>{price(cartTotal, currency)}</span>
               <small>/ one-time</small>
             </div>
           </>
@@ -194,7 +196,7 @@ export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onCl
 
           <button type="submit" className="button modal-submit full" disabled={submitting}>
             <span className="btn-label">
-              {submitting ? 'Sending…' : isTeams ? single.cta : `Confirm · ${money(cartTotal)}`}
+              {submitting ? 'Sending…' : isTeams ? single.cta : `Confirm · ${price(cartTotal, currency)}`}
             </span>
             <span className={submitting ? 'spinner' : ''} aria-hidden="true">
               {submitting ? '' : '→'}

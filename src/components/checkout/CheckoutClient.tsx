@@ -12,7 +12,8 @@ import {
 } from '@/lib/checkoutSession'
 import { track } from '@/lib/analytics/track'
 import { payForOrder } from '@/lib/payment'
-import { MODULE_ROWS, PLANS, money, type ModuleKey } from '@/lib/plans'
+import { price, useCurrency } from '@/lib/currency'
+import { MODULE_ROWS, PLANS, type ModuleKey } from '@/lib/plans'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 const MARKS = {
@@ -91,6 +92,9 @@ export function CheckoutClient() {
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [session])
+
+  // Above the bail-out below: hooks cannot run conditionally.
+  const currency = useCurrency()
 
   if (!session) return null
 
@@ -206,7 +210,7 @@ export function CheckoutClient() {
                       </b>
                       <small>{row.subtitle}</small>
                     </span>
-                    <span className="checkout-item-price">{row.price}</span>
+                    <span className="checkout-item-price">{price(row.amount, currency)}</span>
                   </div>
                   <ul className="checkout-item-features">
                     {plan.features.map((feature) => (
@@ -246,9 +250,9 @@ export function CheckoutClient() {
                       type="button"
                       className="checkout-add-btn"
                       onClick={() => addModule(session, row.key)}
-                      aria-label={`Add ${row.title} for ${row.price}`}
+                      aria-label={`Add ${row.title} for ${price(row.amount, currency)}`}
                     >
-                      <span aria-hidden="true">+</span> {row.price}
+                      <span aria-hidden="true">+</span> {price(row.amount, currency)}
                     </button>
                   </li>
                 ))}
@@ -277,26 +281,26 @@ export function CheckoutClient() {
             {rows.map((row) => (
               <li key={row.key}>
                 <span>{row.title}</span>
-                <span>{row.price}</span>
+                <span>{price(row.amount, currency)}</span>
               </li>
             ))}
           </ul>
 
           <div className="checkout-sub">
             <span>Subtotal</span>
-            <span>{money(subtotal)}</span>
+            <span>{price(subtotal, currency)}</span>
           </div>
           <div className="checkout-sub muted">
             <span>Taxes</span>
-            <span>{money(0)}</span>
+            <span>{price(0, currency)}</span>
           </div>
           <div className="checkout-total">
             <span>Total</span>
-            <b>{money(total)}</b>
+            <b>{price(total, currency)}</b>
           </div>
 
           <button type="button" className="button full checkout-pay" onClick={() => void pay()} disabled={paying}>
-            <span className="btn-label">{paying ? 'Processing…' : `Pay ${money(total)}`}</span>
+            <span className="btn-label">{paying ? 'Processing…' : `Pay ${price(total, currency)}`}</span>
             <span className={paying ? 'spinner' : ''} aria-hidden="true">
               {paying ? '' : '→'}
             </span>
