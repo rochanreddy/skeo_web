@@ -4918,6 +4918,56 @@ details p {
   background: #ffffff14;
 }
 
+/* ============ ROUTE LOADING ============ */
+/* The state between clicking a link and the next route arriving. Sized to the
+   viewport so the page does not collapse to nothing and then jump back — the
+   header stays put and only the field below it changes. */
+.route-loading {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+  padding: 120px 0;
+}
+
+/* One arc turning inside a faint ring: the ring holds the shape so the mark
+   does not read as a dot appearing and vanishing, and the arc carries the
+   motion. Border rather than an SVG — four lines of CSS and nothing to load at
+   the exact moment the page is already waiting on the network. */
+.route-loading-mark {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-top-color: var(--purple);
+  animation: route-loading-spin 0.7s linear infinite;
+}
+
+@keyframes route-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* A spinner is the one thing that cannot simply stop for this setting — it is
+   the only signal that anything is happening. It slows to a pulse instead. */
+@media (prefers-reduced-motion: reduce) {
+  .route-loading-mark {
+    animation: route-loading-fade 1.4s ease-in-out infinite;
+    border-top-color: color-mix(in srgb, var(--ink) 14%, transparent);
+    background: var(--purple);
+  }
+
+  @keyframes route-loading-fade {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
 /* The OTP provider appends its dialog to <body>, so it lands outside the
    modal's stacking context and behind it — the modal shell is z-index 100.
    Lifting the host above that is the whole fix; everything inside it is the
