@@ -4918,6 +4918,28 @@ details p {
   background: #ffffff14;
 }
 
+/* The menler wordmark keeps the row's height and its pill treatment, but takes
+   the width its artwork needs — a 3.3:1 wordmark squeezed into a 36px circle
+   would be unreadable, which is the whole point of putting it here. */
+.footer-social a.footer-menler {
+  width: auto;
+  padding-inline: 14px;
+  border-radius: 999px;
+}
+
+.footer-social a.footer-menler img {
+  display: block;
+  width: auto;
+  height: 13px;
+  /* The mark is white already; this only carries the row's hover lift. */
+  opacity: 0.72;
+  transition: opacity 0.25s ease;
+}
+
+.footer-social a.footer-menler:hover img {
+  opacity: 1;
+}
+
 .footer-top-link {
   display: grid;
   place-items: center;
@@ -6526,7 +6548,8 @@ details p {
     grid-template-columns: 1fr 1fr;
   }
   .jobs-layout {
-    grid-template-columns: 1fr;
+    /* See .credential above — the job panel is a definite-width child too. */
+    grid-template-columns: minmax(0, 1fr);
   }
   .pricing-two {
     grid-template-columns: 1fr;
@@ -6703,7 +6726,10 @@ details p {
   .credential,
   .faq,
   .tool-card {
-    grid-template-columns: 1fr;
+    /* minmax(0, …), not 1fr: a bare 1fr takes its minimum from the item, so a
+       child with a definite width widens the track to fit and nothing inside
+       can then be clamped against it. */
+    grid-template-columns: minmax(0, 1fr);
     gap: 35px;
   }
   /* Tighter than the rest of that set: the two halves of this card are one
@@ -8498,6 +8524,12 @@ details p {
     /* Slack falls either side rather than all on the right. */
     margin-inline: auto;
     width: 760px;
+    /* The guard for browsers that ignore `zoom` — see the note above.
+       min-width: 0 is half of it: as a grid item this defaults to
+       min-width: auto, which is its min-content width, and a minimum beats a
+       maximum — so without it max-width is simply ignored. */
+    min-width: 0;
+    max-width: 100%;
   }
 }
 
@@ -8505,6 +8537,8 @@ details p {
   .certificate {
     margin-inline: auto;
     width: 620px;
+    min-width: 0;
+    max-width: 100%;
   }
 }
 
