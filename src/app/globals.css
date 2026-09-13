@@ -3648,19 +3648,39 @@ h2 em {
 }
 
 .pro h3 {
-  margin: 10px 0 14px;
+  margin: 10px 0 12px;
 }
 
+/* The two gaps that stood out: under the price, and between the last benefit
+   and the button. Both were desktop figures on a card that is now dense. */
 .pro > p {
-  margin: 12px 0;
+  margin: 10px 0;
 }
 
+/* The gap above the button was not a margin, which is why trimming margins
+   made it worse. The two cards are grid items on align-items: stretch, so this
+   one is held to the height of the taller tool list beside it, and its button
+   is pinned to the floor by margin-top: auto — every pixel of the difference
+   therefore pooled into one slab above the button.
+
+   The list absorbs it now instead: it takes the free space, and align-content
+   spreads that through the rows rather than leaving it at one end. The cards
+   still finish level, which is the point of stretching them, but the slack
+   reads as the list breathing instead of as a hole. */
 .pro ul {
-  margin: 18px 0;
+  margin: 14px 0 0;
+  flex: 1 1 auto;
+  display: grid;
+  align-content: space-evenly;
+  gap: 8px;
 }
 
 .pro li {
-  margin: 9px 0;
+  margin: 0;
+}
+
+.pro .button {
+  margin-top: 16px;
 }
 
 /* The tools a certificate can name — each pill rewrites the specimen beside it. */
@@ -3817,13 +3837,20 @@ h2 em {
 /* Fixed width so the column stays straight whichever rows are added. */
 .module-add {
   flex: none;
+  display: grid;
+  place-items: center;
   width: 74px;
-  padding: 7px 0;
+  min-height: 29px;
+  padding: 6px 4px;
   border: 1px solid #ddd8e6;
   border-radius: 999px;
   background: var(--card-bg);
   font: 700 10px var(--mono);
   letter-spacing: 0.06em;
+  /* The trailing letter-space after the last glyph is counted as part of the
+     text, so centring lands it that much to the left. Pulling the block back
+     by the same amount puts the glyphs themselves in the middle. */
+  text-indent: 0.06em;
   text-transform: uppercase;
   color: var(--ink-2);
   cursor: pointer;
@@ -3865,16 +3892,21 @@ h2 em {
 
 .module-soon {
   flex: none;
+  display: grid;
+  place-items: center;
   width: 74px;
+  min-height: 29px;
   text-align: center;
-  padding: 7px 0;
+  padding: 6px 4px;
   border: 1px dashed #ddd8e6;
   border-radius: 999px;
   font: 700 9px var(--mono);
   letter-spacing: 0.04em;
+  /* See .module-add: the trailing letter-space has to be paid back. */
+  text-indent: 0.04em;
   text-transform: uppercase;
   color: var(--ink-4);
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 /* One fixed footer row holds the whole cart — the running total and Next — and

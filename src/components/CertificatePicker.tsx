@@ -133,12 +133,9 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
                 thing that rewrites it. */}
             <div className="cert-citation" aria-live="polite">
               <p>
-                for successfully demonstrating practical proficiency in <b>{tool.name}</b>, including its
-                core capabilities, features, and real-world applications.
-              </p>
-              <p>
-                This recognition reflects the ability to apply {tool.name} effectively to solve problems,
-                enhance productivity, and create meaningful outcomes.
+                for successfully demonstrating proficiency in <b>{tool.name}</b>, including its core
+                features, advanced capabilities, workflows, and practical applications with the ability
+                to solve real-world problems and create meaningful outcomes.
               </p>
             </div>
           </div>

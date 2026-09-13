@@ -13,8 +13,8 @@ export type Currency = 'INR' | 'USD'
  * those into something a reader sees.
  */
 
-/* Overseas pricing is twice the Indian price in real terms: the rupee figure
-   converted at this rate, then doubled.
+/* Overseas pricing is five times the Indian price in real terms: the rupee
+   figure converted at this rate, then multiplied by OVERSEAS_MULTIPLE.
    The rate is a constant rather than a live lookup on purpose. A price that
    moves with the market is worse than one that is a few percent stale, and a
    lookup that fails leaves the page with no price at all — which is the one
@@ -22,8 +22,12 @@ export type Currency = 'INR' | 'USD'
    editing this line. */
 export const INR_PER_USD = 88
 
+/** What an overseas reader pays relative to the home price, in real terms. */
+export const OVERSEAS_MULTIPLE = 5
+
 /** Rupees to the dollar figure an overseas reader is shown. */
-export const usdFor = (inr: number) => Math.max(1, Math.round((inr / INR_PER_USD) * 2))
+export const usdFor = (inr: number) =>
+  Math.max(1, Math.round((inr / INR_PER_USD) * OVERSEAS_MULTIPLE))
 
 /** A price, written for the reader. */
 export const price = (inr: number, currency: Currency) =>

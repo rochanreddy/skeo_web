@@ -14,8 +14,8 @@ export type Plan = {
 
 export const PLANS: Record<PlanKey, Plan> = {
   claude: {
-    eyebrow: 'CLAUDE TOOL',
-    title: 'Claude',
+    eyebrow: 'CLAUDE COURSE',
+    title: 'Claude Course',
     amount: 699,
     period: '/ one-time',
     billing: 'one-time',
@@ -85,8 +85,9 @@ export type ModuleRow = {
 export const MODULE_ROWS: ModuleRow[] = [
   {
     key: 'claude',
-    title: 'Claude',
-    subtitle: 'Beginner to advanced, new ways to work with AI',
+    title: 'Claude Course',
+    subtitle:
+      'Master Claude across Chat, Cowork, Code, automations, vibe coding, research and more in one practical course',
     amount: 699,
     marks: ['claude'],
   },
