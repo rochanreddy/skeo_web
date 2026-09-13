@@ -59,8 +59,10 @@ const EMPLOYERS: {
   // less height than it did to sit level with the rest.
   { name: 'PwC', logo: pwc, height: 24, ink: true },
   // A two-line lockup in fine type, where the rest are single bold wordmarks —
-  // at a shared height it reads as half their size, so it gets more.
-  { name: 'McKinsey & Company', logo: mckinsey, height: 34, ink: true },
+  // at a shared height it reads as half their size, so it gets more. Raised
+  // again from 34: the type is light enough that the extra height is what
+  // makes it legible rather than what makes it loud.
+  { name: 'McKinsey & Company', logo: mckinsey, height: 42, ink: true },
   { name: 'Zendesk', logo: zendesk, height: 28, ink: true },
   { name: 'Nutanix', logo: nutanix, height: 28, ink: true },
   // A stacked lockup — mark above wordmark — so like McKinsey it needs more
