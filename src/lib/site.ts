@@ -7,8 +7,8 @@
  * right?" line rather than pointing at an address nobody reads.
  */
 export const lms = {
-  web: 'https://lms.skeo.com',
-  mobile: 'https://lms.skeo.com/download/skeo-lms.apk',
+  web: 'https://lms.skeoai.com',
+  mobile: 'https://lms.skeoai.com/download/skeo-lms.apk',
   support: '',
   /** How the thank-you page describes the wait for the credentials email. */
   credentialsEta: 'within 5 minutes',
@@ -16,7 +16,15 @@ export const lms = {
 
 export const site = {
   name: 'skeo',
-  url: 'https://skeo.com',
+  /* The domain the site is actually served from, which is not necessarily the
+     one the brand is named after. This single value becomes the canonical
+     link, the Open Graph urls, every @id in the structured data, the sitemap
+     and the host robots.txt points crawlers at — so leaving it on a domain the
+     site is not served from tells a crawler the real page lives elsewhere,
+     which is the kind of mistake that looks fine in a browser and only shows
+     up in search. It is also what the admin compares referrers against to
+     separate its own traffic from the rest. */
+  url: 'https://skeoai.com',
   tagline: 'Master the AI tools that matter',
   description:
     'skeo — master the AI tools that matter. One platform. Every AI tool. Short challenges, real proof, real opportunities.',
