@@ -14,10 +14,18 @@ import { track } from '@/lib/analytics/track'
 import { payForOrder } from '@/lib/payment'
 import { price, useCurrency } from '@/lib/currency'
 import { MODULE_ROWS, PLANS, type ModuleKey } from '@/lib/plans'
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import {
+  ChatGptMark,
+  ClaudeCodeMark,
+  ClaudeMark,
+  GeminiMark,
+  LovableMark,
+  N8nMark,
+} from '@/components/tools/marks'
 
 const MARKS = {
   claude: ClaudeMark,
+  claudeCode: ClaudeCodeMark,
   chatgpt: ChatGptMark,
   gemini: GeminiMark,
   n8n: N8nMark,

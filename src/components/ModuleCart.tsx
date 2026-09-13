@@ -4,11 +4,19 @@ import { useState } from 'react'
 import { track } from '@/lib/analytics/track'
 import { price, useCurrency } from '@/lib/currency'
 import { COMING_SOON, MODULE_ROWS, type ModuleKey } from '@/lib/plans'
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import {
+  ChatGptMark,
+  ClaudeCodeMark,
+  ClaudeMark,
+  GeminiMark,
+  LovableMark,
+  N8nMark,
+} from '@/components/tools/marks'
 import { useModal } from './modals/ModalProvider'
 
 const MARKS = {
   claude: ClaudeMark,
+  claudeCode: ClaudeCodeMark,
   chatgpt: ChatGptMark,
   gemini: GeminiMark,
   n8n: N8nMark,

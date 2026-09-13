@@ -79,7 +79,7 @@ export type ModuleRow = {
   subtitle: string
   /** Rupees — see lib/currency for how this reaches a reader. */
   amount: number
-  marks: readonly ('claude' | 'chatgpt' | 'gemini' | 'n8n' | 'lovable')[]
+  marks: readonly ('claude' | 'claudeCode' | 'chatgpt' | 'gemini' | 'n8n' | 'lovable')[]
 }
 
 export const MODULE_ROWS: ModuleRow[] = [
@@ -96,14 +96,14 @@ export const MODULE_ROWS: ModuleRow[] = [
     title: 'Claude Playbooks',
     subtitle: 'From everyday work to coding, research, design, and workflows',
     amount: 99,
-    marks: ['claude'],
+    marks: ['claude', 'claudeCode'],
   },
   {
     key: 'library',
     title: 'AI Library',
     subtitle: 'Ready-to-use resources, workflows, prompts and guides to help you get more from AI',
     amount: 99,
-    marks: [],
+    marks: ['claude', 'chatgpt', 'gemini', 'n8n'],
   },
 ]
 

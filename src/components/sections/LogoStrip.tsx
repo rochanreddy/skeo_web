@@ -5,7 +5,9 @@ import accenture from '@/assets/employers/accenture.webp'
 import cognizant from '@/assets/employers/cognizant.webp'
 import flipkart from '@/assets/employers/flipkart.webp'
 import mckinsey from '@/assets/employers/mckinsey.webp'
+import menler from '@/assets/employers/menler-cut.png'
 import microsoft from '@/assets/employers/microsoft.webp'
+import mycaptain from '@/assets/employers/mycaptain-cut.png'
 import nutanix from '@/assets/employers/nutanix-cut.png'
 import adobe from '@/assets/employers/adobe.webp'
 import pwc from '@/assets/employers/pwc-cut.png'
@@ -18,9 +20,9 @@ import zendesk from '@/assets/employers/Zendesk-cut.png'
  * whitespace so the per-logo `height` here is the mark itself — they are drawn
  * at very different scales otherwise.
  *
- * Eleven rather than six: the rail scrolls, so a short list loops visibly and
- * reads as a short list. This is a claim about where people were hired, so it
- * is a list to keep true rather than to lengthen for the look of it.
+ * Thirteen rather than six: the rail scrolls, so a short list loops visibly
+ * and reads as a short list. This is a claim about where people were hired, so
+ * it is a list to keep true rather than to lengthen for the look of it.
  *
  * The three `-cut` files ship on an opaque white plate in their original form.
  * That plate is invisible on the light band and a white rectangle around the
@@ -49,6 +51,13 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number; ink?: bo
   { name: 'McKinsey & Company', logo: mckinsey, height: 34, ink: true },
   { name: 'Zendesk', logo: zendesk, height: 28, ink: true },
   { name: 'Nutanix', logo: nutanix, height: 28, ink: true },
+  // A stacked lockup — mark above wordmark — so like McKinsey it needs more
+  // height than a single-line wordmark to carry the same weight.
+  // Flagged ink despite the orange hand: the "BY IMARTICUS" line under it is
+  // dark green and vanishes on the night band, and half a logo reading is
+  // worse than all of it reading in one colour.
+  { name: 'MyCaptain', logo: mycaptain, height: 38, ink: true },
+  { name: 'menler', logo: menler, height: 26, ink: true },
 ]
 
 export function LogoStrip() {
