@@ -4918,6 +4918,15 @@ details p {
   background: #ffffff14;
 }
 
+/* The OTP provider appends its dialog to <body>, so it lands outside the
+   modal's stacking context and behind it — the modal shell is z-index 100.
+   Lifting the host above that is the whole fix; everything inside it is the
+   provider's own shadow DOM and is left alone. */
+#amplifeed-otp-host {
+  position: relative;
+  z-index: 200;
+}
+
 /* The menler wordmark keeps the row's height and its pill treatment, but takes
    the width its artwork needs — a 3.3:1 wordmark squeezed into a 36px circle
    would be unreadable, which is the whole point of putting it here. */
@@ -5625,65 +5634,9 @@ details p {
   margin-top: 12px;
 }
 
-/* ---- OTP boxes ---- */
-.otp-boxes {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-  margin: 4px 0 2px;
-}
-
-.otp-boxes input {
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-  padding: 12px 0;
-  text-align: center;
-  font: 700 19px var(--font);
-  color: var(--ink);
-  /* A digit box should never grow a number spinner. */
-  appearance: textfield;
-}
-
-.otp-boxes input:focus {
-  outline: 2px solid #c8b9ff;
-  outline-offset: 1px;
-  border-color: var(--purple);
-  background: var(--card-bg);
-}
-
-.otp-boxes.invalid input {
-  border-color: #e2a1a1;
-  background: #fffafa;
-}
-
 .otp-message {
   display: block;
   margin-top: 8px;
-}
-
-.otp-demo {
-  margin: 10px 0 0;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: var(--surface-2);
-  color: var(--ink-4);
-  font-size: 11.5px;
-  text-align: center;
-}
-
-.otp-demo b {
-  color: var(--ink);
-  font: 500 12.5px var(--mono);
-  letter-spacing: 0.08em;
-}
-
-.otp-resend {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 11.5px;
-  color: var(--ink-4);
 }
 
 /* ---- step 3: /checkout ---- */
@@ -6486,13 +6439,6 @@ details p {
 }
 
 @media (max-width: 400px) {
-  .otp-boxes {
-    gap: 5px;
-  }
-  .otp-boxes input {
-    padding: 10px 0;
-    font-size: 17px;
-  }
 }
 
 /* ============ RESPONSIVE ============ */
@@ -7519,11 +7465,6 @@ details p {
 }
 
 :root[data-palette='charcoal'] .field.invalid select,
-:root[data-palette='charcoal'] .otp-boxes.invalid input {
-  background: #2a191c;
-  border-color: #6b3a3a;
-}
-
 :root[data-palette='charcoal'] .arrows button:hover,
 :root[data-palette='charcoal'] .modal-close:hover {
   background: #24262d;
@@ -7977,10 +7918,6 @@ details p {
 /* Focus outlines. These are the one place a stray violet is genuinely
    disruptive, because they appear over the top of whatever is beneath. */
 :root[data-palette='claude'] .field select:focus,
-:root[data-palette='claude'] .otp-boxes input:focus {
-  outline-color: #e3b99e;
-}
-
 :root[data-palette='claude'] .syllabus-list article > ul li::before {
   background: #c98f6b;
 }
@@ -8046,10 +7983,6 @@ details p {
 }
 
 :root[data-palette='mono'] .field select:focus,
-:root[data-palette='mono'] .otp-boxes input:focus {
-  outline-color: #9a9a9a;
-}
-
 :root[data-palette='mono'] .syllabus-list article > ul li::before {
   background: #a8a8a8;
 }
