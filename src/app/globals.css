@@ -8435,6 +8435,21 @@ details p {
   filter: brightness(0) invert(1);
 }
 
+/* Where a brand ships artwork for dark grounds, both files are in the markup
+   and the palette chooses. Better than filtering the light one: a filter takes
+   the accents with it, and these marks are mostly accent. */
+.logo-night {
+  display: none;
+}
+
+:root[data-palette='charcoal'] .logo-day {
+  display: none;
+}
+
+:root[data-palette='charcoal'] .logo-night {
+  display: block;
+}
+
 /* ============ LEAVE-CHECKOUT DIALOG ============ */
 /* Staying is the default, so it takes the solid button and sits first. */
 .leave-actions {

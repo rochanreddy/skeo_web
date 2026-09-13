@@ -6,6 +6,7 @@ import cognizant from '@/assets/employers/cognizant.webp'
 import flipkart from '@/assets/employers/flipkart.webp'
 import mckinsey from '@/assets/employers/mckinsey.webp'
 import menler from '@/assets/employers/menler-cut.png'
+import menlerNight from '@/assets/employers/menler-night-cut.png'
 import microsoft from '@/assets/employers/microsoft.webp'
 import mycaptain from '@/assets/employers/mycaptain-cut.png'
 import nutanix from '@/assets/employers/nutanix-cut.png'
@@ -33,9 +34,20 @@ import zendesk from '@/assets/employers/Zendesk-cut.png'
  * are invisible on the night band, so there they are turned white — see
  * .logo-item--ink. A colour mark must NOT be flagged: the same treatment would
  * flatten it to a white silhouette and lose the brand.
+ *
+ * `night` is the better answer where a brand ships its own dark-ground
+ * artwork: the two are swapped by palette, so the mark keeps its real colours
+ * on both instead of being filtered into a silhouette on one. Prefer it to
+ * `ink` whenever the second file exists.
  */
 
-const EMPLOYERS: { name: string; logo: StaticImageData; height: number; ink?: boolean }[] = [
+const EMPLOYERS: {
+  name: string
+  logo: StaticImageData
+  height: number
+  ink?: boolean
+  night?: StaticImageData
+}[] = [
   { name: 'Microsoft', logo: microsoft, height: 30 },
   { name: 'Accenture', logo: accenture, height: 28 },
   { name: 'Razorpay', logo: razorpay, height: 32 },
@@ -53,11 +65,14 @@ const EMPLOYERS: { name: string; logo: StaticImageData; height: number; ink?: bo
   { name: 'Nutanix', logo: nutanix, height: 28, ink: true },
   // A stacked lockup — mark above wordmark — so like McKinsey it needs more
   // height than a single-line wordmark to carry the same weight.
-  // Flagged ink despite the orange hand: the "BY IMARTICUS" line under it is
-  // dark green and vanishes on the night band, and half a logo reading is
-  // worse than all of it reading in one colour.
-  { name: 'MyCaptain', logo: mycaptain, height: 38, ink: true },
-  { name: 'menler', logo: menler, height: 26, ink: true },
+  // Left in its own colours: the orange hand is 86% of the mark and reads at
+  // 7.2:1 on the night band. Only the "BY IMARTICUS" line beneath is dim, and
+  // that is 7% of it — not worth flattening the whole lockup to white for.
+  { name: 'MyCaptain', logo: mycaptain, height: 38 },
+  // The navy wordmark is 1.3:1 on the night band, which is no wordmark at all,
+  // so the brand's own white artwork stands in there. Both files are the same
+  // 996x300, so the swap does not move the row.
+  { name: 'menler', logo: menler, height: 26, night: menlerNight },
 ]
 
 export function LogoStrip() {
@@ -75,7 +90,23 @@ export function LogoStrip() {
                 className={item.ink ? 'logo-item logo-item--ink' : 'logo-item'}
                 title={item.name}
               >
-                <Image src={item.logo} alt="" style={{ height: item.height, width: 'auto' }} />
+                <Image
+                  src={item.logo}
+                  alt=""
+                  className={item.night ? 'logo-day' : undefined}
+                  style={{ height: item.height, width: 'auto' }}
+                />
+                {/* Both ship; CSS picks. Rendering one or the other from the
+                    palette would need the palette during render, and it is not
+                    known until after hydration. */}
+                {item.night && (
+                  <Image
+                    src={item.night}
+                    alt=""
+                    className="logo-night"
+                    style={{ height: item.height, width: 'auto' }}
+                  />
+                )}
               </span>
             ))}
           </LogoRail>
