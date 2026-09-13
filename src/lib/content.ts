@@ -86,7 +86,7 @@ export const claudeSyllabus = {
   title: 'What you learn in Claude',
   intro:
     'Eight modules, from how the model actually works to a capstone you ship. Every lesson ends in an assignment on your own work.',
-  stats: ['12 lessons', '15 hours', '4 projects', 'Self-paced'],
+  stats: ['8 modules', '41 lessons', '40 assignments', 'Self-paced'],
   modules: [
     {
       title: 'Foundations: how AI and Claude actually work',
