@@ -75,7 +75,21 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-palette="claude" className={cn(manrope.variable, dmMono.variable)}>
+    <html
+      lang="en"
+      data-palette="claude"
+      className={cn(manrope.variable, dmMono.variable)}
+      /* The script below rewrites data-palette before React hydrates, so for a
+         night reader the DOM says "charcoal" where the server said "claude" and
+         React reports a hydration mismatch. The mutation is the point, not a
+         bug: the alternatives are shipping no attribute (the patch blocks then
+         miss, see below) or writing it after hydration (a white flash first).
+
+         This suppresses ONE level — attributes and text on <html> itself. It
+         does not reach the tree inside, so a real mismatch anywhere in the page
+         is still reported. */
+      suppressHydrationWarning
+    >
       {/* data-palette is served on <html> rather than written by the script, so
           the patch blocks in globals.css match from the very first byte — with
           no attribute a palette gets its tokens but not its patches.
