@@ -7,6 +7,13 @@
    Skeo — global stylesheet
    Design tokens, base layer, then one block per page section.
    Fonts arrive as CSS variables from next/font (see app/layout.tsx).
+
+   THIS FILE IS THE SOURCE OF TRUTH FOR THE BRAND, and docs/brand-book.html is
+   the written-down version of it — the palettes, the ink ramp with its
+   contrast figures, the type scale, the band rhythm, and what has to change
+   when any of it goes into print. It is a transcription, not a build output,
+   so a token changed here without the book changing too leaves the book
+   quietly wrong. Change both in the same commit.
    ========================================================================== */
 
 /* The layout ships data-palette="claude" on <html>, so an alternate block
