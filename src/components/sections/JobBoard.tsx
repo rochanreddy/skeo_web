@@ -1,25 +1,19 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { GhostCursor } from '@/components/sections/GhostCursor'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 /**
  * The Job & Freelancing Board, shown rather than described.
  *
  * Built to behave like the hero's tool stage: it plays on its own, stepping
- * through the tracks on a six-second timer with the bars re-growing each time,
- * and holds still the moment a pointer or keyboard lands on it. Everything also
- * answers directly — the rail re-cuts every figure, the ring selects a track
- * when a segment is clicked, and hovering a role hands the match card over to
- * it.
- *
- * The trend chart sits in the side column above the mix ring and carries the
- * money with it, because the pay is the reason anyone reads the panel.
- *
- * The roles list still gets its room rather than flexing to level the columns:
- * enough height that six openings read at once with the seventh cut mid-row,
- * to say there is more under it. The left column ends a little short of the
- * right as a result, which is the trade this branch takes.
+ * through the tracks on a six-second timer with the line redrawing and the bars
+ * re-growing each time, and holds still the moment a pointer or keyboard lands
+ * on it. Everything also answers directly — the rail re-cuts every figure, the
+ * stat tiles pick which series the chart draws, the chart follows the pointer
+ * with a crosshair and readout, the ring selects a track when a segment is
+ * clicked, and hovering a role hands the match card over to it.
  *
  * All local state over static data: a product shot you can poke at.
  */
@@ -34,7 +28,7 @@ type Track = {
   count: string
   /** Twelve months, so the 6M / 12M range toggle has something to reveal. */
   series: Record<MetricKey, number[]>
-  /* What the track actually pays, in thousands per month. The series above is
+  /* What the track actually pays, in dollars per month. The series above is
      the average; these two are the shape of the distribution around it. */
   earnings: { median: number; top10: number }
   skills: { label: string; value: number; mark: keyof typeof MARKS }[]
@@ -52,8 +46,10 @@ const MARKS = {
 const MONTHS = ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
 
 /* The board itself. Each track carries its whole list rather than three
-   samples — the roles column scrolls — and "All" is genuinely every opening,
-   ordered by how well it matches. */
+   samples, and "All" is genuinely every opening, ordered by how well it
+   matches. The column shows the first VISIBLE_ROLES of that list; the count
+   beside the label is the real total, so a longer track reads as a bigger
+   board rather than a taller panel. */
 const FREELANCE_ROLES: Role[] = [
   { title: 'AI Automation Architect', meta: 'Remote · Contract', match: 99 },
   { title: 'Claude Prompt Specialist', meta: 'Remote · Freelance', match: 98 },
@@ -150,9 +146,9 @@ const TRACKS: Track[] = [
     series: {
       open: [612, 640, 668, 705, 726, 774, 802, 838, 866, 905, 964, 1024],
       match: [71, 72, 74, 75, 77, 78, 80, 81, 82, 84, 85, 86],
-      pay: [31, 33, 34, 36, 37, 39, 41, 42, 44, 45, 47, 48],
+      pay: [375, 400, 410, 435, 445, 470, 495, 505, 530, 545, 565, 580],
     },
-    earnings: { median: 42, top10: 120 },
+    earnings: { median: 505, top10: 1450 },
     skills: [
       { label: 'Claude', value: 92, mark: 'claude' },
       { label: 'n8n', value: 84, mark: 'n8n' },
@@ -168,9 +164,9 @@ const TRACKS: Track[] = [
     series: {
       open: [188, 204, 219, 236, 248, 267, 284, 301, 322, 348, 379, 412],
       match: [74, 76, 78, 80, 82, 83, 85, 86, 88, 89, 90, 91],
-      pay: [18, 19, 21, 22, 24, 25, 26, 28, 29, 30, 31, 32],
+      pay: [215, 230, 255, 265, 290, 300, 315, 340, 350, 360, 375, 385],
     },
-    earnings: { median: 28, top10: 85 },
+    earnings: { median: 340, top10: 1030 },
     skills: [
       { label: 'Claude', value: 95, mark: 'claude' },
       { label: 'ChatGPT', value: 88, mark: 'chatgpt' },
@@ -186,9 +182,9 @@ const TRACKS: Track[] = [
     series: {
       open: [74, 79, 86, 92, 101, 112, 124, 133, 145, 158, 172, 188],
       match: [62, 63, 65, 66, 68, 69, 71, 72, 74, 75, 77, 78],
-      pay: [8, 9, 10, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+      pay: [95, 110, 120, 120, 135, 145, 155, 170, 180, 195, 205, 215],
     },
-    earnings: { median: 16, top10: 38 },
+    earnings: { median: 195, top10: 460 },
     skills: [
       { label: 'ChatGPT', value: 81, mark: 'chatgpt' },
       { label: 'Claude', value: 74, mark: 'claude' },
@@ -204,9 +200,9 @@ const TRACKS: Track[] = [
     series: {
       open: [204, 216, 231, 248, 262, 279, 296, 312, 334, 361, 392, 424],
       match: [66, 68, 69, 71, 72, 74, 75, 77, 78, 80, 81, 83],
-      pay: [44, 46, 49, 52, 54, 57, 60, 62, 65, 67, 69, 72],
+      pay: [530, 555, 590, 625, 650, 685, 725, 745, 785, 805, 830, 870],
     },
-    earnings: { median: 64, top10: 175 },
+    earnings: { median: 770, top10: 2100 },
     skills: [
       { label: 'n8n', value: 90, mark: 'n8n' },
       { label: 'Claude', value: 85, mark: 'claude' },
@@ -220,7 +216,7 @@ const TRACKS: Track[] = [
 const METRICS: { key: MetricKey; label: string; format: (v: number) => string }[] = [
   { key: 'open', label: 'Open roles', format: (v) => v.toLocaleString('en-IN') },
   { key: 'match', label: 'Match rate', format: (v) => `${v}%` },
-  { key: 'pay', label: 'Avg / mo', format: (v) => `₹${v}k` },
+  { key: 'pay', label: 'Avg / mo', format: (v) => usd(v) },
 ]
 
 /* The mix ring: share of the board by track, in the rail's own order. */
@@ -230,32 +226,57 @@ const MIX = [
   { key: 'internships', label: 'Internships', value: 18, color: '#d9cffa' },
 ]
 
+/* How many roles the column shows. Six is what fits beside the side column at
+   its current height — the two are meant to end level, so if either changes,
+   this is the other half of that sum. */
+const VISIBLE_ROLES = 6
+
 const CHART = { w: 320, h: 78, pad: 8 }
 
-// Money in the units the reader thinks in: thousands up to a lakh, then lakhs.
-// Takes thousands, so 48 -> ₹48k and 576 -> ₹5.8L.
-const inr = (k: number) => (k >= 100 ? `₹${(k / 100).toFixed(k % 100 ? 1 : 0)}L` : `₹${Math.round(k)}k`)
+// Dollars per month, written the way a reader scans them: in full up to a
+// thousand, in thousands above it. Takes whole dollars, so 505 -> $505 and
+// 6960 -> $7k.
+const usd = (n: number) => {
+  const v = Math.round(n)
+  if (v < 1000) return `$${v}`
+  const k = v / 1000
+  return `$${k >= 10 ? Math.round(k) : Number(k.toFixed(1))}k`
+}
+
 const RING = { size: 92, stroke: 13 }
 const CYCLE = 6000
 
-/* The self-demo, as a script rather than a nest of setTimeouts. Each cue is
-   "at this many ms, do this" — reading the timeline top to bottom is how you
-   check the pacing. Positions are measured from the real controls at run time,
-   so the pointer lands on them at any panel size. */
-type Ghost = { x: number; y: number; shown: boolean; tap: boolean }
-
-const DEMO = {
-  /* One beat after the panel settles into view, so it is not competing with
-     the reveal animation. */
-  enter: 420,
-  toTab: 700,
-  tapAt: 1560,
-  tapFor: 340,
-  toRole: 2050,
-  hoverAt: 2760,
-  leave: 3700,
-  clear: 4200,
+/* One lap of the demonstration pointer, laid over one turn of CYCLE.
+ *
+ * `at` is milliseconds into the lap, `find` picks the control to sit on, and
+ * `press` draws the tap. The lap opens on the track the panel has just switched
+ * to, so the pointer is seen clicking the thing that visibly changed, then
+ * works across to the chart and the ring. Every stop is a control that already
+ * exists and already responds — the pointer is not miming over a static image.
+ *
+ * `act` is what the panel does when the pointer arrives. The hover stops set
+ * the chart's read-out themselves rather than dispatching synthetic pointer
+ * events, which would fight the real ones and would not work on touch at all. */
+type GhostStop = {
+  at: number
+  find: (root: HTMLElement, track: number) => Element | null | undefined
+  press?: boolean
+  act?: (api: { setPoint: (i: number | null) => void; setMetric: (i: number) => void }) => void
 }
+
+const pick = (root: HTMLElement, selector: string, nth: number) => root.querySelectorAll(selector)[nth]
+
+const GHOST_LAP: GhostStop[] = [
+  // On the track the panel has just stepped to.
+  { at: 0, find: (r, track) => pick(r, '.jobboard-rail button', track), press: true },
+  // Across to the chart, reading a month off the line.
+  { at: 1300, find: (r) => pick(r, '.chart-hits button', 2), act: (a) => a.setPoint(2) },
+  // A tile, which re-draws the line as a different series.
+  { at: 2600, find: (r) => pick(r, '.jobboard-stats button', 1), press: true, act: (a) => { a.setMetric(1); a.setPoint(null) } },
+  { at: 3900, find: (r) => pick(r, '.chart-hits button', 5), act: (a) => a.setPoint(5) },
+  // Resting on the mix ring as the lap runs out.
+  { at: 5200, find: (r) => r.querySelector('.mix-ring'), act: (a) => a.setPoint(null) },
+]
 
 export function JobBoard() {
   const [track, setTrack] = useState(0)
@@ -266,132 +287,63 @@ export function JobBoard() {
   const [segment, setSegment] = useState<number | null>(null)
   // Set while a pointer or the keyboard is on the panel: the cycle waits.
   const [held, setHeld] = useState(false)
-  const listRef = useRef<HTMLUListElement>(null)
-  const panelRef = useRef<HTMLDivElement>(null)
-
-  /* The panel shows what it can do rather than captioning it: a pointer glides
-     in, clicks a track, then picks out a role while the match card answers —
-     then gets out of the way. Seeing the panel respond to a click is the only
-     thing that reliably reads as "this responds to yours". */
-  const [ghost, setGhost] = useState<Ghost | null>(null)
-  const [demo, setDemo] = useState(false)
-  const timers = useRef<number[]>([])
-
-  const stopDemo = useCallback(() => {
-    timers.current.forEach((id) => window.clearTimeout(id))
-    timers.current = []
-    setDemo(false)
-    setGhost(null)
-  }, [])
-
-  useEffect(() => {
-    const panel = panelRef.current
-    if (!panel) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    let played = false
-    const at = (el: Element, box: DOMRect) => {
-      const r = el.getBoundingClientRect()
-      return { x: r.left - box.left + r.width * 0.5, y: r.top - box.top + r.height * 0.5 }
-    }
-
-    const play = () => {
-      const box = panel.getBoundingClientRect()
-      const tab = panel.querySelectorAll('.jobboard-rail button')[1]
-      const row = panel.querySelectorAll('.jobboard-roles button')[2]
-      if (!tab || !row) return
-      const tabAt = at(tab, box)
-      const rowAt = at(row, box)
-
-      setDemo(true)
-      // Starts low and to the right of the rail, so the first move reads as
-      // travel rather than a jump-cut.
-      setGhost({ x: tabAt.x + 96, y: tabAt.y + 132, shown: false, tap: false })
-
-      const cue = (ms: number, run: () => void) => {
-        timers.current.push(window.setTimeout(run, ms))
-      }
-      cue(DEMO.enter, () => setGhost((g) => g && { ...g, shown: true }))
-      cue(DEMO.toTab, () => setGhost((g) => g && { ...g, ...tabAt }))
-      cue(DEMO.tapAt, () => {
-        setGhost((g) => g && { ...g, tap: true })
-        setTrack(1)
-        setRole(0)
-      })
-      cue(DEMO.tapAt + DEMO.tapFor, () => setGhost((g) => g && { ...g, tap: false }))
-      cue(DEMO.toRole, () => setGhost((g) => g && { ...g, ...rowAt }))
-      cue(DEMO.hoverAt, () => setRole(2))
-      cue(DEMO.leave, () => setGhost((g) => g && { ...g, shown: false }))
-      cue(DEMO.clear, () => {
-        setGhost(null)
-        setDemo(false)
-      })
-    }
-
-    /* Waits for the whole panel to be on screen, not just most of it: someone
-       still scrolling past a half-visible board is not watching it, and the
-       demo only plays once.
-
-       Two traps here, both of which silently mean "never plays":
-
-       A threshold of exactly 1 is not reachable. The panel runs jb-float, so
-       its box is drifting a few px the whole time, and sub-pixel layout does
-       the rest — the ratio tops out a hair under 1 and a [1] threshold fires
-       no callback at all. Hence 0.98 as "fully visible", with a spread of
-       thresholds below it so the callback actually runs and can decide.
-
-       And an element taller than the window can never exceed viewport/element,
-       so on a short viewport a fixed bar would strand it. The requirement is
-       recomputed per callback — which also means a resize mid-scroll can no
-       longer leave it waiting on a number that stopped being achievable. */
-    const need = () => {
-      const fit = panel.getBoundingClientRect().height
-      return Math.min(0.98, (window.innerHeight * 0.94) / Math.max(fit, 1))
-    }
-
-    const watch = new IntersectionObserver(
-      ([entry]) => {
-        if (played || !entry.isIntersecting) return
-        if (entry.intersectionRatio < need()) return
-        played = true
-        watch.disconnect()
-        play()
-      },
-      /* Every 5%. A sparse set stalls whenever the requirement falls between
-         two of its steps: the callback fires below the bar, is rejected, and
-         nothing fires again. */
-      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) },
-    )
-    watch.observe(panel)
-
-    return () => {
-      watch.disconnect()
-      timers.current.forEach((id) => window.clearTimeout(id))
-      timers.current = []
-    }
-  }, [])
-
-  // The moment a real pointer or key arrives the demo is redundant: it hands
-  // over mid-step rather than talking over the person now driving.
-  useEffect(() => {
-    if (held && demo) stopDemo()
-  }, [held, demo, stopDemo])
-
-  // A new track is a new list: start it at the top rather than wherever the
-  // last one was left scrolled to.
-  useEffect(() => {
-    listRef.current?.scrollTo({ top: 0 })
-  }, [track])
-
+  const boardRef = useRef<HTMLDivElement>(null)
+  const [ghost, setGhost] = useState<{ x: number; y: number; press: boolean } | null>(null)
   // Steps the track the way the hero stage steps its tools.
   useEffect(() => {
-    if (held || demo) return
+    if (held) return
     const timer = window.setTimeout(() => {
       setTrack((current) => (current + 1) % TRACKS.length)
       setRole(0)
     }, CYCLE)
     return () => window.clearTimeout(timer)
-  }, [track, held, demo])
+  }, [track, held])
+
+  /* The demonstration pointer. Keyed on `track` so a lap starts every time the
+     panel steps, which is what keeps the two in step without a second clock.
+
+     It stands down the moment a real pointer or the keyboard arrives — two
+     cursors on one panel is worse than none — and never runs for a reader who
+     has asked for reduced motion. */
+  useEffect(() => {
+    const board = boardRef.current
+    if (!board) return
+    if (held) {
+      setGhost(null)
+      return
+    }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const api = { setPoint, setMetric }
+    const timers = GHOST_LAP.map((stop) =>
+      window.setTimeout(() => {
+        const target = stop.find(board, track)
+        if (!target) return
+        const b = board.getBoundingClientRect()
+        const r = target.getBoundingClientRect()
+        /* The panel is scaled with `zoom` on narrow screens. Both rects come
+           back already scaled, but this overlay's transform is applied inside
+           that scale, so the difference has to be divided back out or the
+           pointer lands progressively further off the smaller the screen. */
+        const scale = parseFloat(getComputedStyle(board).zoom) || 1
+        setGhost({
+          x: (r.left - b.left + r.width / 2) / scale,
+          y: (r.top - b.top + r.height / 2) / scale,
+          press: Boolean(stop.press),
+        })
+        stop.act?.(api)
+      }, stop.at),
+    )
+    // The tap is a flash, not a state: released shortly after each press.
+    const releases = GHOST_LAP.filter((s) => s.press).map((s) =>
+      window.setTimeout(() => setGhost((g) => (g ? { ...g, press: false } : g)), s.at + 420),
+    )
+
+    return () => {
+      timers.forEach(window.clearTimeout)
+      releases.forEach(window.clearTimeout)
+    }
+  }, [track, held])
 
   const data = TRACKS[track]
   const active = METRICS[metric]
@@ -433,46 +385,25 @@ export function JobBoard() {
   const rider = dots[dots.length - 1]
 
   return (
-    <>
     <div
-      ref={panelRef}
+      ref={boardRef}
       className={`jobboard${held ? ' is-held' : ''}`}
       onMouseEnter={() => setHeld(true)}
       onMouseLeave={() => {
         setHeld(false)
+        setPoint(null)
         setRole(0)
       }}
       onFocusCapture={() => setHeld(true)}
       onBlurCapture={() => setHeld(false)}
     >
-      {/* The demo pointer. Decorative and inert — it never intercepts a real
-          one, and the panel is fully usable whether or not it ever plays. The
-          arrow is drawn with its tip at the origin, so the transform is the
-          point it is aiming at. */}
-      {ghost && (
-        <span
-          className={`jb-ghost${ghost.shown ? ' is-shown' : ''}${ghost.tap ? ' is-tap' : ''}`}
-          style={{ transform: `translate3d(${ghost.x}px, ${ghost.y}px, 0)` }}
-          aria-hidden="true"
-        >
-          <i />
-          <svg viewBox="0 0 20 22" width="20" height="22" focusable="false">
-            <path
-              d="M0.9 0.8 L0.9 16.6 L5.3 12.6 L8.1 19.1 L11.2 17.7 L8.4 11.4 L14.2 10.8 Z"
-              fill="#fff"
-              stroke="#2a2140"
-              strokeWidth="1.3"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </span>
-      )}
+      {ghost && <GhostCursor x={ghost.x} y={ghost.y} press={ghost.press} hidden={held} />}
 
       <div className="jobboard-bar" aria-hidden="true">
         <i />
         <i />
         <i />
-        <span>skeoai.io/jobs</span>
+        <span>skeoai.com/jobs</span>
         <em>Live</em>
       </div>
 
@@ -487,6 +418,7 @@ export function JobBoard() {
               className={i === track ? 'is-active' : undefined}
               onClick={() => {
                 setTrack(i)
+                setPoint(null)
                 setRole(0)
               }}
             >
@@ -500,36 +432,38 @@ export function JobBoard() {
           <div className="jobboard-trend">
             {/* Tiles are the chart's legend as well as its control. */}
             <div className="jobboard-stats" role="tablist" aria-label="Metric">
-              {METRICS.map((item, i) => {
-                const series = data.series[item.key]
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    role="tab"
-                    aria-selected={i === metric}
-                    className={i === metric ? 'is-active' : undefined}
-                    onClick={() => {
-                      setMetric(i)
-                      setPoint(null)
-                    }}
-                  >
-                    <b>{item.format(series[series.length - 1])}</b>
-                    <small>{item.label}</small>
-                  </button>
-                )
-              })}
-            </div>
+            {METRICS.map((item, i) => {
+              const series = data.series[item.key]
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === metric}
+                  className={i === metric ? 'is-active' : undefined}
+                  onClick={() => {
+                    setMetric(i)
+                    setPoint(null)
+                  }}
+                >
+                  <b>{item.format(series[series.length - 1])}</b>
+                  <small>{item.label}</small>
+                </button>
+              )
+            })}
+          </div>
 
-            {/* The whole list, not a top three — six openings read at once and
-                the column scrolls, so the panel reads like a board you could
-                actually work through. */}
+            {/* As many roles as the column holds, and no scrollbar. The count
+              beside the label is still the real total for the track, so the
+              panel shows a sample of the board without misstating its size —
+              the list used to scroll through all of them, which set the panel's
+              height by how long a track happened to be. */}
             <div className="jobboard-list">
               <span className="chart-label">
                 Open roles <em>{data.roles.length}</em>
               </span>
-              <ul className="jobboard-roles" ref={listRef}>
-                {data.roles.map((item, i) => (
+              <ul className="jobboard-roles">
+                {data.roles.slice(0, VISIBLE_ROLES).map((item, i) => (
                   <li key={`${item.title}-${i}`} className={i === role ? 'is-lit' : undefined}>
                     <button type="button" onMouseEnter={() => setRole(i)} onFocus={() => setRole(i)}>
                       <span>
@@ -635,15 +569,15 @@ export function JobBoard() {
               <div className="chart-pay">
                 <span>
                   <small>Median</small>
-                  <b>{inr(data.earnings.median)}</b>
+                  <b>{usd(data.earnings.median)}</b>
                 </span>
                 <span>
                   <small>Top 10%</small>
-                  <b>{inr(data.earnings.top10)}</b>
+                  <b>{usd(data.earnings.top10)}</b>
                 </span>
                 <span>
                   <small>Per year</small>
-                  <b>{inr(payNow * 12)}</b>
+                  <b>{usd(payNow * 12)}</b>
                 </span>
               </div>
             </div>
@@ -736,7 +670,5 @@ export function JobBoard() {
         </div>
       </div>
     </div>
-
-    </>
   )
 }

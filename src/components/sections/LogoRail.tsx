@@ -11,8 +11,9 @@ import { useEffect, useRef, type ReactNode } from 'react'
  * pointer and auto-advance resumes on release — a resting finger doesn't stop
  * it either.
  *
- * `direction` is which way the marks travel. Both directions share one wrap
- * range, so the rail loops the same either way.
+ * `direction` is which way the CONTENT travels, not which way the track is
+ * pushed — the two are opposite, and naming the visible one keeps the call
+ * sites readable.
  */
 export function LogoRail({
   children,
@@ -66,9 +67,13 @@ export function LogoRail({
     })
     visibility.observe(track)
 
+    // Content travelling right means the track's offset climbing. wrap()
+    // already folds the offset back either way, so the sign is the whole of it.
+    const step = direction === 'right' ? speed : -speed
+
     const tick = () => {
       if (onScreen && copy > 0 && !dragging && !document.hidden) {
-        offset += direction === 'right' ? speed : -speed
+        offset += step
         wrap()
         apply()
       }

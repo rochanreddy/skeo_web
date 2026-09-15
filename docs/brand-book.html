@@ -1,0 +1,876 @@
+<!doctype html>
+<!--
+  skeo brand book
+  ===============
+  The design system as one page, for anyone making something for skeo —
+  decks, playbooks, PDFs, a new surface.
+
+  THIS FILE IS A COPY, NOT THE SOURCE. Every value in it is transcribed from
+  src/app/globals.css. If the two ever disagree, the stylesheet is right and
+  this is stale — change both in the same commit, which is the reason it lives
+  in the repo rather than in a shared drive.
+
+  It sits in docs/ rather than public/ on purpose: Next does not serve this
+  directory, so the book is not published at a URL alongside the site. Open it
+  straight from disk, or print it to PDF from the browser — the print styles at
+  the foot of the stylesheet below are written for that and pin the Day palette
+  whatever theme the browser is in.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>skeo Brand Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* ==========================================================================
+   skeo brand book
+   The page is built out of skeo's own tokens, so it demonstrates the system
+   it documents. Values here are lifted from src/app/globals.css — if the two
+   ever disagree, globals.css is the source of truth.
+   ========================================================================== */
+
+:root {
+  /* ---- Day (Claude) — the default palette ---- */
+  --paper: #fafaf7;
+  --ink: #191817;
+  --ink-2: #4a4741;
+  --ink-3: #625c53;
+  --ink-4: #837d73;
+  --ink-5: #a9a297;
+  --accent: #bd5a38;
+  --accent-ink: #96421f;
+  --accent-soft: #f7eae3;
+  --accent-line: #ebcfc1;
+  --card: #ffffff;
+  --surface: #f2f0e9;
+  --surface-2: #eae7de;
+  --line: #e3e0d6;
+  --line-soft: #eeebe3;
+  --manilla: #ebdbbc;
+  --kraft: #d4a27f;
+  --cloth: #4e2a1e;
+
+  --font: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --shadow-sm: 0 1px 2px #1a123a0f, 0 2px 6px #1a123a0a;
+  --shadow-md: 0 2px 4px #1a123a0d, 0 8px 20px #1a123a12;
+
+  --gutter: clamp(20px, 5vw, 64px);
+  --measure: 66ch;
+}
+
+/* Night. Redefines tokens only — every component below reads them. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #131417;
+    --ink: #f2f3f5;
+    --ink-2: #c3c6cd;
+    --ink-3: #999da6;
+    --ink-4: #7c8089;
+    --ink-5: #5f636c;
+    --accent: #d98a66;
+    --accent-ink: #e8a888;
+    --accent-soft: #241c18;
+    --accent-line: #3a2c24;
+    --card: #1b1d22;
+    --surface: #1e2026;
+    --surface-2: #24262d;
+    --line: #2e3138;
+    --line-soft: #26282e;
+    --shadow-sm: 0 1px 2px #00000059, 0 2px 6px #0000003d;
+    --shadow-md: 0 2px 4px #00000052, 0 8px 20px #00000047;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #131417;
+  --ink: #f2f3f5;
+  --ink-2: #c3c6cd;
+  --ink-3: #999da6;
+  --ink-4: #7c8089;
+  --ink-5: #5f636c;
+  --accent: #d98a66;
+  --accent-ink: #e8a888;
+  --accent-soft: #241c18;
+  --accent-line: #3a2c24;
+  --card: #1b1d22;
+  --surface: #1e2026;
+  --surface-2: #24262d;
+  --line: #2e3138;
+  --line-soft: #26282e;
+  --shadow-sm: 0 1px 2px #00000059, 0 2px 6px #0000003d;
+  --shadow-md: 0 2px 4px #00000052, 0 8px 20px #00000047;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding-inline: var(--gutter);
+  padding-block: 0 96px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet { max-width: 1080px; margin-inline: auto; }
+
+h1, h2, h3, h4 { font-weight: 800; text-wrap: balance; margin: 0; }
+
+/* One label style, used for every eyebrow on the page — it is skeo's own. */
+.eyebrow {
+  font: 500 11px var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+/* ---- masthead ---- */
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: clamp(56px, 9vw, 104px) clamp(36px, 5vw, 56px);
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-size: clamp(52px, 10vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+}
+
+.masthead p {
+  margin: 14px 0 0;
+  color: var(--ink-3);
+  font-size: 17px;
+  max-width: 46ch;
+}
+
+.stamp {
+  font: 500 11px var(--mono);
+  letter-spacing: 0.08em;
+  color: var(--ink-4);
+  text-align: right;
+  line-height: 1.9;
+}
+
+.stamp b { color: var(--ink-2); font-weight: 500; }
+
+/* ---- sections ---- */
+section { padding-block: clamp(44px, 6vw, 72px); border-bottom: 1px solid var(--line-soft); }
+section:last-of-type { border-bottom: 0; }
+
+.sec-head { margin-bottom: 30px; }
+.sec-head h2 {
+  font-size: clamp(26px, 3.4vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 12px 0 0;
+}
+.sec-head p {
+  margin: 12px 0 0;
+  color: var(--ink-3);
+  max-width: var(--measure);
+}
+
+/* ---- palette ---- */
+.pal-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 30px 0 14px;
+  flex-wrap: wrap;
+}
+.pal-head h3 { font-size: 18px; letter-spacing: -0.02em; }
+.pal-head span { font: 500 11px var(--mono); color: var(--ink-4); letter-spacing: 0.06em; }
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(178px, 1fr));
+  gap: 14px;
+}
+
+.sw {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--card);
+}
+
+.sw-chip { height: 76px; border-bottom: 1px solid var(--line); }
+
+.sw-body { padding: 11px 13px 13px; }
+
+.sw-name { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+
+.sw-hex {
+  font: 500 12px var(--mono);
+  color: var(--ink-3);
+  margin-top: 3px;
+  text-transform: uppercase;
+}
+
+.sw-role { font-size: 12.5px; color: var(--ink-4); margin-top: 7px; line-height: 1.45; }
+
+.sw-ratio {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 7px;
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  font: 500 10.5px var(--mono);
+  color: var(--ink-3);
+}
+
+/* ---- type ---- */
+.specimen {
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card);
+  padding: clamp(20px, 3vw, 32px);
+  display: grid;
+  gap: 26px;
+}
+
+.spec-row { display: grid; gap: 8px; }
+
+.spec-meta {
+  font: 500 11px var(--mono);
+  color: var(--ink-4);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.spec-display { font-size: clamp(36px, 5.4vw, 62px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 800; }
+.spec-h2 { font-size: clamp(28px, 3.9vw, 46px); line-height: 1.06; letter-spacing: -0.03em; font-weight: 800; }
+.spec-h3 { font-size: clamp(24px, 3.2vw, 36px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 800; }
+.spec-body { font-size: 17px; line-height: 1.6; color: var(--ink-2); max-width: var(--measure); }
+.spec-small { font-size: 14.5px; line-height: 1.55; color: var(--ink-3); }
+
+/* ---- generic data table ---- */
+.tablewrap { overflow-x: auto; }
+
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 460px; }
+
+th, td {
+  text-align: left;
+  padding: 11px 14px 11px 0;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+
+th {
+  font: 500 11px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+
+td code, .mono { font: 500 12.5px var(--mono); color: var(--accent-ink); }
+
+td:last-child { color: var(--ink-3); padding-right: 0; }
+
+/* ---- component demos ---- */
+.demos { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 18px; }
+
+.demo {
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card);
+  padding: 22px;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.demo h4 { font-size: 15px; letter-spacing: -0.01em; }
+.demo p { margin: 0; font-size: 13.5px; color: var(--ink-4); line-height: 1.5; }
+
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  width: max-content;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  width: max-content;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font-size: 13px;
+  font-weight: 600;
+  width: max-content;
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+
+/* ---- bands ---- */
+.bands { display: grid; gap: 0; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+
+.band {
+  padding: 20px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.band b { font-size: 14.5px; font-weight: 700; }
+.band span { font: 500 12px var(--mono); opacity: 0.75; }
+
+/* ---- print block ---- */
+.print-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+
+.rule-card {
+  border-left: 3px solid var(--accent);
+  padding: 4px 0 4px 18px;
+}
+
+.rule-card h4 { font-size: 15px; margin-bottom: 7px; letter-spacing: -0.01em; }
+.rule-card p { margin: 0; font-size: 14px; color: var(--ink-3); line-height: 1.55; }
+
+/* ---- do / don't ---- */
+.dd { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+
+.dd-col { display: grid; gap: 11px; align-content: start; }
+
+.dd-col > .eyebrow { margin-bottom: 3px; }
+
+.dd-item {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 11px;
+  align-items: start;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.dd-mark { font: 700 14px var(--mono); line-height: 1.5; }
+.do .dd-mark { color: #3f7d54; }
+.dont .dd-mark { color: #b0402f; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .do .dd-mark { color: #6fbf8b; }
+  :root:not([data-theme="light"]) .dont .dd-mark { color: #e58a76; }
+}
+:root[data-theme="dark"] .do .dd-mark { color: #6fbf8b; }
+:root[data-theme="dark"] .dont .dd-mark { color: #e58a76; }
+
+footer {
+  padding-top: 40px;
+  color: var(--ink-4);
+  font-size: 13.5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  justify-content: space-between;
+}
+
+footer code { font: 500 12.5px var(--mono); color: var(--ink-3); }
+
+/* ==========================================================================
+   Print / PDF
+   The book's own rule is that anything printed is set in Day, so print pins
+   the light tokens outright rather than inheriting whatever theme the browser
+   happened to be in — a PDF exported from a dark window would otherwise come
+   out charcoal, which is the one thing this section tells you not to do.
+   ========================================================================== */
+@media print {
+  /* All three selectors, and :root:not(...) in particular: the night tokens are
+     set on `:root:not([data-theme="light"])`, which outranks a bare `:root` no
+     matter how late it appears. Matching that specificity is what actually
+     wins — without it the ground goes ivory while the text stays near-white,
+     and the whole book prints blank. */
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"] {
+    --paper: #fafaf7;
+    --ink: #191817;
+    --ink-2: #4a4741;
+    --ink-3: #625c53;
+    --ink-4: #837d73;
+    --ink-5: #a9a297;
+    --accent: #bd5a38;
+    --accent-ink: #96421f;
+    --accent-soft: #f7eae3;
+    --accent-line: #ebcfc1;
+    --card: #ffffff;
+    --surface: #f2f0e9;
+    --surface-2: #eae7de;
+    --line: #e3e0d6;
+    --line-soft: #eeebe3;
+    --shadow-sm: none;
+    --shadow-md: none;
+  }
+
+  @page {
+    size: A4;
+    margin: 18mm 16mm;
+  }
+
+  html, body { background: #fafaf7; }
+
+  body {
+    padding-inline: 0;
+    padding-block: 0;
+    font-size: 11pt;
+    /* Without this the bands, swatches and the ivory ground all drop out and
+       the book documents a palette it does not show. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sheet { max-width: none; }
+
+  /* Each chapter starts its own page: the sections are reference material to
+     be looked up, not a narrative to be read straight through. */
+  section { break-before: page; border-bottom: 0; padding-block: 0 0; }
+  .masthead { padding-block: 0 26px; }
+
+  /* Nothing that reads as one object may be split across a fold. */
+  .sw, .demo, .rule-card, .dd-item, .band, .spec-row, tr { break-inside: avoid; }
+  .sec-head, .pal-head { break-after: avoid; }
+  h2, h3, h4 { break-after: avoid; }
+
+  /* Screen-sized display type wastes a third of a printed page. */
+  .wordmark { font-size: 54pt; }
+  .sec-head h2 { font-size: 20pt; }
+  .spec-display { font-size: 30pt; }
+  .spec-h2 { font-size: 23pt; }
+  .spec-h3 { font-size: 18pt; }
+  .spec-body { font-size: 11pt; }
+
+  .tablewrap { overflow-x: visible; }
+  table { min-width: 0; }
+
+  footer { break-before: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <div class="wordmark">skeo</div>
+      <p>The design system, written down — so anything made for skeo looks like it came from the same place.</p>
+    </div>
+    <div class="stamp">
+      Source of truth <b>src/app/globals.css</b><br>
+      Typefaces <b>Manrope · DM Mono</b><br>
+      Palettes <b>Day (Claude) · Night (Charcoal)</b>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Start here</p>
+      <h2>Three rules that carry the rest.</h2>
+      <p>If you remember nothing else from this book, these are the decisions everything else hangs off — and the ones that are most obvious when they are broken.</p>
+    </div>
+    <div class="print-grid">
+      <div class="rule-card">
+        <h4>The page is never pure white</h4>
+        <p>The ground is ivory, <span class="mono">#FAFAF7</span>. Cards are pure white, and they are the only pure white anywhere. That contrast — white sheets on an ivory ground — is what makes the surface read as paper rather than as a screen.</p>
+      </div>
+      <div class="rule-card">
+        <h4>One hot colour, used sparingly</h4>
+        <p>Terracotta is the single accent. Everything around it is warm and quiet so it lands every time it appears. Two accents on one page means neither is the accent.</p>
+      </div>
+      <div class="rule-card">
+        <h4>Warm greys, never neutral ones</h4>
+        <p>Every grey has warmth in it. A neutral grey on ivory reads as dirty — which is the single fastest way to make work look like it was not made for skeo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Colour</p>
+      <h2>Two palettes, one system.</h2>
+      <p>Day is the default and the one to use for anything printed or exported. Night exists for the website's dark mode. They are not two brands — the same roles, filled differently, which is why the token names are identical in both.</p>
+    </div>
+
+    <div class="pal-head">
+      <h3>Day — Claude</h3>
+      <span>the default · use this for books and PDFs</span>
+    </div>
+    <div class="swatches">
+      <div class="sw">
+        <div class="sw-chip" style="background:#fafaf7"></div>
+        <div class="sw-body">
+          <div class="sw-name">Ivory</div>
+          <div class="sw-hex">#FAFAF7</div>
+          <div class="sw-role">The page. Every ground starts here.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#ffffff"></div>
+        <div class="sw-body">
+          <div class="sw-name">White</div>
+          <div class="sw-hex">#FFFFFF</div>
+          <div class="sw-role">Cards only. The one pure white in the palette.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#191817"></div>
+        <div class="sw-body">
+          <div class="sw-name">Ink</div>
+          <div class="sw-hex">#191817</div>
+          <div class="sw-role">Warm near-black. Headings, and the solid button.</div>
+          <div class="sw-ratio">16.4:1 on ivory</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#bd5a38"></div>
+        <div class="sw-body">
+          <div class="sw-name">Terracotta</div>
+          <div class="sw-hex">#BD5A38</div>
+          <div class="sw-role">The accent. Fills and marks — not body text.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#96421f"></div>
+        <div class="sw-body">
+          <div class="sw-name">Terracotta, deep</div>
+          <div class="sw-hex">#96421F</div>
+          <div class="sw-role">Accent <em>text</em> and hover. The lighter one fails on ivory.</div>
+          <div class="sw-ratio">5.3:1 at worst</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#ebdbbc"></div>
+        <div class="sw-body">
+          <div class="sw-name">Manilla</div>
+          <div class="sw-hex">#EBDBBC</div>
+          <div class="sw-role">The highlight on dark grounds. Warm on warm.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#d4a27f"></div>
+        <div class="sw-body">
+          <div class="sw-name">Kraft</div>
+          <div class="sw-hex">#D4A27F</div>
+          <div class="sw-role">Warm neutral. Rules and quiet marks on dark.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#4e2a1e"></div>
+        <div class="sw-body">
+          <div class="sw-name">Book cloth</div>
+          <div class="sw-hex">#4E2A1E</div>
+          <div class="sw-role">The deep band. A brown, deliberately — not another black.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pal-head">
+      <h3>The ink ramp</h3>
+      <span>five steps · every piece of text picks one</span>
+    </div>
+    <p class="spec-small" style="max-width:var(--measure); margin:0 0 16px;">Before this ramp existed the site carried around twenty-eight one-off greys, which is what made it read as assembled rather than designed. Pick a step by role, never by eye. The two middle steps are measured against the darkest light band, not against ivory — a ramp that only passes on its best background is not a ramp.</p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Step</th><th>Hex</th><th>Contrast</th><th>Use it for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--ink</code></td><td class="mono">#191817</td><td class="mono">16.4:1</td><td>Headings, and anything that must be read first</td></tr>
+          <tr><td><code>--ink-2</code></td><td class="mono">#4A4741</td><td class="mono">8.9:1</td><td>Body copy</td></tr>
+          <tr><td><code>--ink-3</code></td><td class="mono">#625C53</td><td class="mono">5.2:1</td><td>Secondary copy, standfirsts, eyebrows</td></tr>
+          <tr><td><code>--ink-4</code></td><td class="mono">#837D73</td><td class="mono">3.2:1</td><td>Captions and labels — large text only</td></tr>
+          <tr><td><code>--ink-5</code></td><td class="mono">#A9A297</td><td class="mono">—</td><td>Faint labels, disabled states. Never body text</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pal-head">
+      <h3>Night — Charcoal</h3>
+      <span>screen only · the website's dark mode</span>
+    </div>
+    <div class="swatches">
+      <div class="sw">
+        <div class="sw-chip" style="background:#131417"></div>
+        <div class="sw-body">
+          <div class="sw-name">Charcoal</div>
+          <div class="sw-hex">#131417</div>
+          <div class="sw-role">The page.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#1b1d22"></div>
+        <div class="sw-body">
+          <div class="sw-name">Card</div>
+          <div class="sw-hex">#1B1D22</div>
+          <div class="sw-role">A step above the band, never the same grey.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#f2f3f5"></div>
+        <div class="sw-body">
+          <div class="sw-name">Ink</div>
+          <div class="sw-hex">#F2F3F5</div>
+          <div class="sw-role">"Ink" is the reading colour — here it is the light end.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#8b6df5"></div>
+        <div class="sw-body">
+          <div class="sw-name">Violet</div>
+          <div class="sw-hex">#8B6DF5</div>
+          <div class="sw-role">The accent slot at night. Lifted, or it goes muddy.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#dfff75"></div>
+        <div class="sw-body">
+          <div class="sw-name">Lime</div>
+          <div class="sw-hex">#DFFF75</div>
+          <div class="sw-role">The highlight slot. Buttons on dark bands.</div>
+        </div>
+      </div>
+      <div class="sw">
+        <div class="sw-chip" style="background:#ffcf52"></div>
+        <div class="sw-body">
+          <div class="sw-name">Amber</div>
+          <div class="sw-hex">#FFCF52</div>
+          <div class="sw-role">Warm marker. Used sparingly, same as terracotta by day.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Typography</p>
+      <h2>Manrope, with DM&nbsp;Mono for the labels.</h2>
+      <p>Manrope is the brand face and carries everything — every tracking value in the system is tuned to its widths, and headings depend on its 800 weight. DM Mono does one job: uppercase labels and figures. Nothing else on the page is monospaced.</p>
+    </div>
+
+    <div class="specimen">
+      <div class="spec-row">
+        <div class="spec-meta">Display · 800 · clamp(42→68px) · −0.035em · 1.04</div>
+        <div class="spec-display">Master the AI tools that matter</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-meta">Heading 2 · 800 · clamp(33→52px) · −0.03em · 1.06</div>
+        <div class="spec-h2">Everything you need. In one place.</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-meta">Heading 3 · 800 · clamp(28→42px) · −0.03em · 1.08</div>
+        <div class="spec-h3">Certificates with real signal.</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-meta">Label · DM Mono 500 · 11px · +0.11em · uppercase</div>
+        <p class="eyebrow">Proof, not promises</p>
+      </div>
+      <div class="spec-row">
+        <div class="spec-meta">Body · 400 · 16–17px · 1.6</div>
+        <p class="spec-body">Claude, ChatGPT, Gemini, n8n, Lovable and many more. Learn by doing, build real proof of work, and unlock opportunities. Keep running text near sixty-five characters a line — past that the eye loses its place on the return.</p>
+      </div>
+      <div class="spec-row">
+        <div class="spec-meta">Small · 500 · 14.5px · 1.55</div>
+        <p class="spec-small">Captions, table cells, and anything that supports the thing above it rather than standing on its own.</p>
+      </div>
+    </div>
+
+    <div class="pal-head"><h3>The rules that travel</h3></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Property</th><th>Value</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Heading weight</td><td class="mono">800</td><td>The only weight headings use. 700 reads as a different brand</td></tr>
+          <tr><td>Heading tracking</td><td class="mono">−0.03 to −0.035em</td><td>In em, not px, so it stays proportional as the size scales</td></tr>
+          <tr><td>Heading wrap</td><td class="mono">balance</td><td>A two-line heading breaks evenly instead of leaving an orphan</td></tr>
+          <tr><td>Label tracking</td><td class="mono">+0.11em</td><td>Uppercase needs the air; this is the one positive tracking value</td></tr>
+          <tr><td>Body line-height</td><td class="mono">1.6</td><td>Set on the body and inherited. Headings override to ~1.05</td></tr>
+          <tr><td>Base size</td><td class="mono">16px</td><td>Every secondary size derives from it. Nothing below 11px</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Rhythm</p>
+      <h2>Six bands, and no two neighbours alike.</h2>
+      <p>Every section owns a background, and no two adjacent sections share one. That is what makes a long page read as chapters rather than as one scroll with three dark slabs dropped into it. The palette is warm throughout, so bands separate by weight and pigment rather than by temperature.</p>
+    </div>
+    <div class="bands">
+      <div class="band" style="background:#fafaf7;color:#191817"><b>Paper — #FAFAF7</b><span>the default reading surface</span></div>
+      <div class="band" style="background:#f0eee6;color:#191817"><b>Soft — #F0EEE6</b><span>analytical sections: comparison, pricing</span></div>
+      <div class="band" style="background:#efe6d2;color:#191817"><b>Alt (manilla) — #EFE6D2</b><span>human sections: the problem, the reviews</span></div>
+      <div class="band" style="background:#f0e1d6;color:#191817"><b>Tint (book cloth) — #F0E1D6</b><span>the brand moment — the only light band carrying the accent's hue</span></div>
+      <div class="band" style="background:radial-gradient(105% 130% at 50% 0%, #2b2a26 0%, #1b1a18 46%, #141413 100%);color:#fafaf7"><b>Ink</b><span>opens and closes the page</span></div>
+      <div class="band" style="background:radial-gradient(90% 70% at 50% 0%, #7a4331 0%, #4e2a1e 58%, #331a12 100%);color:#ebdbbc"><b>Deep (book cloth)</b><span>the two product sections · highlight is manilla, not a bright accent</span></div>
+    </div>
+    <p class="spec-small" style="max-width:var(--measure);margin-top:18px">The two dark bands are lit from the top edge rather than flat-filled, so a full-bleed band reads as a surface with a light on it. They are two characters, not two shades.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Form</p>
+      <h2>Corners, shadow and the shapes they make.</h2>
+      <p>Border, fill, radius and shadow each say "separate object". Spend them by role — lift the one thing that needs lifting, rather than stamping one radius and one shadow on every block, which flattens the hierarchy until nothing leads.</p>
+    </div>
+    <div class="demos">
+      <div class="demo">
+        <h4>Buttons</h4>
+        <span class="btn-solid">Start Learning&nbsp;&nbsp;→</span>
+        <span class="btn-outline">View Curriculum&nbsp;&nbsp;→</span>
+        <p>48px tall, 12px radius, weight 700 at 14.5px. Solid is ink on ivory; outline is the quiet second choice. Never two solids side by side.</p>
+      </div>
+      <div class="demo">
+        <h4>Pills and chips</h4>
+        <span class="pill"><span class="dot"></span>Featured tool</span>
+        <span class="pill">Claude Chat</span>
+        <p>Fully round, 13px at weight 600, hairline border. For tags and states — never for a primary action.</p>
+      </div>
+      <div class="demo">
+        <h4>Radius scale</h4>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+          <span style="width:44px;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:8px"></span>
+          <span style="width:52px;height:52px;background:var(--surface);border:1px solid var(--line);border-radius:12px"></span>
+          <span style="width:60px;height:60px;background:var(--surface);border:1px solid var(--line);border-radius:16px"></span>
+          <span style="width:68px;height:68px;background:var(--surface);border:1px solid var(--line);border-radius:22px"></span>
+        </div>
+        <p><span class="mono">8 · 12 · 16 · 22 · 28 · 999</span> — small controls take the small end, cards the large. Pick by the size of the thing, not by habit.</p>
+      </div>
+      <div class="demo">
+        <h4>Elevation</h4>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <span style="width:70px;height:52px;background:var(--card);border-radius:12px;box-shadow:var(--shadow-sm)"></span>
+          <span style="width:70px;height:52px;background:var(--card);border-radius:12px;box-shadow:var(--shadow-md)"></span>
+        </div>
+        <p>Two parts each: a tight contact shadow plus a wide ambient one, tinted rather than neutral black. Neutral shadow on a warm ground reads as grime.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">For the playbooks</p>
+      <h2>Taking this into a printed book.</h2>
+      <p>A page and a PDF are not the same object, and a few things have to change on the way across. These are the ones that go wrong most often.</p>
+    </div>
+    <div class="print-grid">
+      <div class="rule-card">
+        <h4>Use Day, always</h4>
+        <p>Night is a screen palette. Charcoal grounds drink ink, cost a fortune to print and look grey rather than black. Every book, deck and PDF is set in Day.</p>
+      </div>
+      <div class="rule-card">
+        <h4>Ivory is the page, not white</h4>
+        <p>Set the page ground to <span class="mono">#FAFAF7</span> even on paper. If the run is uncoated stock that already sits warm, drop the tint and let the paper do it — do not print ivory onto ivory.</p>
+      </div>
+      <div class="rule-card">
+        <h4>Body copy sits at ink-2</h4>
+        <p>Not full ink. <span class="mono">#4A4741</span> at 10–11pt is the printed equivalent of the site's body copy; full black at body size reads harsher on paper than it does on screen.</p>
+      </div>
+      <div class="rule-card">
+        <h4>Keep the label face</h4>
+        <p>DM Mono at ~8pt, uppercase, +0.11em, for running heads, figure numbers and captions. It is the most recognisable thing in the system after the wordmark.</p>
+      </div>
+      <div class="rule-card">
+        <h4>Heading tracking is not optional</h4>
+        <p>Manrope 800 at −0.03em. Left at default tracking, a display heading loses the tightness that makes it skeo's rather than any other deck's.</p>
+      </div>
+      <div class="rule-card">
+        <h4>One accent per spread</h4>
+        <p>Terracotta earns its place by being rare. A spread with four terracotta elements has no accent — it has a colour scheme.</p>
+      </div>
+      <div class="rule-card">
+        <h4>Mind the deep band in CMYK</h4>
+        <p>Book cloth <span class="mono">#4E2A1E</span> is a brown, and it must stay a brown. Converted carelessly it drifts to a muddy near-black and takes the whole warm story with it.</p>
+      </div>
+      <div class="rule-card">
+        <h4>Margins with air</h4>
+        <p>The site runs generous gutters and so should the page: nothing tighter than 18mm, and let a heading have its own white space rather than filling the spread.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Voice</p>
+      <h2>How skeo writes.</h2>
+      <p>The words are design material too. The tone is plain, specific and slightly understated — it never oversells, because the whole proposition is proof rather than promises.</p>
+    </div>
+    <div class="dd">
+      <div class="dd-col do">
+        <p class="eyebrow">Do</p>
+        <div class="dd-item"><span class="dd-mark">✓</span><span>Write <b>skeo</b> in lowercase, always — including at the start of a sentence.</span></div>
+        <div class="dd-item"><span class="dd-mark">✓</span><span>Say the concrete thing. "Twelve lessons, four projects" beats "comprehensive curriculum".</span></div>
+        <div class="dd-item"><span class="dd-mark">✓</span><span>Use sentence case for headings. Title Case Reads As A Different Brand.</span></div>
+        <div class="dd-item"><span class="dd-mark">✓</span><span>Admit limits plainly. "No platform can promise that, and we won't pretend otherwise."</span></div>
+        <div class="dd-item"><span class="dd-mark">✓</span><span>Let a full stop end a headline. "Everything you need. In one place."</span></div>
+      </div>
+      <div class="dd-col dont">
+        <p class="eyebrow">Don't</p>
+        <div class="dd-item"><span class="dd-mark">✕</span><span>Capitalise <b>Skeo</b>, or set the wordmark in anything but Manrope 800.</span></div>
+        <div class="dd-item"><span class="dd-mark">✕</span><span>Reach for "revolutionary", "unlock your potential", "game-changing".</span></div>
+        <div class="dd-item"><span class="dd-mark">✕</span><span>Put a number on the page that nothing behind it supports.</span></div>
+        <div class="dd-item"><span class="dd-mark">✕</span><span>Use emoji as section markers, or exclamation marks in body copy.</span></div>
+        <div class="dd-item"><span class="dd-mark">✕</span><span>Stretch, recolour, outline or add a shadow to the wordmark.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>skeo brand book — Day and Night palettes, Manrope and DM Mono.</span>
+    <span>Values lifted from <code>src/app/globals.css</code>. If the two disagree, the stylesheet wins.</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

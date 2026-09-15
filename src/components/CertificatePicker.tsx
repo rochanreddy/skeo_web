@@ -12,9 +12,9 @@ import startupIndia from '@/assets/accreditation/startup-india.png'
 /* The bodies that stand behind the credential. Every one gets the same box and
  * is scaled to fit inside it — see .cert-accred-logo, where the sizing lives.
  *
- * Note this row and the hero's accreditation strip have diverged: the strip
- * still carries Google for Education where this one carries Sarvam. If the two
- * are meant to make the same claim, the strip needs the same swap. */
+ * These are the same four the accreditation strip under the hero carries, so
+ * the claim made at the top of the page and the claim printed on the
+ * certificate are the same claim. Change one and change the other. */
 const CERT_ACCREDITORS: { name: string; logo: StaticImageData; square?: boolean }[] = [
   { name: 'Startup India', logo: startupIndia },
   { name: 'Ministry of MSME, Government of India', logo: msme },
@@ -22,6 +22,7 @@ const CERT_ACCREDITORS: { name: string; logo: StaticImageData; square?: boolean 
   { name: 'Sarvam AI', logo: sarvam, square: true },
   { name: 'Anthropic', logo: anthropic },
 ]
+
 
 /**
  * The specimen certificate and the tool pills that rewrite it. They sit in
@@ -39,30 +40,15 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
       <Reveal className="certificate" style={{ '--cert-accent': tool.accent } as CSSProperties}>
         <div className="cert-glow" aria-hidden="true" />
         <div className="cert-inner">
+          {/* The mark on the left, the bodies that stand behind the credential
+              on the right — a printed certificate heads itself this way, and it
+              puts the accreditation where it is read as a claim rather than as
+              a footnote. */}
           <div className="cert-head">
-            <span className="cert-mark" aria-hidden="true">
-              S
+            <span className="cert-brand">
+              <b>skeo</b>
             </span>
-            {/* Re-keyed so the badge replays its entrance on every change — the
-                one part of the card the eye is most likely to be resting on. */}
-            <span className="cert-badge" key={tool.name}>
-              <Mark className="cert-badge-mark" />
-              {tool.name}
-            </span>
-          </div>
-
-          <small>CERTIFICATE OF PROFICIENCY</small>
-          <p className="cert-presented">This certificate is presented to</p>
-          <h3>Your Name</h3>
-
-          {/* Announced on change: the pills are the only thing that rewrites it. */}
-          <p aria-live="polite">
-            for demonstrating practical proficiency as a <b>{tool.award}</b> — {tool.skills}.
-          </p>
-
-          <div className="cert-accred">
-            <span>Accredited by</span>
-            <div>
+            <span className="cert-accred-row">
               {CERT_ACCREDITORS.map((body) => (
                 <Image
                   key={body.name}
@@ -72,12 +58,48 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
                   className={body.square ? 'cert-accred-logo cert-accred-logo--square' : 'cert-accred-logo'}
                 />
               ))}
+            </span>
+          </div>
+
+          <div className="cert-title-row">
+            <small>CERTIFICATE OF PROFICIENCY — {tool.name.toUpperCase()}</small>
+            {/* Re-keyed so the badge replays its entrance on every change — the
+                one part of the card the eye is most likely to be resting on. */}
+            <span className="cert-badge" key={tool.name}>
+              <Mark className="cert-badge-mark" />
+              {tool.name}
+            </span>
+          </div>
+
+          {/* Grouped so the three lines that name the holder can be centred as
+              one block in whatever height is left between the title row and the
+              foot — see .cert-body. Without the wrapper they stack against the
+              title row and leave the space below them empty, which is what the
+              departed signature blocks used to fill. */}
+          <div className="cert-body">
+            <p className="cert-presented">This certificate is proudly presented to</p>
+            <h3>Your Name</h3>
+
+            {/* One citation for every tool, with the name dropped into it —
+                the same words a real certificate would carry whichever course
+                it was awarded for. Announced on change: the pills are the only
+                thing that rewrites it. */}
+            <div className="cert-citation" aria-live="polite">
+              <p>
+                for successfully demonstrating proficiency in <b>{tool.name}</b>, including its core
+                features, advanced capabilities, workflows, and practical applications with the ability
+                to solve real-world problems and create meaningful outcomes.
+              </p>
             </div>
           </div>
 
+          {/* What makes the credential checkable: when it was issued, what it
+              took, and the id someone would quote to verify it. The signature
+              blocks that sat opposite are gone — unsigned is honest for a
+              specimen, where two named roles were a claim about people. */}
           <div className="cert-foot">
-            <span>Issued Jun 2026 · {tool.detail}</span>
-            <i>skeo</i>
+            <span className="cert-meta">Issued Jun 2026 · {tool.detail}</span>
+            <span className="cert-id">SKEO-{tool.code}-2606-0000</span>
           </div>
         </div>
       </Reveal>

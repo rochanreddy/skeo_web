@@ -1,5 +1,6 @@
 import { PurchaseButton } from '@/components/ActionButton'
 import { ModuleCart } from '@/components/ModuleCart'
+import { Price } from '@/components/Price'
 import { Reveal } from '@/components/Reveal'
 import { PLANS } from '@/lib/plans'
 
@@ -32,7 +33,7 @@ export function Pricing() {
             <span className="plan">{allAccess.eyebrow}</span>
             <h3>{allAccess.title}</h3>
             <div className="price">
-              {allAccess.price} <small>{allAccess.period}</small>
+              <Price inr={allAccess.amount} /> <small>{allAccess.period}</small>
             </div>
             <p>Get access to every tool, every module, every project, and everything Skeo has to offer.</p>
             <ul>
@@ -40,7 +41,7 @@ export function Pricing() {
                 <li key={feature}>{feature}</li>
               ))}
             </ul>
-            <PurchaseButton plan="member">Start 7-day free trial</PurchaseButton>
+            <PurchaseButton plan="member">{allAccess.cta}</PurchaseButton>
           </Reveal>
         </div>
 

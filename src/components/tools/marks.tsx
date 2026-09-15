@@ -42,7 +42,11 @@ export function ClaudeMark({ className }: MarkProps) {
 export function ChatGptMark({ className }: MarkProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path d={OPENAI_PATH} fill="#0d0d0d" />
+      {/* The one monochrome mark here, so it takes the colour of whatever it
+          sits on rather than a fixed near-black. It appears on light chips and
+          on the dark certificate card, and in both palettes — a hardcoded fill
+          was invisible on half of those. */}
+      <path d={OPENAI_PATH} fill="currentColor" />
     </svg>
   )
 }
@@ -58,6 +62,35 @@ export function GeminiMark({ className }: MarkProps) {
         </linearGradient>
       </defs>
       <path d={GEMINI_PATH} fill="url(#mark-gemini)" />
+    </svg>
+  )
+}
+
+/**
+ * Claude Code, as a glyph rather than a logo.
+ *
+ * Anthropic ships "CLAUDE CODE" as a wide wordmark, and every other mark here
+ * is a square that has to read at 14px beside a title — the wordmark is
+ * illegible at that size and wrong at that shape. This is the terminal prompt
+ * every CLI is drawn with, in Claude's own terracotta, so it reads as "the
+ * Claude one, for code" next to the plain Claude asterisk.
+ *
+ * It is deliberately NOT presented as the official mark. If the wordmark is
+ * ever wanted somewhere with room for it, menler carries the artwork.
+ */
+export function ClaudeCodeMark({ className }: MarkProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <rect x="1.5" y="3.5" width="21" height="17" rx="4" fill="none" stroke="#d97757" strokeWidth="2" />
+      <path
+        d="M7.4 9.3 10.6 12l-3.2 2.7"
+        fill="none"
+        stroke="#d97757"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M13 15.4h4" fill="none" stroke="#d97757" strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }

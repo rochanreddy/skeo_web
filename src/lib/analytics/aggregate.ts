@@ -1,4 +1,4 @@
-import { MODULE_ROWS, type ModuleKey } from '@/lib/plans'
+import { MODULE_ROWS, money, type ModuleKey } from '@/lib/plans'
 import type { AnalyticsEvent, EventType } from './events'
 import { referrerSource } from './events'
 
@@ -377,7 +377,7 @@ function buildModules(events: readonly AnalyticsEvent[]): ModuleStat[] {
     return {
       key: row.key,
       title: row.title,
-      price: row.price,
+      price: money(row.amount),
       added: addedCount,
       purchased: purchasedCount,
       revenue: revenue.get(row.key) ?? 0,

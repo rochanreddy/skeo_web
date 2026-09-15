@@ -22,7 +22,7 @@ export const metadata: Metadata = {
  *    exact-size sheet rather than a letterbox.
  *
  * Print with background graphics on, margins none. `?tool=claude` narrows it
- * to a single sheet; bare, it prints all four as a four-page PDF.
+ * to a single sheet; bare, it prints every tool as a one-page-per-tool PDF.
  */
 
 const SHEET_W = 1920
@@ -63,18 +63,22 @@ function Sheet({ tool }: { tool: CertTool }) {
           </span>
         </header>
 
-        <p className="sheet-kicker">CERTIFICATE OF PROFICIENCY</p>
-        <p className="sheet-presented">This certificate is presented to</p>
+        <p className="sheet-kicker">CERTIFICATE OF PROFICIENCY — {tool.name.toUpperCase()}</p>
+        <p className="sheet-presented">This certificate is proudly presented to</p>
         <h1 className="sheet-name">Your Name</h1>
 
+        {/* The same citation the card carries, with the tool name dropped into
+            it — the sheet is the export surface, not a second wording. */}
         <p className="sheet-body">
-          for demonstrating practical proficiency as a{' '}
-          <b style={{ color: awardInk }}>{tool.award}</b> — {tool.skills}.
+          for successfully demonstrating proficiency in{' '}
+          <b style={{ color: awardInk }}>{tool.name}</b>, including its core features, advanced
+          capabilities, workflows, and practical applications with the ability to solve real-world
+          problems and create meaningful outcomes.
         </p>
 
         <footer className="sheet-foot">
           <span>Issued Jun 2026 · {tool.detail}</span>
-          <i>skeo</i>
+          <i>SKEO-{tool.code}-2606-0000</i>
         </footer>
       </div>
     </section>

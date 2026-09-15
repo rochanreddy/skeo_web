@@ -43,7 +43,10 @@ export function StructuredData() {
           offers: {
             '@type': 'Offer',
             price: plan.amount,
-            priceCurrency: 'USD',
+            /* The base currency every amount in lib/plans is stored in. An
+               overseas reader is shown dollars, but this is the price of
+               record and it has to match the number beside it. */
+            priceCurrency: 'INR',
             category: 'Paid',
           },
         }

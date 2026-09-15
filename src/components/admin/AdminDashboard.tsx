@@ -112,7 +112,21 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
         window.location.href = '/admin/login'
         return
       }
-      const body = (await response.json()) as { ok: boolean; stats?: Stats; error?: string }
+      /* Read the body as text first. An empty body — which is what a
+         crashed function or a gateway timeout sends — makes response.json()
+         throw "Unexpected end of JSON input", a message about a parser that
+         tells the operator nothing about their dashboard. */
+      const raw = await response.text()
+      let body: { ok?: boolean; stats?: Stats; error?: string }
+      try {
+        body = JSON.parse(raw) as typeof body
+      } catch {
+        throw new Error(
+          raw.trim()
+            ? `The server replied with ${response.status} and something that was not JSON.`
+            : `The server replied with ${response.status} and an empty body — the request probably failed or timed out before it could answer.`,
+        )
+      }
       if (!body.ok || !body.stats) throw new Error(body.error || 'Could not load the numbers.')
       setStats(body.stats)
       setError(null)

@@ -10,6 +10,13 @@ type ModalProps = {
   labelledBy: string
   onClose: () => void
   className?: string
+  /**
+   * Stand the keyboard behaviour down while something else owns the screen —
+   * the OTP provider draws its dialog at body level, outside this tree, and
+   * both of the behaviours below work against it: Tab drags focus back into
+   * the form behind, and Escape closes this dialog and strands theirs.
+   */
+  suspended?: boolean
   children: ReactNode
 }
 
@@ -19,7 +26,7 @@ type ModalProps = {
  * trapping Tab inside the dialog, restoring focus to the trigger on close, and
  * locking body scroll without the layout shift a plain `overflow:hidden` causes.
  */
-export function Modal({ labelledBy, onClose, className = '', children }: ModalProps) {
+export function Modal({ labelledBy, onClose, className = '', suspended = false, children }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
   const restoreFocusTo = useRef<HTMLElement | null>(null)
@@ -70,6 +77,9 @@ export function Modal({ labelledBy, onClose, className = '', children }: ModalPr
   }, [onClose])
 
   useEffect(() => {
+    // Something else owns the screen — see the prop's note.
+    if (suspended) return
+
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         event.preventDefault()

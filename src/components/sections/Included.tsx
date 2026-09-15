@@ -1,15 +1,17 @@
 import { FeatureGrid, type FeatureCategory } from '@/components/ui/feature-section'
 
 /**
- * What a seat actually contains. It sits between the certificate and the job
- * board, at the point where someone has been told what they will earn and is
- * asking what they are getting for the money — so it answers that in one grid
- * instead of leaving it spread across the page.
+ * What a seat actually contains. It follows the tool library, at the point
+ * where someone has just seen what is taught and is asking what else comes
+ * with it — so it answers that in one grid instead of leaving the answer
+ * spread across the projects, certificate and job board sections below.
  *
- * The six are the whole offer, in the order someone lives it: learn the tools,
- * get credited for it, find the work, and have people around you while you do.
- * Certificate, jobs and community used to be chips in the "and more" row, which
- * buried three of the strongest reasons to buy under the weakest heading.
+ * The six are the whole offer, ordered by how soon a seat delivers them: the
+ * system and the community from day one, the mentors as soon as you are stuck,
+ * then the board, the library and — last, because it comes last — the
+ * credential. Certificate, jobs and community used to be chips in the "and
+ * more" row, which buried three of the strongest reasons to buy under the
+ * weakest heading.
  *
  * Each one carries its specifics as a short list rather than a sentence, which
  * is what the grid is shaped for, and the two that have a section of their own
@@ -59,35 +61,17 @@ const icons = {
 const INCLUDED: FeatureCategory[] = [
   {
     icon: icons.tools,
-    title: 'Tool Learning System',
+    title: 'AI Learning System',
     items: [
       { text: 'Claude, ChatGPT, Gemini, n8n, Lovable and more' },
       { text: 'Taught in order, so each tool builds on the last' },
-      { text: 'Every lesson in one LMS, progress tracked' },
-      { text: 'New tools added every month' },
-    ],
-  },
-  {
-    icon: icons.certificate,
-    title: 'Certificate',
-    items: [
-      { text: 'A verified credential for every track you finish', href: '#certification' },
-      { text: 'Shareable on LinkedIn and yours to keep' },
-      { text: 'Earned on real projects, not quizzes' },
-    ],
-  },
-  {
-    icon: icons.jobs,
-    title: 'Jobs Opportunities',
-    items: [
-      { text: 'Freelance, internship and full-time roles', href: '#jobs' },
-      { text: 'A live board, updated as roles open' },
-      { text: 'Matched against what you have learned' },
+      { text: 'Every lesson in one LMS, with assignments and progress tracked' },
+      { text: 'New tools and free content updates every month' },
     ],
   },
   {
     icon: icons.community,
-    title: 'Community',
+    title: 'AI Builder Community',
     items: [
       { text: 'A working group of learners and builders' },
       { text: 'Ask, share and ship alongside people doing the same' },
@@ -102,12 +86,30 @@ const INCLUDED: FeatureCategory[] = [
     ],
   },
   {
+    icon: icons.jobs,
+    title: 'Jobs Opportunities',
+    items: [
+      { text: 'Freelance, internship and full-time roles', href: '#jobs' },
+      { text: 'A live board, updated as roles open' },
+      { text: 'Matched against what you have learned' },
+    ],
+  },
+  {
     icon: icons.library,
     title: 'Library',
     items: [
       { text: 'Playbooks, prompt libraries, notes and references' },
       { text: 'Short video lessons you can pause and rewind' },
       { text: 'Yours to reuse long after the module' },
+    ],
+  },
+  {
+    icon: icons.certificate,
+    title: 'Certificate',
+    items: [
+      { text: 'A verified credential for every track you finish', href: '#certification' },
+      { text: 'Shareable on LinkedIn and yours to keep' },
+      { text: 'Earned on real projects, not quizzes' },
     ],
   },
 ]

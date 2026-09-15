@@ -61,7 +61,7 @@ export const featuredTool = {
   capsules: ['Claude Chat', 'Claude Cowork', 'Claude Code'],
   facts: [
     { icon: 'book', label: '12 lessons' },
-    { icon: 'clock', label: '3.5 hours' },
+    { icon: 'clock', label: '15 hours' },
     { icon: 'rocket', label: '4 projects' },
     { icon: 'compass', label: 'Self-paced' },
   ],
@@ -86,7 +86,7 @@ export const claudeSyllabus = {
   title: 'What you learn in Claude',
   intro:
     'Eight modules, from how the model actually works to a capstone you ship. Every lesson ends in an assignment on your own work.',
-  stats: ['8 modules', '41 lessons', 'Self-paced'],
+  stats: ['8 modules', '41 lessons', '40 assignments', 'Self-paced'],
   modules: [
     {
       title: 'Foundations: how AI and Claude actually work',

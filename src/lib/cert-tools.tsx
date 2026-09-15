@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import { ChatGptMark, ClaudeMark, GeminiMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 export type CertTool = {
   /** Slug used by the print route's ?tool= query. */
@@ -7,18 +7,18 @@ export type CertTool = {
   name: string
   Mark: ComponentType<{ className?: string }>
   accent: string
-  award: string
-  skills: string
   detail: string
+  /** Goes into the credential id, so two certificates never read alike. */
+  code: string
 }
 
 /* The tools a certificate can vouch for.
  *
  * Picking one rewrites the specimen rather than swapping a single word: each
  * carries its own mark, its own accent — taken from the tool's real brand
- * colour — the credential it awards, and what that credential says was
- * demonstrated. A certificate for n8n should not look like a certificate for
- * Claude with the noun changed.
+ * colour — how much work it took, and the code that goes into its credential
+ * id. A certificate for n8n should not look like a certificate for Claude with
+ * the noun changed.
  *
  * Shared with the print sheets at /certificate/print so the exported PDF can
  * never drift from what the site shows. */
@@ -28,36 +28,42 @@ export const CERT_TOOLS: CertTool[] = [
     name: 'Claude',
     Mark: ClaudeMark,
     accent: '#d97757',
-    award: 'Claude Practitioner',
-    skills: 'prompt design, research and shipped work',
     detail: '12 lessons · 4 projects',
+    code: 'CL',
   },
   {
     slug: 'chatgpt',
     name: 'ChatGPT',
     Mark: ChatGptMark,
     accent: '#10a37f',
-    award: 'ChatGPT Practitioner',
-    skills: 'everyday workflows, custom GPTs and analysis',
     detail: '10 lessons · 3 projects',
+    code: 'GP',
   },
   {
     slug: 'gemini',
     name: 'Gemini',
     Mark: GeminiMark,
     accent: '#4285f4',
-    award: 'Gemini Practitioner',
-    skills: 'multimodal prompting, image and video',
     detail: '9 lessons · 3 projects',
+    code: 'GM',
   },
   {
     slug: 'n8n',
     name: 'n8n',
     Mark: N8nMark,
     accent: '#ea4b71',
-    award: 'Automation Practitioner',
-    skills: 'workflow automation and AI agents',
     detail: '11 lessons · 4 projects',
+    code: 'N8',
+  },
+  {
+    slug: 'lovable',
+    name: 'Lovable',
+    Mark: LovableMark,
+    // The mark is a three-stop gradient; this is its middle stop, which is the
+    // colour the logo actually reads as at pill size.
+    accent: '#ff7eb0',
+    detail: '10 lessons · 4 projects',
+    code: 'LV',
   },
 ]
 
