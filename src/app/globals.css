@@ -4059,26 +4059,37 @@ h2 em {
   flex-direction: column;
   padding: 30px 32px 62px;
   color: #fff;
-  /* Height follows width, so the card keeps one landscape proportion instead of
-     holding a fixed 360px and squaring up as the column narrows — it ran from
-     1.48 on a 1280px laptop to 1.82 on a 1512px one.
+  /* Height follows width, so the card keeps one landscape proportion instead
+     of holding a fixed 360px and squaring up as the column narrows — it ran
+     from 1.48 on a 1280px laptop to 1.82 on a 1512px one.
+
+     A4 landscape: 297 x 210mm. Written as the millimetres rather than as the
+     1.4142 they divide to, so the shape is checkable against the paper without
+     anyone having to recognise the decimal.
 
      A floor, not a fixed height: the box may still grow if the citation wraps
      to another line, which is what keeps this safe where an aspect-ratio was
-     not (see the note above). The 320px term is the guard for the narrow end,
-     where the proportion alone would bring the copy up against the foot. */
-  min-height: max(320px, 100cqw / 1.75);
+     not (see the note above). The 320px term guards the narrow end — at A4 the
+     card is taller for a given width than the flatter shape it replaced, so
+     this rarely binds now, but it is what stops the copy meeting the foot if
+     the column is ever allowed to get very narrow. */
+  min-height: max(320px, 100cqw * 210 / 297);
   position: relative;
   background: #2e2548b3;
   transition: border-color 0.5s ease;
 }
 
-/* Anything above the phone runs flatter than the 1.75 the phone keeps: there is
-   width to spend on a desktop, and at the phone's proportion the card read as
-   too deep for what it carries. Scoped so the zoomed phone card is untouched. */
+/* The desktop used to run flatter still — 1.9 against the phone's 1.75 —
+   because with the signatures and tagline gone the card read as too deep for
+   what it carries. A4 is the answer to that question now: the certificate is
+   the shape it would be printed at, and it is that shape at every width rather
+   than two proportions that happen to meet near the breakpoint.
+
+   Kept as an explicit rule rather than deleted, so the next person to decide
+   the desktop wants its own proportion has the hook and the history. */
 @media (min-width: 681px) {
   .cert-inner {
-    min-height: max(320px, 100cqw / 1.9);
+    min-height: max(320px, 100cqw * 210 / 297);
   }
 }
 
@@ -8734,12 +8745,11 @@ details p {
 /* Both are shape decisions that only hold where there is room for them, so
    they live in a min-width block rather than beside their base rules.
 
-   The certificate takes A4's landscape proportion, 1.41:1 — the shape the
-   thing would actually be printed at. Narrower than this the card is close to
-   a phone's width, where a 1.41:1 box is barely 200px tall and the copy would
-   spill out of it, so below the breakpoint height stays driven by content.
+   The certificate's proportion is no longer set here — it moved onto
+   .cert-inner's min-height, where it is expressed in container units so it
+   survives the phone zoom. This block is the job panel alone now.
 
-   The job panel loses a little size with it: it is a screenshot of a product
+   The job panel loses a little size: it is a screenshot of a product
    sitting in a section that is otherwise argument, and at full column width it
    was competing with the copy instead of illustrating it. zoom rather than
    transform, so the panel re-lays out at the smaller size and the type stays
