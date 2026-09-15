@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { AuthButton } from '@/components/ActionButton'
-import menlerMark from '@/assets/employers/menler-night-cut.png'
+import menlerMark from '@/assets/employers/menler-mark.png'
 import { site } from '@/lib/site'
 
 /**
@@ -92,10 +92,11 @@ export function Footer() {
                   </svg>
                 </a>
               ))}
-              {/* The parent company, not a social profile — so it is the
-                  wordmark rather than an icon, and it is wider than the round
-                  chips beside it. The white artwork is the one menler ships
-                  for dark grounds, which the footer is in both palettes. */}
+              {/* The parent company, not a social profile — but the mark
+                  rather than the wordmark, so it sits in the same 36px square
+                  the chips beside it occupy instead of widening the row. It is
+                  menler's own app icon: violet ground, white m, green dot, and
+                  it carries its own colour rather than borrowing the row's. */}
               <a
                 className="footer-menler"
                 href="https://menler.in"
