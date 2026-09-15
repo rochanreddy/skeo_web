@@ -91,6 +91,12 @@ export function Nav() {
               {link.label}
             </a>
           ))}
+          {/* Phone only (see .nav-lms): the pill has no room for the LMS button
+              below 680px, so the dropdown carries it instead. */}
+          <a className="nav-lms button button-small" href={lms.web} target="_blank" rel="noopener noreferrer">
+            <span className="btn-label">Sign in to LMS</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </nav>
 
         <div className="nav-actions">

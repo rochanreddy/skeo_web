@@ -427,6 +427,14 @@ svg {
   flex: none;
 }
 
+/* The dropdown copy of the LMS button; the pill carries the real one until
+   the phone breakpoint hides it. Two classes, because a bare .nav-lms ties
+   with .button on specificity and .button is declared after it — the copy
+   would then show up beside the real one on desktop. */
+.nav-links .nav-lms {
+  display: none;
+}
+
 .menu {
   display: none;
   background: none;
@@ -3992,8 +4000,17 @@ h2 em {
   /* Falls back to the house violet, so the card is never unstyled if a tool
      forgets to name an accent. */
   --cert-accent: #6746ec;
+  /* The card is the proportion's reference: .cert-inner takes its height floor
+     from this width in cqw, which is the one measure that is right in both
+     layouts and under the phone zoom. 100cqw is this element's CONTENT box, so
+     the padding either side is already taken off it. */
+  container-type: inline-size;
   background: #241d39;
-  padding: 30px;
+  /* The dark frame the specimen sits in. It was 30px here and 18px from 900px
+     down, which on a desktop read as a thick mount around the certificate
+     rather than as a card holding one. One figure now, so the frame is the
+     same weight at every size — this is the value the phone already had. */
+  padding: 18px;
   border-radius: 15px;
   position: relative;
   overflow: hidden;
@@ -4022,10 +4039,19 @@ h2 em {
      a tagline filled the lower half; with those gone that proportion left the
      card standing taller than it had anything to put in, so it comes down to
      the shape the remaining content actually wants.
-     It holds at every width: on a phone the card is not narrowed, it is scaled
-     down whole (see the mobile block), so the copy never has to reflow into a
-     tall portrait box to fit. */
-  aspect-ratio: 1.65;
+
+     The proportion is left to the height floor below rather than stated as an
+     aspect-ratio, because the two together are a trap: aspect-ratio transfers
+     a min-height back into a MINIMUM WIDTH, so min-height:360px silently meant
+     "never narrower than 360 x 1.65 = 594px". On any column under that the card
+     stopped shrinking and its head and foot were cropped by the card's own
+     overflow:hidden — the tail of the Anthropic wordmark and the credential id
+     simply vanished. It showed on a 1280px laptop and not on a 1512px one,
+     which is why it looked like a machine-specific fault.
+
+     Width now always fills the column, and the floor below supplies the shape
+     instead, so the card can neither crop sideways nor crop its own copy. */
+  min-width: 0;
   /* A column, so the block naming the holder can take the height the signature
      blocks used to. The foot is pinned to the bottom edge, and the extra
      padding there is the strip it occupies — the column must not run into it. */
@@ -4033,10 +4059,27 @@ h2 em {
   flex-direction: column;
   padding: 30px 32px 62px;
   color: #fff;
-  min-height: 360px;
+  /* Height follows width, so the card keeps one landscape proportion instead of
+     holding a fixed 360px and squaring up as the column narrows — it ran from
+     1.48 on a 1280px laptop to 1.82 on a 1512px one.
+
+     A floor, not a fixed height: the box may still grow if the citation wraps
+     to another line, which is what keeps this safe where an aspect-ratio was
+     not (see the note above). The 320px term is the guard for the narrow end,
+     where the proportion alone would bring the copy up against the foot. */
+  min-height: max(320px, 100cqw / 1.75);
   position: relative;
   background: #2e2548b3;
   transition: border-color 0.5s ease;
+}
+
+/* Anything above the phone runs flatter than the 1.75 the phone keeps: there is
+   width to spend on a desktop, and at the phone's proportion the card read as
+   too deep for what it carries. Scoped so the zoomed phone card is untouched. */
+@media (min-width: 681px) {
+  .cert-inner {
+    min-height: max(320px, 100cqw / 1.9);
+  }
 }
 
 /* Takes whatever is left between the title row and the foot, and centres what
@@ -4078,6 +4121,12 @@ h2 em {
   align-items: center;
   gap: clamp(10px, 2.6vw, 18px);
   padding-top: 3px;
+  /* The marks below are each allowed to give up width rather than wrap, but
+     the row is a flex item too and its own automatic minimum is its min-content,
+     about 290px — a floor nothing inside it could shrink under. It is not what
+     was cropping the card (see .cert-inner for that), but on a narrow column it
+     would be the next thing to, so the row is allowed to shrink with them. */
+  min-width: 0;
 }
 
 /* Title on the left, the tool it vouches for on the right. */
@@ -6506,6 +6555,26 @@ details p {
   }
 }
 
+/* The specimen keeps a landscape shape by holding a fixed height and filling
+   whatever width it is given. In two columns that width falls away faster than
+   the height does, so the card squares up as the window narrows — by 900px it
+   is nearly 1:1, which reads as a card that failed to load rather than as a
+   certificate. It stacks while it is still wider than it is tall, and holds
+   the size it had at the breakpoint rather than growing to fill the page. */
+@media (max-width: 1279px) {
+  .credential {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+    min-width: 0;
+  }
+  .certificate {
+    width: 620px;
+    min-width: 0;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 900px) {
   .nav-links {
     gap: 0;
@@ -6539,13 +6608,6 @@ details p {
   }
   .project-layout {
     gap: 35px;
-  }
-  .credential {
-    grid-template-columns: 1fr 1fr;
-    min-width: 0;
-  }
-  .certificate {
-    padding: 18px;
   }
   .problem-grid {
     grid-template-columns: 1fr 1fr;
@@ -6622,6 +6684,43 @@ details p {
   .login,
   .nav-actions .button {
     display: none;
+  }
+  /* The one action at the foot of the menu, so it has to look like a button
+     rather than a fifth destination.
+
+     It is written as a.nav-lms, not .nav-lms: the link rules above are
+     .nav-links a, which outranks .button and was stripping the fill back to
+     background:none and the label to menu-link grey — a dark button on a dark
+     panel, which is to say nothing at all. Matching that specificity and
+     sitting later in the file wins it back, in both palettes and on hover. */
+  .nav-links a.nav-lms {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 42px;
+    margin: 10px 2px 2px;
+    padding: 0 16px;
+    border-radius: var(--r-md);
+    background: var(--ink);
+    color: var(--on-ink);
+    font-size: 13.5px;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+  }
+  /* Night mode sets the menu links to --ink-2 from a selector one step more
+     specific than the one above, which would drag the button label back to
+     link grey on its own fill. Restated here to outrank it. */
+  :root[data-palette='charcoal'] .nav-links a.nav-lms {
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+  .nav-links a.nav-lms:hover,
+  :root[data-palette='charcoal'] .nav-links a.nav-lms:hover {
+    background: var(--ink);
+    color: var(--on-ink);
+  }
+  .nav-links a.nav-lms::after {
+    content: none;
   }
   /* Pinned against the menu button. The auto margin is what puts it there:
      the pill is space-between and the links are out of flow at this size, so
@@ -6828,9 +6927,6 @@ details p {
   .credential {
     gap: 44px;
   }
-  .cert-inner {
-    min-height: 270px;
-  }
   .testimonials {
     padding-top: 75px;
   }
@@ -6916,6 +7012,228 @@ details p {
      On a phone that left the legend and skill rows narrower than their own
      labels, which pushed the whole document into a horizontal scroll. One
      column here, with the track rail as a swipeable row above it. */
+}
+
+/* ============ PHONE SCALE ============ */
+/* Everything below is phone-only. The desktop figures above were tuned for a
+   wide column; on a ~340px column the same type and padding read as big, and
+   the pricing cards in particular were laid out for two columns of room. */
+@media (max-width: 680px) {
+  :root {
+    /* "Master the AI tools" holds one line at 35px on a 375px phone; the
+       desktop floor of 42px split it and pushed the hero to three rows. */
+    --t-display: clamp(32px, 9.4vw, 40px);
+    --t-h2: clamp(26px, 7.4vw, 32px);
+    --t-h3: clamp(22px, 6.4vw, 27px);
+  }
+  body {
+    font-size: 15px;
+  }
+  h1 {
+    font-size: var(--t-display);
+    margin: 16px 0 16px;
+  }
+  .section {
+    padding: 40px 0;
+  }
+  .section-intro h2,
+  .heading-row h2,
+  .center-heading h2,
+  .sticky-copy h2,
+  .credential-copy h2,
+  .faq-intro h2 {
+    margin: 12px 0 14px;
+  }
+  .section-intro p,
+  .center-heading p,
+  .sticky-copy p,
+  .credential-copy > p,
+  .jobs-copy p,
+  .faq-intro p,
+  .promise p {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  /* The <br />s in body copy are desktop line lengths. On a phone they land
+     mid-sentence and leave one-word rows; the column breaks the lines itself. */
+  .hero-copy > p br,
+  .section-intro p br,
+  .center-heading p br,
+  .sticky-copy p br,
+  .credential-copy > p br,
+  .jobs-copy p br,
+  .faq-intro p br,
+  .promise p br,
+  .modules-card > p br {
+    display: none;
+  }
+  .hero-copy > p {
+    font-size: 15px;
+  }
+  .hero-buttons {
+    margin: 22px 0 26px;
+  }
+  .button {
+    height: 44px;
+    padding: 0 18px;
+    font-size: 14px;
+  }
+  .brand {
+    font-size: 19px;
+  }
+  .heading-row {
+    margin-bottom: 22px;
+  }
+  .stat-chip b {
+    font-size: 24px;
+  }
+  .problem-card {
+    padding: 18px 16px 16px;
+  }
+  .problem-card h3,
+  .included-card h3 {
+    font-size: 17px;
+  }
+  .problem-card p,
+  .included-card p {
+    font-size: 14px;
+  }
+  .included-card {
+    padding: 18px 18px 20px;
+  }
+  .tool-name {
+    font-size: clamp(26px, 8vw, 32px);
+  }
+  summary {
+    grid-template-columns: 22px 1fr 22px;
+    gap: 12px;
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+  .quote blockquote {
+    font-size: 15px;
+  }
+  .footer-title {
+    font-size: clamp(32px, 9.5vw, 40px);
+  }
+  .footer-mark {
+    font-size: clamp(56px, 20vw, 90px);
+  }
+
+  /* ---- pricing ---- */
+  .pricing {
+    padding-top: 32px;
+    padding-bottom: 36px;
+  }
+  .pricing .center-heading {
+    margin-bottom: 16px;
+  }
+  .pricing .center-heading h2 {
+    font-size: clamp(26px, 7.2vw, 30px);
+    margin: 8px 0 10px;
+  }
+  .pricing .center-heading p {
+    font-size: 14.5px;
+  }
+  .pricing-two {
+    gap: 14px;
+  }
+  .price-card,
+  .price-card.pro {
+    padding: 20px 18px;
+    border-radius: var(--r-lg);
+  }
+  .modules-card {
+    padding: 18px 16px 16px;
+    border-radius: var(--r-lg);
+  }
+  .modules-card h3,
+  .price-card h3 {
+    font-size: 19px;
+    line-height: 1.2;
+    margin: 10px 0;
+  }
+  .modules-card > p {
+    font-size: 13px;
+    margin: 8px 0 10px;
+  }
+  .popular {
+    top: 14px;
+    right: 14px;
+    padding: 5px 9px;
+    font-size: 9px;
+  }
+  .price {
+    font-size: 36px;
+  }
+  .price-card > p {
+    font-size: 14px;
+    margin: 12px 0;
+  }
+  .price-card ul {
+    margin: 14px 0 10px;
+  }
+  .price-card li {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+  .allaccess-card li {
+    margin: 6px 0;
+  }
+  .price-card .button {
+    height: 46px;
+  }
+
+  /* One row per tool: number, name, price, Add — with the price and the button
+     side by side on the title line rather than stacked down the right edge,
+     which put the button at a different height on every row. */
+  .module-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    column-gap: 10px;
+    align-items: start;
+    padding: 12px 0;
+  }
+  .module-index {
+    padding-top: 3px;
+  }
+  .module-row b {
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .module-row small {
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+  .module-mark {
+    width: 13px;
+    height: 13px;
+  }
+  /* The button is 28px tall and the title line 18px, so both are pulled up
+     to centre on the title: the price by sitting 4px into that 28px box, the
+     button by giving back the 5px difference between the two centres. */
+  .module-price {
+    font-size: 15px;
+    line-height: 1.3;
+    padding-top: 4px;
+    margin-top: -5px;
+  }
+  .module-add,
+  .module-soon {
+    width: 64px;
+    min-height: 28px;
+    margin-top: -5px;
+  }
+  .cart-actions {
+    min-height: 34px;
+    padding-top: 14px;
+  }
+  .cart-checkout {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 /* ============ MOTION & PRINT ============ */
