@@ -4014,6 +4014,11 @@ h2 em {
   /* Falls back to the house violet, so the card is never unstyled if a tool
      forgets to name an accent. */
   --cert-accent: #6746ec;
+  /* Width ÷ height. One number, in one place, because this is the thing that
+     gets nudged: A4's 1.4142 is the certificate's true shape, and anything
+     higher is the card trading that for a shorter block on the page.
+     1.55 is the current compromise — see .cert-inner for what it costs. */
+  --cert-ratio: 1.55;
   /* The card is the proportion's reference: .cert-inner takes its height floor
      from this width in cqw, which is the one measure that is right in both
      layouts and under the phone zoom. 100cqw is this element's CONTENT box, so
@@ -4077,33 +4082,34 @@ h2 em {
      of holding a fixed 360px and squaring up as the column narrows — it ran
      from 1.48 on a 1280px laptop to 1.82 on a 1512px one.
 
-     A4 landscape: 297 x 210mm. Written as the millimetres rather than as the
-     1.4142 they divide to, so the shape is checkable against the paper without
-     anyone having to recognise the decimal.
+     The shape is --cert-ratio, set on .certificate. It is NOT A4 right now:
+     A4 landscape is 297/210 = 1.4142, and the card runs flatter than that so
+     it takes less height on the page. Height is what moves — the width is the
+     column's and is left alone.
+
+     If it should be a true A4 again, --cert-ratio becomes 1.4142 and nothing
+     else changes.
 
      A floor, not a fixed height: the box may still grow if the citation wraps
      to another line, which is what keeps this safe where an aspect-ratio was
-     not (see the note above). The 320px term guards the narrow end — at A4 the
-     card is taller for a given width than the flatter shape it replaced, so
-     this rarely binds now, but it is what stops the copy meeting the foot if
-     the column is ever allowed to get very narrow. */
-  min-height: max(320px, 100cqw * 210 / 297);
+     not (see the note above). The 320px term guards the narrow end, where the
+     proportion alone would bring the copy up against the foot. */
+  min-height: max(320px, 100cqw / var(--cert-ratio));
   position: relative;
   background: #2e2548b3;
   transition: border-color 0.5s ease;
 }
 
-/* The desktop used to run flatter still — 1.9 against the phone's 1.75 —
-   because with the signatures and tagline gone the card read as too deep for
-   what it carries. A4 is the answer to that question now: the certificate is
-   the shape it would be printed at, and it is that shape at every width rather
-   than two proportions that happen to meet near the breakpoint.
+/* One proportion at every width now. The desktop used to run flatter than the
+   phone — 1.9 against 1.75 — which meant the card changed shape as the window
+   moved; --cert-ratio is a single number instead, so there is one certificate
+   rather than two that happen to meet near the breakpoint.
 
-   Kept as an explicit rule rather than deleted, so the next person to decide
-   the desktop wants its own proportion has the hook and the history. */
+   Kept as an explicit rule rather than deleted, so the hook is here if the
+   desktop is ever decided to want its own shape again. */
 @media (min-width: 681px) {
   .cert-inner {
-    min-height: max(320px, 100cqw * 210 / 297);
+    min-height: max(320px, 100cqw / var(--cert-ratio));
   }
 }
 
