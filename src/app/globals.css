@@ -3991,7 +3991,21 @@ h2 em {
 
 .credential {
   display: grid;
-  grid-template-columns: 53fr 47fr;
+  /* FIRST column is the certificate, second is the copy — the card is
+     rendered before the prose in CertificatePicker, so the first figure is the
+     one that sizes it. Easy to get backwards, and getting it backwards makes
+     the card bigger.
+
+     The card shrinks by taking width off its own column rather than by being
+     capped inside it: a max-width would leave a strip of dead grid beside it
+     and the copy would still be laid out as though the card were its old size.
+     Moving the split hands that width to the argument, which is the half of
+     this section doing the persuading.
+
+     It shrinks as a whole. The height comes off with it, because .cert-inner
+     holds A4 in container units — so this stays a certificate rather than
+     becoming a flatter rectangle that is merely smaller. */
+  grid-template-columns: 49fr 51fr;
   align-items: center;
   gap: 50px;
 }
