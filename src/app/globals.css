@@ -5064,29 +5064,23 @@ details p {
   z-index: 200;
 }
 
-/* The menler mark is square artwork with its own ground, so unlike the
-   wordmark it does not need the row's width or its chip. The border and the
-   circle come off: a violet rounded square inside a hairline circle reads as a
-   logo that has been put in a box, and the icon already has the edge it wants.
+/* The menler mark takes the same chip as the social icons — same circle, same
+   border, same 36px — because it is now the same kind of thing: a white glyph
+   on the footer's ground. Nothing here overrides the chip, so only the glyph
+   inside it needs a rule.
 
-   It keeps the row's 36px so the footer stays one line of equal marks. */
-.footer-social a.footer-menler {
-  width: 36px;
-  padding: 0;
-  border: 0;
-  border-radius: 9px;
-  overflow: hidden;
-}
-
+   The artwork is the app icon with its violet ground dropped and the m, its
+   rule and the dot kept in white. Filtering the colour version would not have
+   worked: brightness(0) invert(1) turns the ground white too, which gives a
+   solid white square rather than a mark. */
 .footer-social a.footer-menler img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  /* Dimmed to sit with the outlined chips, which are white at 67%. A
-     full-strength colour mark beside them would be the loudest thing in the
-     footer, which is not what the parent company's link is for. */
-  opacity: 0.78;
+  /* A touch taller than the 14px svgs beside it. The glyph carries a dot above
+     the m, so its ink sits lower in the box than a symbol that fills its own
+     square — matched by eye, not by matching the number. */
+  height: 16px;
+  width: auto;
+  opacity: 0.67;
   transition: opacity 0.25s ease;
 }
 

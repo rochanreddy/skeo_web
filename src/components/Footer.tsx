@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { AuthButton } from '@/components/ActionButton'
-import menlerMark from '@/assets/employers/menler-mark.png'
+import menlerMark from '@/assets/employers/menler-mark-white.png'
 import { site } from '@/lib/site'
 
 /**
@@ -93,10 +93,11 @@ export function Footer() {
                 </a>
               ))}
               {/* The parent company, not a social profile — but the mark
-                  rather than the wordmark, so it sits in the same 36px square
-                  the chips beside it occupy instead of widening the row. It is
-                  menler's own app icon: violet ground, white m, green dot, and
-                  it carries its own colour rather than borrowing the row's. */}
+                  rather than the wordmark, so it sits in the same chip the
+                  others do instead of widening the row. Monochrome white to
+                  match them: the violet ground is dropped and the m, its rule
+                  and the dot are kept, so it reads as one of the row rather
+                  than as the only colour in the footer. */}
               <a
                 className="footer-menler"
                 href="https://menler.in"
