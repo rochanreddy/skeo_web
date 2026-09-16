@@ -59,10 +59,14 @@ export const featuredTool = {
     footer: 'From beginner to advanced level',
   },
   capsules: ['Claude Chat', 'Claude Cowork', 'Claude Code'],
+  /* The same four figures the curriculum overlay opens with — see
+     claudeSyllabus.stats below. A card that promises one shape of course and
+     an overlay that describes another is the reader's first reason to doubt
+     either, and this is the one pair of numbers they see back to back. */
   facts: [
     { icon: 'book', label: '12 lessons' },
     { icon: 'clock', label: '15 hours' },
-    { icon: 'rocket', label: '4 projects' },
+    { icon: 'rocket', label: '5+ projects' },
     { icon: 'compass', label: 'Self-paced' },
   ],
   blurb:
@@ -86,7 +90,11 @@ export const claudeSyllabus = {
   title: 'What you learn in Claude',
   intro:
     'Eight modules, from how the model actually works to a capstone you ship. Every lesson ends in an assignment on your own work.',
-  stats: ['8 modules', '41 lessons', '40 assignments', 'Self-paced'],
+  /* The same four the card carries — see featuredTool.facts. They were
+     different figures describing the same course (8 modules / 41 lessons / 40
+     assignments), which is not wrong but reads as a second course when the
+     overlay opens straight off the card. */
+  stats: ['12 lessons', '15 hours', '5+ projects', 'Self-paced'],
   modules: [
     {
       title: 'Foundations: how AI and Claude actually work',
