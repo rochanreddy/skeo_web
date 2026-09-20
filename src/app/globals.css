@@ -6964,15 +6964,24 @@ details p {
        text, at the left edge the headline starts from. */
     align-self: flex-start;
   }
+  /* Under the CTA rather than above the stage: the count reads as the line
+     that follows the ask now, not as a caption on the graphic. Ordered after
+     the button, so the hero closes on it. */
   .proof {
-    margin-bottom: 22px;
+    order: 4;
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+  /* The paragraph now meets the stage directly — this is that gap. */
+  .hero-copy > p {
+    margin-bottom: 24px;
   }
   .tool-stage-frame {
     order: 2;
   }
   .hero-buttons {
     order: 3;
-    margin: 0 0 8px;
+    margin: 0;
     /* The one child that keeps the centre: at the foot of the hero a centred
        CTA reads as deliberate, and it is the easiest point on the row for a
        thumb of either hand. */
