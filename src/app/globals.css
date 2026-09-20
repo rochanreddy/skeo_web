@@ -6928,8 +6928,15 @@ details p {
     content: none;
   }
   /* Stacking already happened at 900px; these are the phone refinements on top. */
+  /* THE FOOT CAME BACK. .hero-copy used to carry 42px of bottom padding, and
+     that went with its box when the block was dissolved — so the count ended
+     flush against the accreditation strip, 0px between them at every width
+     below 680. Desktop still has its own 113px there. This is the hero's own
+     foot now, which is the right place for it: the children come and go with
+     the ordering, the section does not. */
   .hero {
     padding-top: 28px;
+    padding-bottom: 44px;
   }
   /* THE CTA GOES UNDER THE STAGE, WHERE A THUMB IS. Held at the top of the
      hero it sat around 325px down — the far reach of a one-handed grip, past
