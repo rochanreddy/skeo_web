@@ -17,11 +17,16 @@ export const problems = [
 /* Split into a number and its suffix so the value can be counted up rather than
    printed. `1000+` matches how the job board section already states the same
    figure — it read as a flat `1000` here. */
+/* `short` is the phone wording and nothing else. A third of a small phone
+ * cannot hold 'Real Time Projects' on one line at a size worth reading, but
+ * the desktop chip has room to spare — so the full label stays the label, and
+ * the stylesheet swaps in the short one below 680px. Both are rendered; the
+ * hidden one is display:none, so a screen reader is only ever read one. */
 export const promiseStats = [
-  { value: 5, suffix: '+', label: 'AI Tools' },
-  { value: 30, suffix: '', label: 'Minutes A Day' },
-  { value: 100, suffix: '', label: 'Real Time Projects' },
-  { value: 1000, suffix: '+', label: 'Job Opportunities' },
+  { value: 5, suffix: '+', label: 'AI Tools', short: 'AI Tools' },
+  { value: 30, suffix: '', label: 'Minutes A Day', short: 'Minutes/Day' },
+  { value: 100, suffix: '', label: 'Real Time Projects', short: 'Real Projects' },
+  { value: 1000, suffix: '+', label: 'Job Opportunities', short: 'Job Openings' },
 ] as const
 
 /**

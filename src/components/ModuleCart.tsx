@@ -6,7 +6,9 @@ import { price, useCurrency } from '@/lib/currency'
 import { COMING_SOON, MODULE_ROWS, type ModuleKey } from '@/lib/plans'
 import {
   ChatGptMark,
+  ClaudeAutomationsMark,
   ClaudeCodeMark,
+  ClaudeCoworkMark,
   ClaudeMark,
   GeminiMark,
   LovableMark,
@@ -16,7 +18,9 @@ import { useModal } from './modals/ModalProvider'
 
 const MARKS = {
   claude: ClaudeMark,
+  claudeCowork: ClaudeCoworkMark,
   claudeCode: ClaudeCodeMark,
+  claudeAutomations: ClaudeAutomationsMark,
   chatgpt: ChatGptMark,
   gemini: GeminiMark,
   n8n: N8nMark,

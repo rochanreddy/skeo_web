@@ -12,7 +12,7 @@ export function Comparison() {
           vs. skeo
         </h2>
         <p>
-          Traditional courses help you learn.
+          Traditional courses help you learn.{' '}
           <br />
           skeo helps you learn, build, prove your skills, and turn them into real opportunities.
         </p>

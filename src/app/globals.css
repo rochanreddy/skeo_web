@@ -1536,6 +1536,14 @@ h2 em {
   box-shadow: 0 12px 26px #2b1a6812;
 }
 
+/* The second and third passes of the rail. They exist in the markup at every
+   width so the phone loop has no seam, and they are off here — above 680px the
+   strip is the four-column grid it has always been. Declared after .accred-item
+   so its `display: flex` does not win the tie. */
+.accred-item--pass {
+  display: none;
+}
+
 .accred-logo {
   display: block;
   object-fit: contain;
@@ -1558,20 +1566,122 @@ h2 em {
   white-space: nowrap;
 }
 
+/* One pass of the three. The track is `width: max-content`, so a third of it is
+   exactly the four marks and their gaps — which is why the two ends of this
+   animation paint the same picture and the loop has no seam. Left to right, so
+   it travels against the reading direction of the employer rail below it and
+   the two bands do not read as one belt. */
+@keyframes accred-rail {
+  from {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @media (max-width: 680px) {
   .accred-strip p {
     margin-bottom: 16px;
   }
+  /* THE FOUR MARKS BECOME A RAIL RATHER THAN A 2x2 BLOCK. Four cards cannot
+     hold one static row on a phone without shrinking every mark to about half
+     its size, and the wrapped pair-over-pair read as a grid of tiles rather
+     than a row of accreditations.
+
+     The window stays inside .wrap rather than breaking out to 100vw: a viewport
+     unit counts the scrollbar, so a full-bleed child is wider than the document
+     on any desktop browser narrowed to phone width, and the page picks up the
+     horizontal scroll this band is meant to avoid. The mask does the work
+     instead — marks dissolve at both edges the way the employer rail's do. */
+  .accred-rail {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  }
   .accred-logos {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 0;
+    display: flex;
+    align-items: stretch;
+    /* Intrinsic, so a third of the track is exactly one pass. */
+    width: max-content;
+    max-width: none;
+    margin-inline: 0;
+    gap: 12px;
+    /* One pass of 678px in 27s ≈ 25px/s — a touch quicker than the employer
+       rail's 21px/s below, which is the point: this band is four marks on a
+       short track and at the slower figure it read as barely moving. The
+       script below runs at the same rate, so the handover is invisible. */
+    animation: accred-rail 27s linear infinite;
+  }
+  /* SWIPEABLE ONCE THE SCRIPT IS IN. SwipeRail sets data-rail when it takes
+     over the transform, and the CSS animation stands down — the two must never
+     drive the same property. The keyframes above stay as the no-JS fallback,
+     so the marks are moving either way.
+
+     pan-y, not none: a vertical swipe still scrolls the page, and only the
+     horizontal component reaches the drag handler. */
+  .accred-rail[data-rail='on'] {
+    touch-action: pan-y;
+  }
+  .accred-rail[data-rail='on'] .accred-logos {
+    animation: none;
+    cursor: grab;
+    /* A drag across four wordmarks should not select them. */
+    user-select: none;
+  }
+  .accred-rail[data-rail='on'] .accred-logos:active {
+    cursor: grabbing;
+  }
+  /* The marks are dragged, so they must not be draggable the browser's way —
+     a native image drag would swallow the pointer mid-gesture. */
+  .accred-rail[data-rail='on'] .accred-logo {
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+  .accred-item--pass {
+    display: flex;
   }
   .accred-item {
-    padding-inline: 16px;
+    /* A floor rather than a fixed width: MSME's artwork is wider than the
+       others and clamping it would be the shrinking this layout exists to
+       avoid. The floor is what gives the narrow marks a shared rhythm. */
+    flex: 0 0 auto;
+    min-width: 152px;
+    min-height: 84px;
+    padding: 16px 20px;
   }
-  /* The row wraps here, where a left hairline would land mid-air. */
-  .accred-item + .accred-item {
-    border-left: 0;
+  /* The rail is one object once it is moving, so the marks arrive together
+     rather than being dealt in — and a twelfth child dealt last would land
+     after the track had already carried it off screen. */
+  .accred-rail .reveal-stagger > * {
+    transition-delay: 0s;
+  }
+}
+
+/* A RAIL THAT CANNOT MOVE IS TWO ACCREDITATIONS NOBODY EVER SEES. The global
+   reduced-motion rule parks the track at its end state, and .accred-rail is a
+   clipped window, not a scroller — so Sarvam and Anthropic would sit off the
+   right edge with no way to reach them. The wrapped block this replaced has no
+   such problem, so for this reader the strip goes back to it: all four marks,
+   no motion. Must sit after the block above to outrank it. */
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  .accred-rail {
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .accred-logos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: auto;
+    gap: 12px;
+    animation: none;
+  }
+  .accred-item--pass {
+    display: none;
+  }
+  .accred-item {
+    min-width: 0;
   }
 }
 
@@ -1963,6 +2073,17 @@ h2 em {
   font-size: 13px;
   line-height: 1.4;
   color: var(--on-dark-3);
+}
+
+/* The phone wording, off by default — the desktop chip is 164px wide and has no
+   need of it. AFTER .stat-label, not before: the short span carries both
+   classes, the two selectors tie on specificity, and whichever is written last
+   wins — put first, this lost to display:block and both wordings painted.
+
+   display rather than visibility, so whichever is hidden is out of the
+   accessibility tree too and the figure is announced once. */
+.stat-label--short {
+  display: none;
 }
 
 /* ---- count-up ---- */
@@ -4965,6 +5086,12 @@ details p {
   pointer-events: none;
 }
 
+/* Nothing above 680px: the mark and the legal line stay direct children of
+   .footer-inner, in the order they are written. */
+.footer-close {
+  display: contents;
+}
+
 .footer-bottom {
   position: relative;
   display: flex;
@@ -6609,8 +6736,106 @@ details p {
 }
 
 @media (max-width: 900px) {
+  /* THE PILL RUNS OUT OF ROOM AT 900, NOT 680. The links are centred out of
+     flow while the actions sit on the right, so anywhere between those two
+     widths "Reviews" ran underneath the theme toggle and the LMS button — a
+     collision, not a tight fit. The hamburger and its dropdown therefore
+     start here. The phone block further down only adds what is phone-only on
+     top of this: the LMS button moving out of the pill and into the menu. */
+  /* Below the pill as a dropdown panel, in the same glass so the two read as
+     one object. The centring transform has to be undone here. */
   .nav-links {
-    gap: 0;
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 9px);
+    transform: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #ffffff8a;
+    border-radius: var(--r-lg);
+    /* Nearly solid rather than the pill's 0.54 glass. At the pill's opacity the
+       hero headline showed straight through the panel and sat behind the menu
+       labels — glass reads as material over a photograph, as interference over
+       48px type. The blur and the saturation stay, so the edges still belong to
+       the pill above. */
+    background: #fffffffa;
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    box-shadow: 0 10px 34px #14121c1f;
+  }
+  .nav-links a {
+    padding: 11px 14px;
+    border-radius: var(--r-sm);
+  }
+  /* Night mode: the pill above this is dark, so a near-white dropdown read as
+     a different object hanging off it — and worse, the link colour here is the
+     palette's LIGHT ink, which on a near-white panel was invisible. Matching
+     the pill fixes the mismatch and the contrast in one go. */
+  :root[data-palette='charcoal'] .nav-links {
+    border-color: #ffffff1f;
+    background: #1b1d22fa;
+    box-shadow: 0 10px 34px #00000073;
+  }
+  :root[data-palette='charcoal'] .nav-links a {
+    color: var(--ink-2);
+  }
+  :root[data-palette='charcoal'] .nav-links a:hover,
+  :root[data-palette='charcoal'] .nav-links a.active {
+    color: #fff;
+    background: #ffffff14;
+  }
+  .nav-links a.active::after {
+    left: 14px;
+    right: auto;
+    bottom: 50%;
+    width: 3px;
+    height: 14px;
+    transform: translateY(50%);
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  /* Pinned against the menu button. The auto margin is what puts it there:
+     the pill is space-between and the links are out of flow at this size, so
+     without it the toggle is stranded midway down the bar.
+     The negative margin trims the pill's 20px flex gap by half. Bear in mind
+     the menu button is 44px of tap target around 21px of bars, so roughly
+     11px of what looks like space beside it is really its own padding — the
+     gap you see is always wider than the gap between the boxes. */
+  .nav-actions {
+    margin-left: auto;
+    margin-right: -10px;
+  }
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    /* 44x44 is the tap target; the bars inside stay 21px. */
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px;
+    margin-right: -8px;
+    cursor: pointer;
+  }
+  .menu i {
+    width: 21px;
+    height: 2px;
+    background: var(--ink);
+    display: block;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .menu[aria-expanded='true'] i:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+  .menu[aria-expanded='true'] i:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
   }
   /* The hero stacks here rather than at 680px. Held as two columns through the
      tablet band, the copy side dropped to ~340px — too narrow for "Master the
@@ -6661,59 +6886,6 @@ details p {
   .wrap {
     width: min(100% - 36px, 540px);
   }
-  /* Below the pill as a dropdown panel, in the same glass so the two read as
-     one object. The centring transform has to be undone here. */
-  .nav-links {
-    display: none;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(100% + 9px);
-    transform: none;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 2px;
-    margin: 0;
-    padding: 10px;
-    border: 1px solid #ffffff8a;
-    border-radius: var(--r-lg);
-    background: #fffffff0;
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
-    box-shadow: 0 10px 34px #14121c1f;
-  }
-  .nav-links a {
-    padding: 11px 14px;
-    border-radius: var(--r-sm);
-  }
-  /* Night mode: the pill above this is dark, so a near-white dropdown read as
-     a different object hanging off it — and worse, the link colour here is the
-     palette's LIGHT ink, which on a near-white panel was invisible. Matching
-     the pill fixes the mismatch and the contrast in one go. */
-  :root[data-palette='charcoal'] .nav-links {
-    border-color: #ffffff1f;
-    background: #1b1d22f2;
-    box-shadow: 0 10px 34px #00000073;
-  }
-  :root[data-palette='charcoal'] .nav-links a {
-    color: var(--ink-2);
-  }
-  :root[data-palette='charcoal'] .nav-links a:hover,
-  :root[data-palette='charcoal'] .nav-links a.active {
-    color: #fff;
-    background: #ffffff14;
-  }
-  .nav-links a.active::after {
-    left: 14px;
-    right: auto;
-    bottom: 50%;
-    width: 3px;
-    height: 14px;
-    transform: translateY(50%);
-  }
-  .nav-links.open {
-    display: flex;
-  }
   .login,
   .nav-actions .button {
     display: none;
@@ -6754,43 +6926,6 @@ details p {
   }
   .nav-links a.nav-lms::after {
     content: none;
-  }
-  /* Pinned against the menu button. The auto margin is what puts it there:
-     the pill is space-between and the links are out of flow at this size, so
-     without it the toggle is stranded midway down the bar.
-     The negative margin trims the pill's 20px flex gap by half. Bear in mind
-     the menu button is 44px of tap target around 21px of bars, so roughly
-     11px of what looks like space beside it is really its own padding — the
-     gap you see is always wider than the gap between the boxes. */
-  .nav-actions {
-    margin-left: auto;
-    margin-right: -10px;
-  }
-  .menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    /* 44x44 is the tap target; the bars inside stay 21px. */
-    min-width: 44px;
-    min-height: 44px;
-    padding: 8px;
-    margin-right: -8px;
-    cursor: pointer;
-  }
-  .menu i {
-    width: 21px;
-    height: 2px;
-    background: var(--ink);
-    display: block;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-  .menu[aria-expanded='true'] i:first-child {
-    transform: translateY(3.5px) rotate(45deg);
-  }
-  .menu[aria-expanded='true'] i:last-child {
-    transform: translateY(-3.5px) rotate(-45deg);
   }
   /* Stacking already happened at 900px; these are the phone refinements on top. */
   .hero {
@@ -6870,24 +7005,113 @@ details p {
   /* Tighter than the rest of that set: the two halves of this card are one
      object, not two stacked sections. */
   .tool-card {
-    gap: 22px;
-    padding: 16px;
+    gap: 14px;
+    /* THE CARD WAS INSET TWICE OVER. It already takes the full column, but the
+       poster and the copy inside it sat behind 16px of card padding on top of
+       the page's own 18px gutter — 34px a side before a word of the featured
+       tool began, against 18px everywhere else on the page. The frame comes
+       down to 11px, which hands the contents 10px a side back. */
+    padding: 11px;
+  }
+  /* The whole card steps 6px past the column so the poster reads at something
+     nearer its desktop presence. Only this section, and only by 6px: the one
+     other thing in it is a centred heading whose text never reaches the edge,
+     so there is no alignment here for the card to break. */
+  .tool-shell {
+    margin-inline: -6px;
   }
   /* The poster's floor and its deep foot are both desktop-column figures. As a
-     band across the top of a stacked card it needs neither. */
+     band across the top of a stacked card it needs neither. The sides come in
+     with the card's frame — the two were set together and have to move
+     together, or the art simply loses what the frame gave up. */
+  /* A BANNER ACROSS THE TOP, NOT A PANEL. The poster is decorative — it
+     restates the copy beside it and is aria-hidden — so it is the one part of
+     the card that can give up height without costing anything. The floor goes
+     entirely (its content sets the height now) and the deep foot, drawn to
+     leave room under a desktop column, comes in to 38px. That figure is the
+     footer strip: it is absolutely positioned along the bottom and measures
+     31px here, so anything less than that and the poster note is painted
+     underneath it — which is exactly what 28px did.
+
+     This is most of what makes the card a rectangle rather than a column. */
   .tool-poster {
-    min-height: 190px;
-    padding: 20px 20px 44px;
+    min-height: 0;
+    padding: 14px 14px 38px;
+    gap: 8px;
   }
-  .compare-grid {
+  .poster-body {
+    gap: 12px;
+  }
+  /* The two chips sit side by side rather than stacked. On a desktop column
+     they are a two-line headline; across a banner they are one line, and the
+     second line was 36px of the height this card is trying to lose. They still
+     wrap on a narrow phone, where the pair will not hold a line. */
+  .poster-title {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .poster-title b {
+    padding: 4px 9px;
+  }
+  .poster-note {
     font-size: 11px;
+    line-height: 1.45;
+  }
+  .poster-footer {
+    padding: 9px 14px;
+  }
+  /* EVERY PIXEL OF WIDTH FIRST, THEN THE TYPE — because one line a row is set
+     against a fixed amount of text, and anything the box can give the words is
+     a point of type that does not have to be spent.
+
+     THE COLUMNS ARE NOT EQUAL, because their content is not. The longest row on
+     the left runs 283px against the right's 262, so an even split starves one
+     side while the other keeps room it cannot use — and the smaller of the two
+     sets the size for both. 52/48 is that ratio, and it lands the two sides
+     within 0.1px of needing the same size. */
+  .compare-grid {
+    grid-template-columns: 52fr 48fr;
+    /* 6px, not the 14 this had: at 14 the box sat 4px off the screen edge and
+       read as having fallen off it. 12px of gutter is still narrower than the
+       page's 18, so the box is visibly wider than the copy above it without
+       being cornered. */
+    margin-inline: -6px;
+    font-size: 12.5px;
   }
   .compare-column {
-    padding: 16px 12px;
+    padding: 16px 7px;
   }
+  .compare-column b {
+    font-size: 9.5px;
+  }
+  /* Two jobs: "TRADITIONAL COURSE" is 18 characters of tracked-out mono against
+     "SKEO", and on a 320px phone it wrapped and started its whole column a line
+     below the one it is being compared with. And it tracks the rows, so the two
+     halves of the box keep reading as one table. */
+  .column-title {
+    font-size: clamp(8px, 2.4vw, 11px);
+    margin-bottom: 11px;
+  }
+  /* THE COPY IS THE COPY — none of this rewrites a word of it. */
   .compare-column > div {
-    font-size: 10px;
-    height: 47px;
+    /* THE LARGEST SIZE THAT STILL HOLDS ONE LINE, fitted to measurement rather
+       than guessed. The binding row is "Access jobs, internships & freelancing"
+       in the narrower column; measured against what that column actually gives
+       it, one line allows 6.4px at 320, 8.3px at 390 and 10.7px at 480, and
+       the requirement stops climbing once .wrap caps. The slope tracks those
+       figures about 4% under, and the cap is the grid's own 12.5px. Re-derive
+       it if the padding or the bleed above move — they set what is left. */
+
+
+    font-size: clamp(6px, calc(2.585vw - 2.14px), 12.5px);
+    line-height: 1.35;
+    /* Every row is one line now, so this is breathing room rather than a hedge
+       against wrapping — and it is what keeps the two columns level. Still a
+       minimum, not a flat height, so nothing is ever clipped. */
+    min-height: 34px;
+    padding: 3px 0;
+    gap: 6px;
   }
   .heading-row {
     align-items: flex-start;
@@ -6909,21 +7133,53 @@ details p {
   .sticky-copy {
     position: static;
   }
+  /* THE ROW IS RE-CUT FOR THE PHONE, NOT SHRUNK. Three columns on a ~285px
+     line left the copy about 180px wide and drove it to 10px — a desktop row
+     compressed until it stopped being readable. Two columns here, tile and
+     copy, and the copy gets the whole of the second one at a size the rest of
+     the page would recognise.
+
+     THE INDEX IS DROPPED. On a desktop row it is a quiet marker at the far end
+     of a wide line; on a phone there is no far end to park it at, so wherever
+     it went it was a third thing competing with the label and the heading for
+     the top of the row. The three rows are already ordered by reading down
+     them. The column is the tile's own width, so the tile sits centred in it
+     with nothing to line up against. */
   .project-item {
-    grid-template-columns: 74px 1fr 16px;
-    gap: 11px;
-    min-height: 126px;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 14px;
+    /* Against the whole copy block rather than its first line — with the index
+       gone the tile was alone at the top of a three-line row. */
+    align-items: center;
+    min-height: 0;
+    padding: 22px 0;
   }
   .project-art {
-    width: 67px;
-    height: 67px;
-    font-size: 25px;
+    grid-column: 1;
+    grid-row: 1;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    font-size: 22px;
+  }
+  .project-art svg {
+    width: 26px;
+    height: 26px;
+  }
+  .project-item > div:not(.project-art) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .project-item > b {
+    display: none;
   }
   .project-item h3 {
-    font-size: 15px;
+    font-size: 17px;
+    margin: 6px 0 6px;
   }
   .project-item p {
-    font-size: 10px;
+    font-size: 13.5px;
+    line-height: 1.55;
   }
   .tool-tagline {
     font-size: 14px;
@@ -6935,17 +7191,38 @@ details p {
     padding: 7px 12px;
     font-size: 11.5px;
   }
+  /* FOUR FACTS, ONE LINE. The row needed 413px against 342 of card, so it broke
+     after the third and left "SELF-PACED" stranded on a line of its own. Every
+     part of the item gives something back: the icon, the space beside it, the
+     space between items, and the type — no single one of them was enough.
+
+     The size is a clamp rather than a figure because what has to fit is fixed
+     and the card is not: 86px of icons and gaps plus the four labels, against
+     the card width. Below about 345px that arithmetic has no answer above 7px
+     type, so there the row goes back to wrapping. */
   .tool-facts {
-    gap: 7px 16px;
+    gap: 6px;
   }
   .tool-facts li {
-    font-size: 11px;
+    gap: 4px;
+  }
+  .tool-facts .fact-icon {
+    width: 13px;
+    height: 13px;
+  }
+  .tool-facts .fact-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  .tool-facts li {
+    font-size: clamp(8.8px, 2.45vw, 12px);
+    letter-spacing: 0.04em;
   }
   /* The rule under the blurb is doing the separating; 22px above AND below it
      is a desktop's worth of room for one hairline. */
   .tool-blurb {
-    margin-bottom: 16px;
-    padding-bottom: 16px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
     font-size: 14px;
     line-height: 1.55;
   }
@@ -6955,10 +7232,82 @@ details p {
   /* The art and the two title chips, which are the poster, at a size that
      still carries the card without taking a third of the phone. */
   .poster-logo {
-    width: 84px;
+    width: 58px;
   }
-  .credential {
-    gap: 44px;
+  /* ---- HEADING, THEN THE SHOT, THEN THE ARGUMENT ----
+     The certificate section and the job board section are the same shape: a
+     product shot in one column, the prose in the other. Stacked on a phone each
+     one opened on a shot with no caption — a dark card arriving out of nowhere,
+     with the sentence that says what it is only reachable by scrolling past it.
+     Both are re-cut here to heading, shot, argument.
+
+     THE SHOT AND THE HEADING LIVE IN DIFFERENT PARENTS, which is the whole
+     difficulty: the heading sits inside the copy block, so `order` on its own
+     cannot interleave the two. Dissolving the copy's box with
+     `display: contents` promotes its children to items of the section's own
+     flex container, and from there the heading can be ordered ahead of the shot.
+
+     THE PRICE IS THE COPY'S FADE-IN. A box-less element takes no opacity and no
+     transform, and — verified in the browser — IntersectionObserver never fires
+     on it either, so .reveal's .visible is never added. That is the safe
+     failure, not the dangerous one: the copy is painted at full strength rather
+     than trapped at opacity 0. The explicit opacity on each makes that true even
+     in a browser that wrongly honours opacity on a contents box.
+
+     BOTH GRIDS CARRY align-items: center to sit the shot against the copy. On a
+     column flex that is the CROSS axis, where it shrink-wraps every child and
+     centres it — which pulled headings and list items in from the left while the
+     paragraphs, being wide enough to fill, stayed put. Hence the stretch on both.
+
+     SPACING GOES ON THE NEIGHBOURS, NEVER ON THE SHOT. Both shots carry a `zoom`
+     from the ladder near the end of this file, and zoom scales an element's own
+     margins along with it — so a figure written on the shot would shrink with it
+     at every step down the ladder instead of holding at 26px. */
+  .credential,
+  .jobs-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* Every child is its own flex item now, so a gap would land between a
+       heading and its paragraph as well. The margins below do the spacing. */
+    gap: 0;
+  }
+  .credential-copy,
+  .jobs-copy {
+    display: contents;
+    opacity: 1;
+    transform: none;
+  }
+  .credential-copy > .eyebrow,
+  .jobs-copy > .eyebrow,
+  /* The board's CTA would otherwise stretch the width of the phone, which is
+     not the button this section has. */
+  .jobs-copy > .button {
+    align-self: flex-start;
+  }
+  .credential-copy > .eyebrow,
+  .jobs-copy > .eyebrow {
+    order: -3;
+  }
+  /* .credential prefixed only to win the margin. The phone-scale block further
+     down carries `.credential-copy h2 { margin: 12px 0 14px }` — same
+     specificity as a bare `.credential-copy > h2` and later in the file, so the
+     shorthand there was resetting the bottom margin set here and the heading
+     sat 14px off the card however large a figure was written. .jobs-copy has no
+     such later rule, but it is written the same way so the pair cannot drift. */
+  .credential .credential-copy > h2,
+  .jobs-layout .jobs-copy > h2 {
+    order: -2;
+    margin-bottom: 26px;
+  }
+  .certificate,
+  .jobs-panel {
+    order: -1;
+    margin-block: 0;
+  }
+  .credential-copy > p,
+  .jobs-copy > p {
+    margin-top: 26px;
   }
   .testimonials {
     padding-top: 75px;
@@ -7000,10 +7349,26 @@ details p {
     text-align: center;
     gap: 14px;
   }
-  /* Brand block and links stack, both left-aligned under the statement. */
+  /* Brand block and links stack, both left-aligned under the statement.
+
+     THE STRETCH IS THE POINT. The row above is align-items: flex-start, which
+     on the stacked column becomes the cross axis and shrink-wrapped both halves
+     to their own content — so .footer-nav was 240px wide whatever the phone
+     was, its two 1fr tracks splitting that instead of the footer, and Company
+     sat a third of the way in with the right of the block empty. Stretched, the
+     tracks split the real width and the two lists anchor the two halves of the
+     row. */
   .footer-columns {
     flex-direction: column;
+    align-items: stretch;
     gap: 24px;
+  }
+  /* The stretch above widens .footer-brand to the footer, and .brand is a flex
+     <a> that fills it — which made the whole row a link to the top of the page,
+     tappable a hand's width to the right of the wordmark. The lockup keeps its
+     own width; only the block behind it stretches. */
+  .footer-brand .brand {
+    width: max-content;
   }
   .footer-nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -7015,27 +7380,87 @@ details p {
   .footer-nav a {
     padding: 7px 0;
   }
+  /* THE MARK CLOSES THE PAGE, SO IT GOES LAST. It is written as a wordmark
+     cropped by the bottom edge, but on a phone the legal line sat under it and
+     cut through it instead — the crop the design asks for never happened, and
+     the mark read as a smudge behind a caption rather than as the end of the
+     page. Swapped here: the legal line becomes a closing bar above it, and the
+     mark takes the floor on its own and runs off the bottom of the footer. */
+  .footer-close {
+    display: flex;
+    flex-direction: column;
+  }
+  .footer-bottom {
+    order: 1;
+    padding-top: 22px;
+  }
   .footer-mark {
-    margin-top: 16px;
+    order: 2;
+    /* The negative bottom is the crop: the footer's own padding is smaller
+       than it, so the mark's last band of pixels falls outside the footer and
+       overflow: hidden takes it. The top margin keeps it off the legal line. */
+    margin: 18px 0 -0.22em;
   }
   .reveal {
     transition-duration: 0.45s;
   }
+  /* TWO UP, NOT FOUR DOWN. Each of these carries a three-word title and a
+     single sentence — at full column width the card was 354px of box around
+     one or two lines of text, and four of them ran the section to 894px of
+     mostly air. Paired, the copy fills the card it is in.
+
+     This is the opposite call to .included-card just below, and the difference
+     is the length of the body: these run 39 to 67 characters and settle at two
+     to four short lines, where the "what you get" copy runs past 100 and would
+     have come out as five lines of about twenty characters. Same instinct,
+     measured each time rather than applied as a rule. */
   .problem-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
-  /* Two-up rather than four. Four chips across a phone left each one narrower
-     than its own value ("1000+" at 30px), which pushed the number out of the
-     chip and gave the whole document a horizontal scrollbar. */
+  /* FOUR ACROSS, ONE ROW — the way it reads on a desktop. It was two-up here
+     because at the desktop's 30px the value "1000+" was wider than the chip it
+     sat in, which pushed it out and gave the whole document a horizontal
+     scrollbar. That is a type-size problem, not a layout one: the number and
+     the label are both on viewport clamps now, so every chip holds its own
+     value at every width rather than the row being folded in half to hide it.
+
+     The row also takes the phone's 36px gutters rather than the desktop's 48,
+     which is 12px more to divide between four chips. `100vw` counts the
+     scrollbar, so this is narrower than the column beside it, never wider —
+     the direction that cannot overflow. */
   .promise-stats {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    width: min(880px, calc(100vw - 36px));
   }
   .stat-chip {
-    padding: 16px 18px;
+    padding: 13px 4px 12px;
+    /* The large radius was drawn for a chip three times this wide; at 65px it
+       ate the corners. */
+    border-radius: var(--r-md);
   }
-  .stat-chip b {
-    font-size: 26px;
+  /* Swapped, not shortened for everyone: "Real Time Projects" needs 96px and a
+     quarter of a 390px phone is 74px. */
+  .stat-label--full {
+    display: none;
+  }
+  .stat-label--short {
+    display: block;
+  }
+  .stat-label {
+    margin-top: 4px;
+    font-size: clamp(8.5px, 2.6vw, 11.5px);
+    line-height: 1.3;
+    /* THE LABEL IS THE BINDING CONSTRAINT, NOT THE NUMBER. "Opportunities" is
+       one unbreakable word wider than a quarter of a 320px phone at any size
+       worth reading, and it was spilling out of the chip — the same failure
+       the value used to have, one element over. It breaks instead. The page is
+       lang="en", so the dictionary gives a real break rather than a blind one,
+       and break-word is the backstop where hyphenation is unavailable. */
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    overflow-wrap: break-word;
   }
   .module-row {
     flex-wrap: wrap;
@@ -7117,17 +7542,38 @@ details p {
   .heading-row {
     margin-bottom: 22px;
   }
+  /* Sized off the viewport so "1000+" — the widest of the four, five glyphs of
+     tabular figures — stays inside its chip at every phone width rather than
+     forcing the row to fold. Declared here rather than beside the layout above
+     because this block is later in the file and would otherwise win. */
   .stat-chip b {
-    font-size: 24px;
+    font-size: clamp(15px, 5.2vw, 22px);
+    letter-spacing: -0.045em;
   }
+  /* Tighter than the single-column card was, because the card is now half as
+     wide — the old 16px sides were fine against 354px and cost too much
+     against 171. The chip comes down with it so it stays a marker on the card
+     rather than a third of its height. */
   .problem-card {
-    padding: 18px 16px 16px;
+    padding: 16px 14px 14px;
   }
-  .problem-card h3,
+  .problem-mark {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+  .problem-card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .problem-card p {
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
   .included-card h3 {
     font-size: 17px;
   }
-  .problem-card p,
   .included-card p {
     font-size: 14px;
   }
@@ -7230,15 +7676,29 @@ details p {
   .module-index {
     padding-top: 3px;
   }
+  /* A NOTCH DOWN ACROSS THE CARD. Four rows of title, marks, price, button and
+     a two-line note is a lot of text for a phone column; none of it can go, so
+     all of it comes down a step together — dropping only one part would have
+     made the rest look accidental. */
+  .modules-card {
+    padding: 18px 16px;
+  }
+  .modules-card h3 {
+    font-size: 16.5px;
+  }
+  .modules-card > p {
+    font-size: 12.5px;
+    margin: 8px 0 12px;
+  }
   .module-row b {
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.3;
   }
   .module-row small {
-    font-size: 12.5px;
-    line-height: 1.4;
+    font-size: 11.5px;
+    line-height: 1.45;
   }
   .module-mark {
     width: 13px;
@@ -7248,7 +7708,7 @@ details p {
      to centre on the title: the price by sitting 4px into that 28px box, the
      button by giving back the 5px difference between the two centres. */
   .module-price {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.3;
     padding-top: 4px;
     margin-top: -5px;
@@ -7256,8 +7716,14 @@ details p {
   .module-add,
   .module-soon {
     width: 64px;
-    min-height: 28px;
+    min-height: 34px;
     margin-top: -5px;
+  }
+  /* The soon row has no price, so with four tracks declared it was filling the
+     third and sitting a whole column left of every Add button above it. Named
+     to the last track, it lines up with them. */
+  .module-soon {
+    grid-column: 4;
   }
   .cart-actions {
     min-height: 34px;
@@ -7266,6 +7732,72 @@ details p {
   .cart-checkout {
     width: 100%;
     margin-left: 0;
+  }
+}
+
+/* ============ PHONE: TAP TARGETS ============ */
+/* A pointer lands where it is aimed; a thumb lands within about 10px of it.
+   Everything below is already the right SIZE on screen — these rules only grow
+   the box the finger has to hit, so nothing here changes how the page looks.
+   Where the visible object itself was under the ~44px comfortable minimum the
+   padding is added around it rather than to it, and where it could simply be
+   taller without being noticed (the credential chips, the cart's Add) it is.
+   Phone only: at a mouse these were never a problem. */
+@media (max-width: 680px) {
+  /* Padding, not height: the wordmark stays 19px where it sits, and the link
+     around it reaches the full height of the pill. */
+  .brand {
+    min-height: 44px;
+    align-items: center;
+  }
+  /* The track keeps its 56x30 shape — the button around it takes the slack, so
+     the toggle is still a small pill but is no longer a 30px target. */
+  .theme-toggle {
+    align-items: center;
+    min-height: 40px;
+  }
+  /* The one control in the page that switches which certificate is on show,
+     and at 35px the smallest thing on the phone worth tapping. */
+  .cert-tool {
+    min-height: 42px;
+    padding: 9px 15px 9px 11px;
+  }
+  /* Social marks and the return-to-top control both sat a few pixels under.
+     The ring is what a reader sees, so the ring holds its size and the anchor
+     grows around it. */
+  .footer-social a,
+  .footer-top-link {
+    width: 40px;
+    height: 40px;
+  }
+  /* Stacked text links: nothing to grow sideways into, so the rows take the
+     room instead. Still tight enough that the two columns read as lists. */
+  .footer-nav a {
+    padding: 10px 0;
+  }
+  /* The tool card's pair wraps to one per row on a phone, and two buttons of
+     different widths stacked left read as a wrapped row that ran out of space
+     rather than a deliberate stack. Full width across the card makes the stack
+     look chosen, and gives the second action the same target as the first. */
+  /* ONE ROW WHERE THE PAIR FITS, STACKED WHERE IT DOES NOT — and no breakpoint
+     to decide which. flex-grow with wrapping does it: on a line with room the
+     two share it, and on one without, each takes its own row and grows to the
+     full width, which is the stack. Two 44px buttons and a gap were 98px of a
+     card that is trying to lose height.
+
+     A flex item will not shrink below its own min-content, and the labels are
+     nowrap, so they wrap rather than crushing. */
+  .tool-cta {
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  .tool-cta > .button {
+    flex: 1 1 auto;
+    width: auto;
+    /* Trimmed from the page default so the pair clears one line on a 360px
+       phone too, instead of only from 390 up. */
+    padding: 0 14px;
   }
 }
 
@@ -8751,15 +9283,161 @@ details p {
   color: var(--ink-2);
 }
 
+/* The rail's window is nothing above 680px: the list stays a direct child of
+   .included-more, so the wrapped row there is exactly what it always was. */
+.included-rail {
+  display: contents;
+}
+
+/* The second and third passes of the rail. In the markup at every width so the
+   phone loop has no seam, and off here, where the row wraps instead. Declared
+   after .included-more li so nothing else has to outrank it. */
+.included-more-pass {
+  display: none;
+}
+
+/* One pass of the three — see the note on @keyframes accred-rail, which this
+   is built the same way. Left to right, so the chips run toward "and more"
+   rather than away from it. */
+@keyframes included-rail {
+  from {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ONE ROW THAT MOVES, NOT THREE THAT WRAP. On a phone the six chips broke over
+   three lines and pushed "and more" onto a fourth of its own, where a closing
+   aside read as a fourth row of the list.
+
+   "AND MORE" IS THE FIXED POINT. It sits outside the rail, last in the row and
+   pinned to the end of the column, while the chips travel past it — it closes
+   the list, so it has to be the thing that stays put. The rail takes whatever
+   width is left.
+
+   The desktop row already holds one line, so none of this applies above 680. */
+@media (max-width: 680px) {
+  .included-more {
+    flex-wrap: nowrap;
+  }
+  .included-rail {
+    display: block;
+    /* min-width: 0 is the half that matters: as a flex item this defaults to
+       its min-content width, and a minimum beats `overflow: hidden` — without
+       it the rail widens to the whole track and pushes "and more" off screen. */
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    /* Chips dissolve at both ends rather than being cut — the same treatment
+       the logo rails use. The right-hand fade also keeps a chip from arriving
+       hard against "and more". */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 82%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 82%, transparent);
+  }
+  .included-more ul {
+    flex-wrap: nowrap;
+    /* Intrinsic, so a third of the track is exactly one pass. */
+    width: max-content;
+    animation: included-rail 29s linear infinite;
+  }
+  .included-more-pass {
+    display: block;
+  }
+  /* Flex items shrink by default, and in a row that is meant to overflow its
+     window that is the one thing they must not do. */
+  .included-more li,
+  .included-more > span {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+/* A RAIL THAT CANNOT MOVE IS FOUR CHIPS NOBODY EVER SEES. The global
+   reduced-motion rule parks the track at its end state and .included-rail is a
+   clipped window, not a scroller — so everything past the second chip would sit
+   outside it unreachable. The wrapped row has no such problem, so for this
+   reader the list goes back to it. Must sit after the block above to outrank
+   it. */
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  .included-more {
+    flex-wrap: wrap;
+  }
+  .included-rail {
+    display: contents;
+  }
+  .included-more ul {
+    flex-wrap: wrap;
+    width: auto;
+    animation: none;
+  }
+  .included-more-pass {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   .included-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* SIX TILES, THREE TO A ROW. The section used to run 1618px on a 390px phone
+   for six short items; the icon alone took a 55px band on every card. Three
+   across turns them into a compact tile grid two rows deep.
+
+   THE DESCRIPTIONS COME OFF, AND THAT IS THE WHOLE COST. A third of a 390px
+   phone is about 92px of text: the one-line body would have set as roughly
+   seven lines of fifteen characters, which is not reading. The tile keeps the
+   icon and the name — the two things that make the list scannable — and the
+   full card returns above 620px. Deliberate, not an oversight; if the body
+   matters more than the density, this block goes back to one card per row.
+
+   The title is on a clamp because "Opportunities" is one unbreakable word
+   wider than a third of a small phone at a fixed size. */
 @media (max-width: 620px) {
   .included-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .included-card {
+    display: block;
+    padding: 14px 5px 13px;
+    text-align: center;
+    border-radius: var(--r-lg);
+  }
+  .included-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 8px;
+    border-radius: 9px;
+  }
+  .included-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+  .included-card h3 {
+    margin: 0;
+    font-size: clamp(10px, 2.78vw, 13px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .included-card p {
+    display: none;
+  }
+}
+
+/* THREE ACROSS NEEDS ROOM FOR THE LONGEST WORD IN A TITLE, and "Opportunities"
+   is 87px at the smallest size worth setting it. A third of a 330px phone is
+   narrower than that, so the smallest handsets take two tiles a row rather
+   than breaking a title across a hyphen. 350 is where the third column starts
+   to fit with the title still legible, measured — not a figure picked for a
+   device. 375 and up, which is every mainstream handset, takes three. */
+@media (max-width: 364px) {
+  .included-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

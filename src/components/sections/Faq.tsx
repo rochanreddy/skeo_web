@@ -20,7 +20,7 @@ export function Faq() {
           wondering.
         </h2>
         <p>
-          Straight answers on how skeo works,
+          Straight answers on how skeo works,{' '}
           <br />
           what you walk away with, and what it costs.
         </p>

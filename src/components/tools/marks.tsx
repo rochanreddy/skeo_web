@@ -67,6 +67,63 @@ export function GeminiMark({ className }: MarkProps) {
 }
 
 /**
+ * Claude automations, as a glyph rather than a logo — the third of the set,
+ * and the same call as Cowork and Code below it.
+ *
+ * A bolt with a node path running through it: the run and the steps in it.
+ * The reference artwork carries the nodes as fine light dots inside the bolt;
+ * at the 13px these marks are set they close up into a smudge, so the path is
+ * cut clean THROUGH the bolt instead — same reading, and it survives the size.
+ * Claude terracotta, 24 grid, so it sits with the asterisk, the people and the
+ * prompt.
+ *
+ * It is deliberately NOT presented as the official mark.
+ */
+export function ClaudeAutomationsMark({ className }: MarkProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        d="M13.9 1.6 3.4 13.2a1 1 0 0 0 .74 1.67h4.2l-1.24 7.06a1 1 0 0 0 1.73.83l10.5-11.6a1 1 0 0 0-.74-1.67h-4.2l1.24-7.06a1 1 0 0 0-1.73-.83Z"
+        fill="#d97757"
+      />
+      {/* The step path, knocked out of the bolt so it reads at any size and on
+          either palette — the bolt supplies the contrast, not the page. */}
+      <g fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.6 7.3 10.1 10.6l4 2.9-4.5 3.3" />
+      </g>
+      <g fill="#fff">
+        <circle cx="14.9" cy="7.1" r="1.5" />
+        <circle cx="9.8" cy="16.9" r="1.5" />
+      </g>
+    </svg>
+  )
+}
+
+/**
+ * Claude Cowork, as a glyph rather than a logo — the same call, and for the
+ * same reason, as Claude Code below it.
+ *
+ * Two figures at a shared desk: Cowork is the surface where work is handed
+ * over rather than typed out, so the glyph is people where Code is a prompt.
+ * Drawn on the same 24 grid at the same 2px stroke and in Claude's terracotta,
+ * so the three read as one family at 13px — asterisk, people, prompt.
+ *
+ * It is deliberately NOT presented as the official mark.
+ */
+export function ClaudeCoworkMark({ className }: MarkProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <g fill="none" stroke="#d97757" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="7.4" r="3.3" />
+        <path d="M2.9 20.1v-1.3a4.4 4.4 0 0 1 4.4-4.4h3.4a4.4 4.4 0 0 1 4.4 4.4v1.3" />
+        <path d="M16.4 4.5a3.3 3.3 0 0 1 0 5.9" />
+        <path d="M21.1 20.1v-1.3a4.4 4.4 0 0 0-3.1-4.2" />
+      </g>
+    </svg>
+  )
+}
+
+/**
  * Claude Code, as a glyph rather than a logo.
  *
  * Anthropic ships "CLAUDE CODE" as a wide wordmark, and every other mark here

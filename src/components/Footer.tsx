@@ -124,19 +124,25 @@ export function Footer() {
           </div>
         </div>
 
-        {/* The wordmark, oversized and half-buried — it closes the page the way
-            the nav opens it. */}
-        <span className="footer-mark" aria-hidden="true">
-          {site.name.toLowerCase()}
-        </span>
-
-        <div className="footer-bottom">
-          <span>
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
+        {/* The two closing rows, wrapped only so the phone stylesheet can put
+            the mark after the legal line instead of before it. `display:
+            contents` above 680px, so both stay direct children of .footer-inner
+            there and the desktop close is untouched — see .footer-close. */}
+        <div className="footer-close">
+          {/* The wordmark, oversized and half-buried — it closes the page the way
+              the nav opens it. */}
+          <span className="footer-mark" aria-hidden="true">
+            {site.name.toLowerCase()}
           </span>
-          <a className="footer-top-link" href="#top" aria-label="Back to top">
-            ↑
-          </a>
+
+          <div className="footer-bottom">
+            <span>
+              © {new Date().getFullYear()} {site.name}. All rights reserved.
+            </span>
+            <a className="footer-top-link" href="#top" aria-label="Back to top">
+              ↑
+            </a>
+          </div>
         </div>
       </div>
     </footer>

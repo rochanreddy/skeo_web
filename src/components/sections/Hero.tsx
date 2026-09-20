@@ -14,7 +14,7 @@ export function Hero() {
           <em>that matter!</em>
         </h1>
         <p>
-          Claude, ChatGPT, Gemini, n8n, Lovable and many more.
+          Claude, ChatGPT, Gemini, n8n, Lovable and many more.{' '}
           <br />
           Learn by doing, build real proof of work, and unlock opportunities.
         </p>

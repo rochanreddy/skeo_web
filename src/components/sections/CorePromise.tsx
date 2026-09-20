@@ -13,7 +13,7 @@ export function CorePromise() {
             One platform. <em>Every AI tool.</em>
           </h2>
           <p>
-            skeo brings every major AI tool into one structured system of short challenges.
+            skeo brings every major AI tool into one structured system of short challenges.{' '}
             <br />
             So you build real skills, not just watch them.
           </p>
@@ -23,7 +23,10 @@ export function CorePromise() {
                 <b>
                   <CountUp to={stat.value} suffix={stat.suffix} />
                 </b>
-                <span className="stat-label">{stat.label}</span>
+                {/* Both wordings ship; the stylesheet shows one. See
+                    promiseStats for why the phone needs a shorter one. */}
+                <span className="stat-label stat-label--full">{stat.label}</span>
+                <span className="stat-label stat-label--short">{stat.short}</span>
               </SpotlightCard>
             ))}
           </div>

@@ -79,7 +79,16 @@ export type ModuleRow = {
   subtitle: string
   /** Rupees — see lib/currency for how this reaches a reader. */
   amount: number
-  marks: readonly ('claude' | 'claudeCode' | 'chatgpt' | 'gemini' | 'n8n' | 'lovable')[]
+  marks: readonly (
+    | 'claude'
+    | 'claudeCowork'
+    | 'claudeCode'
+    | 'claudeAutomations'
+    | 'chatgpt'
+    | 'gemini'
+    | 'n8n'
+    | 'lovable'
+  )[]
 }
 
 export const MODULE_ROWS: ModuleRow[] = [
@@ -96,7 +105,9 @@ export const MODULE_ROWS: ModuleRow[] = [
     title: 'Claude Playbooks',
     subtitle: 'From everyday work to coding, research, design, and workflows',
     amount: 99,
-    marks: ['claude', 'claudeCode'],
+    // Chat, Cowork, Code — the three Claude surfaces, in the order the tool
+    // card names them.
+    marks: ['claude', 'claudeCowork', 'claudeCode', 'claudeAutomations'],
   },
   {
     key: 'library',

@@ -16,7 +16,9 @@ import { price, useCurrency } from '@/lib/currency'
 import { MODULE_ROWS, PLANS, type ModuleKey } from '@/lib/plans'
 import {
   ChatGptMark,
+  ClaudeAutomationsMark,
   ClaudeCodeMark,
+  ClaudeCoworkMark,
   ClaudeMark,
   GeminiMark,
   LovableMark,
@@ -25,7 +27,9 @@ import {
 
 const MARKS = {
   claude: ClaudeMark,
+  claudeCowork: ClaudeCoworkMark,
   claudeCode: ClaudeCodeMark,
+  claudeAutomations: ClaudeAutomationsMark,
   chatgpt: ChatGptMark,
   gemini: GeminiMark,
   n8n: N8nMark,

@@ -15,9 +15,9 @@ export function Jobs() {
             Job &amp; Freelancing Board.
           </h2>
           <p>
-            Certification is just the beginning.
+            Certification is just the beginning.{' '}
             <br />
-            Apply skills to work through real opportunities
+            Apply skills to work through real opportunities{' '}
             <br />
             to earn, gain experience, and build your career.
           </p>
@@ -28,7 +28,10 @@ export function Jobs() {
           </ul>
           <AuthButton mode="signup">Explore the board</AuthButton>
         </Reveal>
-        <Reveal delay={1}>
+        {/* Classed only so the phone stylesheet can order the panel between the
+            heading and the copy — see .jobs-panel in globals.css. Nothing
+            targets it above 680px. */}
+        <Reveal className="jobs-panel" delay={1}>
           <JobBoard />
         </Reveal>
       </div>

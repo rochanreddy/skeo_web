@@ -98,6 +98,11 @@ const MORE = [
   'Free content updates',
 ]
 
+/* Three passes of the list, the way the accreditation rail builds its track:
+   one on screen, one entering, one leaving, so the phone loop has no seam.
+   Passes 1 and 2 are `display: none` above 680px, where the row still wraps. */
+const RAIL_PASSES = [0, 1, 2]
+
 export function Included() {
   return (
     <section className="section included" id="included" aria-labelledby="included-title">
@@ -121,11 +126,28 @@ export function Included() {
         </div>
 
         <Reveal className="included-more">
-          <ul>
-            {MORE.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          {/* The window the chips travel through on a phone. `display: contents`
+              above 680px, so the list is a direct child of .included-more there
+              and the wrapped row is exactly what it always was. */}
+          <div className="included-rail">
+            <ul>
+              {RAIL_PASSES.map((pass) =>
+                MORE.map((item) => (
+                  <li
+                    key={`${pass}-${item}`}
+                    className={pass === 0 ? undefined : 'included-more-pass'}
+                    /* The repeats are the same six over again; a screen reader
+                       should hear the list once. */
+                    aria-hidden={pass > 0 || undefined}
+                  >
+                    {item}
+                  </li>
+                )),
+              )}
+            </ul>
+          </div>
+          {/* Outside the rail on purpose: it closes the list, so it holds the
+              end of the row while the chips run past it. */}
           <span>and more</span>
         </Reveal>
       </div>

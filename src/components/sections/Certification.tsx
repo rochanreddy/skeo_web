@@ -19,9 +19,9 @@ export function Certification() {
             real signal.
           </h2>
           <p>
-            Build skills across the tools you need, from beginner to advanced.
+            Build skills across the tools you need, from beginner to advanced.{' '}
             <br />
-            Put them into practice, earn verified credentials, and
+            Put them into practice, earn verified credentials, and{' '}
             <br />
             build a profile that shows what you can actually do.
           </p>
