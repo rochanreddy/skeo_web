@@ -6929,10 +6929,41 @@ details p {
   }
   /* Stacking already happened at 900px; these are the phone refinements on top. */
   .hero {
-    padding-top: 38px;
+    padding-top: 28px;
+  }
+  /* THE CTA GOES UNDER THE STAGE, WHERE A THUMB IS. Held at the top of the
+     hero it sat around 325px down — the far reach of a one-handed grip, past
+     the middle of the screen and awkward on the right. Below the stage it
+     lands in the lower third, which is where a thumb rests.
+
+     The button and the stage are in different parents, so  alone cannot
+     interleave them: dissolving the copy block promotes its children to items
+     of .hero itself, and from there the button can be ordered past the stage.
+     Reading order is unchanged — this moves paint, not markup.
+
+     The copy block's padding goes with its box, so the two figures it carried
+     are handed to the children that now sit at those edges. */
+  .hero {
+    display: flex;
+    flex-direction: column;
   }
   .hero-copy {
-    padding: 12px 0 42px;
+    display: contents;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-copy .eyebrow {
+    margin-top: 4px;
+  }
+  .proof {
+    margin-bottom: 22px;
+  }
+  .tool-stage-frame {
+    order: 2;
+  }
+  .hero-buttons {
+    order: 3;
+    margin: 0 0 8px;
   }
   /* "Master the AI tools" cannot hold one line in a phone column, so let the
      balancer split it evenly rather than leaving "tools" alone on its own row.
@@ -6951,9 +6982,11 @@ details p {
     margin: 27px 0 32px;
     flex-wrap: wrap;
   }
+  /* This is the gap between the stage and the CTA now, not the foot of the
+     hero — 48px was drawn for the latter. */
   .tool-stage-frame {
     min-width: 0;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
   }
   .tool-stage {
     /* Cards shrink faster than the column so the ring still fits across a
@@ -7308,6 +7341,32 @@ details p {
   .credential-copy > p,
   .jobs-copy > p {
     margin-top: 26px;
+  }
+  /* TWO MARGINS WHERE ONE WAS MEANT. Between the tick list and the tool chips
+     the certificate section was carrying 52px, and the job board 46px between
+     its paragraph and its bullets — in both cases a list margin and a
+     neighbour's margin standing end to end rather than collapsing. Set
+     explicitly here so the figure is the gap, not the sum of two. */
+  .credential-copy > p {
+    margin-bottom: 18px;
+  }
+  /* :not(.cert-tools) matters — the tool chips are a .credential-copy > ul too,
+     and a bare descendant selector here outranks .cert-tools's own margin and
+     closed the gap above the chips to nothing. */
+  .credential-copy > ul:not(.cert-tools) {
+    margin: 0;
+  }
+  .credential-copy > ul:not(.cert-tools) > li:last-child {
+    margin-bottom: 0;
+  }
+  .credential-copy > ul.cert-tools {
+    margin-top: 20px;
+  }
+  .jobs-copy p {
+    margin-bottom: 0;
+  }
+  .opportunity-list {
+    margin: 20px 0 24px;
   }
   .testimonials {
     padding-top: 75px;
