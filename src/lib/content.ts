@@ -69,9 +69,9 @@ export const featuredTool = {
      an overlay that describes another is the reader's first reason to doubt
      either, and this is the one pair of numbers they see back to back. */
   facts: [
-    { icon: 'book', label: '12 lessons' },
+    { icon: 'book', label: '8+ modules' },
+    { icon: 'rocket', label: '10+ projects' },
     { icon: 'clock', label: '15 hours' },
-    { icon: 'rocket', label: '5+ projects' },
     { icon: 'compass', label: 'Self-paced' },
   ],
   blurb:
@@ -99,7 +99,7 @@ export const claudeSyllabus = {
      different figures describing the same course (8 modules / 41 lessons / 40
      assignments), which is not wrong but reads as a second course when the
      overlay opens straight off the card. */
-  stats: ['12 lessons', '15 hours', '5+ projects', 'Self-paced'],
+  stats: ['8+ modules', '10+ projects', '15 hours', 'Self-paced'],
   modules: [
     {
       title: 'Foundations: how AI and Claude actually work',

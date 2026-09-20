@@ -6946,6 +6946,12 @@ details p {
   .hero {
     display: flex;
     flex-direction: column;
+    /* The grid above sets align-items: center to sit the copy against the
+       stage. On a column flex that is the CROSS axis, so it shrink-wrapped
+       and centred every child narrower than the column — the proof row sat
+       20px in from the paragraph above it, and the eyebrow chip, which is
+       left-aligned everywhere else, had quietly moved to the middle. */
+    align-items: stretch;
   }
   .hero-copy {
     display: contents;
@@ -6954,6 +6960,9 @@ details p {
   }
   .hero-copy .eyebrow {
     margin-top: 4px;
+    /* Stretch would pull the chip the width of the screen; it hugs its own
+       text, at the left edge the headline starts from. */
+    align-self: flex-start;
   }
   .proof {
     margin-bottom: 22px;
@@ -6964,6 +6973,18 @@ details p {
   .hero-buttons {
     order: 3;
     margin: 0 0 8px;
+    /* The one child that keeps the centre: at the foot of the hero a centred
+       CTA reads as deliberate, and it is the easiest point on the row for a
+       thumb of either hand. */
+    justify-content: center;
+  }
+  /* The line under the count is the quiet half of the pair — it was within a
+     point of the figure it qualifies. Both come down a step. */
+  .proof strong {
+    font-size: 13px;
+  }
+  .proof span {
+    font-size: 12px;
   }
   /* "Master the AI tools" cannot hold one line in a phone column, so let the
      balancer split it evenly rather than leaving "tools" alone on its own row.
@@ -9191,6 +9212,14 @@ details p {
 
 
 /* ============ WHAT YOU GET ============ */
+/* The one light section on a tinted ground. --surface is the palette's own
+   beige — warm in Ivory, Claude and Original, and the right dark step in
+   Charcoal — so this follows the theme rather than pinning a hex. The cards
+   inside stay --card-bg, which is what lifts them off it. Background only — a
+   border here would add 2px to the page and shift everything below it. */
+.included {
+  background: var(--surface);
+}
 /* Six cards on a three-up grid, then the overflow as a plain row of chips.
    Deliberately flat — it sits between the certificate and the job board, both
    of which are heavy visuals, so a third showpiece would fight them. */
