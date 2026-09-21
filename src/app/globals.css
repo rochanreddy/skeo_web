@@ -10147,3 +10147,153 @@ details p {
     font-size: 15.5px;
   }
 }
+
+/* ============ ABOUT ============
+   Wider than the legal pages and narrower than the home page. The policies are
+   read clause by clause at 760px; the home page is a sales surface at 1440.
+   This is neither — prose with a stat row and two definition lists in it, which
+   wants about 880. */
+.about {
+  background: var(--paper);
+  padding: 40px 0 96px;
+}
+.about-wrap {
+  max-width: 880px;
+}
+
+.about-head h1 {
+  margin: 14px 0 0;
+  font-size: clamp(38px, 6vw, 62px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+.about-head h1 em {
+  font-style: normal;
+  color: var(--ink-4);
+}
+/* Set larger than body copy: these two paragraphs are the page’s argument and
+   everything below them is support. */
+.about-lede {
+  margin: 22px 0 0;
+  max-width: 62ch;
+  font-size: clamp(17px, 1.4vw, 19px);
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+/* The home page’s four figures, at rest. They count up there because the eye
+   arrives at speed; here the reader came deliberately, and a number that
+   animates while being read is a number being shown off. */
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 52px 0 0;
+  padding: 28px 0;
+  border-block: 1px solid var(--line);
+}
+.about-stat b {
+  display: block;
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+}
+.about-stat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--ink-4);
+}
+
+.about-block {
+  margin-top: 56px;
+}
+.about-block h2 {
+  margin: 0 0 16px;
+  font-size: clamp(24px, 2.6vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.about-block p {
+  margin: 0 0 16px;
+  max-width: 66ch;
+  font-size: 16.5px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+.about-block p b {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Term and detail on one row on a wide screen, stacked on a narrow one. A
+   definition list rather than a bulleted one: each row is a name and what it
+   means, which is what a <dl> is for and what a <ul> has to fake with bold. */
+.about-list {
+  margin: 0;
+}
+.about-item {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 8px 28px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.about-item:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.about-item dt {
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.about-item dd {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+.about-item dd a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.about-policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.about-policies a {
+  text-decoration: none;
+  font-weight: 600;
+}
+.about-policies a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 860px) {
+  /* Two rows of two rather than four columns: at four the labels wrap to three
+     lines and the row is taller than it is tall anywhere else. */
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px 20px;
+  }
+  .about-item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 680px) {
+  .about {
+    padding: 24px 0 64px;
+  }
+  .about-block {
+    margin-top: 44px;
+  }
+}

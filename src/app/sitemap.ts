@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     /* The policies. Low priority and rarely changed, but they belong in the
        sitemap: a payment gateway or an app store reviewer looking for a refund
        policy should find it through search, not only through the footer. */
-    ...['privacy', 'refund', 'terms'].map((path) => ({
+    ...['about', 'privacy', 'refund', 'terms'].map((path) => ({
       url: `${site.url}/${path}`,
       lastModified: new Date(),
       changeFrequency: 'yearly' as const,
