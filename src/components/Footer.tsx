@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { AuthButton } from '@/components/ActionButton'
 import menlerMark from '@/assets/employers/menler-mark-white.png'
 import { site } from '@/lib/site'
@@ -14,10 +15,13 @@ const columns = [
   {
     title: 'Explore',
     links: [
-      { label: 'Tools', href: '#tools' },
-      { label: 'Job Board', href: '#jobs' },
-      { label: 'Reviews', href: '#reviews' },
-      { label: 'Pricing', href: '#pricing' },
+      /* Rooted, not bare hashes. This footer is on the policy and about pages
+         too now, and "#tools" there resolves against the current URL — a link
+         to an element that does not exist, which silently does nothing. */
+      { label: 'Tools', href: '/#tools' },
+      { label: 'Job Board', href: '/#jobs' },
+      { label: 'Reviews', href: '/#reviews' },
+      { label: 'Pricing', href: '/#pricing' },
     ],
   },
   {
@@ -114,10 +118,14 @@ export function Footer() {
             {columns.map((column) => (
               <nav key={column.title} aria-label={column.title}>
                 <span className="footer-col-title">{column.title}</span>
+                {/* Link, not <a>: from the home page a rooted hash would
+                    otherwise reload the page it is already on, and from
+                    elsewhere it navigates and then scrolls. Link does the
+                    right one of those without being told which. */}
                 {column.links.map((link) => (
-                  <a key={link.label} href={link.href}>
+                  <Link key={link.label} href={link.href}>
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             ))}

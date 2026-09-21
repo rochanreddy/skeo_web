@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { lms, navLinks } from '@/lib/site'
 
@@ -9,6 +10,20 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [activeId, setActiveId] = useState<string | null>(null)
   const shellRef = useRef<HTMLDivElement>(null)
+
+  /* EVERY DESTINATION IN THIS BAR IS A SECTION OF THE HOME PAGE. On the home
+     page a bare hash is right: it scrolls, and it does not reload. Anywhere
+     else the same hash resolves against the current URL, so "#tools" on
+     /about becomes /about#tools — a link to an element that does not exist,
+     which silently does nothing. Prefixing with "/" off the home page turns
+     each one back into a real destination.
+
+     The brand is the same problem with a worse symptom: "#top" is defined to
+     scroll to the top of the DOCUMENT, so on /about it scrolls the about page
+     to its own top and looks like a link that is broken rather than one that
+     went somewhere. */
+  const onHome = usePathname() === '/'
+  const section = (hash: string) => (onHome ? hash : `/${hash}`)
 
   // Shadow the header once the page has moved off the top, and run the progress
   // line under it. Written as a custom property rather than state so scrolling
@@ -75,7 +90,7 @@ export function Nav() {
   return (
     <div ref={shellRef} className={`nav-shell${scrolled ? ' scrolled' : ''}`}>
       <header className="nav wrap">
-        <a className="brand" href="#top" aria-label="skeo home">
+        <a className="brand" href={onHome ? '#top' : '/'} aria-label="skeo home">
           <span>skeo</span>
         </a>
 
@@ -83,7 +98,7 @@ export function Nav() {
           {navLinks.map((link) => (
             <a
               key={link.href}
-              href={link.href}
+              href={section(link.href)}
               onClick={() => setOpen(false)}
               aria-current={activeId === link.href.slice(1) ? 'true' : undefined}
               className={activeId === link.href.slice(1) ? 'active' : undefined}
