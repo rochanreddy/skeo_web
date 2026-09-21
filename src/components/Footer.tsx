@@ -28,7 +28,11 @@ const columns = [
     title: 'Company',
     links: [
       { label: 'About', href: '/about' },
-      { label: 'Contact', href: '/contact' },
+      /* There is no /contact page and there does not need to be: the company
+         block on the About page already carries the entity, the jurisdiction,
+         the address to write to and the policies. A separate page would be
+         those same four rows on their own. */
+      { label: 'Contact', href: '/about#working-with-us' },
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Refund Policy', href: '/refund' },
       { label: 'Terms & Conditions', href: '/terms' },

@@ -44,7 +44,41 @@ export function Reveal({ children, as: Tag = 'div', className = '', delay = 0, .
     )
 
     observer.observe(node)
-    return () => observer.disconnect()
+
+    /* A FRAGMENT NAVIGATION SCROLLS THE PAGE AFTER THIS EFFECT HAS RUN, and the
+       observer does not reliably deliver an entry for that jump. Measured on
+       this site: arriving at /#pricing or /#reviews left the target section at
+       opacity 0 for as long as you did not touch the page — so every shared
+       deep link landed on something invisible, and the fix for one of them is
+       the fix for all of them.
+
+       Only a hash can put the page in that state, so only a hash pays for the
+       extra listener. The timeout is for a jump that produces no scroll event
+       we catch; both stop at the first hit. */
+    if (!window.location.hash) return () => observer.disconnect()
+
+    /* A short poll rather than a scroll listener, because the page can settle in
+       three different ways and only one of them is a scroll event: the smooth
+       scroll to the fragment runs for up to two seconds, it may finish before
+       this effect even attaches, and content loading above the target moves it
+       into view afterwards without scrolling anything — which is what still had
+       /#tools arriving blank when this listened for scrolls alone.
+       Twelve looks at 250ms covers the slowest of those and then stops. */
+    let looks = 0
+    const timer = window.setInterval(() => {
+      const box = node.getBoundingClientRect()
+      if (box.top < window.innerHeight && box.bottom > 0) {
+        setVisible(true)
+        window.clearInterval(timer)
+      } else if (++looks > 12) {
+        window.clearInterval(timer)
+      }
+    }, 250)
+
+    return () => {
+      observer.disconnect()
+      window.clearInterval(timer)
+    }
   }, [])
 
   const classes = ['reveal', delay === 1 ? 'delay-1' : delay === 2 ? 'delay-2' : '', visible ? 'visible' : '', className]

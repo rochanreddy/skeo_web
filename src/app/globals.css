@@ -10263,17 +10263,68 @@ details p {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.about-policies {
+
+/* Three ways in, as cards. Same idea as the section on menler.in, in this
+   site’s materials: a quiet raised panel rather than an outlined box, because
+   the page around it is already paper and an outline on paper reads as a form
+   field. */
+.about-ways {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 4px;
+}
+.about-way {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
+  flex-direction: column;
+  /* The address is pinned to the foot of every card, so the three line up
+     even though their descriptions do not run to the same number of lines. */
+  gap: 10px;
+  padding: 22px 22px 20px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
 }
-.about-policies a {
-  text-decoration: none;
+.about-way-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.about-way-desc {
+  margin: 0;
+  flex: 1;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+.about-way-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 4px;
+  font-size: 14px;
   font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  /* The whole row is the target, not just the text: an email address is a
+     small thing to hit and it is the only action on the card. */
+  align-self: flex-start;
 }
-.about-policies a:hover {
+.about-way-cta svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: var(--ink-4);
+  transition: color 0.15s ease;
+}
+.about-way-cta:hover {
   text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.about-way-cta:hover svg {
+  color: var(--ink);
 }
 
 @media (max-width: 860px) {
@@ -10286,6 +10337,11 @@ details p {
   .about-item {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+  /* One column rather than three: at this width three cards leave the
+     descriptions two words wide. */
+  .about-ways {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -32,6 +32,24 @@ const WHAT_A_SEAT_INCLUDES = [
   ['A job board', 'Roles and freelance briefs, open to members who have the proof to apply with.'],
 ]
 
+const WAYS = [
+  {
+    title: 'Learn with skeo',
+    desc: 'Every major AI tool in one place, taught as short challenges that end in real projects and a verified credential.',
+    subject: 'Learning with skeo',
+  },
+  {
+    title: 'Hire from skeo',
+    desc: 'Reach people whose AI skills are evidenced by the work they shipped, not by the course they sat through.',
+    subject: 'Hiring from skeo',
+  },
+  {
+    title: 'Teach with skeo',
+    desc: 'Mentor, review projects or build a track — for operators who would rather teach the tools than talk about them.',
+    subject: 'Teaching with skeo',
+  },
+]
+
 export function About() {
   return (
     <>
@@ -115,30 +133,32 @@ export function About() {
             </p>
           </Reveal>
 
-          <Reveal className="about-block about-company">
-            <h2>The company</h2>
-            <dl className="about-list">
-              <div className="about-item">
-                <dt>Legal entity</dt>
-                <dd>Menler Learning Systems Private Limited</dd>
-              </div>
-              <div className="about-item">
-                <dt>Registered jurisdiction</dt>
-                <dd>Bengaluru, Karnataka, India</dd>
-              </div>
-              <div className="about-item">
-                <dt>Contact</dt>
-                <dd><a href="mailto:support@skeoai.com">support@skeoai.com</a></dd>
-              </div>
-              <div className="about-item">
-                <dt>Policies</dt>
-                <dd className="about-policies">
-                  <Link href="/privacy">Privacy Policy</Link>
-                  <Link href="/refund">Refund Policy</Link>
-                  <Link href="/terms">Terms &amp; Conditions</Link>
-                </dd>
-              </div>
-            </dl>
+          {/* The three audiences this company actually has, taken from what it
+              has already published: learners are the product, hiring partners
+              and employers appear in the Privacy Policy’s sharing clause and
+              have a job board on the home page, and mentors, instructors and
+              evaluators appear in the same clause and again in the Terms.
+              Nothing here is a line of business invented for the page. */}
+          <Reveal className="about-block" id="working-with-us">
+            <h2>Working with us</h2>
+            <div className="about-ways">
+              {WAYS.map((way) => (
+                <div className="about-way" key={way.title}>
+                  <p className="about-way-title">{way.title}</p>
+                  <p className="about-way-desc">{way.desc}</p>
+                  {/* mailto rather than a Gmail compose URL: it opens whatever
+                      the reader actually uses, and the subject tells us which
+                      of the three they came from. */}
+                  <a className="about-way-cta" href={`mailto:support@skeoai.com?subject=${encodeURIComponent(way.subject)}`}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <rect x="3" y="5" width="18" height="14" rx="2" />
+                      <path d="m3 7 9 6 9-6" />
+                    </svg>
+                    support@skeoai.com
+                  </a>
+                </div>
+              ))}
+            </div>
           </Reveal>
         </div>
       </main>
