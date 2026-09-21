@@ -9994,3 +9994,156 @@ details p {
     background: none;
   }
 }
+
+/* ============ LEGAL PAGES ============
+   Privacy, refund and terms. One set of rules for all three, because they are
+   rendered by one component (components/LegalDoc) — a policy that is laid out
+   differently from its neighbours reads as the less official one.
+
+   These are documents, not marketing. No reveal animations, no accents, no
+   two-column anything: a measure you can read a clause in, headings you can
+   scan for a clause number, and nothing that moves while you are reading. */
+.legal {
+  background: var(--paper);
+  /* Plain padding: .nav is position: relative and sits in the flow above this,
+     so there is nothing to clear. Compensating for --nav-h as well would open a
+     second nav-height of space under a nav that already took its own. */
+  padding: 40px 0 96px;
+}
+/* Narrower than .wrap’s 1440. Legal prose is read line by line rather than
+   scanned, and a 1440px measure is roughly 200 characters — at which point the
+   eye loses the start of the next line on every return. */
+.legal-wrap {
+  max-width: 760px;
+}
+
+.legal-back {
+  display: inline-block;
+  margin-bottom: 28px;
+  color: var(--ink-4);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.legal-back:hover {
+  color: var(--ink);
+}
+
+.legal-head h1 {
+  margin: 0;
+  font-size: clamp(34px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--ink);
+}
+.legal-meta {
+  margin: 14px 0 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.legal-body {
+  margin-top: 44px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.legal-body section {
+  /* The gap between clauses is the only thing separating them, so it is wider
+     than the gap between paragraphs inside one — otherwise a section reads as
+     a continuation of the one above it. */
+  margin-top: 44px;
+}
+.legal-body h2 {
+  margin: 0 0 14px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  /* Cited by number, so it never breaks away from its first line. */
+  break-after: avoid;
+}
+.legal-sub {
+  margin: 26px 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.legal-body p {
+  margin: 0 0 14px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+.legal-body a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+/* A rule down the left instead of bullets: the source documents use dashes,
+   and a bulleted list of eight non-refundable items reads as a sales page.
+   This reads as a schedule. */
+.legal-list {
+  margin: 0 0 18px;
+  padding: 2px 0 2px 20px;
+  list-style: none;
+  border-left: 2px solid var(--line);
+}
+.legal-list li {
+  margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.legal-list li:last-child {
+  margin-bottom: 0;
+}
+
+.legal-foot {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.legal-foot p {
+  margin: 0 0 18px;
+  font-size: 15px;
+  color: var(--ink-3);
+}
+.legal-foot a {
+  color: var(--ink);
+}
+/* The other two documents, always reachable. Someone who has just read the
+   refund policy is one click from the terms it defers to on jurisdiction. */
+.legal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.legal-nav a {
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.legal-nav a:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 680px) {
+  .legal {
+    padding: 24px 0 64px;
+  }
+  .legal-body section {
+    margin-top: 36px;
+  }
+  .legal-body p,
+  .legal-list li {
+    font-size: 15.5px;
+  }
+}
