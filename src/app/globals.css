@@ -4431,6 +4431,103 @@ h2 em {
   color: #fff;
 }
 
+/* ---- THE SPECIMEN SCALES AS ONE DOCUMENT ----
+
+   In two columns the card runs from 520px of content on a 1280 laptop to
+   645px on anything 1536 and over — a quarter wider — while every word inside
+   it was set in fixed pixels. So the citation was 2.31% of the card on the
+   laptop and 1.86% on the desktop: the same certificate read tight on one
+   machine and loose on the other, with the gap above the foot opening as the
+   sheet grew. A printed certificate does not do that. It is one artwork and
+   it gets bigger or smaller as a whole.
+
+   Each value below is max(what it is today, n cqw), where n is that value as
+   a percentage of 520. At 1280 the sheet is pixel-for-pixel what it was;
+   wider, everything grows together.
+
+   SCOPED TO min-width: 1280px ON PURPOSE. Below that the card stops being
+   fluid — it is a flat 620px, centred, and scaled to the screen with
+   zoom: 0.55 on a phone. Its width is therefore already the same at every
+   narrow size and has nothing to scale to. Worse, cqw reads that 620px LAYOUT
+   width, not the 341px the phone shows, so an unscoped rule here resolved
+   against the wrong number and grew the phone’s type by 12% — measured, not
+   guessed. The stacked layout keeps the pixels it was tuned with.
+
+   cqw and not vw: the container is .certificate, so these follow the CARD. A
+   vw follows the window, which moves the other way at exactly the wrong
+   moment — at 1280 the two-column split makes the card NARROWER than it is at
+   1200, so a window-based unit would grow the type just as the card shrank. */
+@media (min-width: 1280px) {
+  .cert-inner {
+    padding: max(30px, 5.77cqw) max(32px, 6.15cqw) max(62px, 11.92cqw);
+  }
+  .cert-head {
+    gap: max(16px, 3.08cqw);
+    padding-bottom: max(15px, 2.88cqw);
+  }
+  .cert-brand b {
+    font-size: max(20px, 3.85cqw);
+  }
+  .cert-accred-row {
+    /* Was a vw clamp: a window unit on a row that lives inside the card. */
+    gap: max(10px, 3.46cqw);
+    padding-top: max(3px, 0.58cqw);
+  }
+  .cert-accred-logo {
+    max-width: max(86px, 16.54cqw);
+    height: max(17px, 3.27cqw);
+  }
+  .cert-accred-logo--square {
+    height: max(25px, 4.81cqw);
+  }
+  .cert-title-row {
+    gap: max(12px, 2.31cqw);
+    margin-top: max(18px, 3.46cqw);
+  }
+  .cert-badge {
+    gap: max(7px, 1.35cqw);
+    padding: max(6px, 1.15cqw) max(12px, 2.31cqw) max(6px, 1.15cqw) max(9px, 1.73cqw);
+    font: 700 max(11px, 2.12cqw) var(--font);
+    /* em, so the tracking follows the size rather than staying a fixed 0.1px. */
+    letter-spacing: -0.01em;
+  }
+  .cert-badge-mark {
+    width: max(15px, 2.88cqw);
+    height: max(15px, 2.88cqw);
+  }
+  .cert-inner small {
+    font: 500 max(8px, 1.54cqw) var(--mono);
+    letter-spacing: 0.125em;
+  }
+  .cert-presented {
+    margin-top: max(10px, 1.92cqw);
+  }
+  .cert-inner h3 {
+    font-size: max(33px, 6.35cqw);
+    /* em, so the tracking follows the name instead of loosening as it grows. */
+    letter-spacing: -0.048em;
+    margin: max(6px, 1.15cqw) 0 max(14px, 2.69cqw);
+  }
+  .cert-inner p {
+    font-size: max(12px, 2.31cqw);
+    max-width: max(460px, 88.46cqw);
+  }
+  .cert-citation {
+    gap: max(7px, 1.35cqw);
+  }
+  .cert-inner i {
+    font: 700 max(14px, 2.69cqw) var(--font);
+  }
+  .cert-foot {
+    bottom: max(25px, 4.81cqw);
+    left: max(32px, 6.15cqw);
+    right: max(32px, 6.15cqw);
+    padding-top: max(12px, 2.31cqw);
+    gap: max(16px, 3.08cqw);
+    font: max(10px, 1.92cqw) var(--mono);
+  }
+}
+
 /* ============ TESTIMONIALS ============ */
 .testimonials {
   background: var(--surface);
