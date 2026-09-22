@@ -76,15 +76,50 @@ const CERT_TOOLS = [
  * opposite columns of the credential grid, so one client component owns both;
  * the surrounding copy arrives as children and stays server-rendered.
  */
+/* The specimen is the thing a pill rewrites, so a pill has to be able to find
+   it. An id rather than a ref because Reveal owns its own ref and forwards
+   only the rest of its props. */
+const SPECIMEN_ID = 'certificate-specimen'
+
 export function CertificatePicker({ children }: { children: ReactNode }) {
   const [tool, setTool] = useState(CERT_TOOLS[0])
   const { Mark } = tool
+
+  function pick(option: (typeof CERT_TOOLS)[number]) {
+    setTool(option)
+
+    /* ON A PHONE THE PILLS SIT BELOW THE CARD THEY REWRITE. The section is
+       re-cut at 680px to heading, shot, argument (see .credential in
+       globals.css), so by the time the pills are on screen the certificate has
+       gone off the top of it — and tapping one changes something nobody can
+       see. Bring it back. The two columns sit side by side above 680px and
+       need nothing.
+
+       The offset is measured and scrolled by hand rather than left to
+       scrollIntoView and the scroll-margin-top on [id]. That pair lands 39px
+       high here — measured — and tucks the top of the card under the floating
+       nav. Reading the shell's real height at the moment of the tap is both
+       exact and honest about what it is clearing.
+
+       No `behavior` argument on purpose: the document already sets
+       scroll-behavior: smooth and turns it off under prefers-reduced-motion.
+       Naming it here would override that and scroll someone who asked not to
+       be scrolled. */
+    if (typeof window === 'undefined') return
+    if (!window.matchMedia('(max-width: 680px)').matches) return
+
+    const specimen = document.getElementById(SPECIMEN_ID)
+    if (!specimen) return
+    const shell = document.querySelector('.nav-shell')
+    const clearance = (shell ? shell.getBoundingClientRect().height : 84) + 12
+    window.scrollTo({ top: window.scrollY + specimen.getBoundingClientRect().top - clearance })
+  }
 
   return (
     <>
       {/* The accent rides a custom property, so the glow, the rule and the seal
           all retint from one value. */}
-      <Reveal className="certificate" style={{ '--cert-accent': tool.accent } as CSSProperties}>
+      <Reveal id={SPECIMEN_ID} className="certificate" style={{ '--cert-accent': tool.accent } as CSSProperties}>
         <div className="cert-glow" aria-hidden="true" />
         <div className="cert-inner">
           {/* The mark on the left, the bodies that stand behind the credential
@@ -161,7 +196,7 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
                 className="cert-tool"
                 style={{ '--cert-accent': option.accent } as CSSProperties}
                 aria-pressed={option.name === tool.name}
-                onClick={() => setTool(option)}
+                onClick={() => pick(option)}
               >
                 <option.Mark className="cert-tool-mark" />
                 <span>{option.name}</span>
