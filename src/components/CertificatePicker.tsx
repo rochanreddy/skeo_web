@@ -35,7 +35,6 @@ const CERT_TOOLS = [
     name: 'Claude',
     Mark: ClaudeMark,
     accent: '#d97757',
-    detail: '12 lessons · 4 projects',
     /* Goes into the credential id, so two certificates never read alike. */
     code: 'CL',
   },
@@ -43,21 +42,18 @@ const CERT_TOOLS = [
     name: 'ChatGPT',
     Mark: ChatGptMark,
     accent: '#10a37f',
-    detail: '10 lessons · 3 projects',
     code: 'GP',
   },
   {
     name: 'Gemini',
     Mark: GeminiMark,
     accent: '#4285f4',
-    detail: '9 lessons · 3 projects',
     code: 'GM',
   },
   {
     name: 'n8n',
     Mark: N8nMark,
     accent: '#ea4b71',
-    detail: '11 lessons · 4 projects',
     code: 'N8',
   },
   {
@@ -66,7 +62,6 @@ const CERT_TOOLS = [
     // The mark is a three-stop gradient; this is its middle stop, which is the
     // colour the logo actually reads as at pill size.
     accent: '#ff7eb0',
-    detail: '10 lessons · 4 projects',
     code: 'LV',
   },
 ]
@@ -175,12 +170,12 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
             </div>
           </div>
 
-          {/* What makes the credential checkable: when it was issued, what it
-              took, and the id someone would quote to verify it. The signature
+          {/* What makes the credential checkable: when it was issued, and the
+              id someone would quote to verify it. The signature
               blocks that sat opposite are gone — unsigned is honest for a
               specimen, where two named roles were a claim about people. */}
           <div className="cert-foot">
-            <span className="cert-meta">Issued Jun 2026 · {tool.detail}</span>
+            <span className="cert-meta">Issued Jun 2026</span>
             <span className="cert-id">SKEO-{tool.code}-2606-0000</span>
           </div>
         </div>
@@ -197,9 +192,12 @@ export function CertificatePicker({ children }: { children: ReactNode }) {
                 style={{ '--cert-accent': option.accent } as CSSProperties}
                 aria-pressed={option.name === tool.name}
                 onClick={() => pick(option)}
+                title={option.name}
               >
                 <option.Mark className="cert-tool-mark" />
-                <span>{option.name}</span>
+                {/* Hidden on phones, where the pills are marks only so all
+                    five hold one row; still the button's accessible name. */}
+                <span className="cert-tool-name">{option.name}</span>
               </button>
             </li>
           ))}

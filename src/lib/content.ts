@@ -220,7 +220,7 @@ export const jobs = [
 
 /* What the board opens up — listed beside the copy, not as sample roles. */
 export const opportunities = [
-  '1000+ Monetization Opportunities',
+  '1000+ Opportunities',
   'Freelance Projects',
   'Internships',
   'Full Time Jobs',

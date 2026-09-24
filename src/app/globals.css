@@ -5092,11 +5092,15 @@ details p {
   display: contents;
 }
 
+/* The legal line on its own, centred. It shared this row with a back-to-top
+   ring, which is what space-between was for; with that gone, one line pushed
+   to the left edge read as left over rather than as the page's last word. */
 .footer-bottom {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   gap: 12px 24px;
   flex-wrap: wrap;
   padding-top: 12px;
@@ -5213,23 +5217,6 @@ details p {
 
 .footer-social a.footer-menler:hover img {
   opacity: 1;
-}
-
-.footer-top-link {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid #ffffff2e;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 14px;
-  transition: background 0.25s ease, transform 0.25s ease;
-}
-
-.footer-top-link:hover {
-  background: #ffffff1f;
-  transform: translateY(-2px);
 }
 
 /* ============ SCROLL REVEAL ============ */
@@ -6934,8 +6921,14 @@ details p {
      below 680. Desktop still has its own 113px there. This is the hero's own
      foot now, which is the right place for it: the children come and go with
      the ordering, the section does not. */
+  /* ONE SCREEN, WITH THE URL BAR SHOWING. A phone's visible height is the
+     device's less Chrome's own chrome — about 740px on a 390px-wide Android —
+     and at 28px here, the ring's card size and the gaps around it, the proof
+     row ended ~70px below that fold and the CTA sat on it. The top gap was the
+     cheapest of those to give back: the nav is already floating, so the badge
+     does not need a band of its own under it. */
   .hero {
-    padding-top: 28px;
+    padding-top: 14px;
     padding-bottom: 44px;
   }
   /* THE CTA GOES UNDER THE STAGE, WHERE A THUMB IS. Held at the top of the
@@ -6966,7 +6959,7 @@ details p {
     transform: none;
   }
   .hero-copy .eyebrow {
-    margin-top: 4px;
+    margin-top: 0;
     /* Stretch would pull the chip the width of the screen; it hugs its own
        text, at the left edge the headline starts from. */
     align-self: flex-start;
@@ -6976,7 +6969,7 @@ details p {
      the button, so the hero closes on it. */
   .proof {
     order: 4;
-    margin-top: 20px;
+    margin-top: 14px;
     margin-bottom: 0;
   }
   /* The paragraph now meets the stage directly — this is that gap. */
@@ -6989,10 +6982,10 @@ details p {
   .hero-buttons {
     order: 3;
     margin: 0;
-    /* The one child that keeps the centre: at the foot of the hero a centred
-       CTA reads as deliberate, and it is the easiest point on the row for a
-       thumb of either hand. */
-    justify-content: center;
+    /* On the left edge with everything else — the badge, the headline, the
+       paragraph and the proof row all start there, and a centred button was
+       the one thing in the column that did not. */
+    justify-content: flex-start;
   }
   /* The line under the count is the quiet half of the pair — it was within a
      point of the figure it qualifies. Both come down a step. */
@@ -7016,19 +7009,22 @@ details p {
   }
   .hero-buttons {
     gap: 18px;
-    margin: 27px 0 32px;
     flex-wrap: wrap;
   }
-  /* This is the gap between the stage and the CTA now, not the foot of the
-     hero — 48px was drawn for the latter. */
+  /* No margin of its own under the stage. The ring is a pentagon, so its two
+     lowest cards stop ~20px short of the stage's bottom edge already — that
+     slack plus the button's own top margin is the whole gap, where a further
+     24px here stacked it to 65px of empty screen above the CTA. */
   .tool-stage-frame {
     min-width: 0;
-    margin-bottom: 24px;
+    margin-bottom: 0;
   }
   .tool-stage {
     /* Cards shrink faster than the column so the ring still fits across a
-       phone — the stage height follows from the card size. */
-    --card: clamp(58px, 17vw, 84px);
+       phone — the stage height follows from the card size (x4.44), so this
+       one figure is most of the hero's height. 15.5vw rather than 17 is what
+       brings the proof row above the fold with the URL bar showing. */
+    --card: clamp(56px, 15.5vw, 80px);
   }
   .stage-panel {
     border-radius: 22px;
@@ -7041,7 +7037,15 @@ details p {
   .logo-strip-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 17px;
+    /* Stacked, the label is a heading over the rail rather than a caption
+       beside it, and 17px pressed the marks up against it. */
+    gap: 28px;
+  }
+  /* Phones only. Stacked, the Learn / Build / Monetize list is directly under
+     the heading, and a button in between only put distance between the two —
+     the page already has a Start Learning at the top and in every price card. */
+  .projects-cta {
+    display: none;
   }
   /* Stacked under the label, so it takes the whole column. */
   .employer-rail {
@@ -7112,14 +7116,14 @@ details p {
   .poster-body {
     gap: 12px;
   }
-  /* The two chips sit side by side rather than stacked. On a desktop column
-     they are a two-line headline; across a banner they are one line, and the
-     second line was 36px of the height this card is trying to lose. They still
-     wrap on a narrow phone, where the pair will not hold a line. */
+  /* The two chips stack, as they do on desktop. Side by side they read as one
+     run-on label; "Learn Claude" over "end to end" reads as the headline it
+     is. The gap is tighter than desktop's 6px to give back some of the height
+     the second line costs. */
   .poster-title {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 3px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
   .poster-title b {
     padding: 4px 9px;
@@ -7402,8 +7406,20 @@ details p {
   .jobs-copy p {
     margin-bottom: 0;
   }
+  /* Two by two on a phone: four short items stacked one per row took twice
+     the height they need, with the right half of the panel empty beside them. */
   .opportunity-list {
+    display: grid;
+    /* Each column as wide as its longest item, rather than half the panel —
+       halves left "1000+ Opportunities" too narrow on a 360px phone and it
+       broke onto a second line. */
+    grid-template-columns: repeat(2, max-content);
+    gap: 14px 22px;
     margin: 20px 0 24px;
+  }
+  .opportunity-list li {
+    margin: 0;
+    font-size: 14px;
   }
   .testimonials {
     padding-top: 75px;
@@ -7466,9 +7482,12 @@ details p {
   .footer-brand .brand {
     width: max-content;
   }
+  /* Each list as wide as its longest link, with a fixed gutter between. Two
+     1fr tracks split the phone in half and sat Company a half-screen away from
+     Explore, which read as two unrelated blocks rather than one menu. */
   .footer-nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 28px;
+    grid-template-columns: repeat(2, max-content);
+    gap: 20px 56px;
   }
   .footer-nav nav {
     gap: 0;
@@ -7624,8 +7643,10 @@ details p {
   .hero-copy > p {
     font-size: 15px;
   }
+  /* Under the stage now, not under the paragraph: the top figure is the gap
+     below the ring and the proof row supplies its own above. */
   .hero-buttons {
-    margin: 22px 0 26px;
+    margin: 14px 0 0;
   }
   .button {
     height: 44px;
@@ -7854,15 +7875,37 @@ details p {
   }
   /* The one control in the page that switches which certificate is on show,
      and at 35px the smallest thing on the phone worth tapping. */
-  .cert-tool {
-    min-height: 42px;
-    padding: 9px 15px 9px 11px;
+  /* MARKS ONLY, ONE ROW. With their names the five pills need ~430px and a
+     phone column is 284–376px, so they wrapped to two rows. The marks are the
+     part a reader recognises anyway, and the certificate beside them names the
+     picked tool in its title and badge. The name stays in the button for
+     screen readers (visually hidden, below) and as its tooltip. */
+  .credential-copy > ul.cert-tools {
+    flex-wrap: nowrap;
+    gap: 10px;
   }
-  /* Social marks and the return-to-top control both sat a few pixels under.
-     The ring is what a reader sees, so the ring holds its size and the anchor
-     grows around it. */
-  .footer-social a,
-  .footer-top-link {
+  .cert-tool {
+    position: relative;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+  }
+  .cert-tool-mark {
+    width: 22px;
+    height: 22px;
+  }
+  .cert-tool-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  /* Social marks sat a few pixels under. The ring is what a reader sees, so
+     the ring holds its size and the anchor grows around it. */
+  .footer-social a {
     width: 40px;
     height: 40px;
   }
@@ -9661,6 +9704,22 @@ details p {
     width: 620px;
     min-width: 0;
     max-width: 100%;
+  }
+  /* AS TALL AS WHAT IT HOLDS, ON A PHONE. The height floor is 620px ÷
+     --cert-ratio, about 377px, and .cert-body centres the holder's block in
+     whatever that leaves — so on a phone, where the card is zoomed down to a
+     third of the screen, the spare height showed as an empty band above
+     "presented to" and a matching one under the citation. Content height here,
+     and the two gaps are stated rather than left over: the top one through
+     .cert-presented's margin, the bottom one through the padding that clears
+     the pinned foot (the foot's own strip is ~49px; 67 leaves 18 above it, to
+     match). Desktop keeps its proportion. */
+  .cert-inner {
+    min-height: 0;
+    padding-bottom: 67px;
+  }
+  .cert-presented {
+    margin-top: 18px;
   }
 }
 

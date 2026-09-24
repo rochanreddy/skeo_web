@@ -20,7 +20,10 @@ export function Projects() {
             <br />
             Build real projects and turn your skills into opportunities.
           </p>
-          <a href="#pricing" className="button">
+          {/* Hidden on phones (see .projects-cta): stacked, the list below is
+              the next thing under the thumb, and a button between the
+              heading and it only put distance between the two. */}
+          <a href="#pricing" className="button projects-cta">
             <span className="btn-label">See all tools</span> <span aria-hidden="true">→</span>
           </a>
         </Reveal>

@@ -151,9 +151,6 @@ export function Footer() {
             <span>
               © {new Date().getFullYear()} {site.name}. All rights reserved.
             </span>
-            <a className="footer-top-link" href="#top" aria-label="Back to top">
-              ↑
-            </a>
           </div>
         </div>
       </div>
