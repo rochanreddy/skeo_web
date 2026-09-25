@@ -4221,16 +4221,23 @@ h2 em {
   transition: border-color 0.5s ease;
 }
 
-/* One proportion at every width now. The desktop used to run flatter than the
-   phone — 1.9 against 1.75 — which meant the card changed shape as the window
-   moved; --cert-ratio is a single number instead, so there is one certificate
-   rather than two that happen to meet near the breakpoint.
-
-   Kept as an explicit rule rather than deleted, so the hook is here if the
-   desktop is ever decided to want its own shape again. */
+/* AS TALL AS WHAT IT HOLDS, AT EVERY WIDTH. The card used to take its height
+   from its width (100cqw / --cert-ratio) and centre the holder's block in
+   whatever that left — which on a wide desktop column was 38–53px of empty
+   band above "presented to" and the same again under the citation. The phone
+   went to content height first; the desktop follows, with the two gaps stated
+   rather than left over: the top one through .cert-presented's margin, the
+   bottom one through the padding that clears the pinned foot (the foot's own
+   strip is ~49px, so 71 leaves 22 above it, to match). */
 @media (min-width: 681px) {
   .cert-inner {
-    min-height: max(320px, 100cqw / var(--cert-ratio));
+    min-height: 0;
+    padding-bottom: 71px;
+  }
+  /* Scoped under .cert-inner: the base .cert-presented rule sits later in the
+     file and would otherwise win. */
+  .cert-inner .cert-presented {
+    margin-top: 22px;
   }
 }
 
@@ -5092,15 +5099,15 @@ details p {
   display: contents;
 }
 
-/* The legal line on its own, centred. It shared this row with a back-to-top
-   ring, which is what space-between was for; with that gone, one line pushed
-   to the left edge read as left over rather than as the page's last word. */
+/* The legal line, on the left edge the footer's columns start from. Centred
+   only on a phone (see the 680px block), where the stacked footer is itself
+   centred and a left-hung line would sit alone at one side. */
 .footer-bottom {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: flex-start;
+  text-align: left;
   gap: 12px 24px;
   flex-wrap: wrap;
   padding-top: 12px;
