@@ -147,6 +147,10 @@ export function ThankYou() {
   const rows = CHECKOUT_ROWS.filter((row) => order.items.includes(row.key))
   const one = rows.length === 1
   const ready = order.status === 'provisioned'
+  // The playbooks are PDFs sent by mail, not a course on the LMS: bought on
+  // their own there is no login to wait for, so none of the LMS steps apply.
+  const playbooksOnly = order.items.every((item) => item === 'playbooks')
+  const withPlaybooks = order.items.includes('playbooks') || order.items.includes('member')
 
   return (
     <main className="thanks">
@@ -156,15 +160,31 @@ export function ThankYou() {
             ✓
           </div>
           <h1>You&rsquo;re in.</h1>
-          <p>
-            {one ? `${rows[0]?.title ?? 'Your purchase'} is` : `All ${rows.length} tools are`} yours.{' '}
-            {ready ? 'Your login details are on their way to' : 'Your account is being set up — the login details will go to'}{' '}
-            <b>{order.email}</b>.
-          </p>
+          {playbooksOnly ? (
+            <p>
+              Your playbooks are {ready ? 'on their way to' : 'being sent to'} <b>{order.email}</b>, attached as PDFs.
+            </p>
+          ) : (
+            <p>
+              {one ? `${rows[0]?.title ?? 'Your purchase'} is` : `All ${rows.length} tools are`} yours.{' '}
+              {ready ? 'Your login details are on their way to' : 'Your account is being set up — the login details will go to'}{' '}
+              <b>{order.email}</b>.{withPlaybooks && ' Your playbooks follow in a separate email.'}
+            </p>
+          )}
         </header>
 
         {/* Numbered because the order matters: the password has to arrive
             before either of the two buttons below is any use. */}
+        {playbooksOnly ? (
+          <>
+            <h2 className="thanks-h">What happens now</h2>
+            <p className="thanks-next-sub">
+              Look for an email titled <b>Your Claude Playbooks</b> {lms.credentialsEta}. Every playbook is attached as a
+              PDF and is yours to keep. If it hasn&rsquo;t arrived, check your spam folder first.
+            </p>
+          </>
+        ) : (
+        <>
         <h2 className="thanks-h">Getting started</h2>
         <ol className="thanks-steps">
           <li>
@@ -226,6 +246,8 @@ export function ThankYou() {
             </div>
           </li>
         </ol>
+        </>
+        )}
 
         <div className="thanks-order">
           <h2 className="thanks-h">Your order</h2>

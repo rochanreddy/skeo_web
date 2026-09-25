@@ -316,7 +316,12 @@ export function CheckoutClient() {
           </ul>
 
           {/* Where the money actually goes, and what happens after it. */}
-          <p className="checkout-fine">Secure payment by Cashfree. Your LMS login is emailed once the payment is confirmed.</p>
+          <p className="checkout-fine">
+            Secure payment by Cashfree.{' '}
+            {session.modules.every((item) => item === 'playbooks')
+              ? 'Your playbooks are emailed once the payment is confirmed.'
+              : 'Your LMS login is emailed once the payment is confirmed.'}
+          </p>
         </div>
       </section>
 
