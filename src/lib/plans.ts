@@ -1,4 +1,4 @@
-export type PlanKey = 'claude' | 'playbooks' | 'library' | 'member' | 'teams'
+export type PlanKey = 'claude' | 'playbooks' | 'library' | 'member' | 'earlyaccess' | 'teams'
 
 export type Plan = {
   eyebrow: string
@@ -53,6 +53,22 @@ export const PLANS: Record<PlanKey, Plan> = {
       'Get Certified',
       'Job & Freelancing Board access',
       'Expert Sessions & Community',
+    ],
+    cta: 'Get everything',
+  },
+  /* The /early-access offer: everything Everything AI unlocks, at an early
+     price. Sold only from that page; checkout charges exactly this. */
+  earlyaccess: {
+    eyebrow: 'EARLY ACCESS',
+    title: 'Everything AI — Early Access',
+    amount: 499,
+    period: '/ one-time',
+    billing: 'one-time',
+    features: [
+      'Every course and every tool batch',
+      'Claude Playbooks and the AI Library',
+      'Real projects and a certificate',
+      'Lifetime access',
     ],
     cta: 'Get everything',
   },

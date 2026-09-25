@@ -8,9 +8,14 @@ import { MODULE_KEYS, MODULE_ROWS, PLANS, type ModuleKey, type ModuleRow } from 
  * prices them here, so a tampered request can change what is bought but never
  * what it costs.
  */
-export type CheckoutItem = ModuleKey | 'member'
+export type CheckoutItem = ModuleKey | 'member' | 'earlyaccess'
 
-export const CHECKOUT_ITEMS: readonly CheckoutItem[] = [...MODULE_KEYS, 'member']
+export const CHECKOUT_ITEMS: readonly CheckoutItem[] = [...MODULE_KEYS, 'member', 'earlyaccess']
+
+/** The plans that unlock everything: Everything AI, and its early-access
+ *  price from /early-access. Each is sold on its own — it already includes
+ *  every tool. */
+export const isAllAccess = (items: readonly string[]) => items.includes('member') || items.includes('earlyaccess')
 
 export const isCheckoutItem = (value: unknown): value is CheckoutItem =>
   typeof value === 'string' && (CHECKOUT_ITEMS as readonly string[]).includes(value)
@@ -24,9 +29,17 @@ const MEMBER_ROW: Omit<ModuleRow, 'key'> & { key: 'member' } = {
   marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
 }
 
+const EARLY_ROW: Omit<ModuleRow, 'key'> & { key: 'earlyaccess' } = {
+  key: 'earlyaccess',
+  title: PLANS.earlyaccess.title,
+  subtitle: 'Everything in skeo, at the early-access price',
+  amount: PLANS.earlyaccess.amount,
+  marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
+}
+
 export type CheckoutRow = Omit<ModuleRow, 'key'> & { key: CheckoutItem }
 
-export const CHECKOUT_ROWS: readonly CheckoutRow[] = [...MODULE_ROWS, MEMBER_ROW]
+export const CHECKOUT_ROWS: readonly CheckoutRow[] = [...MODULE_ROWS, MEMBER_ROW, EARLY_ROW]
 
 /**
  * The cart as it will be charged: known keys only, no repeats, and Everything
@@ -35,6 +48,7 @@ export const CHECKOUT_ROWS: readonly CheckoutRow[] = [...MODULE_ROWS, MEMBER_ROW
  */
 export function normaliseItems(items: readonly unknown[]): CheckoutItem[] {
   const known = [...new Set(items.filter(isCheckoutItem))]
+  if (known.includes('earlyaccess')) return ['earlyaccess']
   return known.includes('member') ? ['member'] : known
 }
 

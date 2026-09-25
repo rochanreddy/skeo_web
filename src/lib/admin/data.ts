@@ -2,7 +2,7 @@ import type { Collection } from 'mongodb'
 import { mongoDb } from '@/lib/db/mongo'
 import { readEvents } from '@/lib/analytics/store'
 import { ordersCollection, type OrderDoc } from '@/lib/payments/orders'
-import type { CheckoutItem } from '@/lib/checkoutItems'
+import { isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
 
 /**
  * What the admin panel's Orders, Playbooks and Leads tabs read. Server-only.
@@ -24,8 +24,8 @@ export const isPlaybookSet = (v: unknown): v is PlaybookSet => typeof v === 'str
 /** Which sets an order pays for — the LMS's rule, mirrored. */
 export function setsFor(items: readonly CheckoutItem[]): PlaybookSet[] {
   const out: PlaybookSet[] = []
-  if (items.includes('playbooks') || items.includes('member')) out.push('claude')
-  if (items.includes('library') || items.includes('member')) out.push('ai')
+  if (items.includes('playbooks') || isAllAccess(items)) out.push('claude')
+  if (items.includes('library') || isAllAccess(items)) out.push('ai')
   return out
 }
 
@@ -119,7 +119,7 @@ export type PlaybookRow = {
 export async function playbookRows(): Promise<PlaybookRow[]> {
   const orders = await ordersCollection()
   const paid = await orders
-    .find({ status: { $in: PAID }, items: { $in: ['playbooks', 'library', 'member'] } })
+    .find({ status: { $in: PAID }, items: { $in: ['playbooks', 'library', 'member', 'earlyaccess'] } })
     .sort({ paidAt: -1 })
     .toArray()
   const fromOrders: PlaybookRow[] = paid.map((o) => {

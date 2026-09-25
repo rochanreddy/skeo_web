@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { track } from '@/lib/analytics/track'
-import { CHECKOUT_ROWS, type CheckoutItem } from '@/lib/checkoutItems'
+import { CHECKOUT_ROWS, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
 import { clearCheckoutSession } from '@/lib/checkoutSession'
 import { price, useCurrency } from '@/lib/currency'
 import { MODULE_ROWS, type ModuleKey } from '@/lib/plans'
@@ -151,7 +151,7 @@ export function ThankYou() {
   // the LMS: bought on their own there is no login to wait for, so none of the
   // LMS steps apply.
   const playbooksOnly = order.items.every((item) => item === 'playbooks' || item === 'library')
-  const withPlaybooks = order.items.some((item) => item === 'playbooks' || item === 'library' || item === 'member')
+  const withPlaybooks = isAllAccess(order.items) || order.items.some((item) => item === 'playbooks' || item === 'library')
 
   return (
     <main className="thanks">
@@ -300,7 +300,7 @@ export function ThankYou() {
  */
 function NextUp({ bought, email }: { bought: CheckoutItem[]; email: string }) {
   const [picked, setPicked] = useState<ModuleKey[]>([])
-  const remaining = bought.includes('member') ? [] : MODULE_ROWS.filter((row) => !bought.includes(row.key))
+  const remaining = isAllAccess(bought) ? [] : MODULE_ROWS.filter((row) => !bought.includes(row.key))
 
   if (remaining.length === 0) return null
 

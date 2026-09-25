@@ -45,7 +45,11 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   // plans that are a conversation rather than a checkout (Teams).
   const openPurchase = useCallback(
     (plan: PlanKey) =>
-      setState(plan === 'member' ? { kind: 'verify', modules: ['member'] } : { kind: 'purchase', plans: [plan] }),
+      setState(
+        plan === 'member' || plan === 'earlyaccess'
+          ? { kind: 'verify', modules: [plan] }
+          : { kind: 'purchase', plans: [plan] },
+      ),
     [],
   )
   const openVerify = useCallback((modules: CheckoutItem[]) => {

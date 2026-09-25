@@ -59,23 +59,29 @@ const social = [
   },
 ]
 
-export function Footer() {
+/** `closing={false}` drops the "Ready to begin?" ask, for a page that ends on
+ *  its own call to action — two asks back to back read as one too many. */
+export function Footer({ closing = true }: { closing?: boolean } = {}) {
   return (
-    <footer className="footer">
+    <footer className={closing ? 'footer' : 'footer footer-plain'}>
       <div className="footer-grid" aria-hidden="true" />
 
       <div className="wrap footer-inner">
-        <span className="eyebrow footer-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span>
-        <h2 className="footer-title">Ready to begin?</h2>
-        <p className="footer-lede">Join thousands of ambitious people building their AI edge.</p>
+        {closing && (
+          <>
+            <span className="eyebrow footer-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span>
+            <h2 className="footer-title">Ready to begin?</h2>
+            <p className="footer-lede">Join thousands of ambitious people building their AI edge.</p>
 
-        <div className="footer-cta">
-          <AuthButton mode="signup" className="button button-lime">
-            Start Learning
-          </AuthButton>
-        </div>
+            <div className="footer-cta">
+              <AuthButton mode="signup" className="button button-lime">
+                Start Learning
+              </AuthButton>
+            </div>
 
-        <hr className="footer-rule" />
+            <hr className="footer-rule" />
+          </>
+        )}
 
         <div className="footer-columns">
           <div className="footer-brand">

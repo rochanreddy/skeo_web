@@ -23,6 +23,7 @@ const ITEM_NAMES: Record<string, string> = {
   playbooks: 'Claude Playbooks',
   library: 'AI Library',
   member: 'Everything AI',
+  earlyaccess: 'Early Access (₹499)',
 }
 const itemNames = (items: string[]) => items.map((i) => ITEM_NAMES[i] ?? i).join(', ')
 

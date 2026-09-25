@@ -10,7 +10,7 @@ import {
 } from '@/lib/checkoutSession'
 import { track } from '@/lib/analytics/track'
 import { startPayment } from '@/lib/payment'
-import { CHECKOUT_ROWS, type CheckoutItem } from '@/lib/checkoutItems'
+import { CHECKOUT_ROWS, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
 import { price, useCurrency } from '@/lib/currency'
 import { MODULE_ROWS, PLANS } from '@/lib/plans'
 import {
@@ -111,7 +111,7 @@ export function CheckoutClient() {
 
   const rows = CHECKOUT_ROWS.filter((row) => session.modules.includes(row.key))
   // Everything AI already includes every tool, so there is nothing to add to it.
-  const isMember = session.modules.includes('member')
+  const isMember = isAllAccess(session.modules)
   const extras = isMember ? [] : MODULE_ROWS.filter((row) => !session.modules.includes(row.key))
   const subtotal = rows.reduce((sum, row) => sum + row.amount, 0)
   const total = subtotal
