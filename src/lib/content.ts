@@ -102,7 +102,7 @@ export const claudeSyllabus = {
   stats: ['8+ modules', '10+ projects', '15 hours', 'Self-paced'],
   modules: [
     {
-      title: 'Foundations: how AI and Claude actually work',
+      title: 'Foundations: How AI and Claude actually work',
       meta: '8 lessons',
       topics: [
         'What generative AI is — and why sounding right is not being right',
