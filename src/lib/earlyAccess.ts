@@ -121,7 +121,7 @@ export const build = {
   ],
 } as const
 
-/** Who teaches it — closes the "what you'll learn" section. */
+/** Who teaches it — a small card closing the "what you'll learn" section. */
 export const mentor = {
   eyebrow: 'Your mentor',
   name: 'Rochan Reddy',
@@ -130,7 +130,6 @@ export const mentor = {
   photo: '',
   role: 'Full Stack Developer & DevOps Engineer',
   bio: 'Building products, shipping projects and teaching what actually works.',
-  tags: ['Full Stack Development', 'DevOps', 'Shipping real projects'],
 } as const
 
 /** 4 — The offer */

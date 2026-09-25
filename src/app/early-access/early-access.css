@@ -830,31 +830,25 @@
   line-height: 1.5;
 }
 
-/* ---- 4. Mentor --------------------------------------------------------- */
-/* One strip: face, who, what they're about. The section is tight on purpose. */
-.ea-sec-mentor {
-  padding: clamp(40px, 4.4vw, 64px) 0;
-}
-
+/* ---- Mentor card (closes "what you'll learn") --------------------------- */
 .ea-mentor {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 24px;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 20px 28px 20px 20px;
+  gap: 22px;
+  max-width: 640px;
+  margin: 56px auto 0;
+  padding: 22px 24px;
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   background: var(--card-bg);
-  box-shadow: var(--shadow-sm);
 }
 
-.ea-mentor-photo {
+.ea-avatar {
   display: grid;
   place-items: center;
   width: 76px;
   height: 76px;
+  flex: none;
   overflow: hidden;
   border-radius: 50%;
   background: var(--band-deep-grad);
@@ -862,99 +856,31 @@
   font-size: 24px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--purple);
 }
 
-.ea-mentor-photo img {
+.ea-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.ea-mentor-main h3 {
+.ea-mentor h3 {
   margin-top: 8px;
   font-size: 20px;
 }
 
-.ea-mentor-main .ea-role {
+.ea .ea-role {
+  margin: 2px 0 0;
   color: var(--purple-ink);
   font-size: 14px;
   font-weight: 700;
 }
 
-.ea .ea-mentor-main p {
-  margin: 4px 0 0;
+.ea-mentor p:last-child {
+  margin: 6px 0 0;
   color: var(--ink-3);
   font-size: 14.5px;
   line-height: 1.5;
-}
-
-.ea-mentor-tags {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ea-mentor-tags li {
-  padding: 4px 11px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  background: var(--surface);
-  color: var(--ink-2);
-  font-size: 12.5px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-/* ornaments — rings at both ends of the strip, dots and sparkles around it */
-.ea-orn-mentor .orn-ring-a {
-  top: 50%;
-  left: calc(50% - 560px);
-  width: 220px;
-  height: 220px;
-  transform: translateY(-50%);
-}
-
-.ea-orn-mentor .orn-ring-b {
-  top: 50%;
-  right: calc(50% - 580px);
-  width: 160px;
-  height: 160px;
-  transform: translateY(-50%);
-}
-
-.ea-orn-mentor .orn-dots {
-  width: 160px;
-  height: 110px;
-}
-
-.ea-orn-mentor .orn-dots-a {
-  top: 6px;
-  left: calc(50% - 420px);
-}
-
-.ea-orn-mentor .orn-dots-b {
-  bottom: 6px;
-  right: calc(50% - 440px);
-}
-
-.ea-orn-mentor .orn-s1 {
-  top: 22%;
-  left: calc(50% - 530px);
-}
-
-.ea-orn-mentor .orn-s2 {
-  bottom: 20%;
-  right: calc(50% - 540px);
-}
-
-.ea-orn-mentor .orn-s3 {
-  top: 16%;
-  right: calc(50% - 470px);
 }
 
 /* ---- 5. The offer ------------------------------------------------------- */
@@ -1607,26 +1533,8 @@
   }
 
   .ea-mentor {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 14px;
-    padding: 24px 20px;
+    flex-direction: column;
     text-align: center;
-  }
-
-  .ea-mentor-main .ea-role {
-    display: block;
-    margin-top: 2px;
-  }
-
-  .ea-role-dot {
-    display: none;
-  }
-
-  .ea-mentor-tags {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
   }
 
   .ea-offer-list {
@@ -1660,8 +1568,7 @@
 /* ---- Live pieces, smaller screens --------------------------------------- */
 /* The background pieces need the empty sides a wide screen has. */
 @media (max-width: 1200px) {
-  .ea-deco,
-  .ea-orn-mentor {
+  .ea-deco {
     display: none;
   }
 }
