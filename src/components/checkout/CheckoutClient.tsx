@@ -318,7 +318,7 @@ export function CheckoutClient() {
           {/* Where the money actually goes, and what happens after it. */}
           <p className="checkout-fine">
             Secure payment by Cashfree.{' '}
-            {session.modules.every((item) => item === 'playbooks')
+            {session.modules.every((item) => item === 'playbooks' || item === 'library')
               ? 'Your playbooks are emailed once the payment is confirmed.'
               : 'Your LMS login is emailed once the payment is confirmed.'}
           </p>

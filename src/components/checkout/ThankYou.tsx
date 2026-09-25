@@ -147,10 +147,11 @@ export function ThankYou() {
   const rows = CHECKOUT_ROWS.filter((row) => order.items.includes(row.key))
   const one = rows.length === 1
   const ready = order.status === 'provisioned'
-  // The playbooks are PDFs sent by mail, not a course on the LMS: bought on
-  // their own there is no login to wait for, so none of the LMS steps apply.
-  const playbooksOnly = order.items.every((item) => item === 'playbooks')
-  const withPlaybooks = order.items.includes('playbooks') || order.items.includes('member')
+  // Claude Playbooks and the AI Library are PDFs sent by mail, not courses on
+  // the LMS: bought on their own there is no login to wait for, so none of the
+  // LMS steps apply.
+  const playbooksOnly = order.items.every((item) => item === 'playbooks' || item === 'library')
+  const withPlaybooks = order.items.some((item) => item === 'playbooks' || item === 'library' || item === 'member')
 
   return (
     <main className="thanks">
@@ -168,7 +169,7 @@ export function ThankYou() {
             <p>
               {one ? `${rows[0]?.title ?? 'Your purchase'} is` : `All ${rows.length} tools are`} yours.{' '}
               {ready ? 'Your login details are on their way to' : 'Your account is being set up — the login details will go to'}{' '}
-              <b>{order.email}</b>.{withPlaybooks && ' Your playbooks follow in a separate email.'}
+              <b>{order.email}</b>.{withPlaybooks && ' Your playbooks follow in separate emails.'}
             </p>
           )}
         </header>
@@ -179,8 +180,9 @@ export function ThankYou() {
           <>
             <h2 className="thanks-h">What happens now</h2>
             <p className="thanks-next-sub">
-              Look for an email titled <b>Your Claude Playbooks</b> {lms.credentialsEta}. Every playbook is attached as a
-              PDF and is yours to keep. If it hasn&rsquo;t arrived, check your spam folder first.
+              Look for an email from skeo with your playbooks attached, {lms.credentialsEta}. A large set comes in
+              more than one email, each marked &ldquo;part 1 of 2&rdquo; and so on. Every playbook is a PDF and is yours to keep.
+              If nothing has arrived, check your spam folder first.
             </p>
           </>
         ) : (
