@@ -40,7 +40,12 @@ export type OrderDoc = {
     created?: boolean
     batches?: string[]
     warnings?: string[]
+    /** Playbook mails the LMS has sent for this order, as "set#part/parts"
+     *  ("ai#2/2"). Updated by the first delivery and by every admin resend. */
+    playbookParts?: string[]
   }
+  /** Sends made from the admin panel, newest last. */
+  playbookSends?: { at: Date; parts: string[] }[]
 }
 
 export async function ordersCollection(): Promise<Collection<OrderDoc>> {

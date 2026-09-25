@@ -253,9 +253,11 @@
 
 /* ---- KPI cards ------------------------------------------------------- */
 
+/* Six cards: three to a row on a desktop, so the second row is not one card
+   stranded under five. */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
   gap: 12px;
 }
 
@@ -875,4 +877,112 @@
     flex: 1;
     padding: 7px 6px;
   }
+}
+
+/* ---- Tabs: the menler admin's layout — an overview, then the lists ------- */
+
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--admin-line);
+  overflow-x: auto;
+}
+
+.admin-tabs button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px 11px;
+  border: 0;
+  background: none;
+  font: 600 14px var(--font);
+  color: var(--ink-3);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-tabs button.is-on {
+  color: var(--ink);
+  box-shadow: inset 0 -2px 0 var(--purple);
+}
+
+.tab-count {
+  min-width: 18px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--admin-bad);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.tab-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 12px;
+}
+
+.tab-search {
+  flex: 1 1 260px;
+  max-width: 420px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--admin-line);
+  border-radius: 10px;
+  background: var(--admin-card);
+  color: var(--ink);
+  font: 14px var(--font);
+}
+
+.status {
+  display: inline-block;
+  margin: 1px 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-good { background: color-mix(in srgb, var(--admin-good) 14%, transparent); color: var(--admin-good); }
+.status-bad { background: color-mix(in srgb, var(--admin-bad) 13%, transparent); color: var(--admin-bad); }
+.status-warn { background: color-mix(in srgb, #c98a12 16%, transparent); color: #8a5a00; }
+.status-quiet { background: var(--surface); color: var(--ink-4); }
+
+.err-line {
+  display: block;
+  max-width: 280px;
+  margin-top: 3px;
+  color: var(--admin-bad);
+  white-space: normal;
+}
+
+.manual-send {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.manual-send input[type='email'],
+.manual-send input:not([type]) {
+  flex: 1 1 200px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--admin-line);
+  border-radius: 10px;
+  background: var(--admin-card);
+  color: var(--ink);
+  font: 14px var(--font);
+}
+
+.manual-send .check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  white-space: nowrap;
 }

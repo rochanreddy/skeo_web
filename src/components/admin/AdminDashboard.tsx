@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { RANGES, type RangeKey, type Stats } from '@/lib/analytics/aggregate'
 import { BarList, Funnel, TrendChart } from './Charts'
+import { LeadsTab, OrdersTab, PlaybooksTab, needsAttention } from './AdminTabs'
+import type { AdminOrder } from '@/lib/admin/data'
 
 /**
  * Everything the operator sees after signing in.
@@ -13,7 +15,9 @@ import { BarList, Funnel, TrendChart } from './Charts'
  * range or polling is the same code path as the first load.
  */
 
-const money = (n: number) => `$${n.toLocaleString('en-US', { maximumFractionDigits: 2 })}`
+// Rupees: every amount in skeo is stored and charged in ₹. This read "$" before,
+// which put a dollar sign on rupee figures.
+const money = (n: number) => `₹${Math.round(n).toLocaleString('en-IN')}`
 const num = (n: number) => n.toLocaleString('en-US')
 
 const timeOf = (at: number) =>
@@ -99,6 +103,16 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
   const [busy, setBusy] = useState(false)
   const [live, setLive] = useState(true)
   const [metric, setMetric] = useState<'visitors' | 'revenue'>('visitors')
+  /* The menler admin's layout: an overview, then the working lists. */
+  const [tab, setTab] = useState<'overview' | 'orders' | 'playbooks' | 'leads'>('overview')
+  /* Paid orders the LMS has not finished — the overview's one alarm. */
+  const [attention, setAttention] = useState<number | null>(null)
+  useEffect(() => {
+    fetch('/api/admin/orders', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((b: { ok?: boolean; orders?: AdminOrder[] }) => setAttention(b.ok ? (b.orders ?? []).filter(needsAttention).length : null))
+      .catch(() => setAttention(null))
+  }, [tab])
 
   // Held in a ref so the polling effect does not restart on every fetch.
   const rangeRef = useRef(range)
@@ -199,6 +213,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
         </div>
 
         <div className="admin-actions">
+          {tab === 'overview' && (
           <div className="range-picker" role="group" aria-label="Date range">
             {RANGES.map((option) => (
               <button
@@ -211,6 +226,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
               </button>
             ))}
           </div>
+          )}
 
           <label className="admin-toggle">
             <input type="checkbox" checked={live} onChange={(e) => setLive(e.target.checked)} />
@@ -245,6 +261,40 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
 
       {error && <p className="admin-notice is-error">{error}</p>}
 
+      <nav className="admin-tabs" role="tablist" aria-label="Admin sections">
+        {(
+          [
+            ['overview', 'Overview'],
+            ['orders', 'Orders'],
+            ['playbooks', 'Playbooks'],
+            ['leads', 'Leads'],
+          ] as const
+        ).map(([key, label]) => (
+          <button key={key} type="button" role="tab" aria-selected={tab === key} className={tab === key ? 'is-on' : ''} onClick={() => setTab(key)}>
+            {label}
+            {key === 'orders' && attention ? <span className="tab-count">{attention}</span> : null}
+          </button>
+        ))}
+      </nav>
+
+      {tab === 'orders' && <OrdersTab />}
+      {tab === 'playbooks' && <PlaybooksTab />}
+      {tab === 'leads' && <LeadsTab />}
+
+      {tab === 'overview' && (
+      <>
+      {attention ? (
+        <p className="admin-notice is-warn">
+          <b>
+            {attention} paid order{attention === 1 ? '' : 's'} need{attention === 1 ? 's' : ''} attention
+          </b>{' '}
+          — the LMS login or the playbooks have not gone out yet.
+          <button type="button" onClick={() => setTab('orders')}>
+            Open orders
+          </button>
+        </p>
+      ) : null}
+
       {/* ---- The headline numbers ---- */}
       <div className="kpi-grid">
         <Kpi
@@ -275,12 +325,6 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
         />
 
         <Kpi
-          label="Registered"
-          value={num(t.registrations)}
-          sub={`${num(t.signins)} returning sign-in${t.signins === 1 ? '' : 's'}`}
-          delta={delta(t.registrations, p.registrations)}
-        />
-        <Kpi
           label={stats.lmsReporting ? 'Signed into the LMS' : 'Opened the LMS'}
           value={num(t.lmsActivations)}
           sub={
@@ -295,13 +339,6 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
           value={num(t.nextInterest)}
           sub={topWanted && topWanted.nextInterest > 0 ? `${topWanted.title} leads the list` : 'Asked after checkout'}
           delta={delta(t.nextInterest, p.nextInterest)}
-        />
-        <Kpi
-          label="Left in carts"
-          value={money(t.abandonedValue)}
-          sub={`${num(t.abandonedCarts)} of ${num(t.cartAdders)} who picked a tool`}
-          invert
-          delta={null}
         />
       </div>
 
@@ -385,7 +422,8 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
         </Panel>
       </div>
 
-      <div className="admin-split">
+      {/* Full width now the enquiries panel beside it has become the Leads tab. */}
+      <div>
         {/* ---- Orders ---- */}
         <Panel
           title="Recent orders"
@@ -430,62 +468,24 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
           )}
         </Panel>
 
-        {/* ---- People ---- */}
-        <Panel
-          title="Registrations & enquiries"
-          hint={`${num(t.registrations)} registered · ${num(t.leads)} enquiries`}
-          action={
-            <a className="admin-btn admin-btn-quiet" href={`/api/admin/export?type=people&range=${range}`}>
-              Export CSV
-            </a>
-          }
-        >
-          {stats.people.length === 0 ? (
-            <p className="admin-empty">Nobody has registered in this window.</p>
-          ) : (
-            <div className="table-scroll">
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.people.map((person, i) => (
-                    <tr key={`${person.email}-${person.at}-${i}`}>
-                      <td>
-                        <b>{person.name || 'Unnamed'}</b>
-                        <small>{timeOf(person.at)}</small>
-                      </td>
-                      <td className="wrap">{person.email || '—'}</td>
-                      <td>
-                        <span className={`tag tag-${person.kind}`}>{person.kind}</span>
-                        {person.detail && <small className="muted-inline">{person.detail}</small>}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </Panel>
       </div>
 
-      <div className="admin-thirds">
+      <div className="admin-split">
         <Panel title="Top pages" hint="Where the views land">
           <BarList rows={stats.topPages} empty="No pageviews yet." />
         </Panel>
         <Panel title="Where they came from" hint="Referring site">
           <BarList rows={stats.referrers} empty="No referrers yet." />
         </Panel>
-        <Panel title="Devices" hint="How they are reading it">
-          <BarList rows={stats.devices} empty="No device data yet." />
-        </Panel>
       </div>
 
+      </>
+      )}
+
       <footer className="admin-foot">
+        {/* The data tools — demo rows, raw export, wiping the events — are about
+            the numbers on the Overview, so they sit under it and nowhere else. */}
+        {tab === 'overview' && (
         <div className="admin-tools">
           <a className="admin-btn admin-btn-quiet" href={`/api/admin/export?type=events&range=${range}`}>
             Export raw events
@@ -502,6 +502,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
             Delete all data
           </button>
         </div>
+        )}
         <p>
           {num(stats.totalEvents)} events stored · refreshed {timeOf(stats.generatedAt)}
           {live && ' · updating every 20s'}

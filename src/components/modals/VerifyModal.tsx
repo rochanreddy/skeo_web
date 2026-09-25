@@ -98,7 +98,9 @@ export function VerifyModal({ modules, onClose }: { modules: CheckoutItem[]; onC
     // closes, so the gap while /checkout renders reads as progress rather than
     // as a press that did nothing.
     setLeaving(true)
-    track('verify_ok', { modules, email: values.email.trim(), name: values.name.trim() })
+    // The phone too: this event is the admin's Leads list, and a lead who did
+    // not pay is only worth something if they can be called back.
+    track('verify_ok', { modules, email: values.email.trim(), name: values.name.trim(), phone: values.phone.trim() })
     saveCheckoutSession({
       modules,
       contact: { name: values.name.trim(), email: values.email.trim(), phone: values.phone.trim() },

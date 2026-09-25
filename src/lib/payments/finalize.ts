@@ -76,6 +76,7 @@ export async function finalizeOrder(orderId: string): Promise<FinalState> {
           'provision.created': result.created,
           'provision.batches': result.batches,
           'provision.warnings': result.warnings,
+          'provision.playbookParts': result.playbookParts,
           'provision.lastError': '',
         },
         $inc: { 'provision.attempts': 1 },
@@ -92,7 +93,7 @@ export async function finalizeOrder(orderId: string): Promise<FinalState> {
   }
 }
 
-type LmsResult = { created: boolean; batches: string[]; warnings: string[] }
+type LmsResult = { created: boolean; batches: string[]; warnings: string[]; playbookParts: string[] }
 
 /**
  * The LMS makes the account, enrols it and sends the login mail. It is safe to
@@ -121,5 +122,10 @@ async function provisionInLms(order: OrderDoc): Promise<LmsResult | 'busy'> {
   if (res.status === 409) return 'busy'
   const body = (await res.json().catch(() => ({}))) as Partial<LmsResult> & { error?: string }
   if (!res.ok) throw new Error(`LMS ${res.status}: ${body.error || 'no detail'}`)
-  return { created: Boolean(body.created), batches: body.batches ?? [], warnings: body.warnings ?? [] }
+  return {
+    created: Boolean(body.created),
+    batches: body.batches ?? [],
+    warnings: body.warnings ?? [],
+    playbookParts: body.playbookParts ?? [],
+  }
 }
