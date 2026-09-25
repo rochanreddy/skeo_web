@@ -126,6 +126,8 @@ function Heading({ eyebrow, children }: { eyebrow?: string; children: ReactNode 
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
+const savePct = Math.round((1 - offer.price / offer.was) * 100)
+
 export default function EarlyAccessPage() {
   return (
     <div className="ea">
@@ -151,48 +153,109 @@ export default function EarlyAccessPage() {
       </header>
 
       <main id="top">
-        {/* 2. Hero */}
-        <section className="wrap ea-hero">
-          <span className="eyebrow ea-chip">
-            <span className="ea-dot" aria-hidden="true" />
-            Early Access
-          </span>
-          <h1>
-            <Lines lines={hero.lines} />
-          </h1>
-          <p className="ea-lede">{hero.lede}</p>
-          <Price big />
-          <p className="ea-terms">{offer.terms}</p>
-          <Buy>{hero.cta}</Buy>
-          <ul className="ea-checks">
-            {hero.checks.map((c) => (
-              <li key={c}>
-                <Check />
-                {c}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* 3. Numbers */}
-        <section className="wrap ea-numbers" aria-label="What is included, in numbers">
-          {numbers.map((n) => (
-            <div key={n.label}>
-              <strong>{n.value}</strong>
-              <span>{n.label}</span>
+        {/* 2. Hero — the promise on the left, the offer itself on the right */}
+        <section className="ea-hero-band">
+          <div className="ea-hero-glow" aria-hidden="true" />
+          <div className="wrap ea-hero">
+            <div className="ea-hero-copy">
+              <span className="eyebrow ea-chip">
+                <span className="ea-dot" aria-hidden="true" />
+                Early Access · Now Open
+              </span>
+              <h1>
+                <Lines lines={hero.lines} />
+              </h1>
+              <p className="ea-lede">{hero.lede}</p>
+              <div className="ea-hero-price">
+                <Price big />
+                <span className="ea-save">Save {savePct}%</span>
+              </div>
+              <p className="ea-terms">{offer.terms}</p>
+              <div className="ea-hero-actions">
+                <Buy>{hero.cta}</Buy>
+                <a className="button button-outline ea-cta ea-ghost" href="#inside">
+                  <span className="btn-label">See what’s inside</span>
+                  <span aria-hidden="true">↓</span>
+                </a>
+              </div>
+              <ul className="ea-checks">
+                {hero.checks.map((c) => (
+                  <li key={c}>
+                    <Check />
+                    {c}
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
+
+            <div className="ea-hero-visual">
+              <span className="ea-float ea-float-1" aria-hidden="true">
+                <ClaudeMark className="ea-float-mark" />
+              </span>
+              <span className="ea-float ea-float-2" aria-hidden="true">
+                <N8nMark className="ea-float-mark" />
+              </span>
+              <span className="ea-float ea-float-3" aria-hidden="true">
+                <GeminiMark className="ea-float-mark" />
+              </span>
+              <span className="ea-float ea-float-4" aria-hidden="true">
+                <LovableMark className="ea-float-mark" idPrefix="ea-float-lovable" />
+              </span>
+
+              <article className="ea-pass" aria-label="The Early Access pass">
+                <header className="ea-pass-top">
+                  <span className="ea-pass-brand">skeo</span>
+                  <span className="ea-pass-tag">Early Access Pass</span>
+                </header>
+                <p className="ea-pass-name">Everything AI</p>
+                <p className="ea-pass-price">
+                  <strong>{inr(offer.price)}</strong>
+                  <s aria-label={`was ${inr(offer.was)}`}>{inr(offer.was)}</s>
+                </p>
+                <ul className="ea-pass-list">
+                  {valueStack.items.map((i) => (
+                    <li key={i}>
+                      <Check />
+                      {i}
+                    </li>
+                  ))}
+                </ul>
+                <div className="ea-pass-marks" aria-label="Tools included: Claude, ChatGPT, Gemini, n8n, Lovable and more">
+                  <ClaudeMark className="ea-pass-mark" />
+                  <ChatGptMark className="ea-pass-mark ea-pass-mono" />
+                  <GeminiMark className="ea-pass-mark" />
+                  <N8nMark className="ea-pass-mark" />
+                  <LovableMark className="ea-pass-mark" idPrefix="ea-pass-lovable" />
+                  <span className="ea-pass-more">+45</span>
+                </div>
+                <footer className="ea-pass-foot">
+                  <span>One-time payment</span>
+                  <span>Lifetime access</span>
+                </footer>
+              </article>
+            </div>
+          </div>
+
+          {/* 3. Numbers */}
+          <div className="wrap ea-numbers" aria-label="What is included, in numbers">
+            {numbers.map((n) => (
+              <div key={n.label}>
+                <strong>{n.value}</strong>
+                <span>{n.label}</span>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* 4. What you get */}
-        <section className="section">
+        <section className="section" id="inside">
           <div className="wrap">
             <Heading eyebrow="What you get">
               <Lines lines={whatYouGet.title} />
             </Heading>
             <div className="ea-grid ea-grid-3">
-              {whatYouGet.cards.map((c) => (
-                <article key={c.title} className="ea-card">
+              {whatYouGet.cards.map((c, i) => (
+                <article key={c.title} className={`ea-card ea-get ea-tint-${i % 3}`}>
                   <Icon name={c.icon} />
                   <h3>{c.title}</h3>
                   <p>{c.body}</p>
@@ -229,19 +292,28 @@ export default function EarlyAccessPage() {
 
         {/* 6. Build */}
         <section className="section">
-          <div className="wrap">
-            <Heading eyebrow="Outcomes">
-              <Lines lines={build.title} />
-            </Heading>
-            <div className="ea-grid ea-grid-build">
-              {build.items.map((b, i) => (
-                <article key={b.title} className="ea-card ea-card-build">
-                  <span className="ea-num">{pad(i + 1)}</span>
-                  <h3>{b.title}</h3>
-                  <p>{b.body}</p>
-                </article>
-              ))}
+          <div className="wrap ea-split">
+            <div className="ea-split-head">
+              <span className="eyebrow">Outcomes</span>
+              <h2>
+                <Lines lines={build.title} />
+              </h2>
+              <Buy className="button ea-cta">{hero.cta}</Buy>
             </div>
+            <ol className="ea-outcomes">
+              {build.items.map((b, i) => (
+                <li key={b.title}>
+                  <span className="ea-outcome-num">{pad(i + 1)}</span>
+                  <div>
+                    <h3>{b.title}</h3>
+                    <p>{b.body}</p>
+                  </div>
+                  <span className="ea-outcome-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
@@ -328,10 +400,22 @@ export default function EarlyAccessPage() {
               <Lines lines={projects.title} />
             </Heading>
             <div className="ea-grid ea-grid-3">
-              {projects.list.map((p) => (
-                <article key={p} className="ea-card ea-project">
-                  <h3>{p}</h3>
-                  <p className="ea-flow">{projects.steps}</p>
+              {projects.list.map((p, i) => (
+                <article key={p} className={`ea-card ea-project ea-art-${i % 3}`}>
+                  <div className="ea-project-art" aria-hidden="true">
+                    <span>{pad(i + 1)}</span>
+                  </div>
+                  <div className="ea-project-body">
+                    <h3>{p}</h3>
+                    <p className="ea-flow">
+                      {projects.steps.split(' → ').map((s, j) => (
+                        <span key={s}>
+                          {j > 0 && <i aria-hidden="true">→</i>}
+                          {s}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
                 </article>
               ))}
             </div>
@@ -371,10 +455,13 @@ export default function EarlyAccessPage() {
 
         {/* 13. Mentor */}
         <section className="ea-band ea-band-soft">
-          <div className="wrap ea-mentor">
-            <Heading eyebrow="Mentor">
-              <Lines lines={mentor.title} />
-            </Heading>
+          <div className="wrap ea-split ea-mentor">
+            <div className="ea-split-head">
+              <span className="eyebrow">Mentor</span>
+              <h2>
+                <Lines lines={mentor.title} />
+              </h2>
+            </div>
             <article className="ea-card ea-mentor-card">
               <span className="ea-avatar" aria-hidden="true">
                 {mentor.initials}

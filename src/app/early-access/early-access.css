@@ -75,12 +75,299 @@
 }
 
 /* ---- 2. Hero ------------------------------------------------------------ */
+.ea-hero-band {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: clamp(40px, 4.4vw, 72px);
+}
+
+/* A faint grid and a warm glow behind the pass, so the hero has depth
+   without a picture. Both from tokens: terracotta by day, violet by night. */
+.ea-hero-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(70% 80% at 70% 30%, #000 0%, transparent 75%);
+  pointer-events: none;
+}
+
+.ea-hero-glow {
+  position: absolute;
+  top: 6%;
+  right: 4%;
+  width: min(640px, 60vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--purple) 0%, transparent 65%);
+  opacity: 0.16;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
 .ea-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.08fr 1fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 88px);
+  padding: clamp(36px, 5vw, 76px) 0 clamp(40px, 4.4vw, 64px);
+}
+
+.ea-hero-copy {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+}
+
+.ea-hero-price {
+  display: flex;
   align-items: center;
-  text-align: center;
-  padding: clamp(40px, 6vw, 88px) 0 clamp(36px, 4vw, 56px);
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.ea-hero-price .ea-price {
+  margin: 0;
+}
+
+.ea-save {
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--lime);
+  color: #26331e;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.ea-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.ea .ea-hero-actions .ea-cta {
+  margin-top: 0;
+}
+
+.ea .ea-ghost {
+  background: var(--card-bg);
+}
+
+/* ---- The pass ----------------------------------------------------------- */
+.ea-hero-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 36px 28px;
+}
+
+.ea-pass {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 440px);
+  padding: 28px;
+  border: 1px solid #ffffff1c;
+  border-radius: var(--r-2xl);
+  background: var(--band-ink-grad);
+  color: var(--on-dark);
+  box-shadow: var(--shadow-xl);
+  transform: rotate(-2deg);
+  transition: transform 0.5s var(--ease);
+}
+
+.ea-pass:hover {
+  transform: rotate(0deg) translateY(-4px);
+}
+
+/* A sheen across the top edge, as on a physical card. */
+.ea-pass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #ffffff14 0%, transparent 38%);
+  pointer-events: none;
+}
+
+.ea-pass-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ea-pass-brand {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.ea-pass-tag {
+  padding: 5px 10px;
+  border: 1px solid #ffffff2e;
+  border-radius: var(--r-pill);
+  color: var(--on-dark-2);
+  font: 500 10.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea .ea-pass-name {
+  margin: 26px 0 0;
+  color: var(--on-dark-2);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea .ea-pass-price {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 6px 0 0;
+}
+
+.ea-pass-price strong {
+  color: var(--lime);
+  font-size: 60px;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.ea-pass-price s {
+  color: var(--on-dark-3);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.ea-pass-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin: 22px 0 0;
+  padding: 20px 0 0;
+  border-top: 1px dashed #ffffff26;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ea-pass-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ea-pass-list .ea-check {
+  width: 16px;
+  height: 16px;
+  color: var(--lime);
+}
+
+.ea-pass-marks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.ea-pass-mark,
+.ea-pass-more {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.ea-pass-mono path {
+  fill: #111;
+}
+
+.ea-pass-more {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: #ffffff1a;
+  color: var(--on-dark);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ea-pass-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #ffffff1a;
+  color: var(--on-dark-3);
+  font: 500 11px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Tool marks drifting around the pass. */
+.ea-float {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg);
+  animation: ea-bob 6s ease-in-out infinite;
+}
+
+.ea-float-mark {
+  width: 28px;
+  height: 28px;
+}
+
+.ea-float-1 {
+  top: 4%;
+  left: 6%;
+}
+
+.ea-float-2 {
+  top: 14%;
+  right: 0;
+  animation-delay: -1.5s;
+}
+
+.ea-float-3 {
+  bottom: 10%;
+  left: 0;
+  animation-delay: -3s;
+}
+
+.ea-float-4 {
+  bottom: 0;
+  right: 10%;
+  animation-delay: -4.5s;
+}
+
+@keyframes ea-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea-float {
+    animation: none;
+  }
 }
 
 .ea-chip {
@@ -100,7 +387,7 @@
 
 .ea-hero h1 {
   margin-top: 22px;
-  font-size: clamp(44px, 7vw, 96px);
+  font-size: clamp(46px, 6.2vw, 92px);
   line-height: 0.98;
   letter-spacing: -0.045em;
 }
@@ -110,7 +397,7 @@
 }
 
 .ea-lede {
-  max-width: 44ch;
+  max-width: 40ch;
   margin: 22px 0 0;
   color: var(--ink-3);
   font-size: clamp(16px, 1.5vw, 19px);
@@ -164,9 +451,9 @@
 .ea-checks {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px 22px;
-  margin: 22px 0 0;
+  margin: 26px 0 0;
   padding: 0;
   list-style: none;
   color: var(--ink-2);
@@ -757,8 +1044,204 @@ details[open] > summary .ea-plus::after {
   padding-top: 48px;
 }
 
+/* ---- Card polish -------------------------------------------------------- */
+.ea-card {
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s ease;
+}
+
+.ea-grid > .ea-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--purple-line);
+  box-shadow: var(--shadow-md);
+}
+
+.ea-get {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+}
+
+.ea-get h3 {
+  font-size: 21px;
+}
+
+.ea-tint-1 .ea-icon {
+  background: var(--lime);
+  color: #26331e;
+}
+
+.ea-tint-2 .ea-icon {
+  background: var(--lav);
+  color: var(--ink);
+}
+
+/* ---- Split sections (outcomes, mentor) ---------------------------------- */
+.ea-split {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: start;
+  gap: clamp(32px, 5vw, 96px);
+}
+
+.ea-split-head {
+  position: sticky;
+  top: 32px;
+}
+
+.ea-split-head h2 {
+  margin-top: 14px;
+  font-size: var(--t-h2);
+  line-height: 1.06;
+}
+
+.ea-split-head .ea-cta {
+  margin-top: 28px;
+}
+
+.ea-mentor {
+  align-items: center;
+}
+
+.ea-mentor .ea-mentor-card {
+  max-width: none;
+  margin: 0;
+}
+
+.ea-outcomes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.ea-outcomes li {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 8px;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.25s ease, padding 0.3s var(--ease);
+}
+
+.ea-outcomes li:hover {
+  padding-left: 16px;
+  background: var(--surface);
+}
+
+.ea-outcome-num {
+  color: var(--purple);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.ea-outcomes h3 {
+  font-size: clamp(20px, 1.8vw, 26px);
+}
+
+.ea-outcomes p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+}
+
+.ea-outcome-arrow {
+  color: var(--ink-4);
+  font-size: 22px;
+  transition: transform 0.25s var(--ease), color 0.25s ease;
+}
+
+.ea-outcomes li:hover .ea-outcome-arrow {
+  color: var(--purple);
+  transform: translateX(4px);
+}
+
+/* ---- Project cards ------------------------------------------------------ */
+.ea .ea-project {
+  padding: 0;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+}
+
+.ea-project-art {
+  position: relative;
+  height: 128px;
+  background: var(--band-deep-grad);
+  overflow: hidden;
+}
+
+.ea-art-1 .ea-project-art {
+  background: var(--band-ink-grad);
+}
+
+.ea-art-2 .ea-project-art {
+  background: linear-gradient(135deg, var(--yellow), var(--purple));
+}
+
+/* A dot grid over the colour, so each panel reads as a canvas. */
+.ea-project-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#ffffff2e 1px, transparent 1.2px);
+  background-size: 14px 14px;
+}
+
+.ea-project-art span {
+  position: absolute;
+  right: 18px;
+  bottom: 6px;
+  color: #ffffff;
+  opacity: 0.9;
+  font-size: 54px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.ea-project-body {
+  padding: 22px 24px 24px;
+}
+
+.ea .ea-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-family: var(--font);
+  letter-spacing: 0;
+}
+
+.ea-flow > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-3);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ea-flow i {
+  color: var(--purple);
+  font-style: normal;
+}
+
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .ea-hero,
+  .ea-split {
+    grid-template-columns: 1fr;
+  }
+
+  .ea-split-head {
+    position: static;
+  }
+
+  .ea-hero-visual {
+    max-width: 520px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
   .ea-grid-4,
   .ea-grid-5 {
     grid-template-columns: repeat(2, 1fr);
@@ -806,6 +1289,80 @@ details[open] > summary .ea-plus::after {
   }
 
   .ea-header .button-small {
+    display: none;
+  }
+
+  .ea-hero {
+    gap: 12px;
+    padding-top: 28px;
+  }
+
+  .ea-hero-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .ea-hero-price {
+    flex-wrap: wrap;
+  }
+
+  .ea-hero-visual {
+    padding: 28px 8px;
+  }
+
+  .ea-pass {
+    padding: 22px;
+    transform: none;
+  }
+
+  .ea-pass-price strong {
+    font-size: 48px;
+  }
+
+  .ea-pass-list {
+    font-size: 13px;
+  }
+
+  .ea-float {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+  }
+
+  .ea-float-mark {
+    width: 22px;
+    height: 22px;
+  }
+
+  .ea-float-1 {
+    top: 0;
+    left: 0;
+  }
+
+  .ea-float-2 {
+    top: 0;
+    right: 0;
+  }
+
+  .ea-float-3,
+  .ea-float-4 {
+    display: none;
+  }
+
+  .ea-outcomes li {
+    grid-template-columns: 44px 1fr;
+    padding: 20px 4px;
+  }
+
+  .ea-outcome-arrow {
+    display: none;
+  }
+
+  .ea-outcome-num {
+    font-size: 24px;
+  }
+
+  .ea-split-head .ea-cta {
     display: none;
   }
 
