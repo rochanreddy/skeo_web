@@ -55,12 +55,13 @@ export const valueStack = {
 
 export const build = {
   title: ['Don’t Just Learn.', 'Build Something.'],
+  /* `visual` picks the small drawing each card opens with (page.tsx). */
   items: [
-    { title: 'Build a Website', body: 'From idea → design → deployment.' },
-    { title: 'Build an AI App', body: 'Use AI tools to create a working application.' },
-    { title: 'Automate a Workflow', body: 'Turn repetitive work into automation.' },
-    { title: 'Build Your Portfolio', body: 'Create projects you can actually show.' },
-    { title: 'Launch a Side Project', body: 'Go from idea to something people can use.' },
+    { title: 'Build a Website', body: 'From idea → design → deployment.', visual: 'site' },
+    { title: 'Build an AI App', body: 'Use AI tools to create a working application.', visual: 'app' },
+    { title: 'Automate a Workflow', body: 'Turn repetitive work into automation.', visual: 'flow' },
+    { title: 'Build Your Portfolio', body: 'Create projects you can actually show.', visual: 'portfolio' },
+    { title: 'Launch a Side Project', body: 'Go from idea to something people can use.', visual: 'launch' },
   ],
 } as const
 

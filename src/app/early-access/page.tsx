@@ -121,6 +121,103 @@ function Heading({ eyebrow, children }: { eyebrow?: string; children: ReactNode 
   )
 }
 
+/**
+ * The small drawing at the top of each outcome card — the thing you end up
+ * with, sketched in markup rather than shipped as an image, so it takes the
+ * palette and stays sharp. Decorative: the card's title says it in words.
+ */
+function OutcomeVisual({ kind }: { kind: string }) {
+  switch (kind) {
+    case 'site':
+      return (
+        <div className="ov-browser">
+          <div className="ov-bar">
+            <i />
+            <i />
+            <i />
+            <span className="ov-url">yourname.com</span>
+          </div>
+          <div className="ov-page">
+            <span className="ov-line ov-w60 ov-strong" />
+            <span className="ov-line ov-w80" />
+            <span className="ov-line ov-w40" />
+            <span className="ov-btn" />
+          </div>
+          <ol className="ov-steps">
+            <li>Idea</li>
+            <li>Design</li>
+            <li className="ov-live">Deploy</li>
+          </ol>
+        </div>
+      )
+    case 'app':
+      return (
+        <div className="ov-chat">
+          <p className="ov-msg ov-me">Summarise this report</p>
+          <div className="ov-msg ov-ai">
+            <ClaudeMark className="ov-ai-mark" />
+            <span>
+              <span className="ov-line ov-w80" />
+              <span className="ov-line ov-w60" />
+            </span>
+          </div>
+          <div className="ov-input">
+            Ask anything…
+            <b>↑</b>
+          </div>
+        </div>
+      )
+    case 'flow':
+      return (
+        <div className="ov-flow">
+          <span className="ov-node">
+            <b>⚡</b>New lead
+          </span>
+          <span className="ov-wire" />
+          <span className="ov-node ov-node-ai">
+            <ClaudeMark className="ov-node-mark" />
+            AI replies
+          </span>
+          <span className="ov-wire" />
+          <span className="ov-node">
+            <N8nMark className="ov-node-mark" />
+            Sent
+          </span>
+        </div>
+      )
+    case 'portfolio':
+      return (
+        <div className="ov-folio">
+          <span className="ov-folio-name">
+            <i />
+            Your Portfolio
+          </span>
+          <div className="ov-tiles">
+            <span className="ov-tile ov-t1" />
+            <span className="ov-tile ov-t2" />
+            <span className="ov-tile ov-t3" />
+            <span className="ov-tile ov-t4" />
+          </div>
+        </div>
+      )
+    default:
+      return (
+        <div className="ov-launch">
+          <span className="ov-status">
+            <i />
+            Live
+          </span>
+          <div className="ov-bars">
+            {[28, 40, 34, 56, 64, 78, 92].map((h) => (
+              <span key={h} style={{ height: `${h}%` }} />
+            ))}
+          </div>
+          <span className="ov-rocket">🚀</span>
+        </div>
+      )
+  }
+}
+
 const pad = (n: number) => String(n).padStart(2, '0')
 
 const savePct = Math.round((1 - offer.price / offer.was) * 100)
@@ -263,26 +360,28 @@ export default function EarlyAccessPage() {
         </section>
 
         {/* 5. Build */}
-        <section className="ea-band ea-band-soft">
-          <div className="wrap ea-split">
-            <div className="ea-split-head">
-              <span className="eyebrow">Outcomes</span>
-              <h2>
-                <Lines lines={build.title} />
-              </h2>
-              <Buy className="button ea-cta">{hero.cta}</Buy>
+        <section className="ea-band ea-band-ink ea-out-band">
+          <div className="wrap">
+            <div className="ea-out-head">
+              <div>
+                <span className="eyebrow">Outcomes</span>
+                <h2>
+                  <Lines lines={build.title} />
+                </h2>
+              </div>
+              <Buy className="button button-lime ea-cta">{hero.cta}</Buy>
             </div>
-            <ol className="ea-outcomes">
+            <ol className="ea-out-grid">
               {build.items.map((b, i) => (
-                <li key={b.title}>
-                  <span className="ea-outcome-num">{pad(i + 1)}</span>
-                  <div>
+                <li key={b.title} className={`ea-out ea-out-${b.visual}`}>
+                  <div className="ea-out-visual" aria-hidden="true">
+                    <OutcomeVisual kind={b.visual} />
+                  </div>
+                  <div className="ea-out-text">
+                    <span className="ea-out-num">{pad(i + 1)}</span>
                     <h3>{b.title}</h3>
                     <p>{b.body}</p>
                   </div>
-                  <span className="ea-outcome-arrow" aria-hidden="true">
-                    →
-                  </span>
                 </li>
               ))}
             </ol>

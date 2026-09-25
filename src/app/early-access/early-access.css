@@ -176,12 +176,11 @@
   background: var(--band-ink-grad);
   color: var(--on-dark);
   box-shadow: var(--shadow-xl);
-  transform: rotate(-2deg);
   transition: transform 0.5s var(--ease);
 }
 
 .ea-pass:hover {
-  transform: rotate(0deg) translateY(-4px);
+  transform: translateY(-4px);
 }
 
 /* A sheen across the top edge, as on a physical card. */
@@ -1036,53 +1035,468 @@ details[open] > summary .ea-plus::after {
   margin: 0;
 }
 
-.ea-outcomes {
+/* ---- Outcomes: a bento of the things you end up with -------------------- */
+.ea-out-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(28px, 3.4vw, 48px);
+}
+
+.ea-out-head h2 {
+  margin-top: 14px;
+  font-size: var(--t-h2);
+  line-height: 1.06;
+}
+
+.ea-out-head h2 .ea-line:last-child {
+  color: var(--lime);
+}
+
+.ea .ea-out-head .ea-cta {
+  margin-top: 0;
+}
+
+.ea-out-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--line);
 }
 
-.ea-outcomes li {
+/* Two wide cards over three: the first two are the ones most people come for. */
+.ea-out {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #ffffff17;
+  border-radius: var(--r-xl);
+  background: #ffffff08;
+  transition: transform 0.35s var(--ease), border-color 0.35s ease, background 0.35s ease;
+}
+
+.ea-out:nth-child(-n + 2) {
+  grid-column: span 3;
+}
+
+.ea-out:hover {
+  transform: translateY(-4px);
+  border-color: #ffffff33;
+  background: #ffffff0d;
+}
+
+.ea-out-visual {
+  position: relative;
   display: grid;
-  grid-template-columns: 64px 1fr auto;
+  place-items: center;
+  height: 188px;
+  padding: 20px;
+  overflow: hidden;
+  background-image: radial-gradient(#ffffff14 1px, transparent 1.2px);
+  background-size: 16px 16px;
+  border-bottom: 1px solid #ffffff12;
+}
+
+.ea-out:nth-child(-n + 2) .ea-out-visual {
+  height: 220px;
+}
+
+/* A glow in the accent behind every drawing. */
+.ea-out-visual::before {
+  content: '';
+  position: absolute;
+  inset: 20% 15%;
+  border-radius: 50%;
+  background: var(--purple);
+  opacity: 0.22;
+  filter: blur(40px);
+}
+
+.ea-out-visual > * {
+  position: relative;
+}
+
+.ea-out-text {
+  padding: 22px 24px 26px;
+}
+
+.ea-out-num {
+  color: var(--lime);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.1em;
+}
+
+.ea-out-text h3 {
+  margin-top: 8px;
+  font-size: 21px;
+}
+
+.ea-out-text p {
+  margin: 6px 0 0;
+  color: var(--on-dark-2);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* shared drawing parts */
+.ov-line {
+  display: block;
+  height: 7px;
+  border-radius: 4px;
+  background: #ffffff26;
+}
+
+.ov-strong {
+  height: 10px;
+  background: #ffffffc0;
+}
+
+.ov-w40 {
+  width: 40%;
+}
+
+.ov-w60 {
+  width: 60%;
+}
+
+.ov-w80 {
+  width: 80%;
+}
+
+/* site — a browser, and the three steps to live */
+.ov-browser {
+  width: min(100%, 360px);
+  border: 1px solid #ffffff24;
+  border-radius: 12px;
+  background: #1c1b19;
+  box-shadow: 0 18px 40px #00000059;
+  transition: transform 0.4s var(--ease);
+}
+
+.ea-out:hover .ov-browser {
+  transform: translateY(-4px);
+}
+
+.ov-bar {
+  display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 26px 8px;
-  border-bottom: 1px solid var(--line);
-  transition: background 0.25s ease, padding 0.3s var(--ease);
+  gap: 5px;
+  padding: 9px 10px;
+  border-bottom: 1px solid #ffffff14;
 }
 
-.ea-outcomes li:hover {
-  padding-left: 16px;
-  background: var(--surface);
+.ov-bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff2e;
 }
 
-.ea-outcome-num {
-  color: var(--purple);
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+.ov-url {
+  flex: 1;
+  margin-left: 8px;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: #ffffff12;
+  color: var(--on-dark-2);
+  font: 500 10.5px var(--mono);
 }
 
-.ea-outcomes h3 {
-  font-size: clamp(20px, 1.8vw, 26px);
+.ov-page {
+  display: grid;
+  gap: 8px;
+  padding: 16px 14px 12px;
 }
 
-.ea-outcomes p {
-  margin: 4px 0 0;
-  color: var(--ink-3);
+.ov-btn {
+  width: 72px;
+  height: 20px;
+  margin-top: 4px;
+  border-radius: 6px;
+  background: var(--lime);
 }
 
-.ea-outcome-arrow {
-  color: var(--ink-4);
-  font-size: 22px;
-  transition: transform 0.25s var(--ease), color 0.25s ease;
+.ov-steps {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0 14px 14px;
+  list-style: none;
 }
 
-.ea-outcomes li:hover .ea-outcome-arrow {
-  color: var(--purple);
-  transform: translateX(4px);
+.ov-steps li {
+  flex: 1;
+  padding: 4px 0;
+  border-radius: 6px;
+  background: #ffffff0f;
+  color: var(--on-dark-2);
+  font: 500 10px var(--mono);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ov-steps .ov-live {
+  background: var(--lime);
+  color: #26331e;
+}
+
+/* app — a chat that answers */
+.ov-chat {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 340px);
+}
+
+.ov-msg {
+  margin: 0;
+  padding: 9px 12px;
+  border-radius: 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.ov-me {
+  justify-self: end;
+  border-bottom-right-radius: 4px;
+  background: var(--purple);
+  color: #fff;
+}
+
+.ov-ai {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 78%;
+  border-bottom-left-radius: 4px;
+  background: #ffffff14;
+}
+
+.ov-ai > span {
+  display: grid;
+  flex: 1;
+  gap: 6px;
+}
+
+.ov-ai-mark {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.ov-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 6px 6px 14px;
+  border: 1px solid #ffffff21;
+  border-radius: var(--r-pill);
+  color: var(--on-dark-3);
+  font-size: 12px;
+}
+
+.ov-input b {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: #26331e;
+  font-size: 13px;
+}
+
+/* flow — three nodes, the wires between them running */
+.ov-flow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ov-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  width: 30%;
+  padding: 12px 6px;
+  border: 1px solid #ffffff24;
+  border-radius: 12px;
+  background: #1c1b19;
+  color: var(--on-dark);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.ov-node b {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.ov-node-ai {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 4px #ffffff0a;
+}
+
+.ov-node-mark {
+  width: 22px;
+  height: 22px;
+}
+
+.ov-wire {
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--lime) 0 6px, transparent 6px 11px);
+  background-size: 22px 2px;
+  animation: ov-run 0.9s linear infinite;
+}
+
+@keyframes ov-run {
+  to {
+    background-position: 22px 0;
+  }
+}
+
+/* portfolio — a page of your projects */
+.ov-folio {
+  width: min(100%, 280px);
+  padding: 12px;
+  border: 1px solid #ffffff24;
+  border-radius: 12px;
+  background: #1c1b19;
+}
+
+.ov-folio-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--on-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ov-folio-name i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--band-deep-grad);
+  border: 1px solid #ffffff40;
+}
+
+.ov-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.ov-tile {
+  height: 40px;
+  border-radius: 7px;
+  transition: transform 0.35s var(--ease);
+}
+
+.ov-t1 {
+  background: linear-gradient(135deg, var(--purple), #00000000), #3a2a22;
+}
+
+.ov-t2 {
+  background: linear-gradient(135deg, var(--lime), #00000000), #33301f;
+}
+
+.ov-t3 {
+  background: linear-gradient(135deg, var(--yellow), #00000000), #3a3226;
+}
+
+.ov-t4 {
+  background: #ffffff14;
+}
+
+.ea-out:hover .ov-t1 {
+  transform: translate(-2px, -2px);
+}
+
+.ea-out:hover .ov-t4 {
+  transform: translate(2px, 2px);
+}
+
+/* launch — live, and climbing */
+.ov-launch {
+  position: relative;
+  width: min(100%, 280px);
+  height: 100%;
+}
+
+.ov-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: #ffffff14;
+  color: var(--on-dark);
+  font: 500 10.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ov-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8fd41a;
+  box-shadow: 0 0 0 3px #8fd41a40;
+}
+
+.ov-bars {
+  position: absolute;
+  inset: 34px 0 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.ov-bars span {
+  flex: 1;
+  border-radius: 5px 5px 2px 2px;
+  background: #ffffff21;
+  transform-origin: bottom;
+  transition: transform 0.5s var(--ease);
+}
+
+.ov-bars span:last-child {
+  background: var(--lime);
+}
+
+.ea-out:hover .ov-bars span {
+  transform: scaleY(1.06);
+}
+
+.ov-rocket {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  font-size: 26px;
+  transition: transform 0.5s var(--ease);
+}
+
+.ea-out:hover .ov-rocket {
+  transform: translate(4px, -6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ov-wire {
+    animation: none;
+  }
 }
 
 /* ---- One screen --------------------------------------------------------- */
@@ -1193,6 +1607,19 @@ details[open] > summary .ea-plus::after {
     grid-template-columns: repeat(4, 1fr);
   }
 
+  .ea-out-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ea-out,
+  .ea-out:nth-child(-n + 2) {
+    grid-column: auto;
+  }
+
+  .ea-out:last-child {
+    grid-column: 1 / -1;
+  }
+
   .ea-stack {
     grid-template-columns: 1fr;
     text-align: center;
@@ -1255,21 +1682,24 @@ details[open] > summary .ea-plus::after {
     font-size: 13.5px;
   }
 
-  .ea-outcomes li {
-    grid-template-columns: 44px 1fr;
-    padding: 20px 4px;
+  .ea-out-grid {
+    grid-template-columns: 1fr;
   }
 
-  .ea-outcome-arrow {
-    display: none;
+  .ea-out,
+  .ea-out:nth-child(-n + 2) {
+    grid-column: auto;
   }
 
-  .ea-outcome-num {
-    font-size: 24px;
+  .ea-out-visual,
+  .ea-out:nth-child(-n + 2) .ea-out-visual {
+    height: auto;
+    min-height: 176px;
   }
 
-  .ea-split-head .ea-cta {
-    display: none;
+  .ea-out-head {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .ea-numbers {
