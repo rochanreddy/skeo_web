@@ -4,6 +4,10 @@ import { PLANS } from '@/lib/plans'
  * Every word on /early-access, in page order. The page reads from here, so
  * wording changes never touch JSX.
  *
+ * A campaign page, not a website: each section answers one question a
+ * visitor has before paying — what do I get, what will I learn, what will I
+ * build, how does it work, what does it cost — and nothing else.
+ *
  * The price is PLANS.earlyaccess — the same number the checkout charges — so
  * the page can never advertise one price and bill another. `was` is the
  * anchor price shown struck through beside it.
@@ -17,6 +21,8 @@ export const offer = {
 
 export const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`
 
+export const savePct = Math.round((1 - offer.price / offer.was) * 100)
+
 export const announcement = {
   text: `Early Access is Open · Limited Seats · Starting at ${inr(offer.price)}`,
   cta: 'Join Now',
@@ -29,6 +35,11 @@ export const hero = {
   checks: ['Beginner Friendly', 'Lifetime Access', 'Real Projects'],
 } as const
 
+/** What the pass in the hero lists. */
+export const valueStack = {
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
+} as const
+
 export const numbers = [
   { value: '10+', label: 'Courses' },
   { value: '50+', label: 'Tools' },
@@ -36,58 +47,26 @@ export const numbers = [
   { value: 'Lifetime', label: 'Access' },
 ] as const
 
-export const whatYouGet = {
-  title: ['One Membership.', 'A Lot More to Learn.'],
-  cards: [
-    { icon: 'book', title: 'Courses', body: 'Learn the fundamentals.' },
-    { icon: 'tools', title: 'Tools', body: 'Learn the tools companies actually use.' },
-    { icon: 'rocket', title: 'Projects', body: 'Build instead of just watching.' },
-    { icon: 'live', title: 'Workshops', body: 'Learn directly from practitioners.' },
-    { icon: 'file', title: 'Resources', body: 'Templates, prompts, guides and notes.' },
-    { icon: 'people', title: 'Community', body: 'Learn with other builders.' },
-  ],
-} as const
-
-/** What the pass in the hero lists. */
-export const valueStack = {
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
-} as const
-
-export const build = {
-  title: ['Don’t Just Learn.', 'Build Something.'],
-  /* `visual` picks the small drawing each card opens with (page.tsx). */
+/** 1 — What you get */
+export const get = {
+  eyebrow: 'What you get',
+  title: `Everything below, for ${inr(offer.price)}.`,
   items: [
-    { title: 'Build a Website', body: 'From idea → design → deployment.', visual: 'site' },
-    { title: 'Build an AI App', body: 'Use AI tools to create a working application.', visual: 'app' },
-    { title: 'Automate a Workflow', body: 'Turn repetitive work into automation.', visual: 'flow' },
-    { title: 'Build Your Portfolio', body: 'Create projects you can actually show.', visual: 'portfolio' },
-    { title: 'Launch a Side Project', body: 'Go from idea to something people can use.', visual: 'launch' },
+    { icon: 'book', title: '10+ Courses', body: 'Learn the fundamentals.' },
+    { icon: 'tools', title: '50+ Tools', body: 'The tools companies actually use.' },
+    { icon: 'rocket', title: '20+ Projects', body: 'Build instead of just watching.' },
+    { icon: 'live', title: 'Live Workshops', body: 'Learn from practitioners.' },
+    { icon: 'file', title: 'Templates & Resources', body: 'Prompts, guides and notes.' },
+    { icon: 'people', title: 'Community', body: 'Learn with other builders.' },
+    { icon: 'badge', title: 'Certificate', body: 'Proof of what you built.' },
+    { icon: 'infinity', title: 'Lifetime Access', body: 'Pay once. Keep it.' },
   ],
 } as const
 
-/* `mark` is one of the brand marks the site already draws (tools/marks.tsx);
-   the rest are set as a monogram chip rather than fetched as logos. */
-export const tools = {
-  title: ['Learn the Tools.', 'Not Just the Theory.'],
-  note: '50+ tools. One place to learn them.',
-  list: [
-    { name: 'Claude', mark: 'claude' },
-    { name: 'ChatGPT', mark: 'chatgpt' },
-    { name: 'Gemini', mark: 'gemini' },
-    { name: 'n8n', mark: 'n8n' },
-    { name: 'Lovable', mark: 'lovable' },
-    { name: 'Antigravity' },
-    { name: 'Cursor' },
-    { name: 'GitHub' },
-    { name: 'Vercel' },
-    { name: 'Figma' },
-    { name: 'Notion' },
-    { name: 'Canva' },
-  ],
-} as const
-
-export const curriculum = {
-  title: 'Everything You Need to Learn.',
+/** 2 — What you'll learn */
+export const learn = {
+  eyebrow: 'What you’ll learn',
+  title: 'From AI basics to shipping real work.',
   modules: [
     {
       title: 'AI Foundations',
@@ -110,53 +89,79 @@ export const curriculum = {
       build: 'Portfolio Website',
     },
   ],
-} as const
-
-export const steps = [
-  { title: 'Join', body: 'Get instant access.' },
-  { title: 'Learn', body: 'Follow the structured learning path.' },
-  { title: 'Build', body: 'Create projects and apply what you learn.' },
-] as const
-
-export const mentor = {
-  title: ['Learn From People', 'Who Actually Build.'],
-  name: 'Rochan Reddy',
-  initials: 'RR',
-  role: 'Full Stack Developer & DevOps Engineer',
-  bio: 'Building products, shipping projects and teaching what actually works.',
-} as const
-
-/**
- * PLACEHOLDERS — replace with real students' words before relying on them.
- * While `sample` is true the section is drawn locally and on preview
- * deployments only, never on the live site: a made-up review in front of a
- * paying visitor is a claim the business cannot stand behind.
- */
-export const testimonials = {
-  title: 'People Are Building With It.',
-  sample: true,
-  list: [
-    { quote: 'I stopped watching tutorials and finally built my first project.', name: 'Rahul', role: 'Student' },
-    { quote: 'The best part was having everything in one place.', name: 'Ananya', role: 'Developer' },
-    { quote: 'I automated my weekly reports in the first week.', name: 'Karthik', role: 'Working Professional' },
+  toolsLabel: 'Tools you’ll use — 50+ in all',
+  /* `mark` is one of the brand marks the site already draws (tools/marks.tsx);
+     the rest are set as a monogram chip rather than fetched as logos. */
+  tools: [
+    { name: 'Claude', mark: 'claude' },
+    { name: 'ChatGPT', mark: 'chatgpt' },
+    { name: 'Gemini', mark: 'gemini' },
+    { name: 'n8n', mark: 'n8n' },
+    { name: 'Lovable', mark: 'lovable' },
+    { name: 'Antigravity' },
+    { name: 'Cursor' },
+    { name: 'GitHub' },
+    { name: 'Vercel' },
+    { name: 'Figma' },
+    { name: 'Notion' },
+    { name: 'Canva' },
   ],
 } as const
 
-export const finalStack = {
-  title: ['One Price.', 'Everything Included.'],
-  items: ['Courses', 'Projects', 'Tools', 'Workshops', 'Templates', 'Community', 'Lifetime Access'],
-  note: 'One-time payment',
-  cta: 'Get Everything',
+/** 3 — What you'll build */
+export const build = {
+  eyebrow: 'What you’ll build',
+  title: 'Don’t just learn. Build something.',
+  items: [
+    { icon: 'globe', title: 'A Website', body: 'From idea → design → deployment.' },
+    { icon: 'spark', title: 'An AI App', body: 'A working application, built with AI tools.' },
+    { icon: 'flow', title: 'An Automation', body: 'Repetitive work that now runs itself.' },
+    { icon: 'folder', title: 'Your Portfolio', body: 'Projects you can actually show.' },
+    { icon: 'rocket', title: 'A Side Project', body: 'Something people can use.' },
+  ],
 } as const
 
-export const faqs = [
-  { q: 'Is this beginner friendly?', a: 'Yes. Start from the basics and progress toward projects.' },
-  { q: 'Do I need coding experience?', a: 'No, unless a specific course requires it.' },
-  { q: 'Is this a subscription?', a: 'No. One-time payment.' },
-  { q: 'How long do I get access?', a: 'Lifetime.' },
-  { q: 'Do I get certificates?', a: 'Yes, if applicable to your program.' },
-  { q: 'Can I learn at my own pace?', a: 'Yes.' },
-] as const
+/** 4 — How it works */
+export const how = {
+  eyebrow: 'How it works',
+  title: 'Three steps. That’s it.',
+  steps: [
+    { title: 'Join', body: `Pay ${inr(offer.price)} once. Get instant access.` },
+    { title: 'Learn', body: 'Follow the structured learning path.' },
+    { title: 'Build', body: 'Create projects and apply what you learn.' },
+  ],
+  mentor: {
+    label: 'Your mentor',
+    name: 'Rochan Reddy',
+    initials: 'RR',
+    role: 'Full Stack Developer & DevOps Engineer',
+    bio: 'Building products, shipping projects and teaching what actually works.',
+  },
+} as const
+
+/** 5 — The offer */
+export const pricing = {
+  eyebrow: 'The offer',
+  title: 'One price. Everything included.',
+  plan: 'Everything AI · Early Access',
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', 'Lifetime Access'],
+  cta: 'Get Everything',
+  small: 'One-time payment · Instant access · No hidden fees',
+} as const
+
+/** 6 — FAQ */
+export const faq = {
+  eyebrow: 'FAQ',
+  title: 'Quick answers.',
+  items: [
+    { q: 'Is this beginner friendly?', a: 'Yes. Start from the basics and progress toward projects.' },
+    { q: 'Do I need coding experience?', a: 'No, unless a specific course requires it.' },
+    { q: 'Is this a subscription?', a: 'No. One-time payment.' },
+    { q: 'How long do I get access?', a: 'Lifetime.' },
+    { q: 'Do I get certificates?', a: 'Yes, if applicable to your program.' },
+    { q: 'Can I learn at my own pace?', a: 'Yes.' },
+  ],
+} as const
 
 export const finalCta = {
   title: ['Stop Collecting Courses.', 'Start Building.'],

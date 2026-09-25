@@ -474,1031 +474,6 @@
   color: var(--purple);
 }
 
-/* ---- 3. Numbers --------------------------------------------------------- */
-.ea-numbers {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: 1px solid var(--line);
-  border-radius: var(--r-xl);
-  background: var(--card-bg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-
-.ea-numbers div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 26px 12px;
-}
-
-.ea-numbers div + div {
-  border-left: 1px solid var(--line);
-}
-
-.ea-numbers strong {
-  font-size: clamp(30px, 3.4vw, 46px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-}
-
-.ea-numbers span {
-  color: var(--ink-3);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-/* ---- Shared ------------------------------------------------------------- */
-.ea-heading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-bottom: clamp(28px, 3.4vw, 48px);
-}
-
-.ea-heading h2 {
-  margin-top: 14px;
-  font-size: var(--t-h2);
-  line-height: 1.06;
-}
-
-.ea-band {
-  padding: clamp(52px, 5.4vw, 88px) 0;
-}
-
-.ea-band-soft {
-  background: var(--band-soft);
-}
-
-.ea-band-ink,
-.ea-band-deep {
-  color: var(--on-dark);
-}
-
-.ea-band-ink {
-  background: var(--band-ink-grad);
-}
-
-.ea-band-deep {
-  background: var(--band-deep-grad);
-}
-
-.ea-band-ink .eyebrow,
-.ea-band-deep .eyebrow,
-.ea-band-ink .ea-terms,
-.ea-band-deep .ea-terms {
-  color: var(--on-dark-2);
-}
-
-.ea-grid {
-  display: grid;
-  gap: 16px;
-}
-
-.ea-grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.ea-grid-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.ea-card {
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  background: var(--card-bg);
-  box-shadow: var(--shadow-sm);
-}
-
-.ea-card h3 {
-  font-size: 19px;
-  line-height: 1.25;
-}
-
-.ea-card p {
-  margin: 8px 0 0;
-  color: var(--ink-3);
-  font-size: 15px;
-  line-height: 1.55;
-}
-
-.ea-icon {
-  width: 42px;
-  height: 42px;
-  margin-bottom: 18px;
-  padding: 9px;
-  border-radius: var(--r-md);
-  background: var(--purple-soft);
-  color: var(--purple-ink);
-}
-
-.ea-num {
-  display: block;
-  margin-bottom: 14px;
-  color: var(--purple-ink);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.ea-note {
-  margin: 26px 0 0;
-  text-align: center;
-  color: var(--ink-3);
-  font-weight: 600;
-}
-
-/* ---- 5 & 15. Value stack ------------------------------------------------ */
-.ea-stack {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  align-items: center;
-  gap: clamp(28px, 5vw, 80px);
-}
-
-.ea-stack h2 {
-  margin-top: 16px;
-  font-size: var(--t-h2);
-  line-height: 1.06;
-}
-
-.ea-stack h2 .ea-line:last-child {
-  color: var(--lime);
-}
-
-.ea-stack-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: clamp(24px, 3vw, 36px);
-  border: 1px solid #ffffff1f;
-  border-radius: var(--r-xl);
-  background: #ffffff0d;
-  text-align: center;
-}
-
-.ea-stack-card ul {
-  display: grid;
-  gap: 12px;
-  width: 100%;
-  margin: 0 0 8px;
-  padding: 0 0 22px;
-  border-bottom: 1px solid #ffffff1f;
-  list-style: none;
-  text-align: left;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.ea-stack-card .ea-check {
-  color: var(--lime);
-}
-
-.ea-stack-card .ea-price s {
-  color: var(--on-dark-3);
-}
-
-/* ---- 7. Tools ----------------------------------------------------------- */
-.ea-tools {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ea-tools li {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 20px 8px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  background: var(--card-bg);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.ea-tool-mark {
-  width: 34px;
-  height: 34px;
-}
-
-.ea-mono {
-  color: var(--ink);
-}
-
-.ea-mono path {
-  fill: currentColor;
-}
-
-.ea-monogram {
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  background: var(--surface-2);
-  color: var(--ink-2);
-  font-size: 16px;
-  font-weight: 800;
-}
-
-/* ---- FAQ disclosures ----------------------------------------------- */
-/* globals.css styles bare details/summary/p for the home FAQ (a grid summary,
-   an accent rail, an indented answer). None of that fits here. */
-.ea details,
-.ea details[open],
-.ea details + details {
-  box-shadow: none;
-}
-
-.ea details[open] {
-  background: var(--card-bg);
-}
-
-.ea-faq details[open] {
-  background: transparent;
-}
-
-.ea summary {
-  grid-template-columns: none;
-  font-size: inherit;
-  letter-spacing: normal;
-}
-
-.ea summary span {
-  color: inherit;
-}
-
-.ea details p {
-  min-height: 0;
-  padding: 0;
-  font-size: 15px;
-  line-height: 1.55;
-}
-
-
-.ea-faq summary {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.ea-faq summary::-webkit-details-marker {
-  display: none;
-}
-
-.ea-plus {
-  position: relative;
-  width: 26px;
-  height: 26px;
-  flex: none;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-}
-
-.ea-plus::before,
-.ea-plus::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 1.8px;
-  background: var(--ink-2);
-  transform: translate(-50%, -50%);
-  transition: transform 0.2s var(--ease);
-}
-
-.ea-plus::after {
-  transform: translate(-50%, -50%) rotate(90deg);
-}
-
-details[open] > summary .ea-plus::after {
-  transform: translate(-50%, -50%) rotate(0deg);
-}
-
-/* ---- 9. Curriculum ------------------------------------------------------ */
-.ea-module {
-  display: flex;
-  flex-direction: column;
-}
-
-.ea-module ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 16px 0 20px;
-  padding: 0;
-  list-style: none;
-}
-
-.ea-module li {
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  background: var(--surface);
-  color: var(--ink-2);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.ea .ea-build {
-  margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px dashed var(--line);
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.ea-build span {
-  display: block;
-  color: var(--purple-ink);
-  font: 500 11px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-/* ---- 12. Steps ---------------------------------------------------------- */
-.ea-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: none;
-}
-
-.ea-steps li {
-  position: relative;
-  padding: 28px 24px;
-  border-radius: var(--r-lg);
-  background: var(--surface);
-}
-
-.ea-step-num {
-  display: block;
-  margin-bottom: 18px;
-  color: var(--purple);
-  font-size: 44px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.ea-steps h3 {
-  font-size: 22px;
-}
-
-.ea-steps p {
-  margin: 6px 0 0;
-  color: var(--ink-3);
-}
-
-/* ---- 13. Mentor --------------------------------------------------------- */
-.ea-mentor-card {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 28px;
-}
-
-.ea-avatar {
-  display: grid;
-  place-items: center;
-  width: 92px;
-  height: 92px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--band-deep-grad);
-  color: var(--on-dark);
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-
-.ea-mentor-card h3 {
-  font-size: 24px;
-}
-
-.ea .ea-role {
-  margin-top: 4px;
-  color: var(--purple-ink);
-  font-weight: 700;
-}
-
-/* ---- 14. Testimonials --------------------------------------------------- */
-.ea-sample {
-  margin: -24px 0 24px;
-  text-align: center;
-  color: var(--ink-4);
-  font: 500 12px var(--mono);
-}
-
-.ea-quote {
-  margin: 0;
-}
-
-.ea-stars {
-  color: var(--yellow);
-  letter-spacing: 2px;
-}
-
-.ea-quote blockquote {
-  margin: 12px 0 16px;
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.45;
-}
-
-.ea-quote figcaption {
-  color: var(--ink-3);
-  font-size: 14px;
-}
-
-/* ---- 16. FAQ ------------------------------------------------------------ */
-.ea-faq {
-  max-width: 820px;
-}
-
-.ea-faq details {
-  border-bottom: 1px solid var(--line);
-}
-
-.ea-faq summary {
-  align-items: center;
-  padding: 20px 0;
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.ea-faq details p {
-  margin: 0 0 20px;
-  color: var(--ink-3);
-  line-height: 1.6;
-}
-
-/* ---- 17. Final CTA ------------------------------------------------------ */
-.ea-final {
-  text-align: center;
-}
-
-.ea-final h2 {
-  font-size: clamp(38px, 5.4vw, 76px);
-  line-height: 1;
-  letter-spacing: -0.045em;
-}
-
-.ea-final h2 .ea-line:last-child {
-  color: var(--lime);
-}
-
-.ea-final .ea-terms {
-  margin-top: 16px;
-}
-
-/* The home footer opens with its own ask; this page already ended on one. */
-.footer-plain .footer-inner {
-  padding-top: 48px;
-}
-
-/* ---- Card polish -------------------------------------------------------- */
-.ea-card {
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s ease;
-}
-
-.ea-grid > .ea-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--purple-line);
-  box-shadow: var(--shadow-md);
-}
-
-.ea-get {
-  position: relative;
-  overflow: hidden;
-  padding: 28px;
-}
-
-.ea-get h3 {
-  font-size: 21px;
-}
-
-.ea-tint-1 .ea-icon {
-  background: var(--lime);
-  color: #26331e;
-}
-
-.ea-tint-2 .ea-icon {
-  background: var(--lav);
-  color: var(--ink);
-}
-
-/* ---- Split sections (outcomes, mentor) ---------------------------------- */
-.ea-split {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  align-items: start;
-  gap: clamp(32px, 5vw, 96px);
-}
-
-.ea-split-head {
-  position: sticky;
-  top: 32px;
-}
-
-.ea-split-head h2 {
-  margin-top: 14px;
-  font-size: var(--t-h2);
-  line-height: 1.06;
-}
-
-.ea-split-head .ea-cta {
-  margin-top: 28px;
-}
-
-.ea-mentor {
-  align-items: center;
-}
-
-.ea-mentor .ea-mentor-card {
-  max-width: none;
-  margin: 0;
-}
-
-/* ---- Outcomes: a bento of the things you end up with -------------------- */
-.ea-out-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: clamp(28px, 3.4vw, 48px);
-}
-
-.ea-out-head h2 {
-  margin-top: 14px;
-  font-size: var(--t-h2);
-  line-height: 1.06;
-}
-
-.ea-out-head h2 .ea-line:last-child {
-  color: var(--lime);
-}
-
-.ea .ea-out-head .ea-cta {
-  margin-top: 0;
-}
-
-.ea-out-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* Two wide cards over three: the first two are the ones most people come for. */
-.ea-out {
-  grid-column: span 2;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid #ffffff17;
-  border-radius: var(--r-xl);
-  background: #ffffff08;
-  transition: transform 0.35s var(--ease), border-color 0.35s ease, background 0.35s ease;
-}
-
-.ea-out:nth-child(-n + 2) {
-  grid-column: span 3;
-}
-
-.ea-out:hover {
-  transform: translateY(-4px);
-  border-color: #ffffff33;
-  background: #ffffff0d;
-}
-
-.ea-out-visual {
-  position: relative;
-  display: grid;
-  place-items: center;
-  height: 188px;
-  padding: 20px;
-  overflow: hidden;
-  background-image: radial-gradient(#ffffff14 1px, transparent 1.2px);
-  background-size: 16px 16px;
-  border-bottom: 1px solid #ffffff12;
-}
-
-.ea-out:nth-child(-n + 2) .ea-out-visual {
-  height: 220px;
-}
-
-/* A glow in the accent behind every drawing. */
-.ea-out-visual::before {
-  content: '';
-  position: absolute;
-  inset: 20% 15%;
-  border-radius: 50%;
-  background: var(--purple);
-  opacity: 0.22;
-  filter: blur(40px);
-}
-
-.ea-out-visual > * {
-  position: relative;
-}
-
-.ea-out-text {
-  padding: 22px 24px 26px;
-}
-
-.ea-out-num {
-  color: var(--lime);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.1em;
-}
-
-.ea-out-text h3 {
-  margin-top: 8px;
-  font-size: 21px;
-}
-
-.ea-out-text p {
-  margin: 6px 0 0;
-  color: var(--on-dark-2);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-/* shared drawing parts */
-.ov-line {
-  display: block;
-  height: 7px;
-  border-radius: 4px;
-  background: #ffffff26;
-}
-
-.ov-strong {
-  height: 10px;
-  background: #ffffffc0;
-}
-
-.ov-w40 {
-  width: 40%;
-}
-
-.ov-w60 {
-  width: 60%;
-}
-
-.ov-w80 {
-  width: 80%;
-}
-
-/* site — a browser, and the three steps to live */
-.ov-browser {
-  width: min(100%, 360px);
-  border: 1px solid #ffffff24;
-  border-radius: 12px;
-  background: #1c1b19;
-  box-shadow: 0 18px 40px #00000059;
-  transition: transform 0.4s var(--ease);
-}
-
-.ea-out:hover .ov-browser {
-  transform: translateY(-4px);
-}
-
-.ov-bar {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 9px 10px;
-  border-bottom: 1px solid #ffffff14;
-}
-
-.ov-bar i {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ffffff2e;
-}
-
-.ov-url {
-  flex: 1;
-  margin-left: 8px;
-  padding: 3px 10px;
-  border-radius: var(--r-pill);
-  background: #ffffff12;
-  color: var(--on-dark-2);
-  font: 500 10.5px var(--mono);
-}
-
-.ov-page {
-  display: grid;
-  gap: 8px;
-  padding: 16px 14px 12px;
-}
-
-.ov-btn {
-  width: 72px;
-  height: 20px;
-  margin-top: 4px;
-  border-radius: 6px;
-  background: var(--lime);
-}
-
-.ov-steps {
-  display: flex;
-  gap: 6px;
-  margin: 0;
-  padding: 0 14px 14px;
-  list-style: none;
-}
-
-.ov-steps li {
-  flex: 1;
-  padding: 4px 0;
-  border-radius: 6px;
-  background: #ffffff0f;
-  color: var(--on-dark-2);
-  font: 500 10px var(--mono);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.ov-steps .ov-live {
-  background: var(--lime);
-  color: #26331e;
-}
-
-/* app — a chat that answers */
-.ov-chat {
-  display: grid;
-  gap: 10px;
-  width: min(100%, 340px);
-}
-
-.ov-msg {
-  margin: 0;
-  padding: 9px 12px;
-  border-radius: 14px;
-  font-size: 12.5px;
-  font-weight: 600;
-}
-
-.ov-me {
-  justify-self: end;
-  border-bottom-right-radius: 4px;
-  background: var(--purple);
-  color: #fff;
-}
-
-.ov-ai {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 78%;
-  border-bottom-left-radius: 4px;
-  background: #ffffff14;
-}
-
-.ov-ai > span {
-  display: grid;
-  flex: 1;
-  gap: 6px;
-}
-
-.ov-ai-mark {
-  width: 20px;
-  height: 20px;
-  flex: none;
-}
-
-.ov-input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 6px 6px 14px;
-  border: 1px solid #ffffff21;
-  border-radius: var(--r-pill);
-  color: var(--on-dark-3);
-  font-size: 12px;
-}
-
-.ov-input b {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--lime);
-  color: #26331e;
-  font-size: 13px;
-}
-
-/* flow — three nodes, the wires between them running */
-.ov-flow {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.ov-node {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  flex: none;
-  width: 30%;
-  padding: 12px 6px;
-  border: 1px solid #ffffff24;
-  border-radius: 12px;
-  background: #1c1b19;
-  color: var(--on-dark);
-  font-size: 11.5px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.ov-node b {
-  font-size: 18px;
-  line-height: 22px;
-}
-
-.ov-node-ai {
-  border-color: var(--lime);
-  box-shadow: 0 0 0 4px #ffffff0a;
-}
-
-.ov-node-mark {
-  width: 22px;
-  height: 22px;
-}
-
-.ov-wire {
-  flex: 1;
-  height: 2px;
-  background: repeating-linear-gradient(90deg, var(--lime) 0 6px, transparent 6px 11px);
-  background-size: 22px 2px;
-  animation: ov-run 0.9s linear infinite;
-}
-
-@keyframes ov-run {
-  to {
-    background-position: 22px 0;
-  }
-}
-
-/* portfolio — a page of your projects */
-.ov-folio {
-  width: min(100%, 280px);
-  padding: 12px;
-  border: 1px solid #ffffff24;
-  border-radius: 12px;
-  background: #1c1b19;
-}
-
-.ov-folio-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--on-dark);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.ov-folio-name i {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--band-deep-grad);
-  border: 1px solid #ffffff40;
-}
-
-.ov-tiles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.ov-tile {
-  height: 40px;
-  border-radius: 7px;
-  transition: transform 0.35s var(--ease);
-}
-
-.ov-t1 {
-  background: linear-gradient(135deg, var(--purple), #00000000), #3a2a22;
-}
-
-.ov-t2 {
-  background: linear-gradient(135deg, var(--lime), #00000000), #33301f;
-}
-
-.ov-t3 {
-  background: linear-gradient(135deg, var(--yellow), #00000000), #3a3226;
-}
-
-.ov-t4 {
-  background: #ffffff14;
-}
-
-.ea-out:hover .ov-t1 {
-  transform: translate(-2px, -2px);
-}
-
-.ea-out:hover .ov-t4 {
-  transform: translate(2px, 2px);
-}
-
-/* launch — live, and climbing */
-.ov-launch {
-  position: relative;
-  width: min(100%, 280px);
-  height: 100%;
-}
-
-.ov-status {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  background: #ffffff14;
-  color: var(--on-dark);
-  font: 500 10.5px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.ov-status i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #8fd41a;
-  box-shadow: 0 0 0 3px #8fd41a40;
-}
-
-.ov-bars {
-  position: absolute;
-  inset: 34px 0 0;
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-}
-
-.ov-bars span {
-  flex: 1;
-  border-radius: 5px 5px 2px 2px;
-  background: #ffffff21;
-  transform-origin: bottom;
-  transition: transform 0.5s var(--ease);
-}
-
-.ov-bars span:last-child {
-  background: var(--lime);
-}
-
-.ea-out:hover .ov-bars span {
-  transform: scaleY(1.06);
-}
-
-.ov-rocket {
-  position: absolute;
-  top: 2px;
-  right: 0;
-  font-size: 26px;
-  transition: transform 0.5s var(--ease);
-}
-
-.ea-out:hover .ov-rocket {
-  transform: translate(4px, -6px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ov-wire {
-    animation: none;
-  }
-}
-
 /* ---- One screen --------------------------------------------------------- */
 /* The hero fills exactly what is left of the first screen after the
    announcement and the header, and everything in it scales with the
@@ -1572,24 +547,627 @@ details[open] > summary .ea-plus::after {
   margin-top: clamp(14px, 2.4vh, 22px);
 }
 
-.ea-numbers {
-  margin-bottom: 8px;
+
+/* ======================================================================== *
+ * Below the hero — a campaign page, kept simple on purpose: one container,
+ * one heading style, one card style, two backgrounds taking turns.
+ * ======================================================================== */
+
+.ea-container {
+  width: min(1120px, calc(100% - 96px));
+  margin-inline: auto;
+}
+
+.ea-sec {
+  padding: clamp(64px, 7vw, 112px) 0;
+}
+
+.ea-sec-soft {
+  background: var(--band-soft);
+}
+
+.ea-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: clamp(32px, 4vw, 56px);
+  text-align: center;
+}
+
+.ea-eyebrow {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+  font: 500 11px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea-head h2 {
+  max-width: 22ch;
+  margin-top: 16px;
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.08;
+}
+
+.ea h3 {
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.ea-icon {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  padding: 10px;
+  border-radius: var(--r-md);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+}
+
+/* ---- Numbers ------------------------------------------------------------ */
+.ea-stats {
+  border-block: 1px solid var(--line);
+  background: var(--card-bg);
+}
+
+.ea-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.ea-stats-row div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 26px 12px;
+}
+
+.ea-stats-row div + div {
+  border-left: 1px solid var(--line);
+}
+
+.ea-stats-row strong {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.ea-stats-row span {
+  color: var(--ink-3);
+  font: 500 11.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- 1. What you get ---------------------------------------------------- */
+.ea-get {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea-get li {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+}
+
+.ea-get p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+/* ---- 2. What you'll learn ----------------------------------------------- */
+.ea-modules {
+  display: grid;
+  gap: 12px;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.ea-modules li {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+}
+
+.ea-mod-num {
+  color: var(--purple);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.ea-mod-main h3 {
+  font-size: 19px;
+}
+
+.ea-mod-main p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  font-size: 14.5px;
+}
+
+.ea .ea-mod-build {
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.ea-mod-build span {
+  display: block;
+  color: var(--purple-ink);
+  font: 500 10.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea-toolrow {
+  max-width: 920px;
+  margin: 40px auto 0;
+  text-align: center;
+}
+
+.ea-toolrow-label {
+  color: var(--ink-3);
+  font: 500 11.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea-toolrow ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea-toolrow li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card-bg);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ea-tool-mark {
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+
+.ea-mono {
+  color: var(--ink);
+}
+
+.ea-mono path {
+  fill: currentColor;
+}
+
+.ea-monogram {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* ---- 3. What you'll build ----------------------------------------------- */
+.ea-builds {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea-builds li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+  text-align: center;
+  transition: transform 0.3s var(--ease), border-color 0.3s ease;
+}
+
+.ea-builds li:hover {
+  transform: translateY(-3px);
+  border-color: var(--purple-line);
+}
+
+.ea-builds .ea-icon {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: #fff;
+}
+
+.ea-builds p {
+  margin: 6px 0 0;
+  color: var(--ink-3);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---- 4. How it works ---------------------------------------------------- */
+.ea-how {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+/* The line the three steps sit on. */
+.ea-how::before {
+  content: '';
+  position: absolute;
+  top: 26px;
+  left: 16.6%;
+  right: 16.6%;
+  border-top: 2px dashed var(--line);
+}
+
+.ea-how li {
+  position: relative;
+}
+
+.ea-how-num {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: 20px;
+  font-weight: 800;
+  box-shadow: 0 0 0 8px var(--band-soft);
+}
+
+.ea-how h3 {
+  font-size: 21px;
+}
+
+.ea-how p {
+  margin: 6px auto 0;
+  max-width: 26ch;
+  color: var(--ink-3);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.ea-mentor {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  max-width: 640px;
+  margin: 56px auto 0;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--card-bg);
+}
+
+.ea-avatar {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--band-deep-grad);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.ea-mentor h3 {
+  margin-top: 8px;
+  font-size: 20px;
+}
+
+.ea .ea-role {
+  margin: 2px 0 0;
+  color: var(--purple-ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ea-mentor p:last-child {
+  margin: 6px 0 0;
+  color: var(--ink-3);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+/* ---- 5. The offer ------------------------------------------------------- */
+.ea-offer {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  max-width: 900px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-2xl);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg);
+}
+
+.ea-offer-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(28px, 3.4vw, 44px);
+  background: var(--band-ink-grad);
+  color: var(--on-dark);
+}
+
+.ea-offer-plan {
+  color: var(--on-dark-2);
+  font: 500 11.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea-offer-price .ea-price {
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+.ea-offer-price .ea-price strong {
+  color: var(--lime);
+}
+
+.ea-offer-price .ea-price s {
+  color: var(--on-dark-3);
+}
+
+.ea-offer-price .ea-save {
+  margin-top: 12px;
+}
+
+.ea .ea-offer-price .ea-cta {
+  width: 100%;
+  margin-top: 28px;
+  background: var(--lime);
+  color: #26331e;
+}
+
+.ea .ea-offer-small {
+  margin: 12px 0 0;
+  color: var(--on-dark-3);
+  font-size: 12.5px;
+}
+
+.ea-offer-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  gap: 16px 20px;
+  margin: 0;
+  padding: clamp(28px, 3.4vw, 44px);
+  list-style: none;
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.ea-offer-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ea-offer-list .ea-check {
+  width: 22px;
+  height: 22px;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+}
+
+/* ---- 6. FAQ ------------------------------------------------------------- */
+.ea-faq {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.ea-faq div {
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+}
+
+.ea-faq dt {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.ea-faq dd {
+  margin: 6px 0 0;
+  color: var(--ink-3);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ---- Final call to action ----------------------------------------------- */
+.ea-final {
+  padding: clamp(72px, 8vw, 128px) 0;
+  background: var(--band-deep-grad);
+  color: var(--on-dark);
+  text-align: center;
+}
+
+.ea-final h2 {
+  font-size: clamp(38px, 5.4vw, 76px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.ea-final h2 .ea-line:last-child {
+  color: var(--lime);
+}
+
+.ea-final .ea-terms {
+  margin-top: 16px;
+  color: var(--on-dark-2);
+}
+
+/* ---- Footer ------------------------------------------------------------- */
+.ea-foot {
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.ea-foot-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 24px;
+}
+
+.ea-foot nav {
+  display: flex;
+  gap: 18px;
+}
+
+.ea-foot a {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.ea-foot a:hover {
+  color: var(--purple);
+}
+
+/* ---- Sticky buy bar ----------------------------------------------------- */
+.ea-sticky {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  z-index: 60;
+  width: min(640px, calc(100% - 24px));
+  transform: translate(-50%, calc(100% + 32px));
+  transition: transform 0.4s var(--ease);
+}
+
+.ea-sticky.is-shown {
+  transform: translate(-50%, 0);
+}
+
+.ea-sticky-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 10px 10px 22px;
+  border: 1px solid #ffffff1f;
+  border-radius: var(--r-xl);
+  background: var(--ink-bg);
+  color: var(--on-dark);
+  box-shadow: var(--shadow-xl);
+}
+
+.ea-sticky p {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.ea-sticky-plan {
+  color: var(--on-dark-2);
+  font: 500 10.5px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ea-sticky-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ea-sticky-price strong {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.ea-sticky-price s {
+  color: var(--on-dark-3);
+  font-size: 14px;
+}
+
+.ea-sticky-cta {
+  flex: none;
 }
 
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
-  .ea-hero,
-  .ea-split {
+  .ea-hero {
     grid-template-columns: 1fr;
   }
 
-  .ea-split-head {
-    position: static;
-  }
-
   /* One column has no room for the pass and the pitch on one screen. The
-     pass repeats the price and the list the page closes on, so it is the
-     one to go. */
+     pass repeats the price and the list the offer section closes on, so it
+     is the one to go. */
   .ea-hero-visual {
     display: none;
   }
@@ -1598,31 +1176,25 @@ details[open] > summary .ea-plus::after {
     font-size: clamp(40px, min(9vw, 8.6vh), 84px);
   }
 
-  .ea-grid-3,
-  .ea-grid-4 {
+  .ea-get {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .ea-tools {
-    grid-template-columns: repeat(4, 1fr);
+  .ea-builds {
+    grid-template-columns: repeat(6, 1fr);
   }
 
-  .ea-out-grid {
-    grid-template-columns: 1fr 1fr;
+  /* Five builds: three over two. */
+  .ea-builds li {
+    grid-column: span 2;
   }
 
-  .ea-out,
-  .ea-out:nth-child(-n + 2) {
-    grid-column: auto;
+  .ea-builds li:nth-child(4) {
+    grid-column: 2 / span 2;
   }
 
-  .ea-out:last-child {
-    grid-column: 1 / -1;
-  }
-
-  .ea-stack {
+  .ea-offer {
     grid-template-columns: 1fr;
-    text-align: center;
   }
 }
 
@@ -1632,7 +1204,8 @@ details[open] > summary .ea-plus::after {
     --ea-top: 110px; /* two-line announcement 50 + header 60 */
   }
 
-  .ea .wrap {
+  .ea .wrap,
+  .ea-container {
     width: calc(100% - 32px);
   }
 
@@ -1652,6 +1225,7 @@ details[open] > summary .ea-plus::after {
     display: none;
   }
 
+  /* hero */
   .ea-hero h1 {
     font-size: clamp(36px, min(11.5vw, 6.6vh), 54px);
   }
@@ -1682,62 +1256,109 @@ details[open] > summary .ea-plus::after {
     font-size: 13.5px;
   }
 
-  .ea-out-grid {
-    grid-template-columns: 1fr;
+  .ea .ea-cta {
+    width: 100%;
   }
 
-  .ea-out,
-  .ea-out:nth-child(-n + 2) {
-    grid-column: auto;
-  }
-
-  .ea-out-visual,
-  .ea-out:nth-child(-n + 2) .ea-out-visual {
-    height: auto;
-    min-height: 176px;
-  }
-
-  .ea-out-head {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .ea-numbers {
+  /* sections */
+  .ea-stats-row {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .ea-numbers div + div {
+  .ea-stats-row div + div {
     border-left: 0;
   }
 
-  .ea-numbers div:nth-child(even) {
+  .ea-stats-row div:nth-child(even) {
     border-left: 1px solid var(--line);
   }
 
-  .ea-numbers div:nth-child(n + 3) {
+  .ea-stats-row div:nth-child(n + 3) {
     border-top: 1px solid var(--line);
   }
 
-  .ea-grid-3,
-  .ea-grid-4,
-  .ea-steps {
+  .ea-get li {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .ea-get p {
+    font-size: 13.5px;
+  }
+
+  .ea-modules li {
+    grid-template-columns: 40px 1fr;
+    gap: 6px 14px;
+    padding: 18px;
+  }
+
+  .ea-mod-num {
+    font-size: 22px;
+  }
+
+  .ea .ea-mod-build {
+    grid-column: 2;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .ea-builds {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ea-builds li,
+  .ea-builds li:nth-child(4) {
+    grid-column: auto;
+    padding: 22px 14px;
+  }
+
+  .ea-builds li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .ea-how {
     grid-template-columns: 1fr;
+    gap: 28px;
   }
 
-  .ea-tools {
-    grid-template-columns: repeat(3, 1fr);
+  .ea-how::before {
+    top: 27px;
+    bottom: 60px;
+    left: 50%;
+    right: auto;
+    border-top: 0;
+    border-left: 2px dashed var(--line);
   }
 
-  .ea-card {
-    padding: 20px;
-  }
-
-  .ea-mentor-card {
+  .ea-mentor {
     flex-direction: column;
     text-align: center;
   }
 
-  .ea .ea-cta {
-    width: 100%;
+  .ea-offer-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .ea-faq {
+    grid-template-columns: 1fr;
+  }
+
+  .ea-foot-inner {
+    flex-direction: column;
+    text-align: center;
+    padding-bottom: 72px; /* clear of the sticky bar */
+  }
+
+  .ea-sticky-inner {
+    padding-left: 16px;
+  }
+
+  .ea-sticky-plan {
+    display: none;
+  }
+
+  .ea .ea-sticky-cta {
+    width: auto;
   }
 }

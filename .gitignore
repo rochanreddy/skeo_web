@@ -10,6 +10,7 @@ npm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 .next-dev
+.next-test
 
 # Analytics events written by /api/track — local data, never committed.
 .data
