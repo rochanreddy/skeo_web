@@ -1,7 +1,8 @@
 'use client'
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
-import type { ModuleKey, PlanKey } from '@/lib/plans'
+import type { PlanKey } from '@/lib/plans'
+import type { CheckoutItem } from '@/lib/checkoutItems'
 import { AuthModal } from './AuthModal'
 import { PurchaseModal } from './PurchaseModal'
 import { SyllabusModal } from './SyllabusModal'
@@ -13,14 +14,14 @@ type ModalState =
   | { kind: 'none' }
   | { kind: 'auth'; mode: AuthMode }
   | { kind: 'purchase'; plans: PlanKey[] }
-  | { kind: 'verify'; modules: ModuleKey[] }
+  | { kind: 'verify'; modules: CheckoutItem[] }
   | { kind: 'syllabus' }
 
 type ModalApi = {
   openAuth: (mode: AuthMode) => void
   openPurchase: (plan: PlanKey) => void
   /** Step two of the buying flow: verify the buyer, then send them to /checkout. */
-  openVerify: (modules: ModuleKey[]) => void
+  openVerify: (modules: CheckoutItem[]) => void
   /** The curriculum overlay, raised from the tool card. */
   openSyllabus: () => void
   close: () => void
@@ -39,8 +40,15 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ModalState>({ kind: 'none' })
 
   const openAuth = useCallback((mode: AuthMode) => setState({ kind: 'auth', mode }), [])
-  const openPurchase = useCallback((plan: PlanKey) => setState({ kind: 'purchase', plans: [plan] }), [])
-  const openVerify = useCallback((modules: ModuleKey[]) => {
+  // Everything AI is bought the way a tool is — verify, then pay at /checkout —
+  // so it goes straight to the verify step. The purchase dialog is left to the
+  // plans that are a conversation rather than a checkout (Teams).
+  const openPurchase = useCallback(
+    (plan: PlanKey) =>
+      setState(plan === 'member' ? { kind: 'verify', modules: ['member'] } : { kind: 'purchase', plans: [plan] }),
+    [],
+  )
+  const openVerify = useCallback((modules: CheckoutItem[]) => {
     if (modules.length > 0) setState({ kind: 'verify', modules })
   }, [])
   const openSyllabus = useCallback(() => setState({ kind: 'syllabus' }), [])

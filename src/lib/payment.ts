@@ -1,27 +1,68 @@
+import type { CheckoutItem } from '@/lib/checkoutItems'
+import type { CheckoutContact } from '@/lib/checkoutSession'
+import { sessionId, visitorId } from '@/lib/analytics/track'
+
 /**
- * Stand-in for the payment gateway. Nothing is charged and no card details are
- * ever collected — the call waits, mints a plausible order id and succeeds, so
- * the checkout screen can be walked end to end.
+ * Paying, from the browser's side: ask our server for an order, then hand the
+ * buyer to Cashfree's payment page. Cashfree sends them back to
+ * /thank-you?order_id=… when they are done.
  *
- * Swapping in a real gateway is contained to this file: /checkout only knows
- * `payForOrder` and the shape it returns.
+ * Deliberately NOT here: deciding the price, or deciding the payment worked.
+ * The server prices the cart from the item keys, and only Cashfree answering
+ * PAID to the server unlocks anything — so nothing in this file can be edited
+ * in a browser into a free account.
  */
 
-type PayResult = { ok: true; orderId: string } | { ok: false; error: string }
+type StartResult = { ok: true } | { ok: false; error: string }
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-/** Reads like a real reference so the confirmation screen has something to show. */
-function makeOrderId(): string {
-  const stamp = Date.now().toString(36).toUpperCase().slice(-6)
-  const noise = Math.floor(Math.random() * 36 ** 3)
-    .toString(36)
-    .toUpperCase()
-    .padStart(3, '0')
-  return `SKEO-${stamp}-${noise}`
+type CashfreeCheckout = { checkout: (opts: { paymentSessionId: string; redirectTarget?: '_self' | '_blank' }) => Promise<unknown> }
+declare global {
+  interface Window {
+    Cashfree?: (opts: { mode: 'sandbox' | 'production' }) => CashfreeCheckout
+  }
 }
 
-export async function payForOrder(_order: { amount: number }): Promise<PayResult> {
-  await wait(1200)
-  return { ok: true, orderId: makeOrderId() }
+const SDK = 'https://sdk.cashfree.com/js/v3/cashfree.js'
+
+function loadSdk(): Promise<void> {
+  if (window.Cashfree) return Promise.resolve()
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>(`script[src="${SDK}"]`)
+    const script = existing ?? document.createElement('script')
+    script.addEventListener('load', () => resolve(), { once: true })
+    script.addEventListener('error', () => reject(new Error('Could not load the payment page. Check your connection and try again.')), { once: true })
+    if (!existing) {
+      script.src = SDK
+      script.async = true
+      document.head.appendChild(script)
+    }
+  })
+}
+
+export async function startPayment(order: { items: CheckoutItem[]; contact: CheckoutContact }): Promise<StartResult> {
+  let session: { paymentSessionId?: string; mode?: 'sandbox' | 'production'; error?: string }
+  try {
+    const res = await fetch('/api/checkout/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...order, visitorId: visitorId(), sessionId: sessionId() }),
+    })
+    session = await res.json()
+    if (!res.ok || !session.paymentSessionId) {
+      return { ok: false, error: session.error || 'Could not start the payment. Please try again.' }
+    }
+  } catch {
+    return { ok: false, error: 'Could not reach skeo. Check your connection and try again.' }
+  }
+
+  try {
+    await loadSdk()
+    const cashfree = window.Cashfree!({ mode: session.mode === 'production' ? 'production' : 'sandbox' })
+    // _self: the payment page replaces this one, and Cashfree's return_url
+    // brings the buyer to /thank-you. Nothing after this line runs on success.
+    await cashfree.checkout({ paymentSessionId: session.paymentSessionId, redirectTarget: '_self' })
+    return { ok: true }
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'The payment page did not open. Please try again.' }
+  }
 }

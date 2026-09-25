@@ -83,6 +83,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: 'unknown_type' }, { status: 400 })
   }
 
+  // A sale is recorded by the server, once, when Cashfree confirms the money
+  // (lib/payments/finalize.ts). From a browser it would be a claim anyone can
+  // make — and it is the event the revenue figure is built on.
+  if (input.type === 'purchase') {
+    return NextResponse.json({ ok: false, error: 'forbidden' }, { status: 403 })
+  }
+
   // A browser can say it clicked a link to the LMS. Only the LMS can say
   // somebody actually signed in there.
   if (input.type === 'lms_login') {

@@ -6,7 +6,7 @@ import { Modal, useDialogId } from './Modal'
 import { track } from '@/lib/analytics/track'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
 import { verifySmsOtp } from '@/lib/amplifeedOtp'
-import type { ModuleKey } from '@/lib/plans'
+import type { CheckoutItem } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 
 type Field = 'name' | 'email' | 'phone'
@@ -31,7 +31,7 @@ type Errors = Partial<Record<Field, string>>
  * one exists it should send otp_token with the order and verify it there, the
  * way menler's /leads does before marking a lead verified.
  */
-export function VerifyModal({ modules, onClose }: { modules: ModuleKey[]; onClose: () => void }) {
+export function VerifyModal({ modules, onClose }: { modules: CheckoutItem[]; onClose: () => void }) {
   const titleId = useDialogId('verify-title')
   const router = useRouter()
 

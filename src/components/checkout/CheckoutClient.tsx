@@ -4,16 +4,15 @@ import { useEffect, useId, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Modal } from '@/components/modals/Modal'
 import {
-  clearCheckoutSession,
   readCheckoutSession,
   saveCheckoutSession,
-  saveCompletedOrder,
   type CheckoutSession,
 } from '@/lib/checkoutSession'
 import { track } from '@/lib/analytics/track'
-import { payForOrder } from '@/lib/payment'
+import { startPayment } from '@/lib/payment'
+import { CHECKOUT_ROWS, type CheckoutItem } from '@/lib/checkoutItems'
 import { price, useCurrency } from '@/lib/currency'
-import { MODULE_ROWS, PLANS, type ModuleKey } from '@/lib/plans'
+import { MODULE_ROWS, PLANS } from '@/lib/plans'
 import {
   ChatGptMark,
   ClaudeAutomationsMark,
@@ -110,24 +109,23 @@ export function CheckoutClient() {
 
   if (!session) return null
 
-  const rows = MODULE_ROWS.filter((row) => session.modules.includes(row.key))
-  const extras = MODULE_ROWS.filter((row) => !session.modules.includes(row.key))
+  const rows = CHECKOUT_ROWS.filter((row) => session.modules.includes(row.key))
+  // Everything AI already includes every tool, so there is nothing to add to it.
+  const isMember = session.modules.includes('member')
+  const extras = isMember ? [] : MODULE_ROWS.filter((row) => !session.modules.includes(row.key))
   const subtotal = rows.reduce((sum, row) => sum + row.amount, 0)
   const total = subtotal
-
-  const contactEmail = session.contact.email
-  const contactName = session.contact.name
 
   /* The cart is editable here, so every change is written back: a tool added
      on this page has to survive a refresh the way the original pick does, and
      the payment has to charge for it. */
-  function setModules(current: CheckoutSession, next: ModuleKey[]) {
+  function setModules(current: CheckoutSession, next: CheckoutItem[]) {
     const updated = { ...current, modules: next }
     setSession(updated)
     saveCheckoutSession(updated)
   }
 
-  function addModule(current: CheckoutSession, key: ModuleKey) {
+  function addModule(current: CheckoutSession, key: CheckoutItem) {
     if (current.modules.includes(key)) return
     setModules(current, [...current.modules, key])
     track('module_add', { module: key })
@@ -135,7 +133,7 @@ export function CheckoutClient() {
 
   // The last tool stays put: an empty cart has nothing to pay for, and the
   // guard above would bounce the page back to pricing on the next read.
-  function removeModule(current: CheckoutSession, key: ModuleKey) {
+  function removeModule(current: CheckoutSession, key: CheckoutItem) {
     if (current.modules.length < 2) return
     setModules(
       current,
@@ -144,34 +142,20 @@ export function CheckoutClient() {
     track('module_remove', { module: key })
   }
 
+  /* Hands the buyer to Cashfree. The price is worked out on the server from
+     the items, and nothing is unlocked until Cashfree tells the server the
+     order is PAID — so the sale is recorded there too, not here. On success
+     this page is replaced by Cashfree's, which returns to /thank-you; the
+     checkout session is cleared there, once the payment is confirmed, so
+     backing out of the payment page leaves the order ready to try again. */
   async function pay() {
     setError(null)
     setPaying(true)
-    const result = await payForOrder({ amount: total })
-    setPaying(false)
+    const result = await startPayment({ items: session!.modules, contact: session!.contact })
     if (!result.ok) {
+      setPaying(false)
       setError(result.error)
-      return
     }
-    // The one event the revenue column is built on, sent before the redirect so
-    // a slow network cannot lose the sale from the dashboard.
-    track('purchase', {
-      orderId: result.orderId,
-      modules: rows.map((row) => row.key),
-      amount: total,
-      email: contactEmail,
-      name: contactName,
-    })
-    // The order is done: drop the session so a refresh or a back-button press
-    // cannot replay the same payment, and hand the receipt to /thank-you.
-    saveCompletedOrder({
-      orderId: result.orderId,
-      modules: rows.map((row) => row.key),
-      email: contactEmail,
-      paidAt: Date.now(),
-    })
-    clearCheckoutSession()
-    router.replace('/thank-you')
   }
 
   return (
@@ -207,7 +191,7 @@ export function CheckoutClient() {
           </dl>
 
           <h2 className="checkout-h">
-            {rows.length} tool{rows.length > 1 ? 's' : ''} in your order
+            {isMember ? 'Your plan' : `${rows.length} tool${rows.length > 1 ? 's' : ''} in your order`}
           </h2>
           <ul className="checkout-items">
             {rows.map((row) => {
@@ -327,12 +311,12 @@ export function CheckoutClient() {
           {/* Both claims come from the tool's own pricing copy — nothing here
               promises anything the pricing card does not. */}
           <ul className="checkout-assurances">
-            <li>Pay once — the tool is yours to keep</li>
+            <li>Pay once — {isMember ? 'everything is' : rows.length > 1 ? 'the tools are' : 'the tool is'} yours to keep</li>
             <li>Certificate on completion</li>
           </ul>
 
-          {/* Honest about what this is: no gateway is connected yet. */}
-          <p className="checkout-fine">Demo build — no gateway is connected and no card is charged.</p>
+          {/* Where the money actually goes, and what happens after it. */}
+          <p className="checkout-fine">Secure payment by Cashfree. Your LMS login is emailed once the payment is confirmed.</p>
         </div>
       </section>
 
