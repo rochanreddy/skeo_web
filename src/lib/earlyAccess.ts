@@ -124,7 +124,6 @@ export const build = {
 /** Who teaches it — closes the "what you'll learn" section. */
 export const mentor = {
   eyebrow: 'Your mentor',
-  title: ['Learn from people', 'who actually build.'],
   name: 'Rochan Reddy',
   initials: 'RR',
   /* A path in /public (e.g. '/mentors/rochan.jpg'). Empty draws the initials. */

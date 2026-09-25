@@ -831,56 +831,38 @@
 }
 
 /* ---- 4. Mentor --------------------------------------------------------- */
-/* A dark panel with the face, a light one with the words. */
+/* One strip: face, who, what they're about. The section is tight on purpose. */
+.ea-sec-mentor {
+  padding: clamp(40px, 4.4vw, 64px) 0;
+}
+
 .ea-mentor {
   display: grid;
-  grid-template-columns: 300px 1fr;
-  max-width: 920px;
-  margin: 0 auto;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--r-2xl);
-  background: var(--card-bg);
-  box-shadow: var(--shadow-md);
-}
-
-.ea-mentor-side {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
-  padding: 40px 24px;
-  overflow: hidden;
-  background: var(--band-ink-grad);
-}
-
-/* the same dot grid the rest of the page uses, faded out from the centre */
-.ea-mentor-side::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(#ffffff 1px, transparent 1.3px);
-  background-size: 16px 16px;
-  opacity: 0.12;
-  mask-image: radial-gradient(closest-side, #000 20%, transparent 100%);
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px 28px 20px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-sm);
 }
 
 .ea-mentor-photo {
-  position: relative;
   display: grid;
   place-items: center;
-  width: 148px;
-  height: 148px;
+  width: 76px;
+  height: 76px;
   overflow: hidden;
   border-radius: 50%;
   background: var(--band-deep-grad);
   color: #fff;
-  font-size: 48px;
+  font-size: 24px;
   font-weight: 800;
-  letter-spacing: -0.04em;
-  box-shadow: 0 0 0 6px #ffffff14, 0 0 0 7px var(--lime);
+  letter-spacing: -0.03em;
+  box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--purple);
 }
 
 .ea-mentor-photo img {
@@ -889,73 +871,90 @@
   object-fit: cover;
 }
 
-.ea-mentor-badge {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 5px 12px;
-  border: 1px solid #ffffff26;
-  border-radius: var(--r-pill);
-  color: var(--on-dark-2);
-  font: 500 10.5px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.ea-mentor-badge i {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--lime);
-}
-
-.ea-mentor-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(28px, 3.6vw, 48px);
-}
-
 .ea-mentor-main h3 {
-  font-size: clamp(26px, 2.6vw, 34px);
-  letter-spacing: -0.035em;
+  margin-top: 8px;
+  font-size: 20px;
 }
 
-.ea .ea-role {
-  margin: 4px 0 0;
+.ea-mentor-main .ea-role {
   color: var(--purple-ink);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
 }
 
-.ea-mentor-main blockquote {
-  margin: 22px 0 0;
-  padding-left: 16px;
-  border-left: 3px solid var(--purple);
-  color: var(--ink-2);
-  font-size: 18px;
-  font-weight: 600;
+.ea .ea-mentor-main p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  font-size: 14.5px;
   line-height: 1.5;
 }
 
 .ea-mentor-tags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 24px 0 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .ea-mentor-tags li {
-  padding: 6px 12px;
+  padding: 4px 11px;
   border: 1px solid var(--line);
   border-radius: var(--r-pill);
   background: var(--surface);
   color: var(--ink-2);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ornaments — rings at both ends of the strip, dots and sparkles around it */
+.ea-orn-mentor .orn-ring-a {
+  top: 50%;
+  left: calc(50% - 560px);
+  width: 220px;
+  height: 220px;
+  transform: translateY(-50%);
+}
+
+.ea-orn-mentor .orn-ring-b {
+  top: 50%;
+  right: calc(50% - 580px);
+  width: 160px;
+  height: 160px;
+  transform: translateY(-50%);
+}
+
+.ea-orn-mentor .orn-dots {
+  width: 160px;
+  height: 110px;
+}
+
+.ea-orn-mentor .orn-dots-a {
+  top: 6px;
+  left: calc(50% - 420px);
+}
+
+.ea-orn-mentor .orn-dots-b {
+  bottom: 6px;
+  right: calc(50% - 440px);
+}
+
+.ea-orn-mentor .orn-s1 {
+  top: 22%;
+  left: calc(50% - 530px);
+}
+
+.ea-orn-mentor .orn-s2 {
+  bottom: 20%;
+  right: calc(50% - 540px);
+}
+
+.ea-orn-mentor .orn-s3 {
+  top: 16%;
+  right: calc(50% - 470px);
 }
 
 /* ---- 5. The offer ------------------------------------------------------- */
@@ -1609,20 +1608,25 @@
 
   .ea-mentor {
     grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 14px;
+    padding: 24px 20px;
+    text-align: center;
   }
 
-  .ea-mentor-side {
-    padding: 32px 20px;
+  .ea-mentor-main .ea-role {
+    display: block;
+    margin-top: 2px;
   }
 
-  .ea-mentor-photo {
-    width: 116px;
-    height: 116px;
-    font-size: 38px;
+  .ea-role-dot {
+    display: none;
   }
 
-  .ea-mentor-main blockquote {
-    font-size: 16px;
+  .ea-mentor-tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .ea-offer-list {
@@ -1656,7 +1660,8 @@
 /* ---- Live pieces, smaller screens --------------------------------------- */
 /* The background pieces need the empty sides a wide screen has. */
 @media (max-width: 1200px) {
-  .ea-deco {
+  .ea-deco,
+  .ea-orn-mentor {
     display: none;
   }
 }

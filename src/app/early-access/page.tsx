@@ -186,7 +186,7 @@ function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' }) {
  * The quietest layer: a dot-grid patch, a thin ring, a few sparkles. Used
  * where a section would otherwise be a flat colour with a card on it.
  */
-function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
+function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' | 'mentor' }) {
   const spark = (cls: string) => (
     <svg className={`orn-spark ${cls}`} viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 2c.6 4.8 2.2 6.4 7 7-4.8.6-6.4 2.2-7 7-.6-4.8-2.2-6.4-7-7 4.8-.6 6.4-2.2 7-7z" />
@@ -401,40 +401,31 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 4. Mentor */}
-        <section className="ea-sec ea-sec-soft">
+        {/* 4. Mentor — one short strip */}
+        <section className="ea-sec ea-sec-soft ea-sec-mentor">
+          <Ornament kind="mentor" />
           <div className="ea-container">
-            <header className="ea-head">
-              <span className="ea-eyebrow">{mentor.eyebrow}</span>
-              <h2>
-                <Lines lines={mentor.title} />
-              </h2>
-            </header>
             <article className="ea-mentor">
-              <div className="ea-mentor-side">
-                <span className="ea-mentor-photo">
-                  {mentor.photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={mentor.photo} alt={mentor.name} />
-                  ) : (
-                    <span aria-hidden="true">{mentor.initials}</span>
-                  )}
-                </span>
-                <span className="ea-mentor-badge">
-                  <i aria-hidden="true" />
-                  Mentor · skeo
-                </span>
-              </div>
+              <span className="ea-mentor-photo">
+                {mentor.photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={mentor.photo} alt={mentor.name} />
+                ) : (
+                  <span aria-hidden="true">{mentor.initials}</span>
+                )}
+              </span>
               <div className="ea-mentor-main">
-                <h3>{mentor.name}</h3>
-                <p className="ea-role">{mentor.role}</p>
-                <blockquote>“{mentor.bio}”</blockquote>
-                <ul className="ea-mentor-tags">
-                  {mentor.tags.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
+                <span className="ea-eyebrow">{mentor.eyebrow}</span>
+                <h3>
+                  {mentor.name} <span className="ea-role"><span className="ea-role-dot">· </span>{mentor.role}</span>
+                </h3>
+                <p>{mentor.bio}</p>
               </div>
+              <ul className="ea-mentor-tags">
+                {mentor.tags.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
             </article>
           </div>
         </section>
