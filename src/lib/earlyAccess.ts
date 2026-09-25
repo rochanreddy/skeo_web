@@ -121,25 +121,16 @@ export const build = {
   ],
 } as const
 
-/** 4 — How it works */
-export const how = {
-  eyebrow: 'How it works',
-  title: 'Three steps. That’s it.',
-  steps: [
-    { title: 'Join', body: `Pay ${inr(offer.price)} once. Get instant access.` },
-    { title: 'Learn', body: 'Follow the structured learning path.' },
-    { title: 'Build', body: 'Create projects and apply what you learn.' },
-  ],
-  mentor: {
-    label: 'Your mentor',
-    name: 'Rochan Reddy',
-    initials: 'RR',
-    role: 'Full Stack Developer & DevOps Engineer',
-    bio: 'Building products, shipping projects and teaching what actually works.',
-  },
+/** Who teaches it — closes the "what you'll learn" section. */
+export const mentor = {
+  label: 'Your mentor',
+  name: 'Rochan Reddy',
+  initials: 'RR',
+  role: 'Full Stack Developer & DevOps Engineer',
+  bio: 'Building products, shipping projects and teaching what actually works.',
 } as const
 
-/** 5 — The offer */
+/** 4 — The offer */
 export const pricing = {
   eyebrow: 'The offer',
   title: 'One price. Everything included.',
@@ -149,7 +140,7 @@ export const pricing = {
   small: 'One-time payment · Instant access · No hidden fees',
 } as const
 
-/** 6 — FAQ */
+/** 5 — FAQ */
 export const faq = {
   eyebrow: 'FAQ',
   title: 'Quick answers.',

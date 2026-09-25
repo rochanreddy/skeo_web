@@ -547,7 +547,6 @@
   margin-top: clamp(14px, 2.4vh, 22px);
 }
 
-
 /* ======================================================================== *
  * Below the hero — a campaign page, kept simple on purpose: one container,
  * one heading style, one card style, two backgrounds taking turns.
@@ -831,59 +830,7 @@
   line-height: 1.5;
 }
 
-/* ---- 4. How it works ---------------------------------------------------- */
-.ea-how {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-  text-align: center;
-}
-
 /* The line the three steps sit on. */
-.ea-how::before {
-  content: '';
-  position: absolute;
-  top: 26px;
-  left: 16.6%;
-  right: 16.6%;
-  border-top: 2px dashed var(--line);
-}
-
-.ea-how li {
-  position: relative;
-}
-
-.ea-how-num {
-  display: grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  margin: 0 auto 18px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--on-ink);
-  font-size: 20px;
-  font-weight: 800;
-  box-shadow: 0 0 0 8px var(--band-soft);
-}
-
-.ea-how h3 {
-  font-size: 21px;
-}
-
-.ea-how p {
-  margin: 6px auto 0;
-  max-width: 26ch;
-  color: var(--ink-3);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
 .ea-mentor {
   display: flex;
   align-items: center;
@@ -1414,125 +1361,7 @@
   animation-delay: -5s;
 }
 
-/* ---- How it works, animated --------------------------------------------- */
-/* The line draws across, each step rises in behind it, then a highlight
-   walks 1 → 2 → 3 on a loop, so the section keeps saying "in this order". */
-.ea-how::after {
-  content: '';
-  position: absolute;
-  top: 25px;
-  left: 16.6%;
-  right: 16.6%;
-  height: 2px;
-  background: var(--purple);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 1.4s var(--ease) 0.2s;
-}
-
-.ea-how.is-in::after {
-  transform: scaleX(1);
-}
-
-.ea-how li {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.7s var(--ease);
-}
-
-.ea-how.is-in li {
-  opacity: 1;
-  transform: none;
-}
-
-.ea-how.is-in li:nth-child(1) {
-  transition-delay: 0.1s;
-}
-
-.ea-how.is-in li:nth-child(2) {
-  transition-delay: 0.55s;
-}
-
-.ea-how.is-in li:nth-child(3) {
-  transition-delay: 1s;
-}
-
-.ea-how li {
-  z-index: 1;
-}
-
-.ea-how-num {
-  position: relative;
-}
-
-.ea-how-num::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid var(--purple);
-  opacity: 0;
-}
-
-.ea-how.is-in .ea-how-num {
-  animation: ea-step 4.5s ease-in-out infinite;
-}
-
-.ea-how.is-in .ea-how-num::after {
-  animation: ea-ring 4.5s ease-out infinite;
-}
-
-.ea-how.is-in li:nth-child(1) .ea-how-num,
-.ea-how.is-in li:nth-child(1) .ea-how-num::after {
-  animation-delay: 1.6s;
-}
-
-.ea-how.is-in li:nth-child(2) .ea-how-num,
-.ea-how.is-in li:nth-child(2) .ea-how-num::after {
-  animation-delay: 3.1s;
-}
-
-.ea-how.is-in li:nth-child(3) .ea-how-num,
-.ea-how.is-in li:nth-child(3) .ea-how-num::after {
-  animation-delay: 4.6s;
-}
-
-@keyframes ea-step {
-  0%,
-  30%,
-  100% {
-    background: var(--ink);
-    transform: scale(1);
-  }
-  8%,
-  22% {
-    background: var(--purple);
-    transform: scale(1.08);
-  }
-}
-
-@keyframes ea-ring {
-  0% {
-    opacity: 0.8;
-    transform: scale(1);
-  }
-  25%,
-  100% {
-    opacity: 0;
-    transform: scale(1.7);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .ea-how li,
-  .ea-how::after {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .ea-how.is-in .ea-how-num,
-  .ea-how.is-in .ea-how-num::after,
   .dm,
   .dc-term code::after {
     animation: none;
@@ -1696,20 +1525,6 @@
     grid-column: 1 / -1;
   }
 
-  .ea-how {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .ea-how::before {
-    top: 27px;
-    bottom: 60px;
-    left: 50%;
-    right: auto;
-    border-top: 0;
-    border-left: 2px dashed var(--line);
-  }
-
   .ea-mentor {
     flex-direction: column;
     text-align: center;
@@ -1758,21 +1573,6 @@
     width: calc(100% - 24px);
   }
 
-  .ea-how::after {
-    top: 27px;
-    bottom: 60px;
-    left: 50%;
-    right: auto;
-    width: 2px;
-    height: auto;
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-
-  .ea-how.is-in::after {
-    transform: scaleY(1);
-  }
-
   /* Seats on their own line under the price, not squeezed beside it. */
   .ea-sticky-price {
     flex-wrap: wrap;
@@ -1784,44 +1584,251 @@
     font-size: 11.5px;
     white-space: nowrap;
   }
+}
 
-  /* Steps become a timeline down the left, so the line never crosses text. */
-  .ea-how {
-    gap: 22px;
-    text-align: left;
+/* ---- Ornaments ---------------------------------------------------------- */
+/* Dots, a ring, a few sparkles — the quietest decoration on the page, for
+   sections that would otherwise be a flat colour with one card on it. */
+.ea-orn {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ea-final {
+  position: relative;
+  overflow: hidden;
+}
+
+.ea-final > .ea-container {
+  position: relative;
+  z-index: 1;
+}
+
+.orn-dots {
+  position: absolute;
+  width: 200px;
+  height: 150px;
+  background-image: radial-gradient(var(--ink-5) 1.1px, transparent 1.4px);
+  background-size: 16px 16px;
+  opacity: 0.45;
+  mask-image: radial-gradient(closest-side, #000 30%, transparent 100%);
+}
+
+.orn-ring {
+  position: absolute;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+
+.orn-ring-b {
+  border-style: dashed;
+}
+
+.orn-spark {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  fill: var(--purple);
+  opacity: 0.5;
+  animation: orn-twinkle 3.6s ease-in-out infinite;
+}
+
+.orn-s2 {
+  width: 12px;
+  height: 12px;
+  animation-delay: -1.2s;
+}
+
+.orn-s3 {
+  width: 20px;
+  height: 20px;
+  animation-delay: -2.4s;
+}
+
+@keyframes orn-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1) rotate(45deg);
+  }
+}
+
+/* offer — two rings centred behind the card, dots in opposite corners */
+.ea-orn-offer .orn-ring-a,
+.ea-orn-offer .orn-ring-b {
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ea-orn-offer .orn-ring-a {
+  width: 620px;
+  height: 620px;
+}
+
+.ea-orn-offer .orn-ring-b {
+  width: 900px;
+  height: 900px;
+}
+
+.ea-orn-offer .orn-dots-a {
+  top: 70px;
+  left: calc(50% - 600px);
+}
+
+.ea-orn-offer .orn-dots-b {
+  bottom: 50px;
+  right: calc(50% - 600px);
+}
+
+.ea-orn-offer .orn-s1 {
+  top: 36%;
+  left: calc(50% - 500px);
+}
+
+.ea-orn-offer .orn-s2 {
+  top: 28%;
+  right: calc(50% - 510px);
+}
+
+.ea-orn-offer .orn-s3 {
+  bottom: 14%;
+  right: calc(50% - 480px);
+}
+
+/* faq — a ring leaning in from the top right, dots at the other corner */
+.ea-orn-faq .orn-ring-a {
+  top: -140px;
+  right: -140px;
+  width: 420px;
+  height: 420px;
+}
+
+.ea-orn-faq .orn-ring-b {
+  top: -60px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+}
+
+.ea-orn-faq .orn-dots-a {
+  bottom: 40px;
+  left: calc(50% - 640px);
+}
+
+.ea-orn-faq .orn-dots-b {
+  display: none;
+}
+
+.ea-orn-faq .orn-s1 {
+  top: 90px;
+  left: calc(50% - 300px);
+}
+
+.ea-orn-faq .orn-s2 {
+  top: 150px;
+  right: calc(50% - 320px);
+}
+
+.ea-orn-faq .orn-s3 {
+  display: none;
+}
+
+/* final — the same pieces in light ink on the dark band */
+.ea-orn-final .orn-dots {
+  background-image: radial-gradient(#ffffff 1.1px, transparent 1.4px);
+  opacity: 0.18;
+}
+
+.ea-orn-final .orn-ring {
+  border-color: #ffffff1f;
+}
+
+.ea-orn-final .orn-spark {
+  fill: var(--lime);
+}
+
+.ea-orn-final .orn-ring-a,
+.ea-orn-final .orn-ring-b {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ea-orn-final .orn-ring-a {
+  width: 560px;
+  height: 560px;
+}
+
+.ea-orn-final .orn-ring-b {
+  width: 860px;
+  height: 860px;
+}
+
+.ea-orn-final .orn-dots-a {
+  top: 30px;
+  left: calc(50% - 620px);
+}
+
+.ea-orn-final .orn-dots-b {
+  bottom: 30px;
+  right: calc(50% - 620px);
+}
+
+.ea-orn-final .orn-s1 {
+  top: 26%;
+  left: calc(50% - 440px);
+}
+
+.ea-orn-final .orn-s2 {
+  top: 22%;
+  right: calc(50% - 420px);
+}
+
+.ea-orn-final .orn-s3 {
+  bottom: 22%;
+  left: calc(50% - 360px);
+}
+
+@media (max-width: 680px) {
+  .orn-dots-b,
+  .orn-s3 {
+    display: none;
   }
 
-  .ea-how li {
-    display: grid;
-    grid-template-columns: 54px 1fr;
-    column-gap: 16px;
-    align-items: start;
+  .ea-orn-offer .orn-dots-a,
+  .ea-orn-faq .orn-dots-a,
+  .ea-orn-final .orn-dots-a {
+    left: -40px;
   }
 
-  .ea-how-num {
-    grid-row: span 2;
-    margin: 0;
+  .ea-orn-offer .orn-s1,
+  .ea-orn-final .orn-s1 {
+    left: 18px;
   }
 
-  .ea-how h3 {
-    align-self: end;
-    padding-top: 4px;
+  .ea-orn-offer .orn-s2,
+  .ea-orn-final .orn-s2 {
+    right: 18px;
   }
 
-  .ea-how p {
-    margin: 2px 0 0;
-    max-width: none;
+  .ea-orn-faq .orn-s1 {
+    left: 24px;
   }
 
-  .ea-how::before {
-    left: 26px;
-    top: 27px;
-    bottom: 40px;
+  .ea-orn-faq .orn-s2 {
+    right: 24px;
   }
+}
 
-  .ea-how::after {
-    left: 26px;
-    top: 27px;
-    bottom: 40px;
+@media (prefers-reduced-motion: reduce) {
+  .orn-spark {
+    animation: none;
   }
 }

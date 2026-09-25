@@ -11,16 +11,15 @@ import {
   finalCta,
   get,
   hero,
-  how,
   inr,
   learn,
+  mentor,
   numbers,
   offer,
   pricing,
   savePct,
   valueStack,
 } from '@/lib/earlyAccess'
-import { InView } from './InView'
 import { JoinToasts, SeatsLeft } from './Live'
 import { StickyCta } from './StickyCta'
 import './early-access.css'
@@ -130,7 +129,7 @@ function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
  * screen readers, never clickable, and gone below 1024px where there is no
  * empty side to fill.
  */
-function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' | 'flow' }) {
+function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' }) {
   if (kind === 'marks') {
     return (
       <div className="ea-deco ea-deco-marks" aria-hidden="true">
@@ -180,22 +179,28 @@ function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' | 'flow' }) {
       </div>
     )
   }
+  return null
+}
+
+/**
+ * The quietest layer: a dot-grid patch, a thin ring, a few sparkles. Used
+ * where a section would otherwise be a flat colour with a card on it.
+ */
+function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
+  const spark = (cls: string) => (
+    <svg className={`orn-spark ${cls}`} viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2c.6 4.8 2.2 6.4 7 7-4.8.6-6.4 2.2-7 7-.6-4.8-2.2-6.4-7-7 4.8-.6 6.4-2.2 7-7z" />
+    </svg>
+  )
   return (
-    <div className="ea-deco" aria-hidden="true">
-      <pre className="dc dc-left dc-term">
-        <code>
-          <b>trigger</b> new lead{'\n'}
-          {'  '}→ <b>ai</b> draft reply{'\n'}
-          {'  '}→ <b>send</b> ✓
-        </code>
-      </pre>
-      <pre className="dc dc-right dc-term">
-        <code>
-          <b>step</b> 1/3 join{'\n'}
-          <b>step</b> 2/3 learn{'\n'}
-          <b>step</b> 3/3 build <u>✓</u>
-        </code>
-      </pre>
+    <div className={`ea-orn ea-orn-${kind}`} aria-hidden="true">
+      <span className="orn-dots orn-dots-a" />
+      <span className="orn-dots orn-dots-b" />
+      <span className="orn-ring orn-ring-a" />
+      <span className="orn-ring orn-ring-b" />
+      {spark('orn-s1')}
+      {spark('orn-s2')}
+      {spark('orn-s3')}
     </div>
   )
 }
@@ -374,6 +379,17 @@ export default function EarlyAccessPage() {
                 ))}
               </ul>
             </div>
+            <aside className="ea-mentor">
+              <span className="ea-avatar" aria-hidden="true">
+                {mentor.initials}
+              </span>
+              <div>
+                <span className="ea-eyebrow">{mentor.label}</span>
+                <h3>{mentor.name}</h3>
+                <p className="ea-role">{mentor.role}</p>
+                <p>{mentor.bio}</p>
+              </div>
+            </aside>
           </div>
         </section>
 
@@ -394,36 +410,9 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 4. How it works, and who teaches it */}
-        <section className="ea-sec ea-sec-soft">
-          <Deco kind="flow" />
-          <div className="ea-container">
-            <Head eyebrow={how.eyebrow} title={how.title} />
-            <InView as="ol" className="ea-how">
-              {how.steps.map((s, i) => (
-                <li key={s.title}>
-                  <span className="ea-how-num">{i + 1}</span>
-                  <h3>{s.title}</h3>
-                  <p>{s.body}</p>
-                </li>
-              ))}
-            </InView>
-            <aside className="ea-mentor">
-              <span className="ea-avatar" aria-hidden="true">
-                {how.mentor.initials}
-              </span>
-              <div>
-                <span className="ea-eyebrow">{how.mentor.label}</span>
-                <h3>{how.mentor.name}</h3>
-                <p className="ea-role">{how.mentor.role}</p>
-                <p>{how.mentor.bio}</p>
-              </div>
-            </aside>
-          </div>
-        </section>
-
-        {/* 5. The offer */}
-        <section className="ea-sec" id="offer">
+        {/* 4. The offer */}
+        <section className="ea-sec ea-sec-soft" id="offer">
+          <Ornament kind="offer" />
           <div className="ea-container">
             <Head eyebrow={pricing.eyebrow} title={pricing.title} />
             <div className="ea-offer">
@@ -450,8 +439,9 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 6. FAQ */}
-        <section className="ea-sec ea-sec-soft">
+        {/* 5. FAQ */}
+        <section className="ea-sec">
+          <Ornament kind="faq" />
           <div className="ea-container">
             <Head eyebrow={faq.eyebrow} title={faq.title} />
             <dl className="ea-faq">
@@ -467,6 +457,7 @@ export default function EarlyAccessPage() {
 
         {/* Final call to action */}
         <section className="ea-final">
+          <Ornament kind="final" />
           <div className="ea-container">
             <h2>
               <Lines lines={finalCta.title} />
