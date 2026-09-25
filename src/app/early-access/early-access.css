@@ -568,23 +568,6 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
-.ea-grid-5 {
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.ea-grid-build {
-  grid-template-columns: repeat(6, 1fr);
-}
-
-/* Five outcomes: three over two, the pair centred under the three. */
-.ea-grid-build > * {
-  grid-column: span 2;
-}
-
-.ea-grid-build > :nth-child(4) {
-  grid-column: 2 / span 2;
-}
-
 .ea-card {
   padding: 24px;
   border: 1px solid var(--line);
@@ -727,7 +710,7 @@
   font-weight: 800;
 }
 
-/* ---- 8 & 16. Disclosures ----------------------------------------------- */
+/* ---- FAQ disclosures ----------------------------------------------- */
 /* globals.css styles bare details/summary/p for the home FAQ (a grid summary,
    an accent rail, an indented answer). None of that fits here. */
 .ea details,
@@ -761,37 +744,17 @@
   line-height: 1.55;
 }
 
-/* Once open, the "What you do" row says it — the summary line would repeat it. */
-.ea-use[open] summary p {
-  display: none;
-}
 
-/* ---- 8. Use cases ------------------------------------------------------- */
-.ea-uses {
-  align-items: start;
-}
-
-.ea-use {
-  padding: 0;
-}
-
-.ea-use summary,
 .ea-faq summary {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   cursor: pointer;
   list-style: none;
 }
 
-.ea-use summary::-webkit-details-marker,
 .ea-faq summary::-webkit-details-marker {
   display: none;
-}
-
-.ea-use summary {
-  padding: 24px;
 }
 
 .ea-plus {
@@ -822,28 +785,6 @@
 
 details[open] > summary .ea-plus::after {
   transform: translate(-50%, -50%) rotate(0deg);
-}
-
-.ea-use dl {
-  display: grid;
-  gap: 12px;
-  margin: 0 24px 24px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
-}
-
-.ea-use dt {
-  color: var(--purple-ink);
-  font: 500 11px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.ea-use dd {
-  margin: 3px 0 0;
-  color: var(--ink-2);
-  font-size: 14.5px;
-  font-weight: 600;
 }
 
 /* ---- 9. Curriculum ------------------------------------------------------ */
@@ -884,18 +825,6 @@ details[open] > summary .ea-plus::after {
   font: 500 11px var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-
-/* ---- 10. Projects ------------------------------------------------------- */
-.ea-project {
-  border-top: 3px solid var(--purple);
-}
-
-.ea .ea-flow {
-  margin-top: 12px;
-  color: var(--ink-4);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.04em;
 }
 
 /* ---- 12. Steps ---------------------------------------------------------- */
@@ -1156,73 +1085,81 @@ details[open] > summary .ea-plus::after {
   transform: translateX(4px);
 }
 
-/* ---- Project cards ------------------------------------------------------ */
-.ea .ea-project {
-  padding: 0;
-  overflow: hidden;
-  border-top: 1px solid var(--line);
+/* ---- One screen --------------------------------------------------------- */
+/* The hero fills exactly what is left of the first screen after the
+   announcement and the header, and everything in it scales with the
+   viewport's height as well as its width — so a 768px laptop and a 1080p
+   monitor both see the whole pitch, pass included, before any scroll. */
+.ea {
+  --ea-top: 112px; /* announcement 40 + header 72 */
 }
 
-.ea-project-art {
-  position: relative;
-  height: 128px;
-  background: var(--band-deep-grad);
-  overflow: hidden;
-}
-
-.ea-art-1 .ea-project-art {
-  background: var(--band-ink-grad);
-}
-
-.ea-art-2 .ea-project-art {
-  background: linear-gradient(135deg, var(--yellow), var(--purple));
-}
-
-/* A dot grid over the colour, so each panel reads as a canvas. */
-.ea-project-art::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(#ffffff2e 1px, transparent 1.2px);
-  background-size: 14px 14px;
-}
-
-.ea-project-art span {
-  position: absolute;
-  right: 18px;
-  bottom: 6px;
-  color: #ffffff;
-  opacity: 0.9;
-  font-size: 54px;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  line-height: 1;
-}
-
-.ea-project-body {
-  padding: 22px 24px 24px;
-}
-
-.ea .ea-flow {
+.ea-hero-band {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  font-family: var(--font);
-  letter-spacing: 0;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100svh - var(--ea-top));
+  padding-bottom: 0;
 }
 
-.ea-flow > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--ink-3);
-  font-size: 13px;
-  font-weight: 600;
+.ea-hero {
+  padding: clamp(16px, 3vh, 40px) 0;
 }
 
-.ea-flow i {
-  color: var(--purple);
-  font-style: normal;
+.ea-hero h1 {
+  margin-top: clamp(12px, 2.4vh, 22px);
+  font-size: clamp(40px, min(6vw, 10.4vh), 92px);
+}
+
+.ea-lede {
+  margin-top: clamp(12px, 2.2vh, 22px);
+}
+
+.ea-hero-price {
+  margin-top: clamp(14px, 2.8vh, 28px);
+}
+
+.ea-price-big strong {
+  font-size: clamp(44px, min(5.4vw, 8vh), 72px);
+}
+
+.ea-hero-actions {
+  margin-top: clamp(14px, 2.6vh, 24px);
+}
+
+.ea-checks {
+  margin-top: clamp(14px, 2.6vh, 26px);
+}
+
+.ea-hero-visual {
+  padding: clamp(20px, 4vh, 36px) 28px;
+}
+
+.ea-pass {
+  padding: clamp(20px, 3.2vh, 28px);
+}
+
+.ea .ea-pass-name {
+  margin-top: clamp(14px, 2.6vh, 26px);
+}
+
+.ea-pass-price strong {
+  font-size: clamp(44px, 7vh, 60px);
+}
+
+.ea-pass-list {
+  gap: clamp(6px, 1.2vh, 10px) 14px;
+  margin-top: clamp(14px, 2.4vh, 22px);
+  padding-top: clamp(14px, 2.2vh, 20px);
+}
+
+.ea-pass-marks,
+.ea-pass-foot {
+  margin-top: clamp(14px, 2.4vh, 22px);
+}
+
+.ea-numbers {
+  margin-bottom: 8px;
 }
 
 /* ---- Tablet ------------------------------------------------------------- */
@@ -1236,28 +1173,20 @@ details[open] > summary .ea-plus::after {
     position: static;
   }
 
+  /* One column has no room for the pass and the pitch on one screen. The
+     pass repeats the price and the list the page closes on, so it is the
+     one to go. */
   .ea-hero-visual {
-    max-width: 520px;
-    width: 100%;
-    margin: 0 auto;
+    display: none;
   }
 
-  .ea-grid-4,
-  .ea-grid-5 {
+  .ea-hero h1 {
+    font-size: clamp(40px, min(9vw, 8.6vh), 84px);
+  }
+
+  .ea-grid-3,
+  .ea-grid-4 {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .ea-grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .ea-grid-build {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .ea-grid-build > *,
-  .ea-grid-build > :nth-child(4) {
-    grid-column: auto;
   }
 
   .ea-tools {
@@ -1272,6 +1201,10 @@ details[open] > summary .ea-plus::after {
 
 /* ---- Phone -------------------------------------------------------------- */
 @media (max-width: 680px) {
+  .ea {
+    --ea-top: 110px; /* two-line announcement 50 + header 60 */
+  }
+
   .ea .wrap {
     width: calc(100% - 32px);
   }
@@ -1292,61 +1225,34 @@ details[open] > summary .ea-plus::after {
     display: none;
   }
 
-  .ea-hero {
-    gap: 12px;
-    padding-top: 28px;
+  .ea-hero h1 {
+    font-size: clamp(36px, min(11.5vw, 6.6vh), 54px);
   }
 
-  .ea-hero-actions {
-    width: 100%;
-    flex-direction: column;
+  .ea-lede {
+    font-size: 15.5px;
   }
 
   .ea-hero-price {
     flex-wrap: wrap;
   }
 
-  .ea-hero-visual {
-    padding: 28px 8px;
+  .ea-price-big strong {
+    font-size: clamp(40px, 6.4vh, 56px);
   }
 
-  .ea-pass {
-    padding: 22px;
-    transform: none;
+  .ea-hero-actions {
+    width: 100%;
   }
 
-  .ea-pass-price strong {
-    font-size: 48px;
-  }
-
-  .ea-pass-list {
-    font-size: 13px;
-  }
-
-  .ea-float {
-    width: 46px;
-    height: 46px;
-    border-radius: 13px;
-  }
-
-  .ea-float-mark {
-    width: 22px;
-    height: 22px;
-  }
-
-  .ea-float-1 {
-    top: 0;
-    left: 0;
-  }
-
-  .ea-float-2 {
-    top: 0;
-    right: 0;
-  }
-
-  .ea-float-3,
-  .ea-float-4 {
+  /* One button on a phone: the second only scrolls to what is below. */
+  .ea .ea-ghost {
     display: none;
+  }
+
+  .ea-checks {
+    gap: 8px 16px;
+    font-size: 13.5px;
   }
 
   .ea-outcomes li {
@@ -1384,17 +1290,8 @@ details[open] > summary .ea-plus::after {
 
   .ea-grid-3,
   .ea-grid-4,
-  .ea-grid-build,
   .ea-steps {
     grid-template-columns: 1fr;
-  }
-
-  .ea-grid-5 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .ea-grid-5 > :last-child {
-    grid-column: 1 / -1;
   }
 
   .ea-tools {
@@ -1403,14 +1300,6 @@ details[open] > summary .ea-plus::after {
 
   .ea-card {
     padding: 20px;
-  }
-
-  .ea-use summary {
-    padding: 20px;
-  }
-
-  .ea-use dl {
-    margin: 0 20px 20px;
   }
 
   .ea-mentor-card {

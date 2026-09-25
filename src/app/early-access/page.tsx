@@ -7,7 +7,6 @@ import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import {
   announcement,
-  audience,
   build,
   curriculum,
   faqs,
@@ -18,11 +17,9 @@ import {
   mentor,
   numbers,
   offer,
-  projects,
   steps,
   testimonials,
   tools,
-  useCases,
   valueStack,
   whatYouGet,
 } from '@/lib/earlyAccess'
@@ -235,16 +232,16 @@ export default function EarlyAccessPage() {
               </article>
             </div>
           </div>
+        </section>
 
-          {/* 3. Numbers */}
-          <div className="wrap ea-numbers" aria-label="What is included, in numbers">
-            {numbers.map((n) => (
-              <div key={n.label}>
-                <strong>{n.value}</strong>
-                <span>{n.label}</span>
-              </div>
-            ))}
-          </div>
+        {/* 3. Numbers */}
+        <section className="wrap ea-numbers" aria-label="What is included, in numbers">
+          {numbers.map((n) => (
+            <div key={n.label}>
+              <strong>{n.value}</strong>
+              <span>{n.label}</span>
+            </div>
+          ))}
         </section>
 
         {/* 4. What you get */}
@@ -265,33 +262,8 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 5. Value stack */}
-        <section className="ea-band ea-band-ink">
-          <div className="wrap ea-stack">
-            <div>
-              <span className="eyebrow">The offer</span>
-              <h2>
-                <Lines lines={valueStack.title} />
-              </h2>
-            </div>
-            <div className="ea-stack-card">
-              <ul>
-                {valueStack.items.map((i) => (
-                  <li key={i}>
-                    <Check />
-                    {i}
-                  </li>
-                ))}
-              </ul>
-              <Price />
-              <p className="ea-terms">{valueStack.note}</p>
-              <Buy className="button button-lime ea-cta">{valueStack.cta}</Buy>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Build */}
-        <section className="section">
+        {/* 5. Build */}
+        <section className="ea-band ea-band-soft">
           <div className="wrap ea-split">
             <div className="ea-split-head">
               <span className="eyebrow">Outcomes</span>
@@ -317,8 +289,8 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 7. Tools */}
-        <section className="ea-band ea-band-soft">
+        {/* 6. Tools */}
+        <section className="section">
           <div className="wrap">
             <Heading eyebrow="Tools">
               <Lines lines={tools.title} />
@@ -335,41 +307,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 8. Use cases */}
-        <section className="section">
-          <div className="wrap">
-            <Heading eyebrow="Use cases">{useCases.title}</Heading>
-            <div className="ea-grid ea-grid-3 ea-uses">
-              {useCases.items.map((u) => (
-                <details key={u.title} className="ea-card ea-use">
-                  <summary>
-                    <span>
-                      <h3>{u.title}</h3>
-                      <p>{u.body}</p>
-                    </span>
-                    <span className="ea-plus" aria-hidden="true" />
-                  </summary>
-                  <dl>
-                    <div>
-                      <dt>What you do</dt>
-                      <dd>{u.body}</dd>
-                    </div>
-                    <div>
-                      <dt>Tools</dt>
-                      <dd>{u.tools.join(' · ')}</dd>
-                    </div>
-                    <div>
-                      <dt>What you build</dt>
-                      <dd>{u.build}</dd>
-                    </div>
-                  </dl>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 9. Curriculum */}
+        {/* 7. Curriculum */}
         <section className="ea-band ea-band-soft">
           <div className="wrap">
             <Heading eyebrow="Curriculum">{curriculum.title}</Heading>
@@ -393,51 +331,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 10. Projects */}
-        <section className="section">
-          <div className="wrap">
-            <Heading eyebrow="Projects">
-              <Lines lines={projects.title} />
-            </Heading>
-            <div className="ea-grid ea-grid-3">
-              {projects.list.map((p, i) => (
-                <article key={p} className={`ea-card ea-project ea-art-${i % 3}`}>
-                  <div className="ea-project-art" aria-hidden="true">
-                    <span>{pad(i + 1)}</span>
-                  </div>
-                  <div className="ea-project-body">
-                    <h3>{p}</h3>
-                    <p className="ea-flow">
-                      {projects.steps.split(' → ').map((s, j) => (
-                        <span key={s}>
-                          {j > 0 && <i aria-hidden="true">→</i>}
-                          {s}
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 11. Who it's for */}
-        <section className="ea-band ea-band-soft">
-          <div className="wrap">
-            <Heading eyebrow="Who it’s for">{audience.title}</Heading>
-            <div className="ea-grid ea-grid-5">
-              {audience.list.map((a) => (
-                <article key={a.title} className="ea-card">
-                  <h3>{a.title}</h3>
-                  <p>{a.body}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 12. How it works */}
+        {/* 8. How it works */}
         <section className="section">
           <div className="wrap">
             <Heading eyebrow="How it works">Join. Learn. Build.</Heading>
@@ -453,7 +347,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 13. Mentor */}
+        {/* 9. Mentor */}
         <section className="ea-band ea-band-soft">
           <div className="wrap ea-split ea-mentor">
             <div className="ea-split-head">
@@ -475,7 +369,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 14. Testimonials — placeholders never reach the live site */}
+        {/* 10. Testimonials — placeholders never reach the live site */}
         {showTestimonials && (
           <section className="section">
             <div className="wrap">
@@ -498,7 +392,7 @@ export default function EarlyAccessPage() {
           </section>
         )}
 
-        {/* 15. Final value stack */}
+        {/* 11. Final value stack */}
         <section className="ea-band ea-band-ink">
           <div className="wrap ea-stack">
             <div>
@@ -523,7 +417,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 16. FAQ */}
+        {/* 12. FAQ */}
         <section className="section">
           <div className="wrap ea-faq">
             <Heading eyebrow="FAQ">Questions, answered.</Heading>
@@ -541,7 +435,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 17. Final CTA */}
+        {/* 13. Final CTA */}
         <section className="ea-band ea-band-deep ea-final">
           <div className="wrap">
             <h2>

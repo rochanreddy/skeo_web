@@ -48,11 +48,9 @@ export const whatYouGet = {
   ],
 } as const
 
+/** What the pass in the hero lists. */
 export const valueStack = {
-  title: [`${inr(offer.was)} Worth of Learning.`, `Yours for ${inr(offer.price)}.`],
   items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
-  note: 'One-time payment',
-  cta: 'Get Everything',
 } as const
 
 export const build = {
@@ -87,48 +85,6 @@ export const tools = {
   ],
 } as const
 
-export const useCases = {
-  title: 'What Can You Actually Do With It?',
-  items: [
-    {
-      title: 'Build Websites',
-      body: 'Design, code and deploy websites using AI.',
-      tools: ['Lovable', 'Antigravity', 'Claude', 'Vercel'],
-      build: 'A live website on your own link',
-    },
-    {
-      title: 'Create Content',
-      body: 'Generate images, videos, posts and campaigns.',
-      tools: ['ChatGPT', 'Gemini', 'Canva'],
-      build: 'A ready-to-post content campaign',
-    },
-    {
-      title: 'Automate Work',
-      body: 'Connect tools and automate repetitive tasks.',
-      tools: ['n8n', 'Claude', 'Notion'],
-      build: 'A workflow that runs without you',
-    },
-    {
-      title: 'Research Faster',
-      body: 'Turn hours of research into minutes.',
-      tools: ['Claude', 'ChatGPT', 'Gemini'],
-      build: 'A cited research brief',
-    },
-    {
-      title: 'Build AI Apps',
-      body: 'Create useful AI-powered products.',
-      tools: ['Lovable', 'Cursor', 'Claude'],
-      build: 'A working AI app',
-    },
-    {
-      title: 'Get Job Ready',
-      body: 'Build projects, portfolio and resume.',
-      tools: ['Claude', 'ChatGPT', 'GitHub'],
-      build: 'A portfolio and resume to apply with',
-    },
-  ],
-} as const
-
 export const curriculum = {
   title: 'Everything You Need to Learn.',
   modules: [
@@ -152,30 +108,6 @@ export const curriculum = {
       learn: ['Lovable', 'Antigravity', 'Claude Code', 'Deployment'],
       build: 'Portfolio Website',
     },
-  ],
-} as const
-
-export const projects = {
-  title: ['Learn It.', 'Build It.', 'Show It.'],
-  steps: 'Build → Deploy → Add to Portfolio',
-  list: [
-    'AI Resume Builder',
-    'AI Research Agent',
-    'Automated Lead Generator',
-    'AI Content System',
-    'Portfolio Website',
-    'Customer Support Bot',
-  ],
-} as const
-
-export const audience = {
-  title: 'You Don’t Need to Be an Expert.',
-  list: [
-    { title: 'Students', body: 'Build skills before graduation.' },
-    { title: 'Developers', body: 'Work faster with modern tools.' },
-    { title: 'Creators', body: 'Create more without a big team.' },
-    { title: 'Founders', body: 'Turn ideas into products.' },
-    { title: 'Working Professionals', body: 'Upgrade your workflow.' },
   ],
 } as const
 
