@@ -830,50 +830,132 @@
   line-height: 1.5;
 }
 
-/* The line the three steps sit on. */
+/* ---- 4. Mentor --------------------------------------------------------- */
+/* A dark panel with the face, a light one with the words. */
 .ea-mentor {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  max-width: 640px;
-  margin: 56px auto 0;
-  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  max-width: 920px;
+  margin: 0 auto;
+  overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-2xl);
   background: var(--card-bg);
+  box-shadow: var(--shadow-md);
 }
 
-.ea-avatar {
+.ea-mentor-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 40px 24px;
+  overflow: hidden;
+  background: var(--band-ink-grad);
+}
+
+/* the same dot grid the rest of the page uses, faded out from the centre */
+.ea-mentor-side::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#ffffff 1px, transparent 1.3px);
+  background-size: 16px 16px;
+  opacity: 0.12;
+  mask-image: radial-gradient(closest-side, #000 20%, transparent 100%);
+}
+
+.ea-mentor-photo {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 76px;
-  height: 76px;
-  flex: none;
+  width: 148px;
+  height: 148px;
+  overflow: hidden;
   border-radius: 50%;
   background: var(--band-deep-grad);
   color: #fff;
-  font-size: 24px;
+  font-size: 48px;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
+  box-shadow: 0 0 0 6px #ffffff14, 0 0 0 7px var(--lime);
 }
 
-.ea-mentor h3 {
-  margin-top: 8px;
-  font-size: 20px;
+.ea-mentor-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ea-mentor-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border: 1px solid #ffffff26;
+  border-radius: var(--r-pill);
+  color: var(--on-dark-2);
+  font: 500 10.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea-mentor-badge i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+}
+
+.ea-mentor-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 3.6vw, 48px);
+}
+
+.ea-mentor-main h3 {
+  font-size: clamp(26px, 2.6vw, 34px);
+  letter-spacing: -0.035em;
 }
 
 .ea .ea-role {
-  margin: 2px 0 0;
+  margin: 4px 0 0;
   color: var(--purple-ink);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
 }
 
-.ea-mentor p:last-child {
-  margin: 6px 0 0;
-  color: var(--ink-3);
-  font-size: 14.5px;
+.ea-mentor-main blockquote {
+  margin: 22px 0 0;
+  padding-left: 16px;
+  border-left: 3px solid var(--purple);
+  color: var(--ink-2);
+  font-size: 18px;
+  font-weight: 600;
   line-height: 1.5;
+}
+
+.ea-mentor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea-mentor-tags li {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 /* ---- 5. The offer ------------------------------------------------------- */
@@ -1526,8 +1608,21 @@
   }
 
   .ea-mentor {
-    flex-direction: column;
-    text-align: center;
+    grid-template-columns: 1fr;
+  }
+
+  .ea-mentor-side {
+    padding: 32px 20px;
+  }
+
+  .ea-mentor-photo {
+    width: 116px;
+    height: 116px;
+    font-size: 38px;
+  }
+
+  .ea-mentor-main blockquote {
+    font-size: 16px;
   }
 
   .ea-offer-list {
@@ -1830,5 +1925,152 @@
 @media (prefers-reduced-motion: reduce) {
   .orn-spark {
     animation: none;
+  }
+}
+
+/* ---- Build icons, on hover ---------------------------------------------- */
+/* Hovering a card plays its icon: the circle lifts with a ring going out,
+   and the drawing inside does what it stands for — the globe turns, the
+   spark fires, the blocks rearrange, the folder hops, the rocket launches. */
+.ea-b-icon {
+  position: relative;
+  display: grid;
+  margin-bottom: 18px;
+}
+
+.ea-builds .ea-icon {
+  margin-bottom: 0;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s ease;
+}
+
+.ea-b-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--purple);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ea-builds li:hover .ea-icon {
+  transform: scale(1.1);
+  box-shadow: 0 8px 22px -6px var(--purple);
+}
+
+.ea-builds li:hover .ea-b-icon::after {
+  animation: ea-b-ring 0.9s ease-out;
+}
+
+/* The drawing turns about its own centre, not the svg's corner. */
+.ea-builds .ea-icon path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ea-b-globe:hover .ea-icon path {
+  animation: ea-b-spin 1.1s var(--ease);
+}
+
+.ea-b-spark:hover .ea-icon path {
+  animation: ea-b-fire 0.9s var(--ease);
+}
+
+.ea-b-flow:hover .ea-icon path {
+  animation: ea-b-shuffle 0.8s ease-in-out;
+}
+
+.ea-b-folder:hover .ea-icon path {
+  animation: ea-b-hop 0.7s var(--ease);
+}
+
+.ea-b-rocket:hover .ea-icon path {
+  animation: ea-b-launch 1s var(--ease);
+}
+
+@keyframes ea-b-ring {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes ea-b-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ea-b-fire {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  40% {
+    transform: rotate(90deg) scale(1.25);
+  }
+  100% {
+    transform: rotate(180deg) scale(1);
+  }
+}
+
+@keyframes ea-b-shuffle {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(-2px, 2px);
+  }
+  75% {
+    transform: translate(1px, -1px);
+  }
+}
+
+@keyframes ea-b-hop {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  35% {
+    transform: translateY(-4px) rotate(-8deg);
+  }
+  65% {
+    transform: translateY(0) rotate(4deg);
+  }
+}
+
+/* Out through the top-right corner, back in from the bottom-left. */
+@keyframes ea-b-launch {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(14px, -14px);
+    opacity: 0;
+  }
+  41% {
+    transform: translate(-14px, 14px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea-builds li:hover .ea-icon,
+  .ea-builds li:hover .ea-b-icon::after,
+  .ea-builds li:hover .ea-icon path {
+    animation: none;
+    transform: none;
   }
 }

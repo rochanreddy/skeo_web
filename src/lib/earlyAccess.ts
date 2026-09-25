@@ -15,7 +15,7 @@ import { PLANS } from '@/lib/plans'
 
 export const offer = {
   price: PLANS.earlyaccess.amount,
-  was: 4999,
+  was: 25000,
   terms: 'One-time payment · Lifetime access',
 } as const
 
@@ -123,11 +123,15 @@ export const build = {
 
 /** Who teaches it — closes the "what you'll learn" section. */
 export const mentor = {
-  label: 'Your mentor',
+  eyebrow: 'Your mentor',
+  title: ['Learn from people', 'who actually build.'],
   name: 'Rochan Reddy',
   initials: 'RR',
+  /* A path in /public (e.g. '/mentors/rochan.jpg'). Empty draws the initials. */
+  photo: '',
   role: 'Full Stack Developer & DevOps Engineer',
   bio: 'Building products, shipping projects and teaching what actually works.',
+  tags: ['Full Stack Development', 'DevOps', 'Shipping real projects'],
 } as const
 
 /** 4 — The offer */

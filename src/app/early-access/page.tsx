@@ -247,7 +247,7 @@ export default function EarlyAccessPage() {
               <p className="ea-lede">{hero.lede}</p>
               <div className="ea-hero-price">
                 <Price big />
-                <span className="ea-save">Save {savePct}%</span>
+                <span className="ea-save">{savePct}% OFF</span>
               </div>
               <p className="ea-terms">{offer.terms}</p>
               <div className="ea-hero-actions">
@@ -379,17 +379,6 @@ export default function EarlyAccessPage() {
                 ))}
               </ul>
             </div>
-            <aside className="ea-mentor">
-              <span className="ea-avatar" aria-hidden="true">
-                {mentor.initials}
-              </span>
-              <div>
-                <span className="ea-eyebrow">{mentor.label}</span>
-                <h3>{mentor.name}</h3>
-                <p className="ea-role">{mentor.role}</p>
-                <p>{mentor.bio}</p>
-              </div>
-            </aside>
           </div>
         </section>
 
@@ -400,8 +389,10 @@ export default function EarlyAccessPage() {
             <Head eyebrow={build.eyebrow} title={build.title} />
             <ul className="ea-builds">
               {build.items.map((b) => (
-                <li key={b.title}>
-                  <Icon name={b.icon} />
+                <li key={b.title} className={`ea-b-${b.icon}`}>
+                  <span className="ea-b-icon">
+                    <Icon name={b.icon} />
+                  </span>
                   <h3>{b.title}</h3>
                   <p>{b.body}</p>
                 </li>
@@ -410,8 +401,46 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 4. The offer */}
-        <section className="ea-sec ea-sec-soft" id="offer">
+        {/* 4. Mentor */}
+        <section className="ea-sec ea-sec-soft">
+          <div className="ea-container">
+            <header className="ea-head">
+              <span className="ea-eyebrow">{mentor.eyebrow}</span>
+              <h2>
+                <Lines lines={mentor.title} />
+              </h2>
+            </header>
+            <article className="ea-mentor">
+              <div className="ea-mentor-side">
+                <span className="ea-mentor-photo">
+                  {mentor.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={mentor.photo} alt={mentor.name} />
+                  ) : (
+                    <span aria-hidden="true">{mentor.initials}</span>
+                  )}
+                </span>
+                <span className="ea-mentor-badge">
+                  <i aria-hidden="true" />
+                  Mentor · skeo
+                </span>
+              </div>
+              <div className="ea-mentor-main">
+                <h3>{mentor.name}</h3>
+                <p className="ea-role">{mentor.role}</p>
+                <blockquote>“{mentor.bio}”</blockquote>
+                <ul className="ea-mentor-tags">
+                  {mentor.tags.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* 5. The offer */}
+        <section className="ea-sec" id="offer">
           <Ornament kind="offer" />
           <div className="ea-container">
             <Head eyebrow={pricing.eyebrow} title={pricing.title} />
@@ -422,7 +451,7 @@ export default function EarlyAccessPage() {
                   <strong>{inr(offer.price)}</strong>
                   <s aria-label={`was ${inr(offer.was)}`}>{inr(offer.was)}</s>
                 </p>
-                <span className="ea-save">Save {savePct}%</span>
+                <span className="ea-save">{savePct}% OFF</span>
                 <SeatsLeft />
                 <Buy className="button ea-cta">{pricing.cta}</Buy>
                 <p className="ea-offer-small">{pricing.small}</p>
@@ -439,8 +468,8 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 5. FAQ */}
-        <section className="ea-sec">
+        {/* 6. FAQ */}
+        <section className="ea-sec ea-sec-soft">
           <Ornament kind="faq" />
           <div className="ea-container">
             <Head eyebrow={faq.eyebrow} title={faq.title} />
