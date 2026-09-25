@@ -20,6 +20,8 @@ import {
   savePct,
   valueStack,
 } from '@/lib/earlyAccess'
+import { InView } from './InView'
+import { JoinToasts, SeatsLeft } from './Live'
 import { StickyCta } from './StickyCta'
 import './early-access.css'
 
@@ -119,6 +121,82 @@ function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
       <span className="ea-eyebrow">{eyebrow}</span>
       <h2>{title}</h2>
     </header>
+  )
+}
+
+/**
+ * Faint background pieces for the wide, quiet sides of a section heading — a
+ * line of code, a prompt, the tools themselves. Decoration only: hidden from
+ * screen readers, never clickable, and gone below 1024px where there is no
+ * empty side to fill.
+ */
+function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' | 'flow' }) {
+  if (kind === 'marks') {
+    return (
+      <div className="ea-deco ea-deco-marks" aria-hidden="true">
+        <ClaudeMark className="dm dm-1" />
+        <N8nMark className="dm dm-2" />
+        <GeminiMark className="dm dm-3" />
+        <ChatGptMark className="dm dm-4" />
+        <LovableMark className="dm dm-5" idPrefix="ea-deco-lovable" />
+      </div>
+    )
+  }
+  if (kind === 'code') {
+    return (
+      <div className="ea-deco" aria-hidden="true">
+        <pre className="dc dc-left">
+          <code>
+            <b>const</b> skill = <b>await</b> learn(<i>&quot;claude&quot;</i>){'\n'}
+            <b>const</b> app = build(skill){'\n'}
+            ship(app) <u>{'// → live'}</u>
+          </code>
+        </pre>
+        <pre className="dc dc-right">
+          <code>
+            <u>{'/* your stack */'}</u>{'\n'}
+            tools: [<i>&quot;Claude&quot;</i>, <i>&quot;n8n&quot;</i>,{'\n'}
+            {'        '}<i>&quot;Gemini&quot;</i>, <i>&quot;Lovable&quot;</i>]
+          </code>
+        </pre>
+      </div>
+    )
+  }
+  if (kind === 'prompt') {
+    return (
+      <div className="ea-deco" aria-hidden="true">
+        <pre className="dc dc-left dc-term">
+          <code>
+            <b>$</b> claude <i>&quot;turn my idea into a site&quot;</i>{'\n'}
+            <u>✓ planned · ✓ built · ✓ deployed</u>
+          </code>
+        </pre>
+        <pre className="dc dc-right dc-term">
+          <code>
+            <b>you</b> › summarise this report{'\n'}
+            <b>ai</b>{'  '}› here are the 5 key points…
+          </code>
+        </pre>
+      </div>
+    )
+  }
+  return (
+    <div className="ea-deco" aria-hidden="true">
+      <pre className="dc dc-left dc-term">
+        <code>
+          <b>trigger</b> new lead{'\n'}
+          {'  '}→ <b>ai</b> draft reply{'\n'}
+          {'  '}→ <b>send</b> ✓
+        </code>
+      </pre>
+      <pre className="dc dc-right dc-term">
+        <code>
+          <b>step</b> 1/3 join{'\n'}
+          <b>step</b> 2/3 learn{'\n'}
+          <b>step</b> 3/3 build <u>✓</u>
+        </code>
+      </pre>
+    </div>
   )
 }
 
@@ -224,6 +302,7 @@ export default function EarlyAccessPage() {
                   <LovableMark className="ea-pass-mark" idPrefix="ea-pass-lovable" />
                   <span className="ea-pass-more">+45</span>
                 </div>
+                <SeatsLeft />
                 <footer className="ea-pass-foot">
                   <span>One-time payment</span>
                   <span>Lifetime access</span>
@@ -247,6 +326,7 @@ export default function EarlyAccessPage() {
 
         {/* 1. What you get */}
         <section className="ea-sec" id="inside">
+          <Deco kind="code" />
           <div className="ea-container">
             <Head eyebrow={get.eyebrow} title={get.title} />
             <ul className="ea-get">
@@ -265,6 +345,7 @@ export default function EarlyAccessPage() {
 
         {/* 2. What you'll learn */}
         <section className="ea-sec ea-sec-soft">
+          <Deco kind="marks" />
           <div className="ea-container">
             <Head eyebrow={learn.eyebrow} title={learn.title} />
             <ol className="ea-modules">
@@ -298,6 +379,7 @@ export default function EarlyAccessPage() {
 
         {/* 3. What you'll build */}
         <section className="ea-sec">
+          <Deco kind="prompt" />
           <div className="ea-container">
             <Head eyebrow={build.eyebrow} title={build.title} />
             <ul className="ea-builds">
@@ -314,9 +396,10 @@ export default function EarlyAccessPage() {
 
         {/* 4. How it works, and who teaches it */}
         <section className="ea-sec ea-sec-soft">
+          <Deco kind="flow" />
           <div className="ea-container">
             <Head eyebrow={how.eyebrow} title={how.title} />
-            <ol className="ea-how">
+            <InView as="ol" className="ea-how">
               {how.steps.map((s, i) => (
                 <li key={s.title}>
                   <span className="ea-how-num">{i + 1}</span>
@@ -324,7 +407,7 @@ export default function EarlyAccessPage() {
                   <p>{s.body}</p>
                 </li>
               ))}
-            </ol>
+            </InView>
             <aside className="ea-mentor">
               <span className="ea-avatar" aria-hidden="true">
                 {how.mentor.initials}
@@ -351,6 +434,7 @@ export default function EarlyAccessPage() {
                   <s aria-label={`was ${inr(offer.was)}`}>{inr(offer.was)}</s>
                 </p>
                 <span className="ea-save">Save {savePct}%</span>
+                <SeatsLeft />
                 <Buy className="button ea-cta">{pricing.cta}</Buy>
                 <p className="ea-offer-small">{pricing.small}</p>
               </div>
@@ -408,6 +492,7 @@ export default function EarlyAccessPage() {
       </footer>
 
       <StickyCta />
+      <JoinToasts />
     </div>
   )
 }

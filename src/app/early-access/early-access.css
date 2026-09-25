@@ -1159,6 +1159,386 @@
   flex: none;
 }
 
+/* ---- Seats left --------------------------------------------------------- */
+/* Drawn on dark panels only (the pass, the offer card, the sticky bar). */
+.ea-seats {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.ea .ea-seats p {
+  margin: 0 0 7px;
+  color: var(--on-dark-2);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.ea-seats p strong {
+  color: var(--lime);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.ea-seats-track {
+  display: block;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: #ffffff1a;
+}
+
+.ea-seats-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--lime);
+  transition: width 1s var(--ease);
+}
+
+.ea-seats-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  margin: 0 0 0 6px;
+  color: var(--lime);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ea-seats-inline i,
+.ea-toast-time i {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: #8fd41a;
+  animation: live-pulse 2.4s ease-in-out infinite;
+}
+
+.ea-seats-full {
+  display: block;
+  margin-top: 14px;
+  color: var(--lime);
+  font-weight: 800;
+}
+
+/* ---- Who just joined ---------------------------------------------------- */
+.ea-toast {
+  position: fixed;
+  left: 16px;
+  bottom: 96px; /* above the sticky bar */
+  z-index: 61;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(340px, calc(100% - 32px));
+  padding: 12px 36px 12px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-xl);
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.45s var(--ease);
+}
+
+.ea-toast.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.ea-toast-avatar {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--band-deep-grad);
+  color: #fff;
+  font-weight: 800;
+}
+
+.ea .ea-toast p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.ea-toast p strong {
+  color: var(--ink);
+}
+
+.ea-toast p b {
+  color: var(--purple-ink);
+}
+
+.ea-toast-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+  color: var(--ink-4);
+  font-size: 11.5px;
+}
+
+.ea-toast-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-4);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ea-toast-close:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* ---- Background pieces -------------------------------------------------- */
+.ea-sec {
+  position: relative;
+  overflow: hidden;
+}
+
+.ea-sec > .ea-container {
+  position: relative;
+  z-index: 1;
+}
+
+.ea-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dc {
+  position: absolute;
+  top: 64px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--ink-4);
+  font: 500 12px/1.75 var(--mono);
+  white-space: pre;
+  opacity: 0.75;
+}
+
+.dc b {
+  color: var(--purple-ink);
+  font-weight: 500;
+}
+
+.dc i {
+  color: var(--ink-3);
+  font-style: normal;
+}
+
+.dc u {
+  color: var(--ink-5);
+  text-decoration: none;
+}
+
+.dc-left {
+  left: max(24px, calc(50% - 700px));
+}
+
+.dc-right {
+  top: 132px;
+  right: max(24px, calc(50% - 700px));
+}
+
+/* A cursor at the end of every terminal, as if someone is mid-thought. */
+.dc-term code::after {
+  content: '▍';
+  margin-left: 2px;
+  color: var(--purple);
+  animation: ea-caret 1.1s steps(1) infinite;
+}
+
+@keyframes ea-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.dm {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  opacity: 0.2;
+  filter: grayscale(1);
+  animation: ea-bob 7s ease-in-out infinite;
+}
+
+.dm-1 {
+  top: 70px;
+  left: calc(50% - 520px);
+}
+
+.dm-2 {
+  top: 190px;
+  left: calc(50% - 640px);
+  animation-delay: -2s;
+}
+
+.dm-3 {
+  top: 80px;
+  right: calc(50% - 540px);
+  animation-delay: -4s;
+}
+
+.dm-4 {
+  top: 200px;
+  right: calc(50% - 650px);
+  animation-delay: -1s;
+}
+
+.dm-5 {
+  top: 150px;
+  left: calc(50% - 400px);
+  width: 26px;
+  height: 26px;
+  animation-delay: -5s;
+}
+
+/* ---- How it works, animated --------------------------------------------- */
+/* The line draws across, each step rises in behind it, then a highlight
+   walks 1 → 2 → 3 on a loop, so the section keeps saying "in this order". */
+.ea-how::after {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 16.6%;
+  right: 16.6%;
+  height: 2px;
+  background: var(--purple);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s var(--ease) 0.2s;
+}
+
+.ea-how.is-in::after {
+  transform: scaleX(1);
+}
+
+.ea-how li {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.7s var(--ease);
+}
+
+.ea-how.is-in li {
+  opacity: 1;
+  transform: none;
+}
+
+.ea-how.is-in li:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.ea-how.is-in li:nth-child(2) {
+  transition-delay: 0.55s;
+}
+
+.ea-how.is-in li:nth-child(3) {
+  transition-delay: 1s;
+}
+
+.ea-how li {
+  z-index: 1;
+}
+
+.ea-how-num {
+  position: relative;
+}
+
+.ea-how-num::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--purple);
+  opacity: 0;
+}
+
+.ea-how.is-in .ea-how-num {
+  animation: ea-step 4.5s ease-in-out infinite;
+}
+
+.ea-how.is-in .ea-how-num::after {
+  animation: ea-ring 4.5s ease-out infinite;
+}
+
+.ea-how.is-in li:nth-child(1) .ea-how-num,
+.ea-how.is-in li:nth-child(1) .ea-how-num::after {
+  animation-delay: 1.6s;
+}
+
+.ea-how.is-in li:nth-child(2) .ea-how-num,
+.ea-how.is-in li:nth-child(2) .ea-how-num::after {
+  animation-delay: 3.1s;
+}
+
+.ea-how.is-in li:nth-child(3) .ea-how-num,
+.ea-how.is-in li:nth-child(3) .ea-how-num::after {
+  animation-delay: 4.6s;
+}
+
+@keyframes ea-step {
+  0%,
+  30%,
+  100% {
+    background: var(--ink);
+    transform: scale(1);
+  }
+  8%,
+  22% {
+    background: var(--purple);
+    transform: scale(1.08);
+  }
+}
+
+@keyframes ea-ring {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  25%,
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea-how li,
+  .ea-how::after {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ea-how.is-in .ea-how-num,
+  .ea-how.is-in .ea-how-num::after,
+  .dm,
+  .dc-term code::after {
+    animation: none;
+  }
+}
+
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
   .ea-hero {
@@ -1360,5 +1740,88 @@
 
   .ea .ea-sticky-cta {
     width: auto;
+  }
+}
+
+/* ---- Live pieces, smaller screens --------------------------------------- */
+/* The background pieces need the empty sides a wide screen has. */
+@media (max-width: 1200px) {
+  .ea-deco {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .ea-toast {
+    left: 12px;
+    bottom: 88px;
+    width: calc(100% - 24px);
+  }
+
+  .ea-how::after {
+    top: 27px;
+    bottom: 60px;
+    left: 50%;
+    right: auto;
+    width: 2px;
+    height: auto;
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  .ea-how.is-in::after {
+    transform: scaleY(1);
+  }
+
+  /* Seats on their own line under the price, not squeezed beside it. */
+  .ea-sticky-price {
+    flex-wrap: wrap;
+  }
+
+  .ea-sticky .ea-seats-inline {
+    flex-basis: 100%;
+    margin: 1px 0 0;
+    font-size: 11.5px;
+    white-space: nowrap;
+  }
+
+  /* Steps become a timeline down the left, so the line never crosses text. */
+  .ea-how {
+    gap: 22px;
+    text-align: left;
+  }
+
+  .ea-how li {
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    column-gap: 16px;
+    align-items: start;
+  }
+
+  .ea-how-num {
+    grid-row: span 2;
+    margin: 0;
+  }
+
+  .ea-how h3 {
+    align-self: end;
+    padding-top: 4px;
+  }
+
+  .ea-how p {
+    margin: 2px 0 0;
+    max-width: none;
+  }
+
+  .ea-how::before {
+    left: 26px;
+    top: 27px;
+    bottom: 40px;
+  }
+
+  .ea-how::after {
+    left: 26px;
+    top: 27px;
+    bottom: 40px;
   }
 }

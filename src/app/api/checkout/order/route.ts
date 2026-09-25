@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { normaliseItems, priceOf } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 import { mongoConfigured } from '@/lib/db/mongo'
+import { seatsLeft } from '@/lib/earlyAccessLive'
 import {
   cashfreeConfigured,
   cashfreeCustomerId,
@@ -62,6 +63,16 @@ export async function POST(request: Request) {
     ? 'Nothing to pay for.'
     : validateName(contact.name) || validateEmail(contact.email) || validatePhone(contact.phone)
   if (problem) return NextResponse.json({ error: problem }, { status: 400 })
+
+  // "Limited seats" is a promise the page makes, so it is kept here: once the
+  // cap is reached, Early Access is no longer sold. (Two buyers racing for the
+  // last seat can both get it — a seat over is kinder than a charge refused.)
+  if (items.includes('earlyaccess') && (await seatsLeft()) === 0) {
+    return NextResponse.json(
+      { error: 'Early Access is full — every seat has been taken. Everything AI is still open.' },
+      { status: 409 },
+    )
+  }
 
   const amount = priceOf(items)
   const orderId = newOrderId()
