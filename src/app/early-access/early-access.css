@@ -19,10 +19,16 @@
 }
 
 /* ---- 1. Announcement ---------------------------------------------------- */
+/* Pinned to the top of the screen for the whole page: the offer, the real
+   deadline counting down, and the button. */
 .ea-announce {
+  position: sticky;
+  top: 0;
+  z-index: 55;
   background: var(--ink-bg);
   color: var(--on-dark);
   font-size: 13px;
+  box-shadow: 0 1px 0 #ffffff14;
 }
 
 .ea-announce-inner {
@@ -30,19 +36,34 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
-  min-height: 40px;
+  min-height: 44px;
   padding: 6px 0;
   text-align: center;
 }
 
-.ea-announce p {
+.ea .ea-announce-text {
   margin: 0;
   font-weight: 600;
+  white-space: nowrap;
+}
+
+.ea-announce-offer {
+  white-space: nowrap;
+}
+
+.ea-announce-offer strong {
+  color: var(--lime);
+  font-weight: 800;
+}
+
+.ea-announce-dot {
+  margin: 0 8px;
+  color: var(--on-dark-3);
 }
 
 .ea-announce-cta {
   flex: none;
-  padding: 4px 12px;
+  padding: 5px 13px;
   border: 0;
   border-radius: var(--r-pill);
   background: var(--lime);
@@ -51,6 +72,53 @@
   cursor: pointer;
   display: inline-flex;
   gap: 6px;
+}
+
+.ea-announce-seats:empty {
+  display: none;
+}
+
+/* the countdown — four small tiles */
+.ea-cd {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ea-cd-unit {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ea-cd-unit b {
+  display: inline-block;
+  min-width: 28px;
+  padding: 3px 5px;
+  border: 1px solid #ffffff24;
+  border-radius: 6px;
+  background: #ffffff12;
+  color: #fff;
+  font: 600 13px var(--mono);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.ea-cd-unit i {
+  margin-left: 3px;
+  color: var(--on-dark-3);
+  font: 500 10.5px var(--mono);
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.ea-cd-sep {
+  margin: 0 5px;
+  color: var(--on-dark-3);
+  font-weight: 700;
+}
+
+.ea-cd-ended {
+  color: var(--on-dark-2);
+  font-weight: 700;
 }
 
 /* ---- Header ------------------------------------------------------------- */
@@ -480,7 +548,7 @@
    viewport's height as well as its width — so a 768px laptop and a 1080p
    monitor both see the whole pitch, pass included, before any scroll. */
 .ea {
-  --ea-top: 112px; /* announcement 40 + header 72 */
+  --ea-top: 116px; /* announcement 44 + header 72 */
 }
 
 .ea-hero-band {
@@ -1377,6 +1445,10 @@
 
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .ea-announce-seats {
+    display: none;
+  }
+
   .ea-hero {
     grid-template-columns: 1fr;
   }
@@ -1417,7 +1489,7 @@
 /* ---- Phone -------------------------------------------------------------- */
 @media (max-width: 680px) {
   .ea {
-    --ea-top: 110px; /* two-line announcement 50 + header 60 */
+    --ea-top: 104px; /* announcement 44 + header 60 */
   }
 
   .ea .wrap,
@@ -1430,7 +1502,24 @@
   }
 
   .ea-announce-inner {
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .ea-announce-lead,
+  .ea-announce-ends,
+  .ea-announce-seats,
+  .ea-cd-unit i {
+    display: none;
+  }
+
+  .ea-cd-unit b {
+    min-width: 24px;
+    padding: 2px 3px;
+    font-size: 12px;
+  }
+
+  .ea-cd-sep {
+    margin: 0 3px;
   }
 
   .ea-header {

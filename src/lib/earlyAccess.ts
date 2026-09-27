@@ -17,14 +17,27 @@ export const offer = {
   price: PLANS.earlyaccess.amount,
   was: 25000,
   terms: 'One-time payment · Lifetime access',
+  /**
+   * When the Early Access price ends — one real moment, the same for every
+   * visitor. The countdown in the top bar counts to it, and the order route
+   * stops selling Early Access after it, so the timer is a deadline and not
+   * a decoration. Set NEXT_PUBLIC_EARLY_ACCESS_ENDS (ISO, with offset) to
+   * move it; it is read at build time, so redeploy after changing it.
+   */
+  endsAt: process.env.NEXT_PUBLIC_EARLY_ACCESS_ENDS || '2026-10-10T23:59:59+05:30',
 } as const
+
+export const offerEnded = (now = Date.now()) => now >= Date.parse(offer.endsAt)
 
 export const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`
 
 export const savePct = Math.round((1 - offer.price / offer.was) * 100)
 
 export const announcement = {
-  text: `Early Access is Open · Limited Seats · Starting at ${inr(offer.price)}`,
+  lead: 'Early Access',
+  offer: `${savePct}% OFF`,
+  endsIn: 'ends in',
+  ended: 'This offer has ended',
   cta: 'Join Now',
 } as const
 
@@ -90,21 +103,21 @@ export const learn = {
     },
   ],
   toolsLabel: 'Tools you’ll use — 50+ in all',
-  /* `mark` is one of the brand marks the site already draws (tools/marks.tsx);
-     the rest are set as a monogram chip rather than fetched as logos. */
+  /* `mark` picks the logo: the site's own marks (tools/marks.tsx) for the five
+     it already draws, the rest from ToolLogos.tsx. */
   tools: [
     { name: 'Claude', mark: 'claude' },
     { name: 'ChatGPT', mark: 'chatgpt' },
     { name: 'Gemini', mark: 'gemini' },
     { name: 'n8n', mark: 'n8n' },
     { name: 'Lovable', mark: 'lovable' },
-    { name: 'Antigravity' },
-    { name: 'Cursor' },
-    { name: 'GitHub' },
-    { name: 'Vercel' },
-    { name: 'Figma' },
-    { name: 'Notion' },
-    { name: 'Canva' },
+    { name: 'Antigravity', mark: 'antigravity' },
+    { name: 'Cursor', mark: 'cursor' },
+    { name: 'GitHub', mark: 'github' },
+    { name: 'Vercel', mark: 'vercel' },
+    { name: 'Figma', mark: 'figma' },
+    { name: 'Notion', mark: 'notion' },
+    { name: 'Canva', mark: 'canva' },
   ],
 } as const
 

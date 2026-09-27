@@ -20,8 +20,10 @@ import {
   savePct,
   valueStack,
 } from '@/lib/earlyAccess'
+import { Countdown } from './Countdown'
 import { JoinToasts, SeatsLeft } from './Live'
 import { StickyCta } from './StickyCta'
+import { hasToolLogo, ToolLogoMark } from './ToolLogos'
 import './early-access.css'
 
 export const metadata: Metadata = {
@@ -105,6 +107,7 @@ function ToolLogo({ name, mark }: { name: string; mark?: string }) {
     case 'lovable':
       return <LovableMark className="ea-tool-mark" idPrefix="ea-lovable" />
     default:
+      if (mark && hasToolLogo(mark)) return <ToolLogoMark mark={mark} className="ea-tool-mark" />
       return (
         <span className="ea-tool-mark ea-monogram" aria-hidden="true">
           {name[0]}
@@ -211,12 +214,22 @@ export default function EarlyAccessPage() {
   return (
     <div className="ea">
       {/* Announcement */}
+      {/* Pinned to the top: the offer, the real deadline, and the button. */}
       <div className="ea-announce">
         <div className="wrap ea-announce-inner">
-          <p>
-            <span aria-hidden="true">🚀 </span>
-            {announcement.text}
+          <p className="ea-announce-text">
+            <span className="ea-announce-lead">
+              <span aria-hidden="true">🚀 </span>
+              {announcement.lead}
+              <span className="ea-announce-dot" aria-hidden="true">
+                ·
+              </span>
+            </span>
           </p>
+          <Countdown offer={announcement.offer} endsIn={announcement.endsIn} ended={announcement.ended} />
+          <span className="ea-announce-seats">
+            <SeatsLeft variant="inline" />
+          </span>
           <Buy className="ea-announce-cta">{announcement.cta}</Buy>
         </div>
       </div>
