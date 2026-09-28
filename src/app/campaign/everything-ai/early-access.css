@@ -727,9 +727,20 @@
   flex-direction: column;
   gap: 16px;
   padding: 22px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--purple-line);
   border-radius: var(--r-lg);
   background: var(--card-bg);
+  /* A soft glow in the accent — terracotta by day, violet by night — so each
+     thing you get reads as something on offer, not a line in a list. */
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--purple) 8%, transparent),
+    0 10px 34px -14px color-mix(in srgb, var(--purple) 55%, transparent);
+  transition: box-shadow 0.35s ease, transform 0.35s var(--ease);
+}
+
+.ea-get li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--purple) 18%, transparent),
+    0 16px 44px -12px color-mix(in srgb, var(--purple) 70%, transparent);
 }
 
 .ea-get p {
@@ -809,9 +820,8 @@
 }
 
 .ea-toolrow ul {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   margin: 16px 0 0;
   padding: 0;
@@ -819,10 +829,11 @@
 }
 
 .ea-toolrow li {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 14px 7px 8px;
+  min-width: 0;
+  padding: 8px 12px 8px 8px;
   border: 1px solid var(--line);
   border-radius: var(--r-pill);
   background: var(--card-bg);
@@ -852,6 +863,13 @@
   color: var(--ink-2);
   font-size: 11px;
   font-weight: 800;
+}
+
+.ea-toolrow li span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ---- 3. What you'll build ----------------------------------------------- */
@@ -1445,6 +1463,10 @@
 
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .ea-toolrow ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   .ea-announce-seats {
     display: none;
   }
@@ -1635,8 +1657,25 @@
   }
 
   .ea-offer-list {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 10px;
+    padding: 24px 18px;
+    font-size: 13.5px;
+  }
+
+  .ea-offer-list li {
+    gap: 7px;
+  }
+
+  .ea-toolrow ul {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .ea-toolrow li {
+    gap: 6px;
+    padding: 7px 8px 7px 6px;
+    font-size: 12.5px;
   }
 
   .ea-faq {
