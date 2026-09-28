@@ -1453,11 +1453,19 @@
     grid-template-columns: 1fr;
   }
 
-  /* One column has no room for the pass and the pitch on one screen. The
-     pass repeats the price and the list the offer section closes on, so it
-     is the one to go. */
+  /* One column has no room for the pitch and the pass side by side, so they
+     stack: the pitch fills the first screen on its own, exactly as on
+     desktop, and the pass is the first thing the reader scrolls into. */
+  .ea-hero-copy {
+    justify-content: center;
+    min-height: calc(100svh - var(--ea-top) - clamp(32px, 6vh, 80px));
+  }
+
   .ea-hero-visual {
-    display: none;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 24px 12px 36px;
   }
 
   .ea-hero h1 {
@@ -1657,7 +1665,37 @@
 /* ---- Live pieces, smaller screens --------------------------------------- */
 /* The background pieces need the empty sides a wide screen has. */
 @media (max-width: 1200px) {
-  .ea-deco {
+  .ea-deco:not(.ea-deco-marks) {
+    display: none;
+  }
+
+  .dm {
+    width: 26px;
+    height: 26px;
+    opacity: 0.16;
+  }
+
+  .dm-1 {
+    top: 36px;
+    left: 18px;
+  }
+
+  .dm-2 {
+    top: 104px;
+    left: 7%;
+  }
+
+  .dm-3 {
+    top: 40px;
+    right: 20px;
+  }
+
+  .dm-4 {
+    top: 112px;
+    right: 8%;
+  }
+
+  .dm-5 {
     display: none;
   }
 }
@@ -1954,12 +1992,14 @@
   pointer-events: none;
 }
 
-.ea-builds li:hover .ea-icon {
+.ea-builds li:hover .ea-icon,
+.ea-builds li.is-play .ea-icon {
   transform: scale(1.1);
   box-shadow: 0 8px 22px -6px var(--purple);
 }
 
-.ea-builds li:hover .ea-b-icon::after {
+.ea-builds li:hover .ea-b-icon::after,
+.ea-builds li.is-play .ea-b-icon::after {
   animation: ea-b-ring 0.9s ease-out;
 }
 
@@ -1969,23 +2009,28 @@
   transform-origin: center;
 }
 
-.ea-b-globe:hover .ea-icon path {
+.ea-b-globe:hover .ea-icon path,
+.ea-b-globe.is-play .ea-icon path {
   animation: ea-b-spin 1.1s var(--ease);
 }
 
-.ea-b-spark:hover .ea-icon path {
+.ea-b-spark:hover .ea-icon path,
+.ea-b-spark.is-play .ea-icon path {
   animation: ea-b-fire 0.9s var(--ease);
 }
 
-.ea-b-flow:hover .ea-icon path {
+.ea-b-flow:hover .ea-icon path,
+.ea-b-flow.is-play .ea-icon path {
   animation: ea-b-shuffle 0.8s ease-in-out;
 }
 
-.ea-b-folder:hover .ea-icon path {
+.ea-b-folder:hover .ea-icon path,
+.ea-b-folder.is-play .ea-icon path {
   animation: ea-b-hop 0.7s var(--ease);
 }
 
-.ea-b-rocket:hover .ea-icon path {
+.ea-b-rocket:hover .ea-icon path,
+.ea-b-rocket.is-play .ea-icon path {
   animation: ea-b-launch 1s var(--ease);
 }
 
@@ -2073,5 +2118,66 @@
   .ea-builds li:hover .ea-icon path {
     animation: none;
     transform: none;
+  }
+}
+
+/* ---- Phones: the pass and its marks -------------------------------------- */
+@media (max-width: 680px) {
+  .ea-pass {
+    padding: 22px;
+  }
+
+  .ea-pass-price strong {
+    font-size: 48px;
+  }
+
+  .ea-pass-list {
+    font-size: 13px;
+  }
+
+  .ea-float {
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+  }
+
+  .ea-float-mark {
+    width: 22px;
+    height: 22px;
+  }
+
+  .ea-float-1 {
+    top: 4px;
+    left: 0;
+  }
+
+  .ea-float-2 {
+    top: 18px;
+    right: 0;
+  }
+
+  /* Hidden, not display:none: the Gemini mark here holds the gradient every
+     other Gemini mark on the page points at, and a display:none svg takes its
+     gradient with it — the logo on the pass went blank. */
+  .ea-float-3,
+  .ea-float-4 {
+    visibility: hidden;
+  }
+
+  /* played once on view: the circle pops and settles */
+  .ea-builds li.is-play .ea-icon {
+    animation: ea-b-pop 0.9s var(--ease);
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+@keyframes ea-b-pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
   }
 }

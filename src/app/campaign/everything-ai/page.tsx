@@ -22,6 +22,7 @@ import {
 } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
 import { JoinToasts, SeatsLeft } from './Live'
+import { PlayOnView } from './PlayOnView'
 import { StickyCta } from './StickyCta'
 import { hasToolLogo, ToolLogoMark } from './ToolLogos'
 import './early-access.css'
@@ -504,6 +505,7 @@ export default function EarlyAccessPage() {
 
       <StickyCta />
       <JoinToasts />
+      <PlayOnView selector=".ea-builds li" />
     </div>
   )
 }
