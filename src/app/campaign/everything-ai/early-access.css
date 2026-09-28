@@ -2181,3 +2181,19 @@
     transform: scale(1.12);
   }
 }
+
+/* ---- Phones: the whole page a size smaller ------------------------------ */
+/* Everything here is sized in px for a desktop reader, and on a phone it read
+   a step too large. Scaling the page as a whole keeps every proportion —
+   type, spacing, cards, the pass — exactly as designed, just smaller. */
+@media (max-width: 680px) {
+  .ea {
+    zoom: 0.9;
+  }
+
+  /* Screen-height units scale with the zoom too, so the hero would fill only
+     90% of the first screen. Divided back out, it fills all of it again. */
+  .ea-hero-copy {
+    min-height: calc(100svh / 0.9 - var(--ea-top) - clamp(32px, 6vh, 80px));
+  }
+}
