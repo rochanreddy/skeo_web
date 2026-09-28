@@ -5,6 +5,10 @@ const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   reactStrictMode: true,
   poweredByHeader: false,
+  // The campaign page moved under /campaign; links already shared keep working.
+  async redirects() {
+    return [{ source: '/early-access', destination: '/campaign/everything-ai', permanent: true }]
+  },
   compress: true,
   async headers() {
     return [

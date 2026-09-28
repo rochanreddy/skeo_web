@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   title: `Early Access — everything in skeo for ${inr(offer.price)}`,
   description:
     'Learn the AI tools, build real projects, and become job-ready — 10+ courses, 50+ tools and 20+ projects for a one-time ₹499.',
-  alternates: { canonical: '/early-access' },
+  alternates: { canonical: '/campaign/everything-ai' },
 }
 
 /** Every CTA on the page buys the same thing: verify → /checkout → Cashfree. */

@@ -56,7 +56,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     ],
     cta: 'Get everything',
   },
-  /* The /early-access offer: everything Everything AI unlocks, at an early
+  /* The /campaign/everything-ai offer: everything Everything AI unlocks, at an early
      price. Sold only from that page; checkout charges exactly this. */
   earlyaccess: {
     eyebrow: 'EARLY ACCESS',

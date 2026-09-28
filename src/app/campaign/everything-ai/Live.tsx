@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import type { Join, LiveStats } from '@/lib/earlyAccessLive'
 
 /**
- * The live parts of /early-access — seats left, and who just joined — read
+ * The live parts of /campaign/everything-ai — seats left, and who just joined — read
  * from /api/early-access/stats, which reads real orders. One request per page
  * view, shared by every component that asks, and refreshed once a minute.
  * If the numbers cannot be had, both features stay hidden rather than guess.

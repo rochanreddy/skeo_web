@@ -1,5 +1,5 @@
 /**
- * The rest of the tool logos for /early-access — the ones the site's own
+ * The rest of the tool logos for /campaign/everything-ai — the ones the site's own
  * marks (components/tools/marks.tsx) do not cover.
  *
  *  - Cursor, GitHub, Notion, Vercel: single-colour marks from simple-icons

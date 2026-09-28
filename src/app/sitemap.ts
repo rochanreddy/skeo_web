@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${site.url}/early-access`,
+      url: `${site.url}/campaign/everything-ai`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,

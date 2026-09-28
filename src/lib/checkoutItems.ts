@@ -13,7 +13,7 @@ export type CheckoutItem = ModuleKey | 'member' | 'earlyaccess'
 export const CHECKOUT_ITEMS: readonly CheckoutItem[] = [...MODULE_KEYS, 'member', 'earlyaccess']
 
 /** The plans that unlock everything: Everything AI, and its early-access
- *  price from /early-access. Each is sold on its own — it already includes
+ *  price from /campaign/everything-ai. Each is sold on its own — it already includes
  *  every tool. */
 export const isAllAccess = (items: readonly string[]) => items.includes('member') || items.includes('earlyaccess')
 
