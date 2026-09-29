@@ -2313,3 +2313,337 @@
     min-height: calc(100svh / 0.9 - var(--ea-top) - clamp(32px, 6vh, 80px));
   }
 }
+
+/* ======================================================================== *
+ * Certificate · Job board · Testimonials
+ * ======================================================================== */
+
+/* ---- Sample certificate ------------------------------------------------- */
+/* The home page's specimen and picker (components/CertificatePicker), in its
+   own two-column layout (.credential in globals.css); only the label is the
+   campaign's own pill. */
+.ea-cert .credential-copy .ea-eyebrow {
+  margin-bottom: 4px;
+}
+
+.ea-cert .credential-copy h2 {
+  margin: 10px 0 16px;
+}
+
+/* ---- Job board ---------------------------------------------------------- */
+.ea-jobs {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(64px, 7vw, 112px) 0;
+  background: var(--band-deep-grad);
+  color: var(--on-dark);
+}
+
+.ea-jobs .ea-eyebrow {
+  background: #ffffff1a;
+  color: var(--lime);
+}
+
+.ea-jobs .ea-head {
+  margin-bottom: 16px;
+}
+
+.ea .ea-jobs-lede {
+  max-width: 52ch;
+  margin: 0 auto;
+  color: var(--on-dark-2);
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.ea-jobs-opps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea-jobs-opps li {
+  padding: 6px 14px;
+  border: 1px solid #ffffff26;
+  border-radius: var(--r-pill);
+  background: #ffffff0f;
+  color: var(--on-dark);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.ea-jobs-desk {
+  max-width: 1000px;
+  margin: 36px auto 0;
+}
+
+.ea-jobs-phone {
+  display: none;
+}
+
+.ea-jobs-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* ---- The phone board ---------------------------------------------------- */
+.jbm {
+  overflow: hidden;
+  border: 1px solid #ffffff24;
+  border-radius: var(--r-xl);
+  background: var(--card-bg);
+  color: var(--ink);
+  box-shadow: var(--shadow-xl);
+}
+
+.jbm-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.jbm-bar i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink-5);
+  opacity: 0.5;
+}
+
+.jbm-bar span {
+  flex: 1;
+  margin-left: 6px;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--card-bg);
+  color: var(--ink-3);
+  font: 500 10.5px var(--mono);
+}
+
+.jbm-bar em {
+  color: #3f9d2f;
+  font: 600 10px var(--mono);
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.jbm-bar em::before {
+  content: '●';
+  margin-right: 4px;
+  animation: live-pulse 2.4s ease-in-out infinite;
+}
+
+/* the tracks — one row, scrolls sideways if it has to */
+.jbm-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 12px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.jbm-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.jbm-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card-bg);
+  color: var(--ink-2);
+  font: 700 13px var(--font);
+  cursor: pointer;
+}
+
+.jbm-tabs button b {
+  color: var(--ink-4);
+  font: 500 11px var(--mono);
+}
+
+.jbm-tabs button.is-on {
+  border-color: var(--purple);
+  background: var(--purple);
+  color: #fff;
+}
+
+.jbm-tabs button.is-on b {
+  color: #ffffffcc;
+}
+
+.jbm-body {
+  padding: 10px 12px 14px;
+  animation: jbm-in 0.35s var(--ease);
+}
+
+@keyframes jbm-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.jbm-best {
+  position: relative;
+  padding: 14px;
+  border: 1px solid var(--purple-line);
+  border-radius: var(--r-md);
+  background: var(--purple-soft);
+}
+
+.jbm-label {
+  color: var(--purple-ink);
+  font: 600 10.5px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.jbm-best h3 {
+  margin-top: 6px;
+  font-size: 17px;
+}
+
+.ea .jbm-best p,
+.ea .jbm-roles p {
+  margin: 2px 0 0;
+  color: var(--ink-3);
+  font-size: 12.5px;
+}
+
+.jbm-meter {
+  height: 6px;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--purple) 18%, transparent);
+}
+
+.jbm-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--purple);
+  animation: jbm-grow 0.9s var(--ease);
+  transform-origin: left;
+}
+
+@keyframes jbm-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.jbm-pct {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  color: var(--purple-ink);
+  font-size: 13px;
+}
+
+.jbm-roles {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jbm-roles li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 4px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.jbm-roles h4 {
+  margin: 0;
+  font-size: 14.5px;
+  letter-spacing: -0.015em;
+}
+
+.jbm-roles b {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  color: var(--ink-2);
+  font: 600 12px var(--mono);
+}
+
+.jbm-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+}
+
+.jbm-more {
+  color: var(--ink-3);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.jbm-skills {
+  display: flex;
+  gap: 6px;
+}
+
+.jbm-skills > span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--card-bg);
+}
+
+.jbm-mark {
+  width: 17px;
+  height: 17px;
+}
+
+/* ---- Testimonials ------------------------------------------------------- */
+.ea-reviews .ea-head {
+  margin-bottom: 8px;
+}
+
+/* ---- Which job board, where --------------------------------------------- */
+@media (max-width: 680px) {
+  .ea-jobs-desk {
+    display: none;
+  }
+
+  .ea-jobs-phone {
+    display: block;
+    margin-top: 26px;
+  }
+
+  .ea-jobs-cta {
+    margin-top: 4px;
+  }
+
+  .ea-jobs-opps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ea-jobs-opps li {
+    text-align: center;
+  }
+}

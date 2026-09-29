@@ -22,7 +22,7 @@ type MetricKey = 'open' | 'match' | 'pay'
 
 type Role = { title: string; meta: string; match: number }
 
-type Track = {
+export type Track = {
   key: string
   label: string
   count: string
@@ -121,7 +121,8 @@ const ALL_ROLES: Role[] = [...FREELANCE_ROLES, ...FULLTIME_ROLES, ...INTERNSHIP_
   (a, b) => b.match - a.match,
 )
 
-const TRACKS: Track[] = [
+/* Exported so the campaign page's phone board shows the same roles and counts. */
+export const TRACKS: Track[] = [
   {
     key: 'all',
     label: 'All',

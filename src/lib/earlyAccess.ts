@@ -174,3 +174,30 @@ export const finalCta = {
   cta: 'Get Started',
   small: 'One-time payment · Instant access · No hidden fees',
 } as const
+
+/** Sample certificate — the same specimen and promise the home page makes. */
+export const certificate = {
+  eyebrow: 'Your certificate',
+  title: 'Proof, not promises.',
+  body: 'Build skills across the tools you need, put them into practice, and earn verified credentials that show what you can actually do.',
+  points: [
+    'Verified tool-specific credentials',
+    'Earned through practical projects',
+    'Build a profile of proven skills',
+    'Unlock jobs, freelance work & opportunities',
+  ],
+} as const
+
+/** The Job & Freelancing Board. */
+export const jobs = {
+  eyebrow: 'Job board',
+  title: 'Then put it to work.',
+  body: 'Certification is just the beginning. Apply your skills to real opportunities — to earn, gain experience and build your career.',
+  cta: 'Get Started',
+} as const
+
+/** Testimonials — the same quotes the home page carries (lib/content.ts). */
+export const reviews = {
+  eyebrow: 'From the community',
+  title: 'Builders become believers.',
+} as const

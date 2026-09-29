@@ -4,23 +4,31 @@ import type { ReactNode } from 'react'
 import { PurchaseButton } from '@/components/ActionButton'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { CertificatePicker } from '@/components/CertificatePicker'
+import { JobBoard } from '@/components/sections/JobBoard'
+import { LogoRail } from '@/components/sections/LogoRail'
+import { opportunities, testimonials } from '@/lib/content'
 import {
   announcement,
   build,
+  certificate,
   faq,
   finalCta,
   get,
   hero,
   inr,
+  jobs,
   learn,
   mentor,
   numbers,
   offer,
   pricing,
+  reviews,
   savePct,
   valueStack,
 } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
+import { JobBoardMobile } from './JobBoardMobile'
 import { JoinToasts, SeatsLeft } from './Live'
 import { PlayOnView } from './PlayOnView'
 import { StickyCta } from './StickyCta'
@@ -210,6 +218,16 @@ function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
 }
 
 const pad = (n: number) => String(n).padStart(2, '0')
+
+/* "Priya Shah" → "PS" — the home page's stand-in for a face. */
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase()
 
 export default function EarlyAccessPage() {
   return (
@@ -431,7 +449,74 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 4. The offer */}
+        {/* 4. Sample certificate — the home page's live specimen */}
+        <section className="ea-sec ea-sec-soft ea-cert" id="certificate">
+          <div className="wrap credential">
+            <CertificatePicker>
+              {/* "eyebrow" too, so the phone layout lifts it above the heading with it */}
+              <span className="eyebrow ea-eyebrow">{certificate.eyebrow}</span>
+              <h2>{certificate.title}</h2>
+              <p>{certificate.body}</p>
+              <ul>
+                {certificate.points.map((point) => (
+                  <li key={point}>
+                    <b aria-hidden="true">✓</b> {point}
+                  </li>
+                ))}
+              </ul>
+            </CertificatePicker>
+          </div>
+        </section>
+
+        {/* 5. Job board — the full dashboard on wide screens, a phone board on phones */}
+        <section className="ea-jobs" id="jobs">
+          <div className="ea-container">
+            <Head eyebrow={jobs.eyebrow} title={jobs.title} />
+            <p className="ea-jobs-lede">{jobs.body}</p>
+            <ul className="ea-jobs-opps" aria-label="What the board opens up">
+              {opportunities.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="ea-jobs-desk">
+              <JobBoard />
+            </div>
+            <div className="ea-jobs-phone">
+              <JobBoardMobile />
+            </div>
+            <div className="ea-jobs-cta">
+              <Buy className="button button-lime ea-cta">{jobs.cta}</Buy>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. Testimonials — the home page's quotes, on the same moving rail */}
+        <section className="ea-sec ea-reviews" id="reviews">
+          <div className="ea-container">
+            <Head eyebrow={reviews.eyebrow} title={reviews.title} />
+          </div>
+          <LogoRail className="quote-rail" speed={0.35} direction="right">
+            {testimonials.map((item) => (
+              <article key={item.name} className="quote">
+                <div className="stars" role="img" aria-label="Rated 5 out of 5">
+                  <span aria-hidden="true">★★★★★</span>
+                </div>
+                <blockquote>“{item.quote}”</blockquote>
+                <footer>
+                  <span className="quote-avatar" aria-hidden="true">
+                    {initials(item.name)}
+                  </span>
+                  <span className="quote-who">
+                    <b>{item.name}</b>
+                    <span>{item.role}</span>
+                  </span>
+                </footer>
+              </article>
+            ))}
+          </LogoRail>
+        </section>
+
+        {/* 7. The offer */}
         <section className="ea-sec ea-sec-soft" id="offer">
           <Ornament kind="offer" />
           <div className="ea-container">
@@ -460,7 +545,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 5. FAQ */}
+        {/* 8. FAQ */}
         <section className="ea-sec">
           <Ornament kind="faq" />
           <div className="ea-container">
