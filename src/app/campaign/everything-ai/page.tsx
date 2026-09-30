@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { PurchaseButton } from '@/components/ActionButton'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { AppWindow, BriefcaseBusiness, Rocket, Sparkles, Workflow } from 'lucide-react'
 import { CertificatePicker } from '@/components/CertificatePicker'
 import { JobBoard } from '@/components/sections/JobBoard'
 import { LogoRail } from '@/components/sections/LogoRail'
@@ -122,6 +123,21 @@ function ToolLogo({ name, mark }: { name: string; mark?: string }) {
         </span>
       )
   }
+}
+
+/* The "What you'll build" glyphs: lucide's multi-stroke drawings, which read
+   as crafted icons where the single-path ones read as placeholders. */
+const BUILD_GLYPHS = {
+  globe: AppWindow,
+  spark: Sparkles,
+  flow: Workflow,
+  folder: BriefcaseBusiness,
+  rocket: Rocket,
+} as const
+
+function BuildGlyph({ kind }: { kind: string }) {
+  const G = BUILD_GLYPHS[kind as keyof typeof BUILD_GLYPHS] ?? Sparkles
+  return <G className="ea-b-glyph" strokeWidth={1.75} absoluteStrokeWidth />
 }
 
 /** Every section below the hero opens the same way: a small label, one line. */
@@ -437,8 +453,8 @@ export default function EarlyAccessPage() {
             <ul className="ea-builds">
               {build.items.map((b) => (
                 <li key={b.title} className={`ea-b-${b.icon}`}>
-                  <span className="ea-b-icon">
-                    <Icon name={b.icon} />
+                  <span className="ea-b-icon" aria-hidden="true">
+                    <BuildGlyph kind={b.icon} />
                   </span>
                   <h3>{b.title}</h3>
                   <p>{b.body}</p>
