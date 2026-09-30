@@ -28,7 +28,6 @@ import {
   valueStack,
 } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
-import { JobBoardMobile } from './JobBoardMobile'
 import { JoinToasts, SeatsLeft } from './Live'
 import { PlayOnView } from './PlayOnView'
 import { StickyCta } from './StickyCta'
@@ -468,7 +467,7 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 5. Job board — the full dashboard on wide screens, a phone board on phones */}
+        {/* 5. Job board — the home page's dashboard, on every screen */}
         <section className="ea-jobs" id="jobs">
           <div className="ea-container">
             <Head eyebrow={jobs.eyebrow} title={jobs.title} />
@@ -480,9 +479,6 @@ export default function EarlyAccessPage() {
             </ul>
             <div className="ea-jobs-desk">
               <JobBoard />
-            </div>
-            <div className="ea-jobs-phone">
-              <JobBoardMobile />
             </div>
             <div className="ea-jobs-cta">
               <Buy className="button button-lime ea-cta">{jobs.cta}</Buy>
