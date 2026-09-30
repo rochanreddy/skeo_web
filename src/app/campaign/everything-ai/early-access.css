@@ -744,8 +744,8 @@
    transparent except a short bright arc, masked down to a 1.5px ring so only
    the border lights up. ::after is the same arc blurred, sitting behind the
    card, so the beam trails a soft halo as it goes. The angle is a registered
-   custom property so the browser can animate it; each card starts at a
-   different point on the loop, so the eight never move in step. */
+   custom property so the browser can animate it. Every card runs the same
+   loop from the same start, so the eight beams move in step. */
 @property --ea-beam {
   syntax: '<angle>';
   inherits: false;
@@ -789,21 +789,6 @@
   filter: blur(5px);
   opacity: 0.6;
 }
-
-.ea-get li:nth-child(2)::before,
-.ea-get li:nth-child(2)::after { animation-delay: -0.6s; }
-.ea-get li:nth-child(3)::before,
-.ea-get li:nth-child(3)::after { animation-delay: -1.9s; }
-.ea-get li:nth-child(4)::before,
-.ea-get li:nth-child(4)::after { animation-delay: -3.1s; }
-.ea-get li:nth-child(5)::before,
-.ea-get li:nth-child(5)::after { animation-delay: -1.2s; }
-.ea-get li:nth-child(6)::before,
-.ea-get li:nth-child(6)::after { animation-delay: -4.2s; }
-.ea-get li:nth-child(7)::before,
-.ea-get li:nth-child(7)::after { animation-delay: -2.5s; }
-.ea-get li:nth-child(8)::before,
-.ea-get li:nth-child(8)::after { animation-delay: -3.7s; }
 
 @keyframes ea-beam {
   to {
@@ -2322,6 +2307,15 @@
 /* The home page's specimen and picker (components/CertificatePicker), in its
    own two-column layout (.credential in globals.css); only the label is the
    campaign's own pill. */
+/* A little narrower than the home page, where it shares the row with less.
+   Width comes off the card's own column (as globals.css does it), so it
+   shrinks as a whole and keeps its certificate shape. */
+@media (min-width: 1280px) {
+  .ea-cert .credential {
+    grid-template-columns: 45fr 55fr;
+  }
+}
+
 .ea-cert .credential-copy .ea-eyebrow {
   margin-bottom: 4px;
 }
