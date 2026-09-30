@@ -4,10 +4,9 @@ import type { ReactNode } from 'react'
 import { PurchaseButton } from '@/components/ActionButton'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
-import { AppWindow, BriefcaseBusiness, Rocket, Sparkles, Workflow } from 'lucide-react'
+import { AppWindow, BriefcaseBusiness, Rocket, Workflow } from 'lucide-react'
 import { CertificatePicker } from '@/components/CertificatePicker'
 import { JobBoard } from '@/components/sections/JobBoard'
-import { LogoRail } from '@/components/sections/LogoRail'
 import { opportunities, testimonials } from '@/lib/content'
 import {
   announcement,
@@ -29,6 +28,7 @@ import {
   valueStack,
 } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
+import { FlowBackdrop } from './FlowBackdrop'
 import { JoinToasts, SeatsLeft } from './Live'
 import { PlayOnView } from './PlayOnView'
 import { StickyCta } from './StickyCta'
@@ -90,7 +90,6 @@ const ICONS: Record<string, string> = {
   badge: 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM8.5 13.9 7 22l5-3 5 3-1.5-8.1',
   infinity: 'M7.5 8.5C4.5 8.5 3 10.2 3 12s1.5 3.5 4.5 3.5c3.5 0 5.5-7 9-7 3 0 4.5 1.7 4.5 3.5s-1.5 3.5-4.5 3.5c-3.5 0-5.5-7-9-7',
   globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3',
-  spark: 'M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8',
   flow: 'M4 6h5v5H4zM15 13h5v5h-5zM9 8.5h3.5a2 2 0 0 1 2 2V13M6.5 11v4.5a2 2 0 0 0 2 2H15',
   folder: 'M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.5h8.5A1.5 1.5 0 0 1 21 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z',
 }
@@ -129,14 +128,13 @@ function ToolLogo({ name, mark }: { name: string; mark?: string }) {
    as crafted icons where the single-path ones read as placeholders. */
 const BUILD_GLYPHS = {
   globe: AppWindow,
-  spark: Sparkles,
   flow: Workflow,
   folder: BriefcaseBusiness,
   rocket: Rocket,
 } as const
 
 function BuildGlyph({ kind }: { kind: string }) {
-  const G = BUILD_GLYPHS[kind as keyof typeof BUILD_GLYPHS] ?? Sparkles
+  const G = BUILD_GLYPHS[kind as keyof typeof BUILD_GLYPHS] ?? AppWindow
   return <G className="ea-b-glyph" strokeWidth={1.75} absoluteStrokeWidth />
 }
 
@@ -485,6 +483,7 @@ export default function EarlyAccessPage() {
 
         {/* 5. Job board — the home page's dashboard, on every screen */}
         <section className="ea-jobs" id="jobs">
+          <FlowBackdrop />
           <div className="ea-container">
             <Head eyebrow={jobs.eyebrow} title={jobs.title} />
             <p className="ea-jobs-lede">{jobs.body}</p>
@@ -502,30 +501,51 @@ export default function EarlyAccessPage() {
           </div>
         </section>
 
-        {/* 6. Testimonials — the home page's quotes, on the same moving rail */}
+        {/* 6. Testimonials — one featured quote beside a wall of the rest;
+            on phones, a row you swipe. */}
         <section className="ea-sec ea-reviews" id="reviews">
           <div className="ea-container">
             <Head eyebrow={reviews.eyebrow} title={reviews.title} />
-          </div>
-          <LogoRail className="quote-rail" speed={0.35} direction="right">
-            {testimonials.map((item) => (
-              <article key={item.name} className="quote">
-                <div className="stars" role="img" aria-label="Rated 5 out of 5">
-                  <span aria-hidden="true">★★★★★</span>
+            <div className="ea-rv">
+              <figure className="ea-rv-feature">
+                <span className="ea-rv-mark" aria-hidden="true">
+                  “
+                </span>
+                <div className="ea-rv-stars" role="img" aria-label="Rated 5 out of 5">
+                  ★★★★★
                 </div>
-                <blockquote>“{item.quote}”</blockquote>
-                <footer>
-                  <span className="quote-avatar" aria-hidden="true">
-                    {initials(item.name)}
+                <blockquote>{testimonials[0].quote}</blockquote>
+                <figcaption>
+                  <span className="ea-rv-avatar" aria-hidden="true">
+                    {initials(testimonials[0].name)}
                   </span>
-                  <span className="quote-who">
-                    <b>{item.name}</b>
-                    <span>{item.role}</span>
+                  <span>
+                    <b>{testimonials[0].name}</b>
+                    <span>{testimonials[0].role}</span>
                   </span>
-                </footer>
-              </article>
-            ))}
-          </LogoRail>
+                </figcaption>
+              </figure>
+              <ul className="ea-rv-wall">
+                {testimonials.slice(1, 7).map((item, i) => (
+                  <li key={item.name} className={`ea-rv-card ea-rv-tint-${i % 3}`}>
+                    <div className="ea-rv-stars" role="img" aria-label="Rated 5 out of 5">
+                      ★★★★★
+                    </div>
+                    <blockquote>{item.quote}</blockquote>
+                    <footer>
+                      <span className="ea-rv-avatar" aria-hidden="true">
+                        {initials(item.name)}
+                      </span>
+                      <span>
+                        <b>{item.name}</b>
+                        <span>{item.role}</span>
+                      </span>
+                    </footer>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </section>
 
         {/* 7. The offer */}

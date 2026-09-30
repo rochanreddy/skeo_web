@@ -127,7 +127,6 @@ export const build = {
   title: 'Don’t just learn. Build something.',
   items: [
     { icon: 'globe', title: 'A Website', body: 'From idea → design → deployment.' },
-    { icon: 'spark', title: 'An AI App', body: 'A working application, built with AI tools.' },
     { icon: 'flow', title: 'An Automation', body: 'Repetitive work that now runs itself.' },
     { icon: 'folder', title: 'Your Portfolio', body: 'Projects you can actually show.' },
     { icon: 'rocket', title: 'A Side Project', body: 'Something people can use.' },

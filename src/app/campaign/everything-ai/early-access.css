@@ -937,7 +937,7 @@
 /* ---- 3. What you'll build ----------------------------------------------- */
 .ea-builds {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   margin: 0;
   padding: 0;
@@ -1551,16 +1551,7 @@
   }
 
   .ea-builds {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  /* Five builds: three over two. */
-  .ea-builds li {
-    grid-column: span 2;
-  }
-
-  .ea-builds li:nth-child(4) {
-    grid-column: 2 / span 2;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .ea-offer {
@@ -1693,14 +1684,8 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .ea-builds li,
-  .ea-builds li:nth-child(4) {
-    grid-column: auto;
+  .ea-builds li {
     padding: 22px 14px;
-  }
-
-  .ea-builds li:last-child {
-    grid-column: 1 / -1;
   }
 
   .ea-mentor {
@@ -2295,11 +2280,6 @@
   animation: ea-b-load 0.8s var(--ease);
 }
 
-.ea-b-spark:hover .ea-b-glyph,
-.ea-b-spark.is-play .ea-b-glyph {
-  animation: ea-b-fire 0.9s var(--ease);
-}
-
 .ea-b-flow:hover .ea-b-glyph,
 .ea-b-flow.is-play .ea-b-glyph {
   animation: ea-b-shuffle 0.8s ease-in-out;
@@ -2337,18 +2317,6 @@
   }
   65% {
     transform: translateY(1px) scale(0.97);
-  }
-}
-
-@keyframes ea-b-fire {
-  0% {
-    transform: rotate(0) scale(1);
-  }
-  45% {
-    transform: rotate(18deg) scale(1.2);
-  }
-  100% {
-    transform: rotate(0) scale(1);
   }
 }
 
@@ -2410,5 +2378,282 @@
   .ea-builds li.is-play .ea-b-icon::after {
     animation: none;
     transform: none;
+  }
+}
+
+/* ---- Testimonials: a featured quote beside a wall ----------------------- */
+.ea-reviews .ea-head {
+  margin-bottom: clamp(28px, 3.4vw, 48px);
+}
+
+.ea-rv {
+  display: grid;
+  grid-template-columns: 0.9fr 1.6fr;
+  align-items: start;
+  gap: 16px;
+}
+
+.ea-rv-feature {
+  position: sticky;
+  top: 72px;
+  margin: 0;
+  padding: clamp(26px, 3vw, 40px);
+  overflow: hidden;
+  border-radius: var(--r-2xl);
+  background: var(--band-deep-grad);
+  color: var(--on-dark);
+  box-shadow: var(--shadow-lg);
+}
+
+.ea-rv-mark {
+  position: absolute;
+  top: -34px;
+  right: 16px;
+  color: #ffffff17;
+  font: 800 200px/1 Georgia, serif;
+  pointer-events: none;
+}
+
+.ea-rv-stars {
+  color: var(--yellow);
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+
+.ea-rv-feature .ea-rv-stars {
+  color: var(--lime);
+}
+
+.ea-rv-feature blockquote {
+  position: relative;
+  margin: 18px 0 28px;
+  font-size: clamp(21px, 2vw, 26px);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.ea-rv figcaption,
+.ea-rv-card footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ea-rv figcaption > span:last-child,
+.ea-rv-card footer > span:last-child {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.ea-rv b {
+  font-size: 15px;
+}
+
+.ea-rv-feature figcaption > span:last-child > span {
+  color: var(--on-dark-2);
+}
+
+.ea-rv-avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 50%;
+  background: #ffffff21;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.ea-rv-wall {
+  columns: 2;
+  column-gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea-rv-card {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+  transition: transform 0.3s var(--ease), border-color 0.3s ease;
+}
+
+.ea-rv-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--purple-line);
+}
+
+.ea-rv-card blockquote {
+  margin: 12px 0 18px;
+  color: var(--ink-2);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.ea-rv-card footer > span:last-child > span {
+  color: var(--ink-4);
+}
+
+.ea-rv-card .ea-rv-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 12.5px;
+  background: var(--purple);
+}
+
+.ea-rv-tint-1 .ea-rv-avatar {
+  background: var(--yellow);
+  color: #2b1d10;
+}
+
+.ea-rv-tint-2 .ea-rv-avatar {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+@media (max-width: 1024px) {
+  .ea-rv {
+    grid-template-columns: 1fr;
+  }
+
+  .ea-rv-feature {
+    position: relative;
+    top: 0;
+  }
+}
+
+/* phones: the feature first, then the rest in a row you swipe */
+@media (max-width: 680px) {
+  .ea-rv-wall {
+    display: flex;
+    gap: 12px;
+    columns: auto;
+    margin: 0 -16px;
+    padding: 2px 16px 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .ea-rv-wall::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ea-rv-card {
+    flex: 0 0 82%;
+    margin: 0;
+    scroll-snap-align: center;
+  }
+}
+
+/* ---- n8n-style workflow behind the job board ----------------------------- */
+.ea-jobs > .ea-container {
+  position: relative;
+  z-index: 1;
+}
+
+.fb {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fb-flow {
+  position: absolute;
+  top: 40px;
+  width: 360px;
+  height: 300px;
+  opacity: 0.32;
+}
+
+.fb-left {
+  left: max(8px, calc(50% - 760px));
+}
+
+.fb-right {
+  right: max(8px, calc(50% - 760px));
+}
+
+.fb-node {
+  fill: #ffffff14;
+  stroke: #ffffff59;
+  stroke-width: 1.2;
+}
+
+.fb-glyph {
+  color: #fff;
+}
+
+.fb-mark {
+  width: 24px;
+  height: 24px;
+}
+
+.fb-label {
+  fill: #ffffffb3;
+  font: 500 11px var(--mono);
+  letter-spacing: 0.04em;
+}
+
+.fb-wire {
+  fill: none;
+  stroke: #ffffff47;
+  stroke-width: 1.5;
+}
+
+/* data running along the wire */
+.fb-data {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 6 140;
+  animation: fb-run 2.8s linear infinite;
+}
+
+.fb-port {
+  fill: #1b1a18;
+  stroke: #ffffff8c;
+  stroke-width: 1.2;
+}
+
+@keyframes fb-run {
+  to {
+    stroke-dashoffset: -146;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-data {
+    animation: none;
+    display: none;
+  }
+}
+
+/* Between desktop and phone there is no empty side for it; on a phone the
+   left flow alone sits faint behind the heading. */
+@media (max-width: 1200px) {
+  .fb-right {
+    display: none;
+  }
+
+  .fb-left {
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    opacity: 0.11;
+  }
+
+  /* behind the heading, words would compete with words */
+  .fb-label {
+    display: none;
   }
 }
