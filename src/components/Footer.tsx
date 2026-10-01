@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { AuthButton } from '@/components/ActionButton'
 import menlerMark from '@/assets/employers/menler-mark-white.png'
 import { site } from '@/lib/site'
 
@@ -70,9 +69,16 @@ export function Footer() {
         <p className="footer-lede">Join thousands of ambitious people building their AI edge.</p>
 
         <div className="footer-cta">
-          <AuthButton mode="signup" className="button button-lime">
-            Start Learning
-          </AuthButton>
+          {/* To the plans, not a sign-up form: there is nothing to sign up
+              for before choosing what to learn. Rooted, so it works from
+              the about and policy pages too. */}
+          {/* A plain anchor, not Link: arriving from another page, Link lands
+              at the top and drops the #pricing; the browser scrolls to it. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a className="button button-lime" href="/#pricing">
+            <span className="btn-label">Start Learning</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
 
         <hr className="footer-rule" />

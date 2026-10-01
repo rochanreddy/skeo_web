@@ -49,7 +49,12 @@ export function Testimonials() {
               <blockquote>“{item.quote}”</blockquote>
               <footer>
                 <span className="quote-avatar" aria-hidden="true">
-                  {initials(item.name)}
+                  {item.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.photo} alt="" loading="lazy" />
+                  ) : (
+                    initials(item.name)
+                  )}
                 </span>
                 <span className="quote-who">
                   <b>{item.name}</b>

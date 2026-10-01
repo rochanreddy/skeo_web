@@ -10419,3 +10419,14 @@ details p {
     margin-top: 44px;
   }
 }
+
+/* Testimonial photos fill the avatar circle; initials remain the fallback. */
+.quote-avatar {
+  overflow: hidden;
+}
+
+.quote-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

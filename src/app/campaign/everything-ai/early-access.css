@@ -2834,3 +2834,20 @@
     display: none;
   }
 }
+
+/* Testimonial photos fill the avatar circle; initials remain the fallback. */
+.ea-rv-avatar {
+  overflow: hidden;
+}
+
+.ea-rv-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ea-rv-feature .ea-rv-avatar {
+  width: 52px;
+  height: 52px;
+  box-shadow: 0 0 0 2px #ffffff40;
+}

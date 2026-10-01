@@ -244,7 +244,12 @@ function ReviewCard({ item, tint, hidden }: { item: Review; tint: number; hidden
       <blockquote>{item.quote}</blockquote>
       <footer>
         <span className="ea-rv-avatar" aria-hidden="true">
-          {initials(item.name)}
+          {item.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.photo} alt="" loading="lazy" />
+                  ) : (
+                    initials(item.name)
+                  )}
         </span>
         <span>
           <b>{item.name}</b>
@@ -540,7 +545,12 @@ export default function EarlyAccessPage() {
                 <blockquote>{testimonials[0].quote}</blockquote>
                 <figcaption>
                   <span className="ea-rv-avatar" aria-hidden="true">
-                    {initials(testimonials[0].name)}
+                    {testimonials[0].photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={testimonials[0].photo} alt="" loading="lazy" />
+                  ) : (
+                    initials(testimonials[0].name)
+                  )}
                   </span>
                   <span>
                     <b>{testimonials[0].name}</b>

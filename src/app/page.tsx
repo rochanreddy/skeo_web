@@ -1,4 +1,5 @@
 import { Footer } from '@/components/Footer'
+import { HashScroll } from '@/components/HashScroll'
 import { Nav } from '@/components/Nav'
 import { Accreditation } from '@/components/sections/Accreditation'
 import { Certification } from '@/components/sections/Certification'
@@ -36,6 +37,7 @@ export default function Home() {
         <Faq />
       </main>
       <Footer />
+      <HashScroll />
     </>
   )
 }
