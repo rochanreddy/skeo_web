@@ -2570,7 +2570,7 @@
   position: absolute;
   top: 40px;
   width: 360px;
-  height: 300px;
+  height: 320px;
   opacity: 0.32;
 }
 
@@ -2578,8 +2578,12 @@
   left: max(8px, calc(50% - 760px));
 }
 
+/* the second flow sits low on the right, beside the bottom of the board,
+   so the two frame the section corner to corner */
 .fb-right {
-  right: max(8px, calc(50% - 760px));
+  top: auto;
+  bottom: 4px;
+  right: max(8px, calc(50% - 870px));
 }
 
 .fb-node {
@@ -2654,6 +2658,13 @@
 
   /* behind the heading, words would compete with words */
   .fb-label {
+    display: none;
+  }
+}
+
+/* Below 1400px the bottom-right corner is taken by the board itself. */
+@media (max-width: 1399px) {
+  .fb-right {
     display: none;
   }
 }

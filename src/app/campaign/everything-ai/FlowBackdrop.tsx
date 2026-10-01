@@ -52,7 +52,7 @@ function Glyph({ kind }: { kind: Node['glyph'] }) {
 
 function Flow({ nodes, wires, className }: { nodes: Node[]; wires: [number, number][]; className: string }) {
   return (
-    <svg className={`fb-flow ${className}`} viewBox="0 0 360 300" aria-hidden="true">
+    <svg className={`fb-flow ${className}`} viewBox="0 0 360 320" aria-hidden="true">
       {wires.map(([a, b]) => {
         const from = nodes[a]
         const to = nodes[b]
