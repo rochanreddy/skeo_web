@@ -1116,7 +1116,7 @@
   margin: 0 auto;
 }
 
-.ea-faq div {
+.ea-faq > div {
   padding: 22px 24px;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
@@ -1124,16 +1124,96 @@
 }
 
 .ea-faq dt {
-  font-size: 16px;
-  font-weight: 700;
+  margin: 0;
+}
+
+/* On wide screens the question is plain text: no arrow, no pointer. */
+.ea-faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: 700 16px/1.35 var(--font);
   letter-spacing: -0.015em;
+  text-align: left;
+  pointer-events: none;
+}
+
+.ea-faq-arrow {
+  display: none;
 }
 
 .ea-faq dd {
+  margin: 0;
+}
+
+.ea .ea-faq-a p {
   margin: 6px 0 0;
   color: var(--ink-3);
   font-size: 15px;
   line-height: 1.5;
+}
+
+/* Phones: a row per question; the answer slides down while it is open. */
+@media (max-width: 680px) {
+  .ea-faq > div.ea-faq-item {
+    padding: 0;
+  }
+
+  .ea-faq-q {
+    padding: 18px 18px;
+    font-size: 15.5px;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .ea-faq-arrow {
+    display: block;
+    flex: none;
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--ink-2);
+    transition: transform 0.3s var(--ease), background 0.3s ease, color 0.3s ease;
+  }
+
+  .ea-faq-item.is-open .ea-faq-arrow {
+    transform: rotate(180deg);
+    background: var(--purple);
+    color: #fff;
+  }
+
+  .ea-faq-item.is-open {
+    border-color: var(--purple-line);
+  }
+
+  /* grid rows 0fr → 1fr animates to the answer's real height */
+  .ea-faq dd {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--ease);
+  }
+
+  .ea-faq-item.is-open dd {
+    grid-template-rows: 1fr;
+  }
+
+  .ea-faq-a {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .ea .ea-faq-a p {
+    margin: 0;
+    padding: 0 18px 18px;
+  }
 }
 
 /* ---- Final call to action ----------------------------------------------- */

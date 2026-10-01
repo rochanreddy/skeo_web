@@ -28,6 +28,7 @@ import {
   valueStack,
 } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
+import { FaqList } from './FaqList'
 import { FlowBackdrop } from './FlowBackdrop'
 import { JoinToasts, SeatsLeft } from './Live'
 import { PlayOnView } from './PlayOnView'
@@ -614,14 +615,7 @@ export default function EarlyAccessPage() {
           <Ornament kind="faq" />
           <div className="ea-container">
             <Head eyebrow={faq.eyebrow} title={faq.title} />
-            <dl className="ea-faq">
-              {faq.items.map((f) => (
-                <div key={f.q}>
-                  <dt>{f.q}</dt>
-                  <dd>{f.a}</dd>
-                </div>
-              ))}
-            </dl>
+            <FaqList items={faq.items} />
           </div>
         </section>
 
