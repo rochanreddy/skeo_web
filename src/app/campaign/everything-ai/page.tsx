@@ -232,6 +232,28 @@ function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
+type Review = (typeof testimonials)[number]
+
+function ReviewCard({ item, tint, hidden }: { item: Review; tint: number; hidden?: boolean }) {
+  return (
+    <li className={`ea-rv-card ea-rv-tint-${tint}`} aria-hidden={hidden || undefined}>
+      <div className="ea-rv-stars" role="img" aria-label="Rated 5 out of 5">
+        ★★★★★
+      </div>
+      <blockquote>{item.quote}</blockquote>
+      <footer>
+        <span className="ea-rv-avatar" aria-hidden="true">
+          {initials(item.name)}
+        </span>
+        <span>
+          <b>{item.name}</b>
+          <span>{item.role}</span>
+        </span>
+      </footer>
+    </li>
+  )
+}
+
 /* "Priya Shah" → "PS" — the home page's stand-in for a face. */
 const initials = (name: string) =>
   name
@@ -525,25 +547,35 @@ export default function EarlyAccessPage() {
                   </span>
                 </figcaption>
               </figure>
-              <ul className="ea-rv-wall">
-                {testimonials.slice(1, 7).map((item, i) => (
-                  <li key={item.name} className={`ea-rv-card ea-rv-tint-${i % 3}`}>
-                    <div className="ea-rv-stars" role="img" aria-label="Rated 5 out of 5">
-                      ★★★★★
-                    </div>
-                    <blockquote>{item.quote}</blockquote>
-                    <footer>
-                      <span className="ea-rv-avatar" aria-hidden="true">
-                        {initials(item.name)}
-                      </span>
-                      <span>
-                        <b>{item.name}</b>
-                        <span>{item.role}</span>
-                      </span>
-                    </footer>
-                  </li>
+              {/* Two columns drifting in opposite directions on wide screens;
+                  one row drifting sideways on phones. Each track holds its
+                  quotes twice so the loop has no seam; the copy is hidden
+                  from screen readers. */}
+              <div className="ea-rv-wall">
+                {[0, 1].map((col) => (
+                  <div key={col} className={`ea-rv-col ea-rv-col-${col}`}>
+                    <ul className="ea-rv-track">
+                      {[0, 1].map((copy) =>
+                        testimonials
+                          .slice(1)
+                          .filter((_, i) => i % 2 === col)
+                          .map((item, i) => (
+                            <ReviewCard key={`${copy}-${item.name}`} item={item} tint={(i + col) % 3} hidden={copy === 1} />
+                          )),
+                      )}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
+              <div className="ea-rv-row">
+                <ul className="ea-rv-track">
+                  {[0, 1].map((copy) =>
+                    testimonials
+                      .slice(1)
+                      .map((item, i) => <ReviewCard key={`${copy}-${item.name}`} item={item} tint={i % 3} hidden={copy === 1} />),
+                  )}
+                </ul>
+              </div>
             </div>
           </div>
         </section>

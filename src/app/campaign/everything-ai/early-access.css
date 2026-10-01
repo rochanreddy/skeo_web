@@ -2394,8 +2394,7 @@
 }
 
 .ea-rv-feature {
-  position: sticky;
-  top: 72px;
+  position: relative;
   margin: 0;
   padding: clamp(26px, 3vw, 40px);
   overflow: hidden;
@@ -2468,12 +2467,67 @@
   font-weight: 800;
 }
 
+/* The wall: a window the height of the featured quote's column, faded at
+   both ends, with each column drifting through it. */
 .ea-rv-wall {
-  columns: 2;
-  column-gap: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  height: 560px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+}
+
+.ea-rv-track {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* Half the track is the copy, so moving by half lands exactly where it began. */
+.ea-rv-col-0 .ea-rv-track {
+  animation: ea-rv-up 38s linear infinite;
+}
+
+.ea-rv-col-1 .ea-rv-track {
+  animation: ea-rv-down 42s linear infinite;
+}
+
+.ea-rv-wall:hover .ea-rv-track,
+.ea-rv-row:hover .ea-rv-track,
+.ea-rv-row:active .ea-rv-track {
+  animation-play-state: paused;
+}
+
+@keyframes ea-rv-up {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes ea-rv-down {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes ea-rv-side {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* the phone row is a separate track, shown only there */
+.ea-rv-row {
+  display: none;
+}
+
+.ea-rv-feature {
+  align-self: center;
 }
 
 .ea-rv-card {
@@ -2530,27 +2584,59 @@
   }
 }
 
-/* phones: the feature first, then the rest in a row you swipe */
+/* tablets: the feature above, the drifting wall below it */
+@media (max-width: 1024px) {
+  .ea-rv-wall {
+    height: 480px;
+  }
+}
+
+/* phones: the feature first, then one row drifting sideways */
 @media (max-width: 680px) {
   .ea-rv-wall {
-    display: flex;
-    gap: 12px;
-    columns: auto;
-    margin: 0 -16px;
-    padding: 2px 16px 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .ea-rv-wall::-webkit-scrollbar {
     display: none;
   }
 
-  .ea-rv-card {
-    flex: 0 0 82%;
+  .ea-rv-row {
+    display: block;
+    margin: 0 -16px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .ea-rv-row .ea-rv-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    padding: 2px 0 8px;
+    animation: ea-rv-side 46s linear infinite;
+  }
+
+  .ea-rv-row .ea-rv-card {
+    width: 290px;
     margin: 0;
-    scroll-snap-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea-rv-track {
+    animation: none !important;
+  }
+
+  .ea-rv-wall {
+    height: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .ea-rv-wall [aria-hidden='true'],
+  .ea-rv-row [aria-hidden='true'] {
+    display: none;
+  }
+
+  .ea-rv-row {
+    overflow-x: auto;
   }
 }
 
