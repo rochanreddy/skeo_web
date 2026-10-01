@@ -9,11 +9,17 @@
    ========================================================================== */
 
 .admin-shell {
-  --admin-bg: #f7f6fa;
-  --admin-card: var(--paper);
+  /* the theme's own ground and card, so night mode stays dark */
+  --admin-bg: var(--band-soft);
+  --admin-card: var(--card-bg);
   --admin-line: var(--line);
-  --admin-good: #1a8f5c;
+  /* Status colours, menler's meanings: green done, accent paid, amber
+     pending, red only for a real error. */
+  --admin-good: #1d8a5f;
+  --admin-paid: var(--purple);
+  --admin-warn: #a8620a;
   --admin-bad: #c8402f;
+  --admin-head: #1c1b1a;
 
   min-height: 100dvh;
   background: var(--admin-bg);
@@ -42,9 +48,49 @@
   gap: 12px;
   margin: 0 calc(clamp(16px, 3vw, 32px) * -1);
   padding: 12px clamp(16px, 3vw, 32px);
-  background: color-mix(in srgb, var(--admin-bg) 88%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--admin-line);
+  background: var(--admin-head);
+  color: #f4f2ec;
+  border-bottom: 1px solid #ffffff14;
+}
+
+.admin-bar .admin-brand small,
+.admin-bar .admin-toggle {
+  color: #c9c3b6;
+}
+
+.admin-bar .admin-btn {
+  background: #ffffff14;
+  border-color: #ffffff24;
+  color: #f4f2ec;
+}
+
+.admin-bar .admin-btn:hover {
+  background: #ffffff24;
+  border-color: #ffffff40;
+}
+
+.admin-bar .admin-btn-quiet {
+  background: transparent;
+}
+
+.admin-bar .range-picker {
+  background: #ffffff0f;
+  border-color: #ffffff24;
+}
+
+.admin-bar .range-picker button {
+  background: transparent;
+  color: #d8d3c8;
+  border-right-color: #ffffff1a;
+}
+
+.admin-bar .range-picker button:hover {
+  background: #ffffff1a;
+}
+
+.admin-bar .range-picker button.is-on {
+  background: var(--purple);
+  color: #fff;
 }
 
 .admin-brand {
@@ -286,7 +332,7 @@
 }
 
 .kpi-lime::before {
-  background: var(--lime);
+  background: color-mix(in srgb, var(--yellow) 80%, var(--ink) 20%);
 }
 
 .kpi h3 {
@@ -687,7 +733,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--ink-5);
+  color: var(--ink-3);
   padding: 0 10px 8px;
   border-bottom: 1px solid var(--admin-line);
   white-space: nowrap;
@@ -884,7 +930,12 @@
 .admin-tabs {
   display: flex;
   gap: 4px;
-  border-bottom: 1px solid var(--admin-line);
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  border: 1px solid var(--admin-line);
+  border-radius: 999px;
+  background: var(--admin-card);
   overflow-x: auto;
 }
 
@@ -893,8 +944,9 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 10px 14px 11px;
+  padding: 8px 16px;
   border: 0;
+  border-radius: 999px;
   background: none;
   font: 600 14px var(--font);
   color: var(--ink-3);
@@ -902,16 +954,21 @@
   white-space: nowrap;
 }
 
-.admin-tabs button.is-on {
+.admin-tabs button:hover {
+  background: var(--surface);
   color: var(--ink);
-  box-shadow: inset 0 -2px 0 var(--purple);
+}
+
+.admin-tabs button.is-on {
+  background: var(--ink);
+  color: var(--on-ink);
 }
 
 .tab-count {
   min-width: 18px;
   padding: 1px 6px;
   border-radius: 999px;
-  background: var(--admin-bad);
+  background: var(--admin-warn);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -948,8 +1005,9 @@
   white-space: nowrap;
 }
 .status-good { background: color-mix(in srgb, var(--admin-good) 14%, transparent); color: var(--admin-good); }
+.status-paid { background: color-mix(in srgb, var(--admin-paid) 14%, transparent); color: var(--purple-ink); }
 .status-bad { background: color-mix(in srgb, var(--admin-bad) 13%, transparent); color: var(--admin-bad); }
-.status-warn { background: color-mix(in srgb, #c98a12 16%, transparent); color: #8a5a00; }
+.status-warn { background: color-mix(in srgb, var(--admin-warn) 14%, transparent); color: var(--admin-warn); }
 .status-quiet { background: var(--surface); color: var(--ink-4); }
 
 .err-line {
@@ -985,4 +1043,257 @@
   gap: 6px;
   font-size: 14px;
   white-space: nowrap;
+}
+
+/* ---- Lists: sort, dates, pages (menler's controls) ---------------------- */
+
+.list-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  margin: -2px 0 14px;
+}
+
+.list-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.list-field select,
+.list-field input {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--admin-line);
+  border-radius: 10px;
+  background: var(--admin-card);
+  color: var(--ink);
+  font: 500 13.5px var(--font);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.pager-count,
+.pager-page {
+  color: var(--ink-3);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pager-count {
+  margin: 10px 0 0;
+  margin-right: auto;
+}
+
+.pager .pager-count {
+  margin: 0 auto 0 0;
+}
+
+/* ---- Money boxes (menler's revenue tiles) -------------------------------- */
+
+.money-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  margin: 2px 0 16px;
+}
+
+.money-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--admin-line);
+  border-top: 3px solid var(--purple);
+  border-radius: 12px;
+  background: var(--admin-card);
+}
+
+.money-box span {
+  color: var(--ink-3);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.money-box b {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.money-box small {
+  color: var(--ink-4);
+  font-size: 12px;
+}
+
+.money-box.is-warn {
+  border-top-color: var(--admin-warn);
+}
+
+.money-box.is-warn b {
+  color: var(--admin-warn);
+}
+
+/* ---- Rows that open a drawer ------------------------------------------- */
+
+.admin-table tr.is-clickable {
+  cursor: pointer;
+}
+
+.admin-table tr.is-clickable:hover td,
+.admin-table tr.is-clickable:focus-visible td {
+  background: color-mix(in srgb, var(--purple) 6%, transparent);
+}
+
+.admin-table tr.is-clickable:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -2px;
+}
+
+/* ---- Drawer -------------------------------------------------------------- */
+
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: flex-end;
+  background: #0f0e0d66;
+  animation: drawer-fade 0.2s ease;
+}
+
+.drawer {
+  display: flex;
+  flex-direction: column;
+  width: min(460px, 100%);
+  height: 100%;
+  background: var(--admin-card);
+  box-shadow: -18px 0 40px #00000026;
+  animation: drawer-in 0.28s var(--ease);
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--admin-head);
+  color: #f4f2ec;
+}
+
+.drawer-head h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.drawer-close {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff1a;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 20px 24px;
+}
+
+.facts {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.facts h3 {
+  margin: 0 0 8px;
+  color: var(--purple-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.facts dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.facts dl > div {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  font-size: 13.5px;
+}
+
+.facts dt {
+  color: var(--ink-3);
+}
+
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.facts a {
+  color: var(--purple-ink);
+}
+
+.drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 16px;
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes drawer-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .facts dl > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+@media (max-width: 600px) {
+  .money-boxes {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .money-box b {
+    font-size: 19px;
+  }
 }

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { AdminOrder, Lead, PlaybookRow, PlaybookSet } from '@/lib/admin/data'
+import { Drawer, Facts, ListControls, Pager, openRow, useListView, type SortOption } from './AdminList'
 
 /**
  * The admin's working tabs — the menler admin's Leads and Paid users, for skeo,
@@ -88,7 +89,9 @@ function Toolbar({
   )
 }
 
-function Status({ tone, children }: { tone: 'good' | 'warn' | 'bad' | 'quiet'; children: React.ReactNode }) {
+/* Menler's meanings: green done, accent paid, amber pending — red only for a
+   real error. */
+function Status({ tone, children }: { tone: 'good' | 'paid' | 'warn' | 'bad' | 'quiet'; children: React.ReactNode }) {
   return <span className={`status status-${tone}`}>{children}</span>
 }
 
@@ -96,14 +99,26 @@ function Status({ tone, children }: { tone: 'good' | 'warn' | 'bad' | 'quiet'; c
  * Orders — menler's "Paid users", with what the LMS did about each one
  * ======================================================================== */
 
+const ORDER_SORTS: SortOption<AdminOrder>[] = [
+  { key: 'new', label: 'Newest first', compare: (a, b) => Date.parse(b.paidAt ?? b.createdAt) - Date.parse(a.paidAt ?? a.createdAt) },
+  { key: 'old', label: 'Oldest first', compare: (a, b) => Date.parse(a.paidAt ?? a.createdAt) - Date.parse(b.paidAt ?? b.createdAt) },
+  { key: 'amount', label: 'Amount, high to low', compare: (a, b) => b.amount - a.amount },
+  { key: 'name', label: 'Name A–Z', compare: (a, b) => (a.name || a.email).localeCompare(b.name || b.email) },
+]
+const orderDate = (o: AdminOrder) => o.paidAt ?? o.createdAt
+
+/** This calendar month in India, as "2026-10". */
+const istMonth = (iso: string) => new Date(iso).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }).slice(0, 7)
+
 export function OrdersTab() {
   const { rows, error, reload } = useAdminList<AdminOrder>('/api/admin/orders', 'orders')
   const [q, setQ] = useState('')
   const [show, setShow] = useState<'paid' | 'attention' | 'all'>('paid')
   const [busy, setBusy] = useState<string | null>(null)
   const [note, setNote] = useState<string | null>(null)
+  const [openId, setOpenId] = useState<string | null>(null)
 
-  const list = useMemo(() => {
+  const matching = useMemo(() => {
     if (!rows) return []
     return rows.filter((o) => {
       if (show === 'paid' && o.status === 'created') return false
@@ -111,6 +126,7 @@ export function OrdersTab() {
       return matches(q, o.orderId, o.name, o.email, o.phone)
     })
   }, [rows, q, show])
+  const view = useListView(matching, { sorts: ORDER_SORTS, dateOf: orderDate })
 
   async function verify(orderId: string) {
     setBusy(orderId)
@@ -125,17 +141,20 @@ export function OrdersTab() {
   if (error) return <p className="admin-notice is-error">{error}</p>
   if (!rows) return <p className="admin-empty">Loading orders…</p>
 
-  const paidTotal = rows.filter((o) => o.status !== 'created').reduce((n, o) => n + o.amount, 0)
+  // The money boxes count paid orders in what is on screen — every filter,
+  // the dates included — the way menler's "Revenue (matching)" does.
+  const paidShown = view.all.filter((o) => o.status !== 'created')
+  const thisMonth = istMonth(new Date().toISOString())
+  const paidAll = rows.filter((o) => o.status !== 'created')
+  const narrowed = q.trim() !== '' || view.controls.from !== '' || view.controls.to !== '' || show !== 'paid'
+  const open = rows.find((o) => o.orderId === openId) ?? null
 
   return (
     <section className="panel panel-wide">
       <header className="panel-head">
         <div>
           <h2>Orders</h2>
-          <p>
-            {rows.filter((o) => o.status !== 'created').length} paid · {rupees(paidTotal)} · {rows.filter(needsAttention).length}{' '}
-            need attention
-          </p>
+          <p>Every order placed at checkout — paid, and the ones that were opened and abandoned.</p>
         </div>
         <button
           type="button"
@@ -144,7 +163,7 @@ export function OrdersTab() {
             downloadCsv(
               'skeo-orders',
               ['Order', 'Created', 'Paid', 'Name', 'Email', 'Phone', 'Items', 'Amount', 'Status', 'LMS account', 'Playbooks'],
-              list.map((o) => [
+              view.all.map((o) => [
                 o.orderId,
                 when(o.createdAt),
                 when(o.paidAt),
@@ -160,9 +179,32 @@ export function OrdersTab() {
             )
           }
         >
-          Export CSV
+          ⭳ Export CSV
         </button>
       </header>
+
+      <div className="money-boxes">
+        <div className="money-box">
+          <span>{narrowed ? 'Revenue (matching)' : 'Total revenue'}</span>
+          <b>{rupees(paidShown.reduce((n, o) => n + o.amount, 0))}</b>
+          <small>{paidShown.length} paid {paidShown.length === 1 ? 'order' : 'orders'}</small>
+        </div>
+        <div className="money-box">
+          <span>This month</span>
+          <b>{rupees(paidAll.filter((o) => o.paidAt && istMonth(o.paidAt) === thisMonth).reduce((n, o) => n + o.amount, 0))}</b>
+          <small>{paidAll.filter((o) => o.paidAt && istMonth(o.paidAt) === thisMonth).length} payments</small>
+        </div>
+        <div className="money-box">
+          <span>Payments</span>
+          <b>{paidAll.length}</b>
+          <small>{rows.length - paidAll.length} opened, not paid</small>
+        </div>
+        <div className={`money-box${rows.filter(needsAttention).length ? ' is-warn' : ''}`}>
+          <span>Needs attention</span>
+          <b>{rows.filter(needsAttention).length}</b>
+          <small>paid, something not delivered</small>
+        </div>
+      </div>
 
       <Toolbar q={q} setQ={setQ} placeholder="Search name, email, phone, order id…">
         <div className="seg" role="group" aria-label="Which orders">
@@ -173,9 +215,10 @@ export function OrdersTab() {
           ))}
         </div>
       </Toolbar>
+      <ListControls {...view.controls} dateLabel="Paid" />
       {note && <p className="admin-notice">{note}</p>}
 
-      {list.length === 0 ? (
+      {view.all.length === 0 ? (
         <p className="admin-empty">{show === 'attention' ? 'Nothing needs attention.' : 'No orders here.'}</p>
       ) : (
         <div className="table-scroll">
@@ -193,8 +236,8 @@ export function OrdersTab() {
               </tr>
             </thead>
             <tbody>
-              {list.map((o) => (
-                <tr key={o.orderId}>
+              {view.shown.map((o) => (
+                <tr key={o.orderId} {...openRow(() => setOpenId(o.orderId))}>
                   <td>
                     <b className="mono">{o.orderId}</b>
                     <small>{when(o.paidAt ?? o.createdAt)}</small>
@@ -207,25 +250,9 @@ export function OrdersTab() {
                   </td>
                   <td className="wrap">{itemNames(o.items)}</td>
                   <td className="n">{rupees(o.amount)}</td>
+                  <td>{o.status === 'created' ? <Status tone="quiet">Not paid</Status> : <Status tone="paid">Paid {rupees(o.amount)}</Status>}</td>
                   <td>
-                    {o.status === 'created' ? <Status tone="quiet">Not paid</Status> : <Status tone="good">Paid</Status>}
-                  </td>
-                  <td>
-                    {!needsLogin(o) ? (
-                      <Status tone="quiet">Not needed</Status>
-                    ) : o.lmsDone ? (
-                      <Status tone="good">{o.lmsAccountCreated ? 'Sent' : 'Added to account'}</Status>
-                    ) : o.status === 'created' ? (
-                      <Status tone="quiet">—</Status>
-                    ) : (
-                      <Status tone="bad">Not sent</Status>
-                    )}
-                    {o.lastError && !o.lmsDone && <small className="err-line">{o.lastError}</small>}
-                    {o.warnings.map((w) => (
-                      <small key={w} className="err-line">
-                        {w}
-                      </small>
-                    ))}
+                    <LmsStatus o={o} />
                   </td>
                   <td>
                     {o.playbooks.length === 0 ? (
@@ -233,7 +260,7 @@ export function OrdersTab() {
                     ) : (
                       o.playbooks.map((p) => (
                         <div key={p.set}>
-                          <Status tone={p.sent ? 'good' : o.status === 'created' ? 'quiet' : 'bad'}>
+                          <Status tone={p.sent ? 'good' : o.status === 'created' ? 'quiet' : 'warn'}>
                             {p.label}: {p.sent ? 'sent' : 'not sent'}
                           </Status>
                         </div>
@@ -257,11 +284,80 @@ export function OrdersTab() {
           </table>
         </div>
       )}
+      <Pager {...view.pager} />
       <p className="panel-note">
-        <b>Verify with Cashfree</b> asks Cashfree for the order&rsquo;s status. If it is paid, it records the sale and
-        has the LMS finish anything left undone — the login mail, the playbooks. Safe to press any number of times.
+        Click an order for everything recorded about it. <b>Verify with Cashfree</b> asks Cashfree for the
+        order&rsquo;s status; if it is paid, it records the sale and has the LMS finish anything left undone — the
+        login mail, the playbooks. Safe to press any number of times.
       </p>
+
+      {open && (
+        <Drawer title="Order detail" onClose={() => setOpenId(null)}>
+          <Facts
+            rows={[
+              ['Name', open.name || '—'],
+              ['Email', <a key="e" href={`mailto:${open.email}`}>{open.email}</a>],
+              ['Phone', open.phone ? <a key="p" href={`tel:${open.phone.replace(/\s/g, '')}`}>{open.phone}</a> : '—'],
+            ]}
+          />
+          <Facts
+            title="The order"
+            rows={[
+              ['Order ID', <span key="o" className="mono">{open.orderId}</span>],
+              ['Bought', itemNames(open.items)],
+              ['Amount', rupees(open.amount)],
+              ['Status', open.status === 'created' ? <Status key="s" tone="quiet">Not paid</Status> : <Status key="s" tone="paid">Paid</Status>],
+              ['Opened checkout', when(open.createdAt)],
+              ['Paid on', open.paidAt ? when(open.paidAt) : null],
+            ]}
+          />
+          <Facts
+            title="Delivery"
+            rows={[
+              ['LMS login', <LmsStatus key="l" o={open} />],
+              ['Batches', open.batches.length ? open.batches.join(', ') : null],
+              ...open.playbooks.map(
+                (p): [string, React.ReactNode] => [
+                  p.label,
+                  <Status key={p.set} tone={p.sent ? 'good' : open.status === 'created' ? 'quiet' : 'warn'}>
+                    {p.sent ? 'Received' : p.partsSent > 0 ? `Part ${p.partsSent} of ${p.total} only` : 'Not received'}
+                  </Status>,
+                ],
+              ),
+              ['Last error', open.lastError ? <span key="x" className="err-line">{open.lastError}</span> : null],
+              ['Warnings', open.warnings.length ? open.warnings.join(' · ') : null],
+            ]}
+          />
+          <div className="drawer-actions">
+            <button type="button" className="admin-btn" disabled={busy === open.orderId} onClick={() => void verify(open.orderId)}>
+              {busy === open.orderId ? 'Checking…' : 'Verify with Cashfree'}
+            </button>
+          </div>
+        </Drawer>
+      )}
     </section>
+  )
+}
+
+function LmsStatus({ o }: { o: AdminOrder }) {
+  return (
+    <>
+      {!needsLogin(o) ? (
+        <Status tone="quiet">Not needed</Status>
+      ) : o.lmsDone ? (
+        <Status tone="good">{o.lmsAccountCreated ? 'Sent' : 'Added to account'}</Status>
+      ) : o.status === 'created' ? (
+        <Status tone="quiet">—</Status>
+      ) : (
+        <Status tone="warn">Not sent</Status>
+      )}
+      {o.lastError && !o.lmsDone && <small className="err-line">{o.lastError}</small>}
+      {o.warnings.map((w) => (
+        <small key={w} className="err-line">
+          {w}
+        </small>
+      ))}
+    </>
   )
 }
 
@@ -388,7 +484,7 @@ export function PlaybooksTab() {
                     return p.sent ? (
                       <Status tone="good">Received</Status>
                     ) : (
-                      <Status tone="bad">{p.partsSent > 0 ? `Part ${p.partsSent} of ${p.total} only` : 'Not received'}</Status>
+                      <Status tone="warn">{p.partsSent > 0 ? `Part ${p.partsSent} of ${p.total} only` : 'Not received'}</Status>
                     )
                   }
                   const allSent = r.playbooks.every((p) => p.sent)
@@ -492,31 +588,39 @@ function ManualSend({
  * Leads — everyone who verified at checkout, paid or not
  * ======================================================================== */
 
+const LEAD_SORTS: SortOption<Lead>[] = [
+  { key: 'new', label: 'Newest first', compare: (a, b) => Date.parse(b.at) - Date.parse(a.at) },
+  { key: 'old', label: 'Oldest first', compare: (a, b) => Date.parse(a.at) - Date.parse(b.at) },
+  { key: 'name', label: 'Name A–Z', compare: (a, b) => (a.name || a.email).localeCompare(b.name || b.email) },
+]
+const leadDate = (l: Lead) => l.at
+
 export function LeadsTab() {
   const { rows, error } = useAdminList<Lead>('/api/admin/leads', 'leads')
   const [q, setQ] = useState('')
   const [show, setShow] = useState<'all' | 'unpaid' | 'paid'>('unpaid')
+  const [openEmail, setOpenEmail] = useState<string | null>(null)
 
-  const list = useMemo(() => {
+  const matching = useMemo(() => {
     if (!rows) return []
     return rows.filter(
       (l) => (show === 'all' || (show === 'paid' ? l.paid : !l.paid)) && matches(q, l.name, l.email, l.phone),
     )
   }, [rows, q, show])
+  const view = useListView(matching, { sorts: LEAD_SORTS, dateOf: leadDate })
 
   if (error) return <p className="admin-notice is-error">{error}</p>
   if (!rows) return <p className="admin-empty">Loading leads…</p>
 
-  const unpaid = rows.filter((l) => !l.paid).length
+  const paid = rows.filter((l) => l.paid).length
+  const open = rows.find((l) => l.email === openEmail) ?? null
 
   return (
     <section className="panel panel-wide">
       <header className="panel-head">
         <div>
           <h2>Leads</h2>
-          <p>
-            {rows.length} verified at checkout · {unpaid} did not pay — your call-back list
-          </p>
+          <p>Everyone who confirmed their phone at checkout. The ones who did not pay are your call-back list.</p>
         </div>
         <button
           type="button"
@@ -525,13 +629,31 @@ export function LeadsTab() {
             downloadCsv(
               'skeo-leads',
               ['Name', 'Email', 'Phone', 'Wanted', 'Verified on', 'Paid', 'Order', 'Amount'],
-              list.map((l) => [l.name, l.email, l.phone, itemNames(l.items), when(l.at), l.paid ? 'yes' : 'no', l.orderId ?? '', l.paid ? l.amount : '']),
+              view.all.map((l) => [l.name, l.email, l.phone, itemNames(l.items), when(l.at), l.paid ? 'yes' : 'no', l.orderId ?? '', l.paid ? l.amount : '']),
             )
           }
         >
-          Export CSV
+          ⭳ Export CSV
         </button>
       </header>
+
+      <div className="money-boxes">
+        <div className="money-box">
+          <span>Leads</span>
+          <b>{rows.length}</b>
+          <small>verified at checkout</small>
+        </div>
+        <div className="money-box">
+          <span>Paid</span>
+          <b>{paid}</b>
+          <small>{rows.length ? Math.round((paid / rows.length) * 100) : 0}% of leads</small>
+        </div>
+        <div className={`money-box${rows.length - paid ? ' is-warn' : ''}`}>
+          <span>Did not pay</span>
+          <b>{rows.length - paid}</b>
+          <small>to call back</small>
+        </div>
+      </div>
 
       <Toolbar q={q} setQ={setQ} placeholder="Search name, email, phone…">
         <div className="seg" role="group" aria-label="Which leads">
@@ -542,8 +664,9 @@ export function LeadsTab() {
           ))}
         </div>
       </Toolbar>
+      <ListControls {...view.controls} dateLabel="Verified" />
 
-      {list.length === 0 ? (
+      {view.all.length === 0 ? (
         <p className="admin-empty">No leads here.</p>
       ) : (
         <div className="table-scroll">
@@ -554,12 +677,12 @@ export function LeadsTab() {
                 <th>Contact</th>
                 <th>Wanted</th>
                 <th>Verified</th>
-                <th>Paid</th>
+                <th>Checkout</th>
               </tr>
             </thead>
             <tbody>
-              {list.map((l) => (
-                <tr key={l.email}>
+              {view.shown.map((l) => (
+                <tr key={l.email} {...openRow(() => setOpenEmail(l.email))}>
                   <td>
                     <b>{l.name || '—'}</b>
                   </td>
@@ -569,25 +692,49 @@ export function LeadsTab() {
                   </td>
                   <td className="wrap">{itemNames(l.items) || '—'}</td>
                   <td>{when(l.at)}</td>
-                  <td>
-                    {l.paid ? (
-                      <Status tone="good">
-                        {rupees(l.amount)} · {l.orderId}
-                      </Status>
-                    ) : (
-                      <Status tone="warn">Not paid</Status>
-                    )}
-                  </td>
+                  <td>{l.paid ? <Status tone="paid">Paid {rupees(l.amount)}</Status> : <Status tone="warn">Pending</Status>}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+      <Pager {...view.pager} />
       <p className="panel-note">
-        A lead is anyone who confirmed their phone with the one-time code at checkout. Leads from before this list
-        existed have no phone number recorded.
+        Click a lead for their details. A lead is anyone who confirmed their phone with the one-time code at
+        checkout; leads from before this list existed have no phone number recorded.
       </p>
+
+      {open && (
+        <Drawer title="Lead detail" onClose={() => setOpenEmail(null)}>
+          <Facts
+            rows={[
+              ['Name', open.name || '—'],
+              ['Email', <a key="e" href={`mailto:${open.email}`}>{open.email}</a>],
+              ['Phone', open.phone ? <a key="p" href={`tel:${open.phone.replace(/\s/g, '')}`}>{open.phone}</a> : '—'],
+            ]}
+          />
+          <Facts
+            title="At checkout"
+            rows={[
+              ['Wanted', itemNames(open.items) || '—'],
+              ['Verified on', when(open.at)],
+              ['Checkout', open.paid ? <Status key="s" tone="paid">Paid {rupees(open.amount)}</Status> : <Status key="s" tone="warn">Pending — did not pay</Status>],
+              ['Order ID', open.orderId ? <span key="o" className="mono">{open.orderId}</span> : null],
+            ]}
+          />
+          {!open.paid && open.phone && (
+            <div className="drawer-actions">
+              <a className="admin-btn" href={`tel:${open.phone.replace(/\s/g, '')}`}>
+                Call {open.name.split(' ')[0] || 'them'}
+              </a>
+              <a className="admin-btn admin-btn-quiet" href={`https://wa.me/${open.phone.replace(/\D/g, '').replace(/^(\d{10})$/, '91$1')}`} target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+            </div>
+          )}
+        </Drawer>
+      )}
     </section>
   )
 }
