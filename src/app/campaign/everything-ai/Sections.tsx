@@ -236,14 +236,30 @@ export function CampaignSections() {
             <ModuleList modules={learn.modules} />
             <div className="ea-toolrow">
               <span className="ea-toolrow-label">{learn.toolsLabel}</span>
-              <ul>
-                {learn.tools.map((t) => (
-                  <li key={t.name} title={t.name}>
-                    <ToolLogo name={t.name} mark={'mark' in t ? t.mark : undefined} />
-                    <span>{t.name}</span>
-                  </li>
-                ))}
-              </ul>
+              {/* Claude stays put on the left — it is the core of the course — and
+                  the rest scroll past beside it, right to left. The list is
+                  drawn twice so the loop has no seam; the copy is hidden from
+                  screen readers. */}
+              <div className="ea-tr">
+                <span className="ea-tr-lead" title="Claude">
+                  <ToolLogo name="Claude" mark="claude" />
+                  <span>Claude</span>
+                </span>
+                <div className="ea-tr-marquee">
+                  <ul>
+                    {[0, 1].map((copy) =>
+                      learn.tools
+                        .filter((t) => t.name !== 'Claude')
+                        .map((t) => (
+                          <li key={`${copy}-${t.name}`} title={t.name} aria-hidden={copy === 1 || undefined}>
+                            <ToolLogo name={t.name} mark={'mark' in t ? t.mark : undefined} />
+                            <span>{t.name}</span>
+                          </li>
+                        )),
+                    )}
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </section>
