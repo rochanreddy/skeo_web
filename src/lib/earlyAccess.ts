@@ -170,6 +170,22 @@ export const mentors = {
       role: 'Full Stack Developer & DevOps Engineer',
       bio: 'Building products, shipping projects and teaching what actually works.',
     },
+    /* Placeholders until the real mentors are confirmed — swap name, initials,
+       role, bio (and a photo) for the real people. */
+    {
+      name: 'Ananya Rao',
+      initials: 'AR',
+      photo: '',
+      role: 'AI Automation Specialist',
+      bio: 'Turns repetitive work into workflows that run themselves.',
+    },
+    {
+      name: 'Karthik Menon',
+      initials: 'KM',
+      photo: '',
+      role: 'Product Designer & AI Builder',
+      bio: 'Designs and ships products with AI, from first sketch to launch.',
+    },
   ],
 } as const
 
