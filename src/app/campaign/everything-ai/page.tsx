@@ -19,7 +19,7 @@ import {
   inr,
   jobs,
   learn,
-  mentor,
+  mentors,
   numbers,
   offer,
   pricing,
@@ -92,6 +92,7 @@ const ICONS: Record<string, string> = {
   infinity: 'M7.5 8.5C4.5 8.5 3 10.2 3 12s1.5 3.5 4.5 3.5c3.5 0 5.5-7 9-7 3 0 4.5 1.7 4.5 3.5s-1.5 3.5-4.5 3.5c-3.5 0-5.5-7-9-7',
   globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3',
   flow: 'M4 6h5v5H4zM15 13h5v5h-5zM9 8.5h3.5a2 2 0 0 1 2 2V13M6.5 11v4.5a2 2 0 0 0 2 2H15',
+  briefcase: 'M3 8.5A1.5 1.5 0 0 1 4.5 7h15A1.5 1.5 0 0 1 21 8.5v10a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5zM8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 13h18M11 13v2h2v-2',
   folder: 'M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.5h8.5A1.5 1.5 0 0 1 21 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z',
 }
 
@@ -429,14 +430,18 @@ export default function EarlyAccessPage() {
             <ol className="ea-modules">
               {learn.modules.map((m, i) => (
                 <li key={m.title}>
-                  <span className="ea-mod-num">{pad(i + 1)}</span>
-                  <div className="ea-mod-main">
+                  <header className="ea-mod-head">
+                    <span className="ea-mod-num">{pad(i + 1)}</span>
                     <h3>{m.title}</h3>
-                    <p>{m.learn.join(' · ')}</p>
-                  </div>
+                  </header>
+                  <ul className="ea-mod-tags" aria-label={`What you learn in ${m.title}`}>
+                    {m.learn.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
                   <p className="ea-mod-build">
                     <span>You build</span>
-                    {m.build}
+                    <b>{m.build}</b>
                   </p>
                 </li>
               ))}
@@ -452,22 +457,26 @@ export default function EarlyAccessPage() {
                 ))}
               </ul>
             </div>
-            <aside className="ea-mentor">
-              <span className="ea-avatar">
-                {mentor.photo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={mentor.photo} alt={mentor.name} />
-                ) : (
-                  <span aria-hidden="true">{mentor.initials}</span>
-                )}
-              </span>
-              <div>
-                <span className="ea-eyebrow">{mentor.eyebrow}</span>
-                <h3>{mentor.name}</h3>
-                <p className="ea-role">{mentor.role}</p>
-                <p>{mentor.bio}</p>
-              </div>
-            </aside>
+            <section className="ea-mentors" aria-label={mentors.eyebrow}>
+              <span className="ea-eyebrow">{mentors.eyebrow}</span>
+              <ul>
+                {mentors.people.map((m) => (
+                  <li key={m.name} className="ea-mentor">
+                    <span className="ea-avatar">
+                      {m.photo ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={m.photo} alt={m.name} />
+                      ) : (
+                        <span aria-hidden="true">{m.initials}</span>
+                      )}
+                    </span>
+                    <h3>{m.name}</h3>
+                    <p className="ea-role">{m.role}</p>
+                    <p>{m.bio}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
           </div>
         </section>
 

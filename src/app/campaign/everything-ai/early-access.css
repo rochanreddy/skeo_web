@@ -815,57 +815,109 @@
 /* ---- 2. What you'll learn ----------------------------------------------- */
 .ea-modules {
   display: grid;
-  gap: 12px;
-  max-width: 920px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 1080px;
   margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+/* Each module is a card: number and title, what it covers as chips, and the
+   thing you leave with pinned to the bottom so the row lines up. */
+.ea-modules > li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 22px 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+  transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+
+.ea-modules > li::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--purple), transparent);
+  opacity: 0.7;
+}
+
+.ea-modules > li:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--purple) 45%, var(--line));
+}
+
+.ea-mod-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ea-mod-num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--purple) 14%, transparent);
+  color: var(--purple);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.ea-mod-head h3 {
+  font-size: 18.5px;
+  line-height: 1.25;
+}
+
+.ea-mod-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.ea-modules li {
-  display: grid;
-  grid-template-columns: 56px 1fr auto;
-  align-items: center;
-  gap: 20px;
-  padding: 22px 24px;
+.ea-mod-tags li {
+  padding: 4px 10px;
   border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  background: var(--card-bg);
-}
-
-.ea-mod-num {
-  color: var(--purple);
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-}
-
-.ea-mod-main h3 {
-  font-size: 19px;
-}
-
-.ea-mod-main p {
-  margin: 4px 0 0;
-  color: var(--ink-3);
-  font-size: 14.5px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 600;
 }
 
 .ea .ea-mod-build {
-  margin: 0;
-  padding: 8px 14px;
-  border-radius: var(--r-md);
-  background: var(--surface);
-  font-size: 14px;
-  font-weight: 700;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: auto 0 0;
+  padding: 12px 0 0;
+  border-top: 1px dashed var(--line);
+  font-size: 14.5px;
 }
 
 .ea-mod-build span {
-  display: block;
   color: var(--purple-ink);
   font: 500 10.5px var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+
+.ea-mod-build b {
+  font-weight: 700;
+  text-align: right;
 }
 
 .ea-toolrow {
@@ -968,14 +1020,29 @@
   line-height: 1.5;
 }
 
-/* ---- Mentor card (closes "what you'll learn") --------------------------- */
+/* ---- Mentors (close "what you'll learn") -------------------------------- */
+.ea-mentors {
+  max-width: 1080px;
+  margin: 56px auto 0;
+  text-align: center;
+}
+
+.ea-mentors > ul {
+  display: grid;
+  /* three across; fewer cards stay centred rather than stretching */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
+  justify-content: center;
+  gap: 14px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
 .ea-mentor {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 22px;
-  max-width: 640px;
-  margin: 56px auto 0;
-  padding: 22px 24px;
+  padding: 26px 22px 24px;
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   background: var(--card-bg);
@@ -1003,21 +1070,21 @@
 }
 
 .ea-mentor h3 {
-  margin-top: 8px;
-  font-size: 20px;
+  margin-top: 14px;
+  font-size: 19px;
 }
 
 .ea .ea-role {
-  margin: 2px 0 0;
+  margin: 3px 0 0;
   color: var(--purple-ink);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
 }
 
 .ea-mentor p:last-child {
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   color: var(--ink-3);
-  font-size: 14.5px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -1744,20 +1811,20 @@
     font-size: 13.5px;
   }
 
-  .ea-modules li {
-    grid-template-columns: 40px 1fr;
-    gap: 6px 14px;
-    padding: 18px;
+  .ea-modules {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ea-modules > li {
+    gap: 12px;
+    padding: 18px 18px 14px;
   }
 
   .ea-mod-num {
-    font-size: 22px;
-  }
-
-  .ea .ea-mod-build {
-    grid-column: 2;
-    justify-self: start;
-    text-align: left;
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
   }
 
   .ea-builds {
@@ -1768,9 +1835,8 @@
     padding: 22px 14px;
   }
 
-  .ea-mentor {
-    flex-direction: column;
-    text-align: center;
+  .ea-mentors > ul {
+    grid-template-columns: 1fr;
   }
 
   .ea-offer-list {

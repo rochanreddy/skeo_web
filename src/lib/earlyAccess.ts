@@ -50,7 +50,7 @@ export const hero = {
 
 /** What the pass in the hero lists. */
 export const valueStack = {
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '100+ Jobs'],
 } as const
 
 export const numbers = [
@@ -72,7 +72,7 @@ export const get = {
     { icon: 'file', title: 'Templates & Resources', body: 'Prompts, guides and notes.' },
     { icon: 'people', title: 'Community', body: 'Learn with other builders.' },
     { icon: 'badge', title: 'Certificate', body: 'Proof of what you built.' },
-    { icon: 'infinity', title: 'Lifetime Access', body: 'Pay once. Keep it.' },
+    { icon: 'briefcase', title: '100+ Jobs', body: 'Real openings to put it to work.' },
   ],
 } as const
 
@@ -92,14 +92,34 @@ export const learn = {
       build: 'Personal Prompt Library',
     },
     {
+      title: 'AI for Research & Writing',
+      learn: ['Claude Projects', 'Gemini', 'Deep research', 'Notion AI'],
+      build: 'Content Engine',
+    },
+    {
+      title: 'AI for Design',
+      learn: ['Canva', 'Figma', 'Image generation', 'Brand systems'],
+      build: 'Brand Kit',
+    },
+    {
       title: 'AI Automation',
-      learn: ['n8n', 'Make', 'APIs', 'AI agents'],
+      learn: ['n8n', 'Make', 'APIs', 'Webhooks'],
       build: 'Automated Lead System',
     },
     {
+      title: 'AI Agents',
+      learn: ['Tool use', 'MCP', 'Multi-step agents', 'Memory'],
+      build: 'Personal AI Agent',
+    },
+    {
       title: 'Build With AI',
-      learn: ['Lovable', 'Antigravity', 'Claude Code', 'Deployment'],
+      learn: ['Lovable', 'Antigravity', 'No-code apps', 'Deployment'],
       build: 'Portfolio Website',
+    },
+    {
+      title: 'Code & Ship With AI',
+      learn: ['Cursor', 'Claude Code', 'GitHub', 'Vercel'],
+      build: 'Live Web App',
     },
   ],
   toolsLabel: 'Tools you’ll use — 50+ in all',
@@ -133,15 +153,23 @@ export const build = {
   ],
 } as const
 
-/** Who teaches it — a small card closing the "what you'll learn" section. */
-export const mentor = {
-  eyebrow: 'Your mentor',
-  name: 'Rochan Reddy',
-  initials: 'RR',
-  /* A path in /public (e.g. '/mentors/rochan.jpg'). Empty draws the initials. */
-  photo: '',
-  role: 'Full Stack Developer & DevOps Engineer',
-  bio: 'Building products, shipping projects and teaching what actually works.',
+/**
+ * Who teaches it — a row of cards closing the "what you'll learn" section,
+ * three across on desktop. Add a mentor by adding an entry; the row centres
+ * whatever is here. `photo` is a path in /public (e.g. '/mentors/rochan.jpg');
+ * empty draws the initials.
+ */
+export const mentors = {
+  eyebrow: 'Your mentors',
+  people: [
+    {
+      name: 'Rochan Reddy',
+      initials: 'RR',
+      photo: '',
+      role: 'Full Stack Developer & DevOps Engineer',
+      bio: 'Building products, shipping projects and teaching what actually works.',
+    },
+  ],
 } as const
 
 /** 4 — The offer */
@@ -149,7 +177,7 @@ export const pricing = {
   eyebrow: 'The offer',
   title: 'One price. Everything included.',
   plan: 'Everything AI · Early Access',
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', 'Lifetime Access'],
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '100+ Jobs', 'Lifetime Access'],
   cta: 'Get Everything',
   small: 'One-time payment · Instant access · No hidden fees',
 } as const
