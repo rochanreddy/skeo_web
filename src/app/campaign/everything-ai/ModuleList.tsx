@@ -35,11 +35,7 @@ export function ModuleList({ modules }: { modules: readonly Module[] }) {
             </h3>
             <div className="ea-mod-body" id={`${id}-${i}`}>
               <div className="ea-mod-inner">
-                <ul className="ea-mod-tags" aria-label={`What you learn in ${m.title}`}>
-                  {m.learn.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
+                <p className="ea-mod-topics">{m.learn.join(' · ')}</p>
                 <p className="ea-mod-build">
                   <span>You build</span>
                   <b>{m.build}</b>

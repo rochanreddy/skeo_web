@@ -3495,3 +3495,57 @@
 .ea-flow {
   overflow-x: clip;
 }
+
+/* ---- Buy buttons, take two: the border pops out -----------------------------
+   No rays. Every few seconds a copy of the button's own outline swells out
+   from its edge — the same distance on every side, following its rounded
+   corners — and fades. Overrides the burst above. */
+.ea .ea-cta::before,
+.ea-announce-cta::before,
+.ea-sticky-cta::before,
+.vx .vx-btn:not(.vx-btn-ghost)::before,
+.vx-bar-cta::before {
+  inset: 0;
+  border-radius: inherit;
+  background: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  outline: 2px solid var(--cta-ray, #d7f36b);
+  outline-offset: 0;
+  transform: none;
+  animation-name: cta-pop;
+}
+
+@keyframes cta-pop {
+  0%,
+  70% {
+    opacity: 0;
+    outline-offset: 0;
+    outline-width: 2px;
+  }
+  74% {
+    opacity: 1;
+    outline-offset: 2px;
+    outline-width: 2.5px;
+  }
+  100% {
+    opacity: 0;
+    outline-offset: 14px;
+    outline-width: 1px;
+  }
+}
+
+/* ---- Module cards: topics as one clean line, no capsules ------------------- */
+.ea .ea-mod-topics {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+@media (max-width: 680px) {
+  .ea .ea-mod-topics {
+    padding: 0 16px;
+    font-size: 13.5px;
+  }
+}
