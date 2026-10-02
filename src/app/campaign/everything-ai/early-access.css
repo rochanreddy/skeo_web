@@ -3555,3 +3555,64 @@
 .ea-flow > section:not(.ea-jobs):not(.ea-final):nth-of-type(n)::before {
   content: none;
 }
+
+/* ---- Phones: modules in two columns, always open ---------------------------
+   With the topics gone a card is just a title and what you build — small
+   enough to show whole, two across, instead of a tap-to-open list. */
+@media (max-width: 680px) {
+  .ea .ea-modules {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ea .ea-modules > li {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .ea .ea-mod-head {
+    font-size: 13.5px;
+    line-height: 1.25;
+  }
+
+  .ea .ea-mod-head button {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .ea .ea-mod-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 12.5px;
+  }
+
+  .ea .ea-mod-arrow {
+    display: none;
+  }
+
+  .ea .ea-mod-body {
+    grid-template-rows: 1fr;
+  }
+
+  .ea .ea-mod-build {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin: 0;
+    padding-top: 8px;
+    font-size: 12.5px;
+  }
+
+  .ea .ea-mod-build span {
+    font-size: 9.5px;
+  }
+
+  .ea .ea-mod-build b {
+    text-align: left;
+  }
+}
