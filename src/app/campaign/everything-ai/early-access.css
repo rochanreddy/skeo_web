@@ -3551,6 +3551,7 @@
 }
 
 /* No corner glows: they read as stray light, not ornament. */
-.ea-flow > section:not(.ea-jobs):not(.ea-final)::before {
+/* nth-of-type(n) matches every section and lifts this above the odd/even rules */
+.ea-flow > section:not(.ea-jobs):not(.ea-final):nth-of-type(n)::before {
   content: none;
 }
