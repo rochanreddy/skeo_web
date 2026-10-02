@@ -29,6 +29,7 @@ import {
 } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
 import { FaqList } from './FaqList'
+import { ModuleList } from './ModuleList'
 import { FlowBackdrop } from './FlowBackdrop'
 import { JoinToasts, SeatsLeft } from './Live'
 import { PlayOnView } from './PlayOnView'
@@ -232,8 +233,6 @@ function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
   )
 }
 
-const pad = (n: number) => String(n).padStart(2, '0')
-
 type Review = (typeof testimonials)[number]
 
 function ReviewCard({ item, tint, hidden }: { item: Review; tint: number; hidden?: boolean }) {
@@ -427,25 +426,7 @@ export default function EarlyAccessPage() {
           <Deco kind="marks" />
           <div className="ea-container">
             <Head eyebrow={learn.eyebrow} title={learn.title} />
-            <ol className="ea-modules">
-              {learn.modules.map((m, i) => (
-                <li key={m.title}>
-                  <header className="ea-mod-head">
-                    <span className="ea-mod-num">{pad(i + 1)}</span>
-                    <h3>{m.title}</h3>
-                  </header>
-                  <ul className="ea-mod-tags" aria-label={`What you learn in ${m.title}`}>
-                    {m.learn.map((t) => (
-                      <li key={t}>{t}</li>
-                    ))}
-                  </ul>
-                  <p className="ea-mod-build">
-                    <span>You build</span>
-                    <b>{m.build}</b>
-                  </p>
-                </li>
-              ))}
-            </ol>
+            <ModuleList modules={learn.modules} />
             <div className="ea-toolrow">
               <span className="ea-toolrow-label">{learn.toolsLabel}</span>
               <ul>

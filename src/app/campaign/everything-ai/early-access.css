@@ -854,8 +854,42 @@
 }
 
 .ea-mod-head {
+  margin: 0;
+  font-size: 18.5px;
+  line-height: 1.25;
+}
+
+/* On wide screens the heading is plain text: no arrow, no pointer. */
+.ea-mod-head button {
   display: flex;
   align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  text-align: left;
+  pointer-events: none;
+}
+
+.ea-mod-title {
+  flex: 1;
+}
+
+.ea-mod-arrow {
+  display: none;
+}
+
+/* The details fill the card, so the project line sits on its floor. */
+.ea-mod-body,
+.ea-mod-inner {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   gap: 14px;
 }
 
@@ -873,10 +907,6 @@
   letter-spacing: -0.03em;
 }
 
-.ea-mod-head h3 {
-  font-size: 18.5px;
-  line-height: 1.25;
-}
 
 .ea-mod-tags {
   display: flex;
@@ -1817,14 +1847,72 @@
   }
 
   .ea-modules > li {
-    gap: 12px;
-    padding: 18px 18px 14px;
+    gap: 0;
+    padding: 0;
+  }
+
+  .ea-mod-head {
+    font-size: 16.5px;
+  }
+
+  .ea-mod-head button {
+    padding: 14px 16px;
+    pointer-events: auto;
+    cursor: pointer;
   }
 
   .ea-mod-num {
     width: 36px;
     height: 36px;
     font-size: 15px;
+  }
+
+  .ea-mod-arrow {
+    display: block;
+    flex: none;
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--ink-2);
+    transition: transform 0.3s var(--ease), background 0.3s ease, color 0.3s ease;
+  }
+
+  .ea-modules > li.is-open {
+    border-color: var(--purple-line);
+  }
+
+  .ea-modules > li.is-open .ea-mod-arrow {
+    transform: rotate(180deg);
+    background: var(--purple);
+    color: #fff;
+  }
+
+  /* grid rows 0fr → 1fr animates to the details' real height */
+  .ea-mod-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    gap: 0;
+    transition: grid-template-rows 0.35s var(--ease);
+  }
+
+  .ea-modules > li.is-open .ea-mod-body {
+    grid-template-rows: 1fr;
+  }
+
+  .ea-mod-inner {
+    min-height: 0;
+    overflow: hidden;
+    gap: 12px;
+  }
+
+  .ea-mod-tags {
+    padding: 0 16px;
+  }
+
+  .ea .ea-mod-build {
+    margin: 0 16px 14px;
   }
 
   .ea-builds {
