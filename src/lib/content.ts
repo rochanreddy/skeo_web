@@ -298,7 +298,7 @@ export const testimonials: readonly Testimonial[] = [
   },
   {
     quote:
-      'My internship interview turned into a demo. I walked them through what I had shipped and nobody asked about my grades.',
+      'My internship interview turned into a demo of what I had shipped. Nobody asked about my grades.',
     name: 'Yogini Chaganti',
     photo: '/testimonials/yogini-chaganti.svg',
     role: 'Engineering Student, Madrid',
