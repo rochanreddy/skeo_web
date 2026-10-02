@@ -5,6 +5,7 @@ import { Glyph, Stars, Tick } from '../_kit/Icons'
 import { Buy, FaqList, KitFooter, variantMeta } from '../_kit/Kit'
 import { JoinedToast, SeatsBar, SeatsText, TimeLeft } from '../_kit/Live'
 import { ToolMark } from '../_kit/ToolMark'
+import { HeroScene } from './HeroScene'
 import { endsOn, faqs, included, modules, outcomes, price, product, quotes, savePct, tools, was, whatItIs } from '../_kit/facts'
 import './showcase.css'
 
@@ -73,32 +74,7 @@ export default function ShowcasePage() {
               </p>
             </div>
 
-            {/* A chat that types itself: what using AI well looks like, in five seconds. */}
-            <div className="vx-demo" aria-label="Example: asking an AI assistant to plan a week of social posts">
-              <div className="vx-demo-top" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-                <b>AI assistant</b>
-              </div>
-              <div className="vx-msg vx-msg-me">Plan a week of Instagram posts for my bakery, with captions.</div>
-              <div className="vx-msg vx-msg-ai">
-                <span className="vx-typing" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </span>
-                <div className="vx-answer">
-                  <b>Here&rsquo;s your week:</b>
-                  <ol>
-                    <li>Mon — “Monday needs a croissant” · behind-the-scenes bake</li>
-                    <li>Wed — “3 breads, 1 secret” · poll on favourites</li>
-                    <li>Fri — “Weekend box is back” · offer with a deadline</li>
-                  </ol>
-                </div>
-              </div>
-              <p className="vx-demo-cap">You&rsquo;ll learn to ask like this — and get answers like this.</p>
-            </div>
+            <HeroScene />
           </div>
         </section>
 

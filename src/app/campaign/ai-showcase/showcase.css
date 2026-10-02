@@ -251,147 +251,6 @@
   font-size: 13.5px;
 }
 
-/* the chat demo */
-.vx-demo {
-  position: relative;
-  padding: 18px;
-  border: 1px solid var(--vx-line-2);
-  border-radius: 22px;
-  background: linear-gradient(160deg, #1a1a26, #111118);
-  box-shadow: 0 40px 100px -30px #6d5cff55, inset 0 1px 0 #ffffff14;
-}
-
-.vx-demo-top {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.vx-demo-top span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ffffff1f;
-}
-
-.vx-demo-top b {
-  margin-left: 8px;
-  color: var(--vx-ink-3);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.vx-msg {
-  max-width: 88%;
-  padding: 12px 14px;
-  border-radius: 16px;
-  font-size: 14.5px;
-  line-height: 1.5;
-}
-
-.vx-msg-me {
-  margin-left: auto;
-  border-bottom-right-radius: 4px;
-  background: var(--vx-violet);
-  color: #fff;
-  animation: vx-in 0.5s ease 0.3s both;
-}
-
-.vx-msg-ai {
-  position: relative;
-  margin-top: 12px;
-  border: 1px solid var(--vx-line);
-  border-bottom-left-radius: 4px;
-  background: #ffffff0a;
-  color: var(--vx-ink-2);
-  animation: vx-in 0.5s ease 1s both;
-}
-
-.vx-typing {
-  display: flex;
-  gap: 4px;
-  animation: vx-gone 0.2s ease 2.6s forwards;
-}
-
-.vx-typing i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--vx-ink-3);
-  animation: vx-dot 1s ease-in-out infinite;
-}
-
-.vx-typing i:nth-child(2) {
-  animation-delay: 0.15s;
-}
-
-.vx-typing i:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-.vx-answer {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  animation: vx-reveal 0.6s ease 2.7s forwards;
-}
-
-.vx-answer > * {
-  min-height: 0;
-}
-
-.vx-answer b {
-  color: var(--vx-ink);
-  overflow: hidden;
-}
-
-.vx-answer ol {
-  margin: 8px 0 0;
-  padding-left: 18px;
-  overflow: hidden;
-}
-
-.vx-answer li + li {
-  margin-top: 6px;
-}
-
-.vx-demo-cap {
-  margin: 16px 2px 0;
-  color: var(--vx-ink-3);
-  font-size: 13px;
-}
-
-@keyframes vx-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
-@keyframes vx-dot {
-  50% {
-    transform: translateY(-4px);
-    opacity: 0.5;
-  }
-}
-
-@keyframes vx-gone {
-  to {
-    height: 0;
-    opacity: 0;
-    overflow: hidden;
-  }
-}
-
-@keyframes vx-reveal {
-  to {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-}
-
 /* ---- tools marquee ---- */
 .vx-tools {
   padding: 8px 0 36px;
@@ -987,20 +846,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vx-marquee ul,
-  .vx-msg-me,
-  .vx-msg-ai,
-  .vx-typing i {
-    animation: none;
-  }
-
-  .vx-typing {
-    display: none;
-  }
-
-  .vx-answer {
-    grid-template-rows: 1fr;
-    opacity: 1;
+  .vx-marquee ul {
     animation: none;
   }
 
@@ -1012,6 +858,290 @@
 
   .vx-marquee li[aria-hidden='true'] {
     display: none;
+  }
+}
+
+/* ---- hero scene: a learner at a laptop, tools glowing around them ---- */
+.vx-scene {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1;
+  margin-left: auto;
+  overflow: hidden;
+  border: 1px solid var(--vx-line-2);
+  border-radius: 28px;
+  box-shadow: 0 50px 120px -40px #6d5cffaa, inset 0 1px 0 #ffffff14;
+  isolation: isolate;
+}
+
+.vx-scene-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vx-scene-photo {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 78%;
+  height: 86%;
+  object-fit: cover;
+  object-position: top;
+  transform: translateX(-50%);
+  -webkit-mask-image: linear-gradient(#000 70%, transparent);
+  mask-image: linear-gradient(#000 70%, transparent);
+}
+
+.vx-scene-logo {
+  fill: #ffffff;
+  font: 800 30px var(--font);
+  letter-spacing: -0.04em;
+}
+
+.vx-scene-ring {
+  transform-origin: 300px 330px;
+  animation: vx-spin 60s linear infinite;
+}
+
+.vx-scene-flow {
+  animation: vx-flow 2.6s linear infinite;
+}
+
+.vx-scene-spill {
+  animation: vx-breathe 5s ease-in-out infinite;
+}
+
+.vx-scene-bokeh circle {
+  animation: vx-breathe 7s ease-in-out infinite;
+}
+
+.vx-scene-bokeh circle:nth-child(2n) {
+  animation-delay: -3s;
+}
+
+@keyframes vx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* light travelling out from the laptop to the tool */
+@keyframes vx-flow {
+  from {
+    stroke-dashoffset: 60;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes vx-breathe {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* each tool: a white chip with its real mark, its own coloured glow, floating */
+.vx-orb {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 10.5%;
+  aspect-ratio: 1;
+  border-radius: 30%;
+  background: #f7f6fb;
+  box-shadow:
+    0 0 0 1px #ffffff40,
+    0 0 22px 2px color-mix(in srgb, var(--orb-glow) 70%, transparent),
+    0 0 60px 10px color-mix(in srgb, var(--orb-glow) 30%, transparent);
+  transform: translate(-50%, -50%);
+  animation: vx-float 6s ease-in-out infinite;
+}
+
+.vx-orb-mark {
+  width: 54%;
+  height: 54%;
+  color: #111;
+}
+
+.vx-orb .kit-monogram {
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+@keyframes vx-float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+  50% {
+    transform: translate(-50%, calc(-50% - 10px));
+  }
+}
+
+/* Claude, drafting: a glass panel floating over the top of the scene */
+.vx-holo {
+  position: absolute;
+  z-index: 3;
+  left: 6%;
+  top: 6%;
+  width: 44%;
+  padding: 3% 3.2%;
+  border: 1px solid #ffffff2e;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #ffffff1f, #ffffff08);
+  box-shadow: 0 20px 50px -20px #000, inset 0 1px 0 #ffffff26;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: vx-float-soft 7s ease-in-out infinite;
+}
+
+.vx-holo-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--vx-ink);
+  font-size: 12.5px;
+}
+
+.vx-holo-mark {
+  width: 16px;
+  height: 16px;
+}
+
+.vx-holo-top i {
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 8px #4ade80;
+}
+
+.vx .vx-holo-ask {
+  margin: 8px 0 8px;
+  padding: 6px 9px;
+  border-radius: 10px 10px 3px 10px;
+  background: var(--vx-violet);
+  color: #fff;
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+
+.vx-holo-line {
+  display: block;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ffffff38, #ffffff14 60%, #ffffff38);
+  background-size: 200% 100%;
+  animation: vx-shimmer 2.2s linear infinite;
+}
+
+.vx-holo-short {
+  width: 62%;
+}
+
+@keyframes vx-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes vx-float-soft {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.vx-scene-tag {
+  position: absolute;
+  z-index: 3;
+  right: 5%;
+  top: 6%;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid #d7f36b55;
+  border-radius: var(--r-pill);
+  background: #0b0b12b3;
+  color: var(--vx-lime);
+  font-size: 12px;
+  font-weight: 800;
+  backdrop-filter: blur(8px);
+}
+
+.vx-scene-tag i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vx-lime);
+  box-shadow: 0 0 10px var(--vx-lime);
+}
+
+@media (max-width: 960px) {
+  .vx-scene {
+    max-width: 520px;
+    margin: 8px auto 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .vx-scene {
+    border-radius: 22px;
+  }
+
+  .vx-holo {
+    width: 50%;
+    border-radius: 12px;
+  }
+
+  .vx-holo-top {
+    font-size: 11px;
+  }
+
+  .vx-holo-mark {
+    width: 13px;
+    height: 13px;
+  }
+
+  .vx .vx-holo-ask {
+    margin: 6px 0;
+    padding: 5px 7px;
+    font-size: 10px;
+  }
+
+  .vx-holo-line {
+    height: 5px;
+    margin-top: 5px;
+  }
+
+  .vx-orb {
+    width: 11.5%;
+    border-radius: 28%;
+  }
+
+  .vx-scene-tag {
+    padding: 5px 9px;
+    font-size: 10.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-scene-ring,
+  .vx-scene-flow,
+  .vx-scene-spill,
+  .vx-scene-bokeh circle,
+  .vx-orb,
+  .vx-holo,
+  .vx-holo-line {
+    animation: none;
   }
 }
 
@@ -1030,9 +1160,6 @@
   .vx-lede { margin-top: 14px; font-size: 15px; }
   .vx-hero-cta { margin-top: 20px; gap: 10px; }
   .vx-fine { font-size: 12px; }
-  .vx-demo { padding: 14px; border-radius: 18px; }
-  .vx-msg { padding: 10px 12px; font-size: 13px; }
-  .vx-demo-cap { font-size: 12px; }
   .vx-tools { padding-bottom: 24px; }
   .vx-marquee li { padding: 6px 12px 6px 6px; font-size: 13px; }
   .vx-logo { width: 26px; height: 26px; }
