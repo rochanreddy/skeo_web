@@ -42,15 +42,18 @@ export const announcement = {
 } as const
 
 export const hero = {
-  lines: ['Learn More.', 'Pay Less.', 'Build More.'],
-  lede: 'Learn the tools, build real projects, and become job-ready — without spending thousands on courses.',
+  /* Hook: name the fear, flip it, then the payoff. The middle line is highlighted. */
+  lines: ['Don’t fear AI.', 'Master it.', 'Get paid for it.'],
+  lede: 'ChatGPT, Claude & 50+ AI tools — learn them, build real projects and get job-ready, for the price of a pizza.',
   cta: 'Get Started',
   checks: ['Beginner Friendly', 'Lifetime Access', 'Real Projects'],
 } as const
 
 /** What the pass in the hero lists. */
 export const valueStack = {
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '100+ Jobs'],
+  /* Laid out in two columns, filled top to bottom: the numbers on the left,
+     everything else on the right. */
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', '100+ Jobs', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
 } as const
 
 export const numbers = [

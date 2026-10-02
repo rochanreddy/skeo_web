@@ -3616,3 +3616,100 @@
     text-align: left;
   }
 }
+
+/* ---- Job board in one view (desktop) ----------------------------------------
+   Copy, chips and button on the left; the dashboard beside them on the right,
+   instead of everything stacked down the page. */
+@media (min-width: 1100px) {
+  .ea .ea-jobs > .ea-container {
+    display: grid;
+    grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+    grid-template-areas:
+      'head desk'
+      'lede desk'
+      'opps desk'
+      'cta  desk';
+    grid-template-rows: auto auto auto 1fr;
+    column-gap: clamp(32px, 4vw, 64px);
+    align-items: start;
+  }
+
+  .ea .ea-jobs .ea-head {
+    grid-area: head;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    text-align: left;
+  }
+
+  .ea .ea-jobs .ea-head h2 {
+    font-size: clamp(34px, 3.2vw, 46px);
+  }
+
+  .ea .ea-jobs-lede {
+    grid-area: lede;
+    max-width: none;
+    margin: 0;
+    text-align: left;
+  }
+
+  .ea .ea-jobs-opps {
+    grid-area: opps;
+    justify-content: flex-start;
+    margin-top: 18px;
+  }
+
+  .ea .ea-jobs-cta {
+    grid-area: cta;
+    justify-content: flex-start;
+    margin-top: 22px;
+  }
+
+  .ea .ea-jobs-desk {
+    grid-area: desk;
+    align-self: center;
+    max-width: none;
+    margin: 0;
+  }
+}
+
+/* The pass list fills column by column: numbers on the left, the rest right. */
+.ea .ea-pass-list {
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, auto);
+}
+
+/* In the one-view job board the copy sits where the left flow was drawn;
+   only the right-hand flow stays, behind the dashboard's edge. */
+@media (min-width: 1100px) {
+  .ea .ea-jobs .fb-left {
+    display: none;
+  }
+}
+
+/* ---- Hero a size down (desktop) ------------------------------------------ */
+@media (min-width: 681px) {
+  .ea .ea-hero h1 {
+    font-size: clamp(38px, min(4.8vw, 8.4vh), 72px);
+  }
+
+  .ea .ea-lede {
+    font-size: clamp(15px, 1.25vw, 17px);
+  }
+
+  .ea .ea-hero-price .ea-price-big strong {
+    font-size: clamp(38px, min(4.2vw, 6.6vh), 56px);
+  }
+
+  .ea .ea-hero-price .ea-price-big s {
+    font-size: clamp(17px, 1.6vw, 21px);
+  }
+
+  .ea .ea-hero-actions .ea-cta {
+    height: 48px;
+    font-size: 15px;
+  }
+
+  .ea .ea-checks {
+    font-size: 14px;
+  }
+}
