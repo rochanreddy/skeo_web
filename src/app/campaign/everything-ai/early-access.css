@@ -3713,3 +3713,10 @@
     font-size: 14px;
   }
 }
+
+/* Only buy buttons pop: the "See what is inside" link shares .ea-cta. */
+.ea .ea-cta.ea-ghost::before,
+.ea .ea-cta.ea-ghost::after {
+  content: none;
+  animation: none;
+}
