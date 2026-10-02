@@ -224,7 +224,7 @@ const initials = (name: string) =>
 
 export function CampaignSections() {
   return (
-    <>
+    <div className="ea-flow">
         {/* Accreditation — the home page's strip */}
         <Accreditation />
 
@@ -294,7 +294,7 @@ export function CampaignSections() {
         </section>
 
         {/* 3. What you'll build */}
-        <section className="ea-sec">
+        <section className="ea-sec ea-build-sec" id="build">
           <Deco kind="prompt" />
           <div className="ea-container">
             <Head eyebrow={build.eyebrow} title={build.title} />
@@ -443,7 +443,7 @@ export function CampaignSections() {
         </section>
 
         {/* 8. FAQ */}
-        <section className="ea-sec">
+        <section className="ea-sec ea-faq-sec" id="faq">
           <Ornament kind="faq" />
           <div className="ea-container">
             <Head eyebrow={faq.eyebrow} title={faq.title} />
@@ -463,6 +463,6 @@ export function CampaignSections() {
           </div>
         </section>
       <PlayOnView selector=".ea-builds li" />
-    </>
+    </div>
   )
 }

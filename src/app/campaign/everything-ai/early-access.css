@@ -3205,3 +3205,306 @@
     margin-bottom: 20px;
   }
 }
+
+/* ======================================================================== *
+ * Organised flow: every section divided by a line, alternating grounds,
+ * quiet ornament in the empty sides, and tighter top/bottom spacing.
+ * ======================================================================== */
+.ea-flow > section {
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+
+/* alternating grounds, so neighbours never match */
+.ea-flow > #learn,
+.ea-flow > #certificate,
+.ea-flow > #offer {
+  background: var(--band-soft);
+}
+
+.ea-flow > .included,
+.ea-flow > #build,
+.ea-flow > #reviews,
+.ea-flow > #faq {
+  background: var(--paper);
+}
+
+.ea-flow > #mentors {
+  background: var(--band-tint);
+}
+
+/* Ornament: a dot grid that lives only in the outer gutters, plus a soft
+   glow in one corner. Fills the empty sides without touching the content. */
+.ea-flow > section:not(.ea-jobs):not(.ea-final)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--ink) 16%, transparent) 1px, transparent 1.6px) 0 0 / 22px 22px;
+  -webkit-mask-image: linear-gradient(90deg, #000 0, transparent 14%, transparent 86%, #000 100%);
+  mask-image: linear-gradient(90deg, #000 0, transparent 14%, transparent 86%, #000 100%);
+  opacity: 0.7;
+}
+
+.ea-flow > section:not(.ea-jobs):not(.ea-final):nth-of-type(odd)::before {
+  content: '';
+  position: absolute;
+  right: -120px;
+  top: -120px;
+  z-index: 0;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--purple) 16%, transparent), transparent);
+  pointer-events: none;
+}
+
+.ea-flow > section:not(.ea-jobs):not(.ea-final):nth-of-type(even)::before {
+  content: '';
+  position: absolute;
+  left: -120px;
+  bottom: -120px;
+  z-index: 0;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--lime) 22%, transparent), transparent);
+  pointer-events: none;
+}
+
+.ea-flow > section > :is(.ea-container, .wrap) {
+  position: relative;
+  z-index: 1;
+}
+
+/* tighter top and bottom */
+.ea .ea-flow .ea-sec {
+  padding: clamp(32px, 3.2vw, 52px) 0;
+}
+
+.ea .ea-flow .ea-jobs {
+  padding: clamp(36px, 3.8vw, 60px) 0;
+}
+
+.ea .ea-flow .ea-final {
+  padding: clamp(40px, 4.2vw, 68px) 0;
+}
+
+.ea .ea-flow .section.included {
+  padding: clamp(32px, 3.2vw, 52px) 0;
+}
+
+.ea .ea-flow .ea-head,
+.ea .ea-flow .included .center-heading {
+  margin-bottom: clamp(18px, 2.2vw, 30px);
+}
+
+.ea .ea-flow .ea-toolrow {
+  margin-top: 22px;
+}
+
+@media (max-width: 680px) {
+  .ea .ea-flow .ea-sec,
+  .ea .ea-flow .section.included {
+    padding: 28px 0;
+  }
+
+  .ea .ea-flow .ea-jobs,
+  .ea .ea-flow .ea-final {
+    padding: 34px 0;
+  }
+
+  .ea-flow > section::before {
+    display: none;
+  }
+}
+
+/* ======================================================================== *
+ * What you will learn: compact, four across, two rows instead of four
+ * ======================================================================== */
+@media (min-width: 1100px) {
+  .ea .ea-modules {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: none;
+    gap: 10px;
+  }
+}
+
+@media (min-width: 681px) and (max-width: 1099px) {
+  .ea .ea-modules {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
+    gap: 10px;
+  }
+}
+
+@media (min-width: 681px) {
+  .ea .ea-modules > li {
+    gap: 10px;
+    padding: 14px 14px 12px;
+  }
+
+  .ea .ea-mod-head {
+    font-size: 15.5px;
+  }
+
+  .ea .ea-mod-head button {
+    gap: 10px;
+  }
+
+  .ea .ea-mod-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    font-size: 13.5px;
+  }
+
+  .ea .ea-mod-body,
+  .ea .ea-mod-inner {
+    gap: 10px;
+  }
+
+  .ea .ea-mod-tags {
+    gap: 4px;
+  }
+
+  .ea .ea-mod-tags li {
+    padding: 2px 8px;
+    font-size: 11.5px;
+  }
+
+  .ea .ea-mod-build {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding-top: 9px;
+    font-size: 13.5px;
+  }
+
+  .ea .ea-mod-build b {
+    text-align: left;
+  }
+}
+
+/* ======================================================================== *
+ * Buy buttons: every few seconds a glow and a burst of light lines flare out
+ * from the button, then settle. A nudge, not a strobe.
+ * ======================================================================== */
+.ea .ea-cta,
+.ea-announce-cta,
+.ea-sticky-cta,
+.vx .vx-btn:not(.vx-btn-ghost),
+.vx-bar-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+}
+
+/* the rays: thin spokes, masked to a ring just outside the button */
+.ea .ea-cta::before,
+.ea-announce-cta::before,
+.ea-sticky-cta::before,
+.vx .vx-btn:not(.vx-btn-ghost)::before,
+.vx-bar-cta::before {
+  content: '';
+  position: absolute;
+  inset: -22px -30px;
+  z-index: -1;
+  border-radius: 999px;
+  background: repeating-conic-gradient(from 0deg, var(--cta-ray, #d7f36b) 0deg 3deg, transparent 3deg 22deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 62%, #000 70%, #000 84%, transparent 100%);
+  mask-image: radial-gradient(closest-side, transparent 62%, #000 70%, #000 84%, transparent 100%);
+  opacity: 0;
+  transform: scale(0.7);
+  pointer-events: none;
+  animation: cta-burst 4.5s ease-out infinite;
+}
+
+/* the glow ring */
+.ea .ea-cta::after,
+.ea-announce-cta::after,
+.ea-sticky-cta::after,
+.vx .vx-btn:not(.vx-btn-ghost)::after,
+.vx-bar-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--cta-ray, #d7f36b) 70%, transparent);
+  pointer-events: none;
+  animation: cta-ring 4.5s ease-out infinite;
+}
+
+.ea .ea-cta,
+.ea-announce-cta,
+.ea-sticky-cta {
+  --cta-ray: var(--purple);
+}
+
+.ea .button-lime.ea-cta,
+.vx .vx-btn,
+.vx-bar-cta {
+  --cta-ray: #d7f36b;
+}
+
+/* the bar and sticky buttons wait their turn rather than all firing at once */
+.ea-announce-cta::before,
+.ea-announce-cta::after,
+.vx-bar-cta::before,
+.vx-bar-cta::after {
+  animation-delay: 1.5s;
+}
+
+.ea-sticky-cta::before,
+.ea-sticky-cta::after {
+  animation-delay: 3s;
+}
+
+@keyframes cta-burst {
+  0%,
+  72% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  80% {
+    opacity: 0.9;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes cta-ring {
+  0%,
+  72% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--cta-ray, #d7f36b) 70%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 16px color-mix(in srgb, var(--cta-ray, #d7f36b) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea .ea-cta::before,
+  .ea-announce-cta::before,
+  .ea-sticky-cta::before,
+  .vx .vx-btn::before,
+  .vx-bar-cta::before,
+  .ea .ea-cta::after,
+  .ea-announce-cta::after,
+  .ea-sticky-cta::after,
+  .vx .vx-btn::after,
+  .vx-bar-cta::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* the corner glows reach past the page edge; keep them inside it */
+.ea-flow {
+  overflow-x: clip;
+}

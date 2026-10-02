@@ -10452,3 +10452,13 @@ details p {
     justify-self: end;
   }
 }
+
+/* ---- Home hero: wider, with more room between copy and stage --------------
+   Margins of about 6% of the screen either side, and the two halves pushed
+   apart in the middle. Supersedes the nav-width hero above. */
+@media (min-width: 901px) {
+  .hero.wrap {
+    width: min(1500px, 88%);
+    column-gap: clamp(48px, 7vw, 140px);
+  }
+}
