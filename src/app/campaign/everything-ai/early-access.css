@@ -3151,3 +3151,57 @@
     display: none;
   }
 }
+
+/* ---- Tighter rhythm between sections --------------------------------------
+   Sections were 200–240px apart on a laptop — two halves of generous padding
+   meeting. Roughly halved, so the page reads as one story, not separate
+   screens. */
+.ea .ea-sec {
+  padding: clamp(40px, 4.2vw, 64px) 0;
+}
+
+.ea .ea-jobs {
+  padding: clamp(44px, 4.6vw, 72px) 0;
+}
+
+.ea .ea-final {
+  padding: clamp(48px, 5vw, 80px) 0;
+}
+
+.ea .section.included {
+  padding: clamp(36px, 3.6vw, 56px) 0;
+}
+
+.ea .accred-strip {
+  padding-top: clamp(24px, 2.4vw, 36px);
+  padding-bottom: clamp(24px, 2.4vw, 36px);
+}
+
+.ea .ea-head {
+  margin-bottom: clamp(22px, 2.6vw, 36px);
+}
+
+.ea .included .center-heading {
+  margin-bottom: clamp(22px, 2.6vw, 36px);
+}
+
+.ea .ea-toolrow {
+  margin-top: 28px;
+}
+
+@media (max-width: 680px) {
+  .ea .ea-sec,
+  .ea .section.included {
+    padding: 32px 0;
+  }
+
+  .ea .ea-jobs,
+  .ea .ea-final {
+    padding: 40px 0;
+  }
+
+  .ea .ea-head,
+  .ea .included .center-heading {
+    margin-bottom: 20px;
+  }
+}

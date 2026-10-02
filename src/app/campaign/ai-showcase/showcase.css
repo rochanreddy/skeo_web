@@ -779,3 +779,17 @@
     height: 50px;
   }
 }
+
+/* the hero's bottom breathing room, in step with the tighter sections */
+@media (min-width: 961px) {
+  .vx-hero {
+    min-height: min(calc(100svh - 124px), 760px);
+    padding-bottom: 8px;
+  }
+}
+
+@media (max-width: 960px) {
+  .vx-hero {
+    padding-bottom: 32px;
+  }
+}
