@@ -30,14 +30,14 @@ export const included = get.items.map((i) => ({ title: i.title, body: i.body }))
 
 export const modules = learn.modules
 
-/** Things a beginner will be able to do — everyday outcomes, not features. */
+/** Things a beginner will be able to do — everyday outcomes, not features. `icon` names a glyph in _kit/Icons. */
 export const outcomes = [
-  { icon: '✍️', title: 'Write in minutes', body: 'Emails, reports, posts and notes — drafted with AI, finished by you.' },
-  { icon: '🔎', title: 'Research anything', body: 'Understand a new topic in an evening, with sources you can check.' },
-  { icon: '🎨', title: 'Make designs', body: 'Posters, social posts and a brand kit — no design degree needed.' },
-  { icon: '⚙️', title: 'Automate boring work', body: 'Let tasks you repeat every week run on their own.' },
-  { icon: '🌐', title: 'Build a website', body: 'Put a real site online — with no code to start.' },
-  { icon: '💼', title: 'Get work with it', body: 'Show your projects and certificate, and apply through the job board.' },
+  { icon: 'write', title: 'Write in minutes', body: 'Emails, reports, posts and notes — drafted with AI, finished by you.' },
+  { icon: 'research', title: 'Research anything', body: 'Understand a new topic in an evening, with sources you can check.' },
+  { icon: 'design', title: 'Make designs', body: 'Posters, social posts and a brand kit — no design degree needed.' },
+  { icon: 'automate', title: 'Automate boring work', body: 'Let tasks you repeat every week run on their own.' },
+  { icon: 'web', title: 'Build a website', body: 'Put a real site online — with no code to start.' },
+  { icon: 'work', title: 'Get work with it', body: 'Show your projects and certificate, and apply through the job board.' },
 ] as const
 
 /** Plain answers. Matches the main campaign page's FAQ, with the beginner questions first. */

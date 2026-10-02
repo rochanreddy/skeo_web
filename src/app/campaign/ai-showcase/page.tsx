@@ -1,4 +1,7 @@
 import Link from 'next/link'
+import { CertificatePicker } from '@/components/CertificatePicker'
+import { certificate } from '@/lib/earlyAccess'
+import { Glyph, Stars, Tick } from '../_kit/Icons'
 import { Buy, FaqList, KitFooter, variantMeta } from '../_kit/Kit'
 import { JoinedToast, SeatsBar, SeatsText, TimeLeft } from '../_kit/Live'
 import { ToolMark } from '../_kit/ToolMark'
@@ -88,7 +91,7 @@ export default function ShowcasePage() {
                 <div className="vx-answer">
                   <b>Here&rsquo;s your week:</b>
                   <ol>
-                    <li>Mon — “Monday needs a croissant 🥐” · behind-the-scenes bake</li>
+                    <li>Mon — “Monday needs a croissant” · behind-the-scenes bake</li>
                     <li>Wed — “3 breads, 1 secret” · poll on favourites</li>
                     <li>Fri — “Weekend box is back” · offer with a deadline</li>
                   </ol>
@@ -153,12 +156,16 @@ export default function ShowcasePage() {
                 <p>Learn from people who use AI every day.</p>
               </article>
               <article className="vx-tile">
-                <span className="vx-num">✓</span>
+                <span className="vx-tile-icon">
+                  <Glyph name="certificate" />
+                </span>
                 <h3>Certificate</h3>
                 <p>Earned through projects — proof of what you built.</p>
               </article>
               <article className="vx-tile vx-tile-wide">
-                <span className="vx-num">∞</span>
+                <span className="vx-tile-icon">
+                  <Glyph name="forever" />
+                </span>
                 <h3>Templates, community, lifetime access</h3>
                 <p>Prompts, guides and notes; people to learn with; and it&rsquo;s yours for good.</p>
               </article>
@@ -176,7 +183,9 @@ export default function ShowcasePage() {
             <ul className="vx-outcomes">
               {outcomes.map((o) => (
                 <li key={o.title}>
-                  <span aria-hidden="true">{o.icon}</span>
+                  <span className="vx-out-icon">
+                    <Glyph name={o.icon} />
+                  </span>
                   <h3>{o.title}</h3>
                   <p>{o.body}</p>
                 </li>
@@ -209,26 +218,23 @@ export default function ShowcasePage() {
           </div>
         </section>
 
-        {/* Certificate */}
-        <section className="vx-sec vx-sec-alt">
-          <div className="vx-wrap vx-cert-grid">
-            <div>
-              <span className="vx-eyebrow">Your certificate</span>
-              <h2>Proof, not promises.</h2>
-              <p className="vx-body">
-                Finish the projects and earn a certificate that shows what you can actually do — something to add to your CV and your LinkedIn.
-              </p>
-            </div>
-            <figure className="vx-cert" aria-label="Sample certificate">
-              <span className="vx-cert-brand">skeo</span>
-              <span className="vx-cert-kicker">Certificate of proficiency</span>
-              <span className="vx-cert-name">Your Name</span>
-              <span className="vx-cert-text">for completing {product} — prompting, research, automation and shipping real projects with AI.</span>
-              <span className="vx-cert-foot">
-                <span>Sample</span>
-                <span>skeo · Verified</span>
-              </span>
-            </figure>
+        {/* Certificate — the site's own specimen, with the tool pills that rewrite it */}
+        <section className="vx-sec vx-sec-alt vx-cert-sec" id="certificate">
+          <div className="vx-wrap credential">
+            <CertificatePicker>
+              {/* "eyebrow" too, so the phone layout lifts it above the heading with it */}
+              <span className="eyebrow vx-eyebrow">{certificate.eyebrow}</span>
+              <h2>{certificate.title}</h2>
+              <p>{certificate.body}</p>
+              <ul>
+                {certificate.points.map((point) => (
+                  <li key={point}>
+                    <Tick />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </CertificatePicker>
           </div>
         </section>
 
@@ -242,6 +248,7 @@ export default function ShowcasePage() {
             <ul className="vx-quotes">
               {quotes.map((q) => (
                 <li key={q.name}>
+                  <Stars className="vx-stars" />
                   <p>“{q.quote}”</p>
                   <footer>
                     {q.photo && (
@@ -270,10 +277,12 @@ export default function ShowcasePage() {
                 <span className="vx-off">{savePct}% off</span>
               </p>
               <ul>
-                {included.map((i) => (
-                  <li key={i.title}>{i.title}</li>
+                {[...included.map((i) => i.title), 'Lifetime access'].map((t) => (
+                  <li key={t}>
+                    <Tick />
+                    {t}
+                  </li>
                 ))}
-                <li>Lifetime access</li>
               </ul>
               <Buy className="vx-btn vx-btn-block">Get {product} for {price}</Buy>
               <div className="vx-price-live">

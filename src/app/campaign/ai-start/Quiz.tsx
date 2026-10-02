@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { PurchaseButton } from '@/components/ActionButton'
+import { Glyph, Tick } from '../_kit/Icons'
 
 /**
  * Three taps to a personal plan. It asks what a beginner can answer without
@@ -14,10 +15,10 @@ import { PurchaseButton } from '@/components/ActionButton'
 type Module = { title: string; learn: readonly string[]; build: string }
 
 const GOALS = [
-  { key: 'time', icon: '⏱️', label: 'Save time at work', picks: [0, 1, 2, 4], win: 'hours back every week' },
-  { key: 'money', icon: '💸', label: 'Earn on the side', picks: [0, 1, 3, 6], win: 'skills people pay for' },
-  { key: 'job', icon: '🚀', label: 'Get a better job', picks: [0, 1, 4, 7], win: 'a portfolio employers want' },
-  { key: 'build', icon: '🛠️', label: 'Build my own thing', picks: [0, 5, 6, 7], win: 'a real product, live online' },
+  { key: 'time', icon: 'time', label: 'Save time at work', picks: [0, 1, 2, 4], win: 'hours back every week' },
+  { key: 'money', icon: 'money', label: 'Earn on the side', picks: [0, 1, 3, 6], win: 'skills people pay for' },
+  { key: 'job', icon: 'job', label: 'Get a better job', picks: [0, 1, 4, 7], win: 'a portfolio employers want' },
+  { key: 'build', icon: 'build', label: 'Build my own thing', picks: [0, 5, 6, 7], win: 'a real product, live online' },
 ] as const
 
 const LEVELS = [
@@ -64,7 +65,9 @@ export function Quiz({ modules, price }: { modules: readonly Module[]; price: st
           <div className="ve-options ve-options-goal">
             {GOALS.map((g) => (
               <button key={g.key} type="button" onClick={() => setGoal(g)}>
-                <span aria-hidden="true">{g.icon}</span>
+                <span className="ve-opt-icon">
+                  <Glyph name={g.icon} />
+                </span>
                 {g.label}
               </button>
             ))}
@@ -121,9 +124,18 @@ export function Quiz({ modules, price }: { modules: readonly Module[]; price: st
             ))}
           </ol>
           <ul className="ve-plan-notes">
-            <li>{level.line}</li>
-            <li>{who.line}</li>
-            <li>The other {modules.length - goal.picks.length} modules are included too — take them whenever you like.</li>
+            <li>
+              <Tick />
+              {level.line}
+            </li>
+            <li>
+              <Tick />
+              {who.line}
+            </li>
+            <li>
+              <Tick />
+              The other {modules.length - goal.picks.length} modules are included too — take them whenever you like.
+            </li>
           </ul>
           <PurchaseButton plan="earlyaccess" className="ve-btn ve-btn-block">
             Start my plan — {price}

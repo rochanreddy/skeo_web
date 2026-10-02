@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { Glyph } from '../_kit/Icons'
 import { Buy, FaqList, KitFooter, variantMeta } from '../_kit/Kit'
 import { SeatsText, TimeLeft } from '../_kit/Live'
 import { endsOn, faqs, included, outcomes, price, product, was, whatItIs } from '../_kit/facts'
@@ -84,7 +85,9 @@ export default function SimplePage() {
           <ul className="vs-outcomes">
             {outcomes.map((o) => (
               <li key={o.title}>
-                <span aria-hidden="true">{o.icon}</span>
+                <span className="vs-out-icon">
+                  <Glyph name={o.icon} />
+                </span>
                 <div>
                   <b>{o.title}</b>
                   <p>{o.body}</p>

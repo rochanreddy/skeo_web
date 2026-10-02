@@ -624,15 +624,27 @@
   background: var(--vx-card);
 }
 
-.vx-outcomes li > span {
+.vx-out-icon,
+.vx-tile-icon {
   display: grid;
   place-items: center;
   width: 48px;
   height: 48px;
   margin-bottom: 16px;
+  border: 1px solid #8b7cff40;
   border-radius: 14px;
-  background: #ffffff0d;
-  font-size: 24px;
+  background: linear-gradient(150deg, #8b7cff2e, #8b7cff0d);
+  color: #c2b8ff;
+}
+
+.vx-out-icon svg,
+.vx-tile-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.vx-tile-icon {
+  margin-bottom: 4px;
 }
 
 .vx-outcomes p {
@@ -694,68 +706,59 @@
   font-weight: 700;
 }
 
-/* ---- certificate ---- */
-.vx-cert-grid {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  align-items: center;
-  gap: clamp(28px, 5vw, 64px);
+/* ---- certificate ----
+   The site's own specimen (components/CertificatePicker, styled in
+   globals.css). Its copy column and tool pills read the site's colour tokens,
+   so this one section re-points those tokens at the page's dark palette —
+   the component itself is untouched. */
+.vx-cert-sec {
+  --ink: var(--vx-ink);
+  --ink-2: var(--vx-ink-2);
+  --ink-3: var(--vx-ink-3);
+  --ink-4: var(--vx-ink-3);
+  --card-bg: var(--vx-card);
+  --surface: #ffffff0d;
+  --surface-2: #ffffff14;
+  --line: var(--vx-line-2);
+  --line-soft: var(--vx-line);
+  --paper: var(--vx-bg-2);
+  --purple: var(--vx-violet);
+  --purple-ink: #c2b8ff;
+  --purple-soft: #8b7cff1f;
+  --purple-line: #8b7cff55;
 }
 
-.vx-cert {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  aspect-ratio: 1.414;
-  margin: 0;
-  padding: clamp(22px, 4vw, 40px);
-  border: 1px solid #c9a96e66;
-  border-radius: 14px;
-  background:
-    radial-gradient(70% 90% at 100% 0%, #c0743e40, transparent 60%),
-    linear-gradient(150deg, #2a2140, #1a1528);
-  box-shadow: 0 40px 90px -30px #000, inset 0 0 0 8px #ffffff05;
-  transform: rotate(-1.5deg);
-}
-
-.vx-cert-brand {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-}
-
-.vx-cert-kicker {
-  margin-top: auto;
-  color: #d9b77a;
-  font: 500 11.5px var(--mono);
-  letter-spacing: 0.16em;
+/* the site's .eyebrow places it; this keeps the page's own label look */
+.vx-cert-sec .credential-copy > .eyebrow {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--vx-violet);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-.vx-cert-name {
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 800;
-  letter-spacing: -0.04em;
+.vx-cert-sec .credential-copy h2 {
+  margin: 12px 0 16px;
 }
 
-.vx-cert-text {
-  max-width: 420px;
+.vx-cert-sec .credential-copy > p {
   color: var(--vx-ink-2);
-  font-size: 14px;
-  line-height: 1.5;
 }
 
-.vx-cert-foot {
+.vx-cert-sec .credential-copy ul:not(.cert-tools) li {
   display: flex;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid #ffffff1f;
-  color: var(--vx-ink-3);
-  font: 500 11px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  align-items: center;
+  gap: 10px;
+  color: var(--vx-ink-2);
+}
+
+.vx-cert-sec .credential-copy .kit-tick {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--vx-lime);
 }
 
 /* ---- quotes ---- */
@@ -864,11 +867,29 @@
   font-weight: 600;
 }
 
-.vx-price li::before {
-  content: '✓';
-  margin-right: 8px;
+.vx-price li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vx-price .kit-tick {
+  flex: none;
+  width: 16px;
+  height: 16px;
   color: var(--vx-lime);
-  font-weight: 800;
+}
+
+.vx-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 12px;
+  color: var(--vx-lime);
+}
+
+.vx-stars svg {
+  width: 14px;
+  height: 14px;
 }
 
 .vx-price-live {
@@ -924,8 +945,7 @@
 }
 
 @media (max-width: 960px) {
-  .vx-hero-grid,
-  .vx-cert-grid {
+  .vx-hero-grid {
     grid-template-columns: 1fr;
   }
 

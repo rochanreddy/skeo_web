@@ -166,9 +166,20 @@
   background: var(--card-bg);
 }
 
-.vs-outcomes li > span {
-  font-size: 24px;
-  line-height: 1.2;
+.vs-out-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+}
+
+.vs-out-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .vs-outcomes b {

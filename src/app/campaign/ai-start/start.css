@@ -300,9 +300,27 @@
   gap: 8px;
 }
 
-.ve-options button > span {
-  font-size: 26px;
-  line-height: 1;
+/* the goal's icon, on its own soft tile */
+.ve-opt-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ve-opt-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.ve-options button:hover .ve-opt-icon,
+.ve-options button:focus-visible .ve-opt-icon {
+  background: var(--purple);
+  color: #fff;
 }
 
 .ve-options button:hover,
@@ -406,10 +424,18 @@
   line-height: 1.5;
 }
 
-.ve-plan-notes li::before {
-  content: '✓ ';
+.ve-plan-notes li {
+  display: flex;
+  gap: 8px;
+}
+
+.ve-plan-notes .kit-tick,
+.ve-deal-left .kit-tick {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
   color: var(--purple);
-  font-weight: 800;
 }
 
 @keyframes ve-step {
@@ -536,8 +562,14 @@
 }
 
 .ve-stars {
+  display: flex;
+  gap: 2px;
   color: var(--purple);
-  letter-spacing: 2px;
+}
+
+.ve-stars svg {
+  width: 15px;
+  height: 15px;
 }
 
 .ve-quotes p {
@@ -590,11 +622,9 @@
   font-size: 15px;
 }
 
-.ve-deal-left li::before {
-  content: '✓';
-  margin-right: 10px;
-  color: var(--purple);
-  font-weight: 800;
+.ve-deal-left li {
+  display: flex;
+  gap: 10px;
 }
 
 .ve-deal-left b {

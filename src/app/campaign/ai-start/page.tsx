@@ -3,6 +3,7 @@ import { ThemeToggle } from '@/components/ThemeToggle'
 import { Buy, FaqList, KitFooter, variantMeta } from '../_kit/Kit'
 import { JoinedToast, SeatsBar, SeatsText, TimeLeft } from '../_kit/Live'
 import { endsOn, faqs, included, modules, price, product, quotes, savePct, was } from '../_kit/facts'
+import { Stars, Tick } from '../_kit/Icons'
 import { Quiz, TimeBack } from './Quiz'
 import { StickyBar } from './StickyBar'
 import './start.css'
@@ -92,9 +93,7 @@ export default function StartPage() {
             <ul className="ve-quotes">
               {quotes.map((q) => (
                 <li key={q.name}>
-                  <span className="ve-stars" aria-label="Rated 5 out of 5">
-                    ★★★★★
-                  </span>
+                  <Stars className="ve-stars" />
                   <p>“{q.quote}”</p>
                   <footer>
                     {q.photo && (
@@ -122,7 +121,10 @@ export default function StartPage() {
                 <ul>
                   {included.map((i) => (
                     <li key={i.title}>
-                      <b>{i.title}</b> — {i.body}
+                      <Tick />
+                      <span>
+                        <b>{i.title}</b> — {i.body}
+                      </span>
                     </li>
                   ))}
                 </ul>
