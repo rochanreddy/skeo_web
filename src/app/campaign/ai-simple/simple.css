@@ -342,3 +342,42 @@
     padding: 0 12px;
   }
 }
+
+/* ---- Phones: a size down throughout, so it reads like an app, not a poster ---- */
+@media (max-width: 600px) {
+  .vs-top .button-small { height: 36px; padding: 0 12px; font-size: 13px; }
+  .vs-top { padding: 10px 16px; }
+  .vs-brand { font-size: 19px; }
+  .vs-main { padding: 0 16px; }
+  .vs-hero { padding: 24px 0 28px; }
+  .vs-kicker { margin-bottom: 12px; padding: 5px 10px; font-size: 12px; }
+  .vs h1 { font-size: 29px; line-height: 1.12; }
+  .vs-lede { margin-top: 14px; font-size: 15.5px; }
+  .vs-cta { margin-top: 20px; }
+  .vs-cta p { font-size: 12.5px; }
+  .vs-btn { height: 48px; padding: 0 20px; font-size: 15px; }
+  .vs-sec { padding: 28px 0; }
+  .vs h2 { margin-bottom: 12px; font-size: 22px; }
+  .vs-sec > p { font-size: 15px; line-height: 1.6; }
+  .vs-note { font-size: 14px !important; }
+  .vs-ticks li { font-size: 15px; }
+  .vs-ticks li::before { width: 22px; height: 22px; font-size: 12px; }
+  .vs-outcomes { gap: 8px; }
+  .vs-outcomes li { padding: 12px; }
+  .vs-out-icon { width: 32px; height: 32px; }
+  .vs-out-icon svg { width: 17px; height: 17px; }
+  .vs-outcomes b { font-size: 14.5px; }
+  .vs-outcomes p { font-size: 13.5px; }
+  .vs-steps li { gap: 12px; padding-bottom: 18px; }
+  .vs-steps li > span { width: 32px; height: 32px; font-size: 14.5px; }
+  .vs-steps li:not(:last-child)::after { left: 15px; top: 34px; }
+  .vs-steps b { padding-top: 5px; font-size: 16px; }
+  .vs-steps p { font-size: 14px; }
+  .vs-amount b { font-size: 50px; }
+  .vs-amount s { font-size: 17px; }
+  .vs-included { margin-bottom: 20px; }
+  .vs-included li { padding: 5px 10px; font-size: 12.5px; }
+  .vs-urgent { font-size: 13px !important; }
+  .vs-end { padding: 32px 0 16px; }
+  .vs-end p { margin-bottom: 16px; font-size: 15px; }
+}

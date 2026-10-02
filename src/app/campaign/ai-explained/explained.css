@@ -553,3 +553,52 @@
     padding: 0 12px;
   }
 }
+
+/* ---- Phones: a size down throughout ---- */
+@media (max-width: 600px) {
+  .vg-top .button-small { height: 36px; padding: 0 12px; font-size: 13px; }
+  .vg-wrap { padding: 0 16px; }
+  .vg-top { padding: 10px 16px; }
+  .vg-brand { font-size: 19px; }
+  .vg-kicker { font-size: 11px; }
+  .vg-hero { padding: 28px 0 32px; }
+  .vg h1 { margin-top: 12px; font-size: 34px; }
+  .vg-lede { margin-top: 16px; font-size: 15.5px; }
+  .vg-toc { gap: 8px; margin-top: 22px; }
+  .vg-toc a { padding: 11px 14px; font-size: 14px; }
+  .vg-sec { padding: 40px 0; }
+  .vg h2 { font-size: 26px; }
+  .vg h3 { font-size: 17px; }
+  .vg-sub { margin-top: 10px; font-size: 15px; }
+  .vg-words { gap: 10px; margin-top: 22px; }
+  .vg-words > div { padding: 16px; }
+  .vg-words dt { font-size: 16.5px; }
+  .vg-words dd { font-size: 14.5px; }
+  .vg-words dd span { font-size: 13.5px; }
+  .vg-day { margin-top: 22px; }
+  .vg-day-row { padding: 14px 16px; }
+  .vg-day-row b { font-size: 15px; }
+  .vg-day-row p { font-size: 14px; }
+  .vg-callout { margin-top: 18px; padding: 14px 16px; font-size: 14.5px; }
+  .vg-journey { margin-top: 24px; }
+  .vg-journey > li { gap: 10px; padding-bottom: 18px; }
+  .vg-j-num { width: 34px; height: 34px; font-size: 14px; }
+  .vg-journey > li:not(:last-child)::before { left: 16px; top: 38px; }
+  .vg-journey > li > div { padding: 14px; }
+  .vg-journey ul { gap: 8px; margin-top: 10px; }
+  .vg-journey ul li { padding: 10px 12px; }
+  .vg-journey ul b { font-size: 14.5px; }
+  .vg-journey ul span { font-size: 13px; }
+  .vg-journey > li > div > p { font-size: 14px; }
+  .vg-fit { gap: 10px; margin-top: 22px; }
+  .vg-fit > div { padding: 18px; }
+  .vg-fit ul { gap: 10px; margin-top: 12px; font-size: 14.5px; }
+  .vg-offer { padding: 22px 18px; border-radius: 22px; }
+  .vg-offer ul { margin-top: 16px; font-size: 13.5px; }
+  .vg-offer-buy { padding: 18px; }
+  .vg-offer-price b { font-size: 50px; }
+  .vg-offer-price s { font-size: 17px; }
+  .vg-offer-terms { margin-bottom: 14px; font-size: 12.5px; }
+  .vg-btn { height: 48px; font-size: 15px; }
+  .vg-sec-faq h2 { margin-bottom: 18px; }
+}
