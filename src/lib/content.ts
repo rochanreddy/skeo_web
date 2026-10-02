@@ -243,66 +243,64 @@ export const comparison = {
   ],
 } as const
 
-/* `photo` is a placeholder portrait for now (public/testimonials/*.svg).
-   To use a real photo: put it in public/testimonials/ (e.g. priya-shah.jpg)
-   and point this entry at it — every avatar on the site follows. */
+/* `photo` is a square portrait in public/testimonials/ — every avatar on the site follows it. */
 export type Testimonial = { quote: string; name: string; role: string; photo?: string }
 
 export const testimonials: readonly Testimonial[] = [
   {
     quote:
       'skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.',
-    name: 'Priya Shah',
-    photo: '/testimonials/priya-shah.svg',
+    name: 'Abhinay Vadla',
+    photo: '/testimonials/abhinay-vadla.svg',
     role: 'Product Designer, Mumbai',
   },
   {
     quote:
       'I went from opening ChatGPT once a week to building automations my whole team now uses. That felt like a superpower.',
-    name: 'Marcus Chen',
-    photo: '/testimonials/marcus-chen.svg',
+    name: 'Akhil Satwik',
+    photo: '/testimonials/akhil-satwik.svg',
     role: 'Operations Lead, Singapore',
   },
   {
     quote:
       'Not another course. Actual momentum, actual output, and a community that keeps you moving.',
-    name: 'Aisha Rahman',
-    photo: '/testimonials/aisha-rahman.svg',
+    name: 'Megha Reddy',
+    photo: '/testimonials/megha-reddy.svg',
     role: 'Growth Marketer, London',
   },
   {
     quote:
       'The daily builds are the whole trick. Fifteen minutes is small enough that I never skipped it, and it compounded fast.',
-    name: 'Daniel Okafor',
-    photo: '/testimonials/daniel-okafor.svg',
+    name: 'Mithresh Uttarwar',
+    photo: '/testimonials/mithresh-uttarwar.svg',
     role: 'Founder, Lagos',
   },
   {
     quote:
       'I applied through the Job Board with three shipped projects attached. That conversation went very differently.',
-    name: 'Sofia Almeida',
-    photo: '/testimonials/sofia-almeida.svg',
+    name: 'Poojitha Polagani',
+    photo: '/testimonials/poojitha-polagani.svg',
     role: 'AI Ops Analyst, Lisbon',
   },
   {
     quote:
       'My team ran the 28-day tool together. We now have shared automations instead of shared bookmarks.',
-    name: 'Ravi Menon',
-    photo: '/testimonials/ravi-menon.svg',
+    name: 'Rochan Reddy',
+    photo: '/testimonials/rochan-reddy.svg',
     role: 'Engineering Manager, Bengaluru',
   },
   {
     quote:
       'I fit the builds between lectures. By the end of the semester I had six projects live and my classmates still had notes.',
-    name: 'Ananya Iyer',
-    photo: '/testimonials/ananya-iyer.svg',
+    name: 'Satwika Reddy',
+    photo: '/testimonials/satwika-reddy.svg',
     role: 'Final-Year CS Student, Pune',
   },
   {
     quote:
       'My internship interview turned into a demo. I walked them through what I had shipped and nobody asked about my grades.',
-    name: 'Tomás Herrera',
-    photo: '/testimonials/tomas-herrera.svg',
+    name: 'Yogini Chaganti',
+    photo: '/testimonials/yogini-chaganti.svg',
     role: 'Engineering Student, Madrid',
   },
 ]

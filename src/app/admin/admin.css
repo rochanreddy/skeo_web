@@ -527,7 +527,7 @@
   align-items: baseline;
   padding: 7px 11px;
   background: var(--ink);
-  color: var(--on-dark);
+  color: var(--on-ink); /* --ink turns light at night; --on-ink follows it */
   border-radius: var(--r-sm);
   font-size: 12px;
   box-shadow: var(--shadow-md);
@@ -539,7 +539,8 @@
 }
 
 .chart-tip span {
-  color: var(--on-dark-2);
+  color: inherit;
+  opacity: 0.75;
 }
 
 .legend {

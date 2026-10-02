@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
-  <!-- Placeholder portrait for Marcus Chen. Replace this file with a real photo. -->
-  <defs><radialGradient id="g" cx="35%" cy="25%" r="90%"><stop offset="0" stop-color="#ffffff" stop-opacity=".55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs>
-  <rect width="160" height="160" fill="#dcd6f7"/>
-  <rect width="160" height="160" fill="url(#g)"/>
-  <circle cx="80" cy="64" r="28" fill="#7b68d6" opacity=".85"/>
-  <path d="M28 160c4-34 26-52 52-52s48 18 52 52z" fill="#7b68d6" opacity=".85"/>
-</svg>
