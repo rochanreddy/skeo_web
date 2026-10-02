@@ -6,7 +6,7 @@ import { Buy, FaqList, KitFooter, variantMeta } from '../_kit/Kit'
 import { JoinedToast, SeatsBar, SeatsText, TimeLeft } from '../_kit/Live'
 import { ToolMark } from '../_kit/ToolMark'
 import { HeroScene } from './HeroScene'
-import { endsOn, faqs, included, modules, outcomes, price, product, quotes, savePct, tools, was, whatItIs } from '../_kit/facts'
+import { endsOn, faqs, included, modules, outcomes, price, product, quotes, savePct, tools, was } from '../_kit/facts'
 import './showcase.css'
 
 /**
@@ -55,16 +55,24 @@ export default function ShowcasePage() {
           <div className="vx-wrap vx-hero-grid">
             <div className="vx-hero-copy">
               <span className="vx-pill">
-                <i aria-hidden="true" /> {product} · Early Access
+                <i aria-hidden="true" /> Early Access · {savePct}% off
               </span>
+              {/* The hook is the price: a big promise, then a number that
+                  sounds too small for it. Short on purpose — the scene beside
+                  it does the explaining. */}
               <h1>
-                AI, finally <em>explained.</em>
+                Master 50+ AI tools.
                 <br />
-                Then put to work.
+                <em>For just {price}.</em>
               </h1>
-              <p className="vx-lede">{whatItIs}</p>
+              <p className="vx-lede">ChatGPT, Claude, Gemini &amp; more — from zero to real projects. No coding.</p>
+              <ul className="vx-hero-ticks">
+                <li>Beginner friendly</li>
+                <li>Certificate</li>
+                <li>Lifetime access</li>
+              </ul>
               <div className="vx-hero-cta">
-                <Buy className="vx-btn">Start for {price}</Buy>
+                <Buy className="vx-btn">Claim my seat — {price}</Buy>
                 <a className="vx-btn vx-btn-ghost" href="#inside">
                   See what&rsquo;s inside <span aria-hidden="true">↓</span>
                 </a>

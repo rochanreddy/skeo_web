@@ -215,7 +215,8 @@
 
 .vx h1 {
   margin: 22px 0 0;
-  font-size: clamp(40px, 5.4vw, 66px);
+  /* sized so "Master 50+ AI tools." holds one line beside the scene */
+  font-size: clamp(40px, 4vw, 58px);
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.045em;
@@ -236,6 +237,30 @@
   color: var(--vx-ink-2);
   font-size: clamp(16.5px, 1.8vw, 19px);
   line-height: 1.6;
+}
+
+.vx-hero-ticks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--vx-ink-2);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.vx-hero-ticks li::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--vx-lime);
+  box-shadow: 0 0 8px var(--vx-lime);
+  vertical-align: 2px;
 }
 
 .vx-hero-cta {
@@ -1147,6 +1172,7 @@
 
 /* ---- Phones: a size down throughout ---- */
 @media (max-width: 600px) {
+  .vx-hero-ticks { gap: 6px 14px; margin-top: 14px; font-size: 13px; }
   .vx-wrap { padding: 0 16px; }
   .vx-bar { gap: 4px 10px; padding: 7px 12px; font-size: 11.5px; }
   .vx-bar-cta { height: 26px; padding: 0 10px; font-size: 11.5px; }
