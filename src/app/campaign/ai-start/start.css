@@ -1,0 +1,789 @@
+/* Variant: ENGAGEMENT — the site's palette (day and night), big tappable
+   targets, the button always one tap away. */
+
+.ve {
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.ve-wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.ve-narrow {
+  max-width: 760px;
+}
+
+/* ---- strip + header ---- */
+.ve-strip {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 12px;
+  padding: 9px 14px;
+  background: var(--ink-bg);
+  color: var(--on-dark-2);
+  font-size: 13.5px;
+}
+
+.ve-strip b {
+  color: var(--on-dark);
+}
+
+.ve-live {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 0 0 #ef444499;
+  animation: ve-pulse 1.6s ease-out infinite;
+}
+
+@keyframes ve-pulse {
+  to {
+    box-shadow: 0 0 0 10px #ef444400;
+  }
+}
+
+.ve-time {
+  display: inline-flex;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ve-time > span {
+  display: inline-flex;
+  align-items: baseline;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: #ffffff1a;
+}
+
+.ve-time b {
+  color: var(--on-dark);
+  font-weight: 800;
+}
+
+.ve-time i {
+  margin-left: 1px;
+  color: var(--on-dark-3);
+  font-size: 0.8em;
+  font-style: normal;
+}
+
+.ve-time-dark > span {
+  background: var(--surface-2);
+}
+
+.ve-time-dark b {
+  color: var(--ink);
+}
+
+.ve-time-dark i {
+  color: var(--ink-4);
+}
+
+.ve-strip-seats {
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  background: #ffffff14;
+}
+
+.ve-strip-seats b {
+  color: var(--on-dark);
+}
+
+.ve-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 16px 20px;
+}
+
+.ve-brand {
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* ---- buttons ---- */
+.ve-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 54px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--purple);
+  color: #fff;
+  font: 800 16px var(--font);
+  cursor: pointer;
+  box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--purple) 70%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.ve-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.ve-btn span:not(.btn-label) {
+  transition: transform 0.25s ease;
+}
+
+.ve-btn:hover span:not(.btn-label) {
+  transform: translateX(3px);
+}
+
+.ve-btn-block {
+  width: 100%;
+}
+
+/* ---- hero ---- */
+.ve-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(20px, 5vw, 56px) 20px clamp(48px, 7vw, 88px);
+}
+
+.ve-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ve h1 {
+  margin: 18px 0 0;
+  font-size: clamp(40px, 5.2vw, 62px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.ve h1 span {
+  color: var(--purple);
+}
+
+.ve-hero-copy > p {
+  max-width: 480px;
+  margin: 20px 0 0;
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.ve-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 26px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ve-proof li {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card-bg);
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.ve-proof b {
+  color: var(--ink);
+}
+
+/* ---- quiz ---- */
+.ve-quiz {
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-xl);
+}
+
+.ve-quiz-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  color: var(--ink-4);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ve-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.ve-dots i {
+  width: 22px;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--surface-2);
+  transition: background 0.3s ease;
+}
+
+.ve-dots i.is-on {
+  background: var(--purple);
+}
+
+.ve-quiz fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  animation: ve-step 0.35s ease both;
+}
+
+.ve-quiz legend {
+  margin-bottom: 16px;
+  padding: 0;
+  font-size: clamp(21px, 2.6vw, 26px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.ve-options {
+  display: grid;
+  gap: 10px;
+}
+
+.ve-options-goal,
+.ve-options-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.ve-options button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 700 15.5px var(--font);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.ve-options-goal button {
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 104px;
+  gap: 8px;
+}
+
+.ve-options button > span {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.ve-options button:hover,
+.ve-options button:focus-visible {
+  border-color: var(--purple);
+  background: var(--purple-soft);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.ve-back {
+  margin-top: 14px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font: 600 14px var(--font);
+  cursor: pointer;
+}
+
+.ve-back:hover {
+  color: var(--ink);
+}
+
+.ve-plan {
+  animation: ve-step 0.4s ease both;
+}
+
+.ve-plan-head {
+  margin: 0 0 14px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.ve-plan-head b {
+  color: var(--purple);
+}
+
+.ve-plan ol {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ve-plan ol li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  animation: ve-step 0.4s ease both;
+}
+
+.ve-plan ol li:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.ve-plan ol li:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.ve-plan ol li:nth-child(4) {
+  animation-delay: 0.24s;
+}
+
+.ve-plan ol li > span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+  font-weight: 800;
+}
+
+.ve-plan ol b {
+  display: block;
+  font-size: 15px;
+}
+
+.ve-plan ol small {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.ve-plan-notes {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 18px;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ve-plan-notes li::before {
+  content: '✓ ';
+  color: var(--purple);
+  font-weight: 800;
+}
+
+@keyframes ve-step {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* ---- sections ---- */
+.ve-sec {
+  padding: clamp(56px, 8vw, 96px) 0;
+}
+
+.ve-sec-tint {
+  background: var(--band-soft);
+}
+
+.ve-eyebrow {
+  color: var(--purple-ink);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ve h2 {
+  margin: 10px 0 0;
+  font-size: clamp(30px, 4.2vw, 48px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.ve-body {
+  margin: 16px 0 0;
+  color: var(--ink-2);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.ve-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+}
+
+/* the slider */
+.ve-calc {
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-md);
+}
+
+.ve-calc label {
+  display: block;
+  color: var(--ink-2);
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+.ve-calc label b {
+  color: var(--purple);
+  font-size: 20px;
+}
+
+.ve-calc input[type='range'] {
+  width: 100%;
+  margin: 16px 0 20px;
+  accent-color: var(--purple);
+}
+
+.ve-calc-out {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ve-calc-out div {
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--purple-soft);
+  text-align: center;
+}
+
+.ve-calc-out b {
+  display: block;
+  color: var(--purple-ink);
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.ve-calc-out span {
+  color: var(--ink-3);
+  font-size: 13.5px;
+}
+
+.ve-calc > p {
+  margin: 14px 0 0;
+  color: var(--ink-4);
+  font-size: 12.5px;
+}
+
+/* quotes */
+.ve-quotes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ve-quotes li {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card-bg);
+}
+
+.ve-stars {
+  color: var(--purple);
+  letter-spacing: 2px;
+}
+
+.ve-quotes p {
+  margin: 10px 0 18px;
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+.ve-quotes footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.ve-quotes img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* the deal */
+.ve-deal {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg);
+}
+
+.ve-deal-left {
+  padding: clamp(24px, 4vw, 40px);
+}
+
+.ve-deal-left h2 span {
+  color: var(--purple);
+}
+
+.ve-deal-left ul {
+  display: grid;
+  gap: 10px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-3);
+  font-size: 15px;
+}
+
+.ve-deal-left li::before {
+  content: '✓';
+  margin-right: 10px;
+  color: var(--purple);
+  font-weight: 800;
+}
+
+.ve-deal-left b {
+  color: var(--ink);
+}
+
+.ve-deal-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: clamp(24px, 4vw, 40px);
+  background: var(--band-soft);
+  border-left: 1px solid var(--line);
+}
+
+.ve-deal-price {
+  display: grid;
+  margin: 0;
+  text-align: center;
+}
+
+.ve-deal-price s {
+  color: var(--ink-4);
+  font-size: 20px;
+}
+
+.ve-deal-price b {
+  font-size: clamp(56px, 7vw, 76px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.ve-deal-price span {
+  margin-top: 6px;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.ve-deal-live {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  color: var(--ink-3);
+  font-size: 13.5px;
+  text-align: center;
+}
+
+.ve-deal-live p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.ve-seats b {
+  color: var(--purple-ink);
+}
+
+.ve-seatbar {
+  display: block;
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+
+.ve-seatbar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--purple);
+}
+
+.ve .kit-faq {
+  margin-top: 24px;
+}
+
+/* sticky bar */
+.ve-sticky {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(560px, calc(100vw - 24px));
+  padding: 10px 10px 10px 18px;
+  border: 1px solid #ffffff1a;
+  border-radius: 18px;
+  background: var(--ink-bg);
+  color: var(--on-dark);
+  box-shadow: var(--shadow-xl);
+  transform: translate(-50%, 140%);
+  transition: transform 0.4s var(--ease, ease);
+}
+
+.ve-sticky.is-shown {
+  transform: translate(-50%, 0);
+}
+
+.ve-sticky b {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.ve-sticky s {
+  color: var(--on-dark-3);
+  font-size: 13px;
+}
+
+.ve-sticky small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--on-dark-3);
+  font-size: 12px;
+}
+
+.ve-sticky .ve-btn {
+  height: 46px;
+  padding: 0 20px;
+  font-size: 15px;
+}
+
+.ve-toast {
+  bottom: 96px;
+}
+
+@media (max-width: 900px) {
+  .ve-hero,
+  .ve-split,
+  .ve-deal {
+    grid-template-columns: 1fr;
+  }
+
+  .ve-deal-right {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .ve-quotes {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .ve-options-goal button {
+    min-height: 92px;
+    font-size: 14.5px;
+  }
+
+  .ve-strip {
+    font-size: 12px;
+  }
+
+  .ve-sticky small {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ve-live,
+  .ve-quiz fieldset,
+  .ve-plan,
+  .ve-plan ol li {
+    animation: none;
+  }
+}
+
+/* Phones: the quiz is the point of the page, so it starts on the first screen. */
+@media (max-width: 600px) {
+  .ve-proof {
+    display: none;
+  }
+
+  .ve-hero {
+    gap: 22px;
+  }
+
+  .ve-hero-copy > p {
+    margin-top: 14px;
+    font-size: 16.5px;
+  }
+}

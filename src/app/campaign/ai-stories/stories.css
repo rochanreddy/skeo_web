@@ -1,0 +1,415 @@
+/* Variant: STORIES — a phone-shaped story player. Always dark around it, so
+   the coloured cards glow; full-bleed on a phone, a framed phone on desktop. */
+
+.vt {
+  --k-ink: #f4f3f7;
+  --k-ink-2: #d4d2dc;
+  --k-ink-3: #a19eae;
+  --k-ink-4: #8a8798;
+  --k-card: #17171f;
+  --k-line: #ffffff17;
+  --k-soft: #ffffff10;
+  --k-accent: #8b7cff;
+  --k-accent-line: #8b7cff66;
+  min-height: 100vh;
+  background: radial-gradient(70% 50% at 50% 0%, #2a2150, #0c0c12 70%);
+  color: #f4f3f7;
+  color-scheme: dark;
+}
+
+.vt-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 14px 16px;
+}
+
+.vt-brand {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.vt-head-buy {
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: #d7f36b;
+  color: #111;
+  font: 800 14px var(--font);
+  cursor: pointer;
+}
+
+.vt-stage {
+  display: grid;
+  place-items: center;
+  padding: 0 12px 40px;
+}
+
+/* ---- the player ---- */
+.vt-player {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 100%);
+  height: min(740px, calc(100svh - 84px));
+  min-height: 520px;
+  overflow: hidden;
+  border-radius: 26px;
+  box-shadow: 0 40px 100px -30px #000, 0 0 0 1px #ffffff1a;
+  transition: background 0.5s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.vt-tone-violet { background: linear-gradient(165deg, #6d5cff, #2b1f7a); }
+.vt-tone-peach { background: linear-gradient(165deg, #ff8a5c, #a33a24); }
+.vt-tone-mint { background: linear-gradient(165deg, #2fbf8f, #0f5c47); }
+.vt-tone-sky { background: linear-gradient(165deg, #3d9bff, #173f8a); }
+.vt-tone-ink { background: linear-gradient(165deg, #2a2a38, #0f0f16); }
+.vt-tone-lime { background: linear-gradient(165deg, #c4e85a, #4f6b12); }
+.vt-tone-offer {
+  background:
+    radial-gradient(80% 50% at 50% 0%, #8b7cff66, transparent 70%),
+    linear-gradient(165deg, #1c1830, #0d0c14);
+}
+
+.vt-bars {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 4px;
+  padding: 12px 12px 0;
+}
+
+.vt-bars span {
+  flex: 1;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #ffffff4d;
+}
+
+.vt-bars i {
+  display: block;
+  height: 100%;
+  background: #fff;
+}
+
+.vt-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 26px;
+  color: #fff;
+  animation: vt-in 0.45s ease both;
+  pointer-events: none;
+}
+
+/* the card's own buttons sit above the tap zones */
+.vt-card button,
+.vt-card a {
+  pointer-events: auto;
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+.vt-card h1,
+.vt-card h2 {
+  margin: 0;
+  font-size: clamp(34px, 9vw, 44px);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.vt-card p {
+  margin: 0;
+  color: #ffffffd9;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.vt-card b {
+  color: #fff;
+}
+
+.vt-emoji {
+  font-size: 56px;
+  line-height: 1;
+}
+
+.vt-kicker {
+  align-self: flex-start;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: #ffffff26;
+  font: 500 12px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.vt-hint {
+  margin-top: 12px;
+  color: #ffffffb3;
+  font-size: 14px;
+  font-weight: 700;
+  animation: vt-nudge 1.4s ease-in-out infinite;
+}
+
+@keyframes vt-nudge {
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+.vt-chat {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.vt-chat span {
+  max-width: 88%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.vt-me {
+  justify-self: end;
+  background: #fff;
+  color: #3b1a10;
+  font-weight: 600;
+}
+
+.vt-ai {
+  background: #00000040;
+  color: #fff;
+}
+
+.vt-stats {
+  display: flex;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vt-stats li {
+  flex: 1;
+  padding: 12px 8px;
+  border-radius: 14px;
+  background: #ffffff14;
+  color: #ffffffcc;
+  font-size: 13px;
+  text-align: center;
+}
+
+.vt-stats b {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.vt-marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.vt-marks > span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #fff;
+  color: #111;
+}
+
+.vt-mark {
+  width: 22px;
+  height: 22px;
+}
+
+.vt .kit-monogram {
+  font-weight: 800;
+}
+
+.vt-price {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.vt-price b {
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #d7f36b !important;
+}
+
+.vt-price s {
+  color: #ffffff80;
+  font-size: 22px;
+}
+
+.vt-buy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 58px;
+  border: 0;
+  border-radius: 16px;
+  background: #d7f36b;
+  color: #111;
+  font: 800 17px var(--font);
+  cursor: pointer;
+  box-shadow: 0 14px 40px -12px #d7f36b99;
+}
+
+.vt-small {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  font-size: 13.5px !important;
+  color: #ffffffa6 !important;
+}
+
+.vt-time {
+  display: inline-flex;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.vt-time b {
+  color: #fff;
+}
+
+.vt-time i {
+  font-style: normal;
+}
+
+.vt-seats {
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: #ffffff1a;
+}
+
+/* tap zones: the left third goes back, the rest goes forward */
+.vt-zone {
+  position: absolute;
+  top: 0;
+  bottom: 52px;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vt-zone:disabled {
+  cursor: default;
+}
+
+.vt-zone-prev {
+  left: 0;
+  width: 33%;
+}
+
+.vt-zone-next {
+  right: 0;
+  width: 67%;
+}
+
+.vt-zone:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -6px;
+  border-radius: 20px;
+}
+
+.vt-foot {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 18px;
+  color: #ffffffa6;
+  font-size: 13px;
+}
+
+.vt-skip {
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font: 700 13.5px var(--font);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ---- below the player ---- */
+.vt-more {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+.vt-more h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.vt-more > p {
+  margin: 12px 0 22px;
+  color: #c9c7d3;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.vt-buy-wide {
+  width: 100%;
+  margin-top: 22px;
+}
+
+@media (max-width: 480px) {
+  .vt-stage {
+    padding: 0 0 32px;
+  }
+
+  .vt-player {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vt-card,
+  .vt-hint {
+    animation: none;
+  }
+}

@@ -1,0 +1,996 @@
+/* Variant: SHOWCASE — always dark, launch-page polish. Its own palette, set
+   here so it looks the same in either site theme. */
+
+.vx {
+  --vx-bg: #0b0b10;
+  --vx-bg-2: #12121a;
+  --vx-card: #16161f;
+  --vx-line: #ffffff14;
+  --vx-line-2: #ffffff24;
+  --vx-ink: #f4f3f7;
+  --vx-ink-2: #c9c7d3;
+  --vx-ink-3: #8f8c9c;
+  --vx-violet: #8b7cff;
+  --vx-lime: #d7f36b;
+  /* the shared kit reads these */
+  --k-ink: var(--vx-ink);
+  --k-ink-2: var(--vx-ink-2);
+  --k-ink-3: var(--vx-ink-3);
+  --k-ink-4: var(--vx-ink-3);
+  --k-card: var(--vx-card);
+  --k-line: var(--vx-line);
+  --k-soft: #ffffff10;
+  --k-accent: var(--vx-violet);
+  --k-accent-line: #8b7cff66;
+  --k-on-accent: #fff;
+  min-height: 100vh;
+  overflow-x: clip;
+  background: var(--vx-bg);
+  color: var(--vx-ink);
+  color-scheme: dark;
+}
+
+.vx-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ---- top bar + header ---- */
+.vx-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 14px;
+  padding: 9px 16px;
+  background: linear-gradient(90deg, #1d1745, #2a1d4f 50%, #1d1745);
+  border-bottom: 1px solid var(--vx-line);
+  font-size: 13.5px;
+  color: var(--vx-ink-2);
+}
+
+.vx-bar b {
+  color: var(--vx-ink);
+}
+
+.vx-time {
+  display: inline-flex;
+  gap: 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.vx-time > span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+}
+
+.vx-time b {
+  color: var(--vx-lime);
+  font-weight: 800;
+}
+
+.vx-time i {
+  color: var(--vx-ink-3);
+  font-size: 0.85em;
+  font-style: normal;
+}
+
+.vx-bar-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--vx-lime);
+  color: #111;
+  font: 800 12.5px var(--font);
+  cursor: pointer;
+}
+
+.vx-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 18px 20px;
+}
+
+.vx-brand {
+  color: var(--vx-ink);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+/* ---- buttons ---- */
+.vx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 54px;
+  padding: 0 26px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: var(--vx-lime);
+  color: #111;
+  font: 800 16px var(--font);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: 0 10px 40px -10px #d7f36b80;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vx-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 50px -10px #d7f36b99;
+}
+
+.vx-btn span:not(.btn-label) {
+  transition: transform 0.25s ease;
+}
+
+.vx-btn:hover span:not(.btn-label) {
+  transform: translateX(3px);
+}
+
+.vx-btn-ghost {
+  border-color: var(--vx-line-2);
+  background: #ffffff08;
+  color: var(--vx-ink);
+  box-shadow: none;
+}
+
+.vx-btn-ghost:hover {
+  background: #ffffff12;
+  box-shadow: none;
+}
+
+.vx-btn-sm {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.vx-btn-block {
+  width: 100%;
+}
+
+/* ---- hero ---- */
+.vx-hero {
+  position: relative;
+  padding: clamp(28px, 6vw, 64px) 0 clamp(48px, 8vw, 96px);
+}
+
+.vx-glow {
+  position: absolute;
+  inset: -20% 0 auto;
+  height: 720px;
+  background:
+    radial-gradient(40% 50% at 70% 30%, #6d5cff40, transparent 70%),
+    radial-gradient(30% 40% at 20% 20%, #d7f36b1f, transparent 70%);
+  pointer-events: none;
+}
+
+.vx-glow-low {
+  inset: auto 0 -40%;
+}
+
+.vx-hero-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.vx-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 1px solid var(--vx-line-2);
+  border-radius: var(--r-pill);
+  background: #ffffff08;
+  color: var(--vx-ink-2);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vx-pill i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--vx-lime);
+  box-shadow: 0 0 0 4px #d7f36b26;
+}
+
+.vx h1 {
+  margin: 22px 0 0;
+  font-size: clamp(40px, 5.4vw, 66px);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+.vx h1 em,
+.vx h2 em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--vx-violet), #c2b8ff 45%, var(--vx-lime));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.vx-lede {
+  max-width: 540px;
+  margin: 22px 0 0;
+  color: var(--vx-ink-2);
+  font-size: clamp(16.5px, 1.8vw, 19px);
+  line-height: 1.6;
+}
+
+.vx-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.vx-fine {
+  margin: 14px 0 0;
+  color: var(--vx-ink-3);
+  font-size: 13.5px;
+}
+
+/* the chat demo */
+.vx-demo {
+  position: relative;
+  padding: 18px;
+  border: 1px solid var(--vx-line-2);
+  border-radius: 22px;
+  background: linear-gradient(160deg, #1a1a26, #111118);
+  box-shadow: 0 40px 100px -30px #6d5cff55, inset 0 1px 0 #ffffff14;
+}
+
+.vx-demo-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.vx-demo-top span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff1f;
+}
+
+.vx-demo-top b {
+  margin-left: 8px;
+  color: var(--vx-ink-3);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.vx-msg {
+  max-width: 88%;
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.vx-msg-me {
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+  background: var(--vx-violet);
+  color: #fff;
+  animation: vx-in 0.5s ease 0.3s both;
+}
+
+.vx-msg-ai {
+  position: relative;
+  margin-top: 12px;
+  border: 1px solid var(--vx-line);
+  border-bottom-left-radius: 4px;
+  background: #ffffff0a;
+  color: var(--vx-ink-2);
+  animation: vx-in 0.5s ease 1s both;
+}
+
+.vx-typing {
+  display: flex;
+  gap: 4px;
+  animation: vx-gone 0.2s ease 2.6s forwards;
+}
+
+.vx-typing i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vx-ink-3);
+  animation: vx-dot 1s ease-in-out infinite;
+}
+
+.vx-typing i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.vx-typing i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.vx-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  animation: vx-reveal 0.6s ease 2.7s forwards;
+}
+
+.vx-answer > * {
+  min-height: 0;
+}
+
+.vx-answer b {
+  color: var(--vx-ink);
+  overflow: hidden;
+}
+
+.vx-answer ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  overflow: hidden;
+}
+
+.vx-answer li + li {
+  margin-top: 6px;
+}
+
+.vx-demo-cap {
+  margin: 16px 2px 0;
+  color: var(--vx-ink-3);
+  font-size: 13px;
+}
+
+@keyframes vx-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes vx-dot {
+  50% {
+    transform: translateY(-4px);
+    opacity: 0.5;
+  }
+}
+
+@keyframes vx-gone {
+  to {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+}
+
+@keyframes vx-reveal {
+  to {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* ---- tools marquee ---- */
+.vx-tools {
+  padding: 8px 0 36px;
+  text-align: center;
+}
+
+.vx-tools > p {
+  margin: 0 0 16px;
+  color: var(--vx-ink-3);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.vx-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.vx-marquee ul {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: vx-slide 36s linear infinite;
+}
+
+.vx-marquee li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  border: 1px solid var(--vx-line);
+  border-radius: var(--r-pill);
+  background: #ffffff06;
+  color: var(--vx-ink-2);
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* every logo on a light chip, so dark marks (GitHub, Vercel) stay visible */
+.vx-logo {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f4f3f7;
+  color: #111;
+}
+
+.vx-logo-mark {
+  width: 18px;
+  height: 18px;
+}
+
+.vx .kit-monogram {
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+@keyframes vx-slide {
+  to {
+    transform: translateX(calc(-50% - 6px));
+  }
+}
+
+/* ---- sections ---- */
+.vx-sec {
+  padding: clamp(56px, 8vw, 104px) 0;
+}
+
+.vx-sec-alt {
+  background: var(--vx-bg-2);
+  border-block: 1px solid var(--vx-line);
+}
+
+.vx-sec-head {
+  max-width: 720px;
+  margin: 0 auto clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+.vx-eyebrow {
+  display: inline-block;
+  color: var(--vx-violet);
+  font: 500 12px var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.vx h2 {
+  margin: 12px 0 0;
+  font-size: clamp(30px, 4.4vw, 52px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+}
+
+.vx h3 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.vx-body {
+  margin: 18px 0 0;
+  color: var(--vx-ink-2);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* ---- bento ---- */
+.vx-bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.vx-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  overflow: hidden;
+  border: 1px solid var(--vx-line);
+  border-radius: 20px;
+  background: linear-gradient(170deg, #1a1a25, var(--vx-card));
+  transition: transform 0.35s ease, border-color 0.35s ease;
+}
+
+.vx-tile:hover {
+  transform: translateY(-4px);
+  border-color: #8b7cff55;
+}
+
+.vx-tile p {
+  margin: 0;
+  color: var(--vx-ink-3);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.vx-num {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  background: linear-gradient(120deg, #fff, #b9b0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.vx-tile-big {
+  grid-column: span 2;
+  grid-row: span 2;
+  background:
+    radial-gradient(80% 60% at 100% 0%, #6d5cff33, transparent 70%),
+    linear-gradient(170deg, #1c1a2c, var(--vx-card));
+}
+
+.vx-tile-big .vx-num {
+  font-size: 64px;
+}
+
+.vx-tile-wide {
+  /* the last row on its own, full width — no hole beside it */
+  grid-column: 1 / -1;
+}
+
+.vx-tile-lime {
+  border-color: #d7f36b40;
+  background: linear-gradient(170deg, #1f2412, var(--vx-card));
+}
+
+.vx-tile-lime .vx-num {
+  background: none;
+  color: var(--vx-lime);
+}
+
+.vx-mini-mods {
+  display: grid;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 18px 0 0;
+  list-style: none;
+}
+
+.vx-mini-mods li {
+  padding: 10px 12px;
+  border: 1px solid var(--vx-line);
+  border-radius: 12px;
+  background: #ffffff06;
+  color: var(--vx-ink-2);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vx-mini-mods b {
+  margin-right: 8px;
+  color: var(--vx-violet);
+}
+
+.vx-mini-mods .vx-more {
+  border-style: dashed;
+  color: var(--vx-ink-3);
+}
+
+/* ---- outcomes ---- */
+.vx-outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vx-outcomes li {
+  padding: 24px;
+  border: 1px solid var(--vx-line);
+  border-radius: 20px;
+  background: var(--vx-card);
+}
+
+.vx-outcomes li > span {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: #ffffff0d;
+  font-size: 24px;
+}
+
+.vx-outcomes p {
+  margin: 6px 0 0;
+  color: var(--vx-ink-3);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+/* ---- the path ---- */
+.vx-path {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 40px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.vx-path li {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--vx-line);
+  border-radius: 18px;
+  background: var(--vx-card);
+}
+
+.vx-path-dot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(140deg, var(--vx-violet), #5b4bdc);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 8px 24px -8px #8b7cff99;
+}
+
+.vx-path p {
+  margin: 6px 0 0;
+  color: var(--vx-ink-3);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.vx-build {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: #d7f36b14;
+  color: var(--vx-lime);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/* ---- certificate ---- */
+.vx-cert-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.vx-cert {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  aspect-ratio: 1.414;
+  margin: 0;
+  padding: clamp(22px, 4vw, 40px);
+  border: 1px solid #c9a96e66;
+  border-radius: 14px;
+  background:
+    radial-gradient(70% 90% at 100% 0%, #c0743e40, transparent 60%),
+    linear-gradient(150deg, #2a2140, #1a1528);
+  box-shadow: 0 40px 90px -30px #000, inset 0 0 0 8px #ffffff05;
+  transform: rotate(-1.5deg);
+}
+
+.vx-cert-brand {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.vx-cert-kicker {
+  margin-top: auto;
+  color: #d9b77a;
+  font: 500 11.5px var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.vx-cert-name {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.vx-cert-text {
+  max-width: 420px;
+  color: var(--vx-ink-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.vx-cert-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #ffffff1f;
+  color: var(--vx-ink-3);
+  font: 500 11px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- quotes ---- */
+.vx-quotes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vx-quotes li {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--vx-line);
+  border-radius: 20px;
+  background: var(--vx-card);
+}
+
+.vx-quotes p {
+  margin: 0 0 20px;
+  color: var(--vx-ink);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.vx-quotes footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.vx-quotes img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.vx-quotes small {
+  display: block;
+  color: var(--vx-ink-3);
+  font-size: 13px;
+}
+
+/* ---- price ---- */
+.vx-offer {
+  background: radial-gradient(60% 60% at 50% 40%, #6d5cff26, transparent 70%);
+}
+
+.vx-price {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: clamp(26px, 4vw, 40px);
+  border: 1px solid #8b7cff55;
+  border-radius: 26px;
+  background: linear-gradient(170deg, #1d1a2e, #13131b);
+  box-shadow: 0 0 0 6px #8b7cff10, 0 50px 120px -40px #6d5cff88;
+  text-align: center;
+}
+
+.vx-price-amt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px 12px;
+  margin: 14px 0 0;
+}
+
+.vx-price-amt b {
+  font-size: clamp(60px, 9vw, 84px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--vx-lime);
+}
+
+.vx-price-amt s {
+  color: var(--vx-ink-3);
+  font-size: 22px;
+}
+
+.vx-off {
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: #d7f36b1f;
+  color: var(--vx-lime);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.vx-price ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin: 24px 0 26px;
+  padding: 22px 0 0;
+  border-top: 1px dashed var(--vx-line-2);
+  list-style: none;
+  text-align: left;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.vx-price li::before {
+  content: '✓';
+  margin-right: 8px;
+  color: var(--vx-lime);
+  font-weight: 800;
+}
+
+.vx-price-live {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  margin-top: 18px;
+  color: var(--vx-ink-3);
+  font-size: 13.5px;
+}
+
+.vx-seats b {
+  color: var(--vx-lime);
+}
+
+.vx-seatbar {
+  display: block;
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #ffffff14;
+}
+
+.vx-seatbar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--vx-lime);
+}
+
+.vx-faq-wrap {
+  max-width: 760px;
+}
+
+/* ---- final ---- */
+.vx-final {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(64px, 10vw, 120px) 20px;
+  border-top: 1px solid var(--vx-line);
+  text-align: center;
+}
+
+.vx-final h2 {
+  position: relative;
+  margin: 0 0 30px;
+  font-size: clamp(34px, 5.4vw, 64px);
+}
+
+.vx-final .vx-btn {
+  position: relative;
+}
+
+@media (max-width: 960px) {
+  .vx-hero-grid,
+  .vx-cert-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vx-bento {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .vx-outcomes,
+  .vx-quotes {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .vx-bento,
+  .vx-outcomes,
+  .vx-quotes,
+  .vx-path {
+    grid-template-columns: 1fr;
+  }
+
+  .vx-tile-big,
+  .vx-tile-wide {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .vx-hero-cta .vx-btn {
+    width: 100%;
+  }
+
+  .vx-price ul {
+    grid-template-columns: 1fr;
+  }
+
+  .vx-bar {
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-marquee ul,
+  .vx-msg-me,
+  .vx-msg-ai,
+  .vx-typing i {
+    animation: none;
+  }
+
+  .vx-typing {
+    display: none;
+  }
+
+  .vx-answer {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    animation: none;
+  }
+
+  .vx-marquee ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+
+  .vx-marquee li[aria-hidden='true'] {
+    display: none;
+  }
+}

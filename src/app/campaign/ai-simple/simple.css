@@ -1,0 +1,333 @@
+/* Variant: SIMPLE — one calm column, large type, the site's own palette (so
+   day and night both work). Nothing moves except the buttons. */
+
+.vs {
+  --k-accent: var(--purple);
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.vs-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.vs-brand {
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.vs-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vs-main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.vs-hero {
+  padding: clamp(36px, 8vw, 72px) 0 clamp(36px, 6vw, 56px);
+}
+
+.vs-kicker {
+  display: inline-block;
+  margin: 0 0 16px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.vs h1 {
+  margin: 0;
+  font-size: clamp(34px, 6.4vw, 54px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.vs-lede {
+  margin: 20px 0 0;
+  color: var(--ink-2);
+  font-size: clamp(17px, 2.4vw, 20px);
+  line-height: 1.6;
+}
+
+.vs-cta {
+  margin-top: 28px;
+}
+
+.vs-cta p {
+  margin: 12px 0 0;
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.vs-btn {
+  height: 56px;
+  padding: 0 28px;
+  font-size: 16.5px;
+}
+
+.vs-sec {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+}
+
+.vs h2 {
+  margin: 0 0 16px;
+  font-size: clamp(25px, 4vw, 32px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.vs-sec > p {
+  margin: 0 0 14px;
+  color: var(--ink-2);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.vs-sec b {
+  color: var(--ink);
+}
+
+.vs-note {
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  font-size: 15.5px !important;
+}
+
+.vs-ticks {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.vs-ticks li {
+  display: flex;
+  gap: 12px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.vs-ticks li::before {
+  content: '✓';
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.vs-outcomes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vs-outcomes li {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--card-bg);
+}
+
+.vs-outcomes li > span {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.vs-outcomes b {
+  font-size: 16px;
+}
+
+.vs-outcomes p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.vs-steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vs-steps li {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  padding: 0 0 24px;
+}
+
+/* the thread joining the steps */
+.vs-steps li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 42px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--line);
+}
+
+.vs-steps li > span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.vs-steps b {
+  display: block;
+  padding-top: 8px;
+  font-size: 18px;
+}
+
+.vs-steps p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.vs-price {
+  text-align: center;
+}
+
+.vs-amount {
+  margin: 0 !important;
+}
+
+.vs-amount b {
+  font-size: clamp(54px, 10vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.vs-amount s {
+  margin-left: 6px;
+  color: var(--ink-4);
+  font-size: 22px;
+}
+
+.vs-included {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0 26px;
+  padding: 0;
+  list-style: none;
+}
+
+.vs-included li {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--card-bg);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-urgent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 10px;
+  margin: 16px 0 0 !important;
+  color: var(--ink-3);
+  font-size: 14.5px !important;
+}
+
+.vs-time {
+  display: inline-flex;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.vs-time b {
+  color: var(--ink);
+}
+
+.vs-time i {
+  margin-right: 2px;
+  font-style: normal;
+}
+
+.vs-seats {
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+}
+
+.vs-end {
+  padding: 48px 0 24px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.vs-end p {
+  margin: 0 0 22px;
+  color: var(--ink-2);
+  font-size: 17px;
+}
+
+@media (max-width: 560px) {
+  .vs-outcomes {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-btn {
+    width: 100%;
+  }
+
+  .vs-top .button-small {
+    padding: 0 12px;
+  }
+}

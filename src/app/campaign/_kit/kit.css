@@ -1,0 +1,164 @@
+/* Shared by the campaign variants: FAQ, footer, the "just joined" toast.
+   Colours come from each variant's --k-* tokens, falling back to the site's. */
+
+.kit-faq {
+  display: grid;
+  gap: 10px;
+}
+
+.kit-faq details {
+  border: 1px solid var(--k-line, var(--line));
+  border-radius: var(--r-lg);
+  background: var(--k-card, var(--card-bg));
+  transition: border-color 0.25s ease;
+}
+
+.kit-faq details[open] {
+  border-color: var(--k-accent-line, var(--purple-line));
+}
+
+.kit-faq summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 20px;
+  color: var(--k-ink, var(--ink));
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  list-style: none;
+  cursor: pointer;
+}
+
+.kit-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.kit-faq summary svg {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--k-soft, var(--surface));
+  color: var(--k-ink-2, var(--ink-2));
+  transition: transform 0.3s var(--ease, ease), background 0.3s ease, color 0.3s ease;
+}
+
+.kit-faq details[open] summary svg {
+  transform: rotate(180deg);
+  background: var(--k-accent, var(--purple));
+  color: var(--k-on-accent, #fff);
+}
+
+.kit-faq summary:focus-visible {
+  outline: 2px solid var(--k-accent, var(--purple));
+  outline-offset: -2px;
+  border-radius: var(--r-lg);
+}
+
+.kit-faq details p {
+  margin: 0;
+  padding: 0 20px 18px;
+  color: var(--k-ink-3, var(--ink-3));
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.kit-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 20px 110px;
+  color: var(--k-ink-4, var(--ink-4));
+  font-size: 13px;
+}
+
+.kit-foot nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.kit-foot a {
+  color: inherit;
+}
+
+.kit-foot a:hover {
+  color: var(--k-ink, var(--ink));
+}
+
+/* "Priya S. joined" — bottom-left, above any sticky bar. */
+.kit-toast {
+  position: fixed;
+  left: 16px;
+  bottom: 92px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 12px 12px 12px 14px;
+  border: 1px solid var(--k-line, var(--line));
+  border-radius: var(--r-lg);
+  background: var(--k-card, var(--card-bg));
+  color: var(--k-ink, var(--ink));
+  box-shadow: var(--shadow-lg);
+  font-size: 13.5px;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s var(--ease, ease);
+}
+
+.kit-toast.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.kit-toast p {
+  margin: 0;
+}
+
+.kit-toast small {
+  display: block;
+  margin-top: 2px;
+  color: var(--k-ink-4, var(--ink-4));
+  font-size: 12px;
+}
+
+.kit-toast-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--k-accent, var(--purple));
+  color: var(--k-on-accent, #fff);
+  font-weight: 800;
+}
+
+.kit-toast button {
+  align-self: flex-start;
+  border: 0;
+  background: none;
+  color: var(--k-ink-4, var(--ink-4));
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kit-toast,
+  .kit-faq summary svg {
+    transition: none;
+  }
+}
