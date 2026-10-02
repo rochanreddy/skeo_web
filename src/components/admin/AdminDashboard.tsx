@@ -6,6 +6,7 @@ import { RANGES, type RangeKey, type Stats } from '@/lib/analytics/aggregate'
 import { BarList, Funnel, TrendChart } from './Charts'
 import { LeadsTab, OrdersTab, PlaybooksTab, needsAttention } from './AdminTabs'
 import { AttendanceTab } from './AttendanceTab'
+import { PaidUsersTab } from './PaidUsersTab'
 import type { AdminOrder } from '@/lib/admin/data'
 
 /**
@@ -105,7 +106,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
   const [live, setLive] = useState(true)
   const [metric, setMetric] = useState<'visitors' | 'revenue'>('visitors')
   /* The menler admin's layout: an overview, then the working lists. */
-  const [tab, setTab] = useState<'overview' | 'orders' | 'playbooks' | 'leads' | 'attendance'>('overview')
+  const [tab, setTab] = useState<'overview' | 'orders' | 'paid' | 'playbooks' | 'leads' | 'attendance'>('overview')
   /* Paid orders the LMS has not finished — the overview's one alarm. */
   const [attention, setAttention] = useState<number | null>(null)
   useEffect(() => {
@@ -267,6 +268,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
           [
             ['overview', 'Overview'],
             ['orders', 'Orders'],
+            ['paid', 'Paid users'],
             ['playbooks', 'Playbooks'],
             ['leads', 'Leads'],
             ['attendance', 'Attendance'],
@@ -280,6 +282,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
       </nav>
 
       {tab === 'orders' && <OrdersTab />}
+      {tab === 'paid' && <PaidUsersTab />}
       {tab === 'playbooks' && <PlaybooksTab />}
       {tab === 'leads' && <LeadsTab />}
       {tab === 'attendance' && <AttendanceTab />}

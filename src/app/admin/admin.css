@@ -280,9 +280,10 @@
 }
 
 .admin-notice.is-warn {
-  background: #fff8e6;
-  border-color: #f0d79a;
-  color: #7a5a10;
+  /* mixed from the card, so night mode gets a dark amber, not a light one */
+  background: color-mix(in srgb, var(--admin-warn) 12%, var(--admin-card));
+  border-color: color-mix(in srgb, var(--admin-warn) 40%, transparent);
+  color: var(--admin-warn);
 }
 
 .admin-notice.is-demo {
@@ -1387,4 +1388,245 @@
 
 .class-form .drawer-actions {
   margin: 2px 0 0;
+}
+
+/* ── Paid users ─────────────────────────────────────────────────────────── */
+
+.panel-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-notice.is-ok {
+  background: color-mix(in srgb, var(--admin-good) 10%, var(--admin-card));
+  border-color: color-mix(in srgb, var(--admin-good) 35%, transparent);
+  color: var(--admin-good);
+}
+
+.list-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  margin: -2px 0 14px;
+}
+
+.list-controls-row .list-controls {
+  margin: 0;
+}
+
+.batch-cell {
+  height: 30px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font: 500 12.5px var(--font);
+}
+
+.batch-cell:hover,
+.batch-cell:focus {
+  border-color: var(--admin-line);
+  background: var(--admin-card);
+}
+
+.admin-table small.emi {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--admin-warn) 14%, transparent);
+  color: var(--admin-warn);
+  font-weight: 700;
+}
+
+/* The badge is also the fix, so it reads as a control: a dot, a verb, an arrow. */
+.verify-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--admin-warn) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--admin-warn) 12%, transparent);
+  color: var(--admin-warn);
+  font: 700 12px var(--font);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.verify-chip i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.verify-chip span {
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.verify-chip:hover span {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.row-del {
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-4);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.row-del:hover,
+.row-del:focus-visible {
+  border-color: color-mix(in srgb, var(--admin-bad) 40%, transparent);
+  color: var(--admin-bad);
+}
+
+.verify-box {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 14px;
+  border: 1px solid var(--admin-line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.verify-box.is-ok {
+  border-color: color-mix(in srgb, var(--admin-good) 45%, transparent);
+}
+
+.verify-box > p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.lookup {
+  display: flex;
+  gap: 8px;
+}
+
+.lookup input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--admin-line);
+  border-radius: 10px;
+  background: var(--admin-card);
+  color: var(--ink);
+  font: 500 13.5px var(--mono, monospace);
+}
+
+.lookup-ok {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--admin-good);
+}
+
+.record-form {
+  display: grid;
+  gap: 12px;
+}
+
+.record-lede {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+
+.record-hint {
+  margin: 0;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-3);
+}
+
+.record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.record-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.record-form .list-field input,
+.record-form .list-field select {
+  width: 100%;
+  min-width: 0;
+}
+
+.record-form input[readonly] {
+  background: var(--surface);
+  color: var(--ink-2);
+}
+
+.record-form .mono {
+  font-family: var(--mono, monospace);
+}
+
+.access-tick {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid var(--admin-line);
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.access-tick input {
+  margin-top: 3px;
+  accent-color: var(--accent, currentColor);
+}
+
+.record-form .drawer-actions {
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .record-grid,
+  .record-grid.three {
+    grid-template-columns: 1fr;
+  }
+}
+
+.batch-cell {
+  width: 140px;
+}
+
+/* An unset month reads as an invitation, not as "-----, --". */
+.batch-cell.is-empty {
+  color: var(--ink-4);
+  opacity: 0.55;
+}
+
+.batch-cell.is-empty:hover,
+.batch-cell.is-empty:focus {
+  opacity: 1;
+}
+
+/* On a phone the table scrolls inside its box rather than crushing names to a letter a line. */
+.paid-table {
+  min-width: 860px;
 }

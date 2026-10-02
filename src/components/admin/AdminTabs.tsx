@@ -248,7 +248,10 @@ export function OrdersTab() {
                       {o.email} · {o.phone}
                     </small>
                   </td>
-                  <td className="wrap">{itemNames(o.items)}</td>
+                  <td className="wrap">
+                    {itemNames(o.items) || o.manual?.program}
+                    {o.manual && <small>added by hand</small>}
+                  </td>
                   <td className="n">{rupees(o.amount)}</td>
                   <td>{o.status === 'created' ? <Status tone="quiet">Not paid</Status> : <Status tone="paid">Paid {rupees(o.amount)}</Status>}</td>
                   <td>
@@ -304,7 +307,8 @@ export function OrdersTab() {
             title="The order"
             rows={[
               ['Order ID', <span key="o" className="mono">{open.orderId}</span>],
-              ['Bought', itemNames(open.items)],
+              ['Bought', itemNames(open.items) || open.manual?.program || '—'],
+              ['Recorded', open.manual ? `by hand in Paid users${open.manual.verified ? ', verified with Cashfree' : ', not verified'}` : 'website checkout'],
               ['Amount', rupees(open.amount)],
               ['Status', open.status === 'created' ? <Status key="s" tone="quiet">Not paid</Status> : <Status key="s" tone="paid">Paid</Status>],
               ['Opened checkout', when(open.createdAt)],
@@ -342,7 +346,9 @@ export function OrdersTab() {
 function LmsStatus({ o }: { o: AdminOrder }) {
   return (
     <>
-      {!needsLogin(o) ? (
+      {o.manual && !o.manual.access ? (
+        <Status tone="quiet">Not asked</Status>
+      ) : !needsLogin(o) ? (
         <Status tone="quiet">Not needed</Status>
       ) : o.lmsDone ? (
         <Status tone="good">{o.lmsAccountCreated ? 'Sent' : 'Added to account'}</Status>
@@ -373,8 +379,10 @@ const STATUS_WORDS: Record<string, string> = {
 /** Only mail-only purchases (Claude Playbooks, AI Library) need no LMS login. */
 const needsLogin = (o: AdminOrder) => o.items.some((i) => i !== 'playbooks' && i !== 'library')
 
+/* A payment recorded by hand without LMS access owes nothing — it was only recorded. */
 export const needsAttention = (o: AdminOrder) =>
-  o.status !== 'created' && (!o.lmsDone || o.playbooks.some((p) => !p.sent) || o.warnings.length > 0)
+  o.status !== 'created' &&
+  !(o.manual && !o.manual.access) && (!o.lmsDone || o.playbooks.some((p) => !p.sent) || o.warnings.length > 0)
 
 /* ======================================================================== *
  * Playbooks — who has them, who does not, and a button to send them

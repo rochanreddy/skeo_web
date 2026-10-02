@@ -63,6 +63,9 @@ export async function finalizeOrder(orderId: string): Promise<FinalState> {
     if (order.status === 'provisioned') return { status: 'provisioned', order }
   }
 
+  // A payment recorded by hand gets an account only when the admin asked for one.
+  if (order.manual && (!order.manual.access || !order.items.length)) return { status: 'paid', order }
+
   // Paid, not yet in the LMS.
   try {
     const result = await provisionInLms(order)

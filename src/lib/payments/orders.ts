@@ -2,6 +2,7 @@ import crypto from 'node:crypto'
 import type { Collection } from 'mongodb'
 import { mongoDb } from '@/lib/db/mongo'
 import type { CheckoutItem } from '@/lib/checkoutItems'
+import type { PaymentMethod } from '@/lib/payments/cashfree'
 
 /**
  * Orders, in skeo's own database.
@@ -46,6 +47,35 @@ export type OrderDoc = {
   }
   /** Sends made from the admin panel, newest last. */
   playbookSends?: { at: Date; parts: string[] }[]
+  /** Recorded by hand in the admin — money taken off the website, through a
+   *  Cashfree payment link or otherwise. Absent on website orders. */
+  manual?: ManualPayment
+  /** Which monthly cohort ("2026-08"), set from the admin. Not the month they
+   *  paid in: someone paying late in August can still start in September. */
+  batch?: string
+  /** The deal behind the payment: the list price, what this buyer was sold it
+   *  for, and which instalment this payment is. */
+  deal?: { actualPrice?: number; soldPrice?: number; cycle?: number }
+}
+
+export type ManualPayment = {
+  /** What they paid for, as written — a course's name, or anything else. */
+  program: string
+  /** Asked to give them the LMS login (and playbooks) for `items`. Without it
+   *  the payment is only recorded, and nothing is sent. */
+  access: boolean
+  /** Checked against Cashfree: amount and payer came from the gateway. */
+  verified: boolean
+  verifiedAt?: Date
+  verifiedVia?: 'payment' | 'order' | 'link'
+  cfOrderId?: string
+  cfPaymentId?: string
+  /** Typed off the Cashfree dashboard, unchecked. Kept apart from
+   *  cfPaymentId so a number nobody checked never passes for a confirmed one. */
+  txnId?: string
+  method?: PaymentMethod | null
+  note?: string
+  addedAt: Date
 }
 
 export async function ordersCollection(): Promise<Collection<OrderDoc>> {

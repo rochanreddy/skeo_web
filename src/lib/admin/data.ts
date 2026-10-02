@@ -60,6 +60,8 @@ export type AdminOrder = {
   playbooks: { set: PlaybookSet; label: string; sent: boolean; partsSent: number; total: number }[]
   lastError: string
   warnings: string[]
+  /** Recorded by hand in Paid users: what it was for, and whether LMS access was asked for. */
+  manual: { program: string; access: boolean; verified: boolean } | null
 }
 
 function toAdmin(o: OrderDoc): AdminOrder {
@@ -80,6 +82,7 @@ function toAdmin(o: OrderDoc): AdminOrder {
     playbooks: setsFor(o.items).map((set) => ({ set, label: PLAYBOOK_SETS[set], ...delivery(parts, set) })),
     lastError: o.provision?.lastError ?? '',
     warnings: o.provision?.warnings ?? [],
+    manual: o.manual ? { program: o.manual.program, access: o.manual.access, verified: o.manual.verified } : null,
   }
 }
 
