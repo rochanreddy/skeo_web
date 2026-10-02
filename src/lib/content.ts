@@ -250,8 +250,8 @@ export const testimonials: readonly Testimonial[] = [
   {
     quote:
       'skeo gave me the structure I was missing. Three weeks later, I had a portfolio I was actually proud to send out.',
-    name: 'Abhinay Vadla',
-    photo: '/testimonials/abhinay-vadla.svg',
+    name: 'Hareesh Guntapalli',
+    photo: '/testimonials/hareesh-guntapalli.svg',
     role: 'Product Designer, Mumbai',
   },
   {
