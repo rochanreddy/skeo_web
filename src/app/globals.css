@@ -10430,3 +10430,25 @@ details p {
   height: 100%;
   object-fit: cover;
 }
+
+/* ---- Home hero: even margins either side ---------------------------------
+   The hero used the full .wrap (48px gutters) while the nav above it is 1120px
+   centred, so the copy hugged the left edge and the tool stage, centred in a
+   53% column, left a wide gap on the right. Here the hero takes the nav's
+   measure, the stage sizes to its own cards and sits against the right edge,
+   and the copy has the rest — so the left and right margins match the nav's.
+   Two-column only: at 900px and below the hero stacks and is left as it was. */
+@media (min-width: 901px) {
+  .hero.wrap {
+    width: min(1160px, calc(100% - 96px));
+    grid-template-columns: 1fr auto;
+    column-gap: 32px;
+  }
+
+  .hero .tool-stage-frame {
+    /* the stage's own footprint: its cards span ~4.4 card-widths */
+    width: calc(clamp(76px, 7.8vw, 118px) * 4.5);
+    min-width: 0;
+    justify-self: end;
+  }
+}

@@ -161,6 +161,7 @@ export const build = {
  */
 export const mentors = {
   eyebrow: 'Your mentors',
+  title: 'Learn from people who build with AI.',
   people: [
     {
       name: 'Rochan Reddy',

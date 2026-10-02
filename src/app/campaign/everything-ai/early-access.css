@@ -3005,3 +3005,30 @@
   height: 52px;
   box-shadow: 0 0 0 2px #ffffff40;
 }
+
+/* ---- Mentors, as their own section ----------------------------------------
+   Three across on wide screens, one under another on a phone; fewer than three
+   stay centred rather than stretching. */
+.ea-mentors-sec .ea-mentors {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.ea-mentors-sec .ea-mentors > ul {
+  margin-top: 0;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
+}
+
+/* The home page's sections, brought in, take the campaign's measure so every
+   section on the page lines up to the same edges. */
+.ea .included .wrap,
+.ea .accred-strip .wrap {
+  width: min(1120px, calc(100% - 96px));
+}
+
+@media (max-width: 680px) {
+  .ea .included .wrap,
+  .ea .accred-strip .wrap {
+    width: calc(100% - 28px);
+  }
+}

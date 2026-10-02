@@ -160,10 +160,6 @@
   font-size: 14px;
 }
 
-.vx-btn-block {
-  width: 100%;
-}
-
 /* ---- hero ---- */
 .vx-hero {
   position: relative;
@@ -178,10 +174,6 @@
     radial-gradient(40% 50% at 70% 30%, #6d5cff40, transparent 70%),
     radial-gradient(30% 40% at 20% 20%, #d7f36b1f, transparent 70%);
   pointer-events: none;
-}
-
-.vx-glow-low {
-  inset: auto 0 -40%;
 }
 
 .vx-hero-grid {
@@ -277,63 +269,8 @@
 }
 
 /* ---- tools marquee ---- */
-.vx-tools {
-  padding: 8px 0 36px;
-  text-align: center;
-}
-
-.vx-tools > p {
-  margin: 0 0 16px;
-  color: var(--vx-ink-3);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.vx-marquee {
-  overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-}
-
-.vx-marquee ul {
-  display: flex;
-  gap: 12px;
-  width: max-content;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  animation: vx-slide 36s linear infinite;
-}
-
-.vx-marquee li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 16px 8px 8px;
-  border: 1px solid var(--vx-line);
-  border-radius: var(--r-pill);
-  background: #ffffff06;
-  color: var(--vx-ink-2);
-  font-size: 14.5px;
-  font-weight: 600;
-  white-space: nowrap;
-}
 
 /* every logo on a light chip, so dark marks (GitHub, Vercel) stay visible */
-.vx-logo {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #f4f3f7;
-  color: #111;
-}
-
-.vx-logo-mark {
-  width: 18px;
-  height: 18px;
-}
 
 .vx .kit-monogram {
   display: grid;
@@ -349,28 +286,6 @@
 }
 
 /* ---- sections ---- */
-.vx-sec {
-  padding: clamp(56px, 8vw, 104px) 0;
-}
-
-.vx-sec-alt {
-  background: var(--vx-bg-2);
-  border-block: 1px solid var(--vx-line);
-}
-
-.vx-sec-head {
-  max-width: 720px;
-  margin: 0 auto clamp(28px, 4vw, 48px);
-  text-align: center;
-}
-
-.vx-eyebrow {
-  display: inline-block;
-  color: var(--vx-violet);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
 
 .vx h2 {
   margin: 12px 0 0;
@@ -395,494 +310,48 @@
 }
 
 /* ---- bento ---- */
-.vx-bento {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-}
-
-.vx-tile {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 24px;
-  overflow: hidden;
-  border: 1px solid var(--vx-line);
-  border-radius: 20px;
-  background: linear-gradient(170deg, #1a1a25, var(--vx-card));
-  transition: transform 0.35s ease, border-color 0.35s ease;
-}
-
-.vx-tile:hover {
-  transform: translateY(-4px);
-  border-color: #8b7cff55;
-}
-
-.vx-tile p {
-  margin: 0;
-  color: var(--vx-ink-3);
-  font-size: 14.5px;
-  line-height: 1.55;
-}
-
-.vx-num {
-  font-size: 40px;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  background: linear-gradient(120deg, #fff, #b9b0ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.vx-tile-big {
-  grid-column: span 2;
-  grid-row: span 2;
-  background:
-    radial-gradient(80% 60% at 100% 0%, #6d5cff33, transparent 70%),
-    linear-gradient(170deg, #1c1a2c, var(--vx-card));
-}
-
-.vx-tile-big .vx-num {
-  font-size: 64px;
-}
-
-.vx-tile-wide {
-  /* the last row on its own, full width — no hole beside it */
-  grid-column: 1 / -1;
-}
-
-.vx-tile-lime {
-  border-color: #d7f36b40;
-  background: linear-gradient(170deg, #1f2412, var(--vx-card));
-}
-
-.vx-tile-lime .vx-num {
-  background: none;
-  color: var(--vx-lime);
-}
-
-.vx-mini-mods {
-  display: grid;
-  gap: 8px;
-  margin: auto 0 0;
-  padding: 18px 0 0;
-  list-style: none;
-}
-
-.vx-mini-mods li {
-  padding: 10px 12px;
-  border: 1px solid var(--vx-line);
-  border-radius: 12px;
-  background: #ffffff06;
-  color: var(--vx-ink-2);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.vx-mini-mods b {
-  margin-right: 8px;
-  color: var(--vx-violet);
-}
-
-.vx-mini-mods .vx-more {
-  border-style: dashed;
-  color: var(--vx-ink-3);
-}
 
 /* ---- outcomes ---- */
-.vx-outcomes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.vx-outcomes li {
-  padding: 24px;
-  border: 1px solid var(--vx-line);
-  border-radius: 20px;
-  background: var(--vx-card);
-}
-
-.vx-out-icon,
-.vx-tile-icon {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  margin-bottom: 16px;
-  border: 1px solid #8b7cff40;
-  border-radius: 14px;
-  background: linear-gradient(150deg, #8b7cff2e, #8b7cff0d);
-  color: #c2b8ff;
-}
-
-.vx-out-icon svg,
-.vx-tile-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-.vx-tile-icon {
-  margin-bottom: 4px;
-}
-
-.vx-outcomes p {
-  margin: 6px 0 0;
-  color: var(--vx-ink-3);
-  font-size: 14.5px;
-  line-height: 1.55;
-}
 
 /* ---- the path ---- */
-.vx-path {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px 40px;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0;
-  list-style: none;
-}
-
-.vx-path li {
-  display: flex;
-  gap: 16px;
-  padding: 20px;
-  border: 1px solid var(--vx-line);
-  border-radius: 18px;
-  background: var(--vx-card);
-}
-
-.vx-path-dot {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(140deg, var(--vx-violet), #5b4bdc);
-  color: #fff;
-  font-weight: 800;
-  box-shadow: 0 8px 24px -8px #8b7cff99;
-}
-
-.vx-path p {
-  margin: 6px 0 0;
-  color: var(--vx-ink-3);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.vx-build {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  background: #d7f36b14;
-  color: var(--vx-lime);
-  font-size: 12.5px;
-  font-weight: 700;
-}
 
 /* ---- certificate ----
    The site's own specimen (components/CertificatePicker, styled in
    globals.css). Its copy column and tool pills read the site's colour tokens,
    so this one section re-points those tokens at the page's dark palette —
    the component itself is untouched. */
-.vx-cert-sec {
-  --ink: var(--vx-ink);
-  --ink-2: var(--vx-ink-2);
-  --ink-3: var(--vx-ink-3);
-  --ink-4: var(--vx-ink-3);
-  --card-bg: var(--vx-card);
-  --surface: #ffffff0d;
-  --surface-2: #ffffff14;
-  --line: var(--vx-line-2);
-  --line-soft: var(--vx-line);
-  --paper: var(--vx-bg-2);
-  --purple: var(--vx-violet);
-  --purple-ink: #c2b8ff;
-  --purple-soft: #8b7cff1f;
-  --purple-line: #8b7cff55;
-}
 
 /* the site's .eyebrow places it; this keeps the page's own label look */
-.vx-cert-sec .credential-copy > .eyebrow {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--vx-violet);
-  font: 500 12px var(--mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.vx-cert-sec .credential-copy h2 {
-  margin: 12px 0 16px;
-}
-
-.vx-cert-sec .credential-copy > p {
-  color: var(--vx-ink-2);
-}
-
-.vx-cert-sec .credential-copy ul:not(.cert-tools) li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--vx-ink-2);
-}
-
-.vx-cert-sec .credential-copy .kit-tick {
-  flex: none;
-  width: 16px;
-  height: 16px;
-  color: var(--vx-lime);
-}
 
 /* ---- quotes ---- */
-.vx-quotes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.vx-quotes li {
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  border: 1px solid var(--vx-line);
-  border-radius: 20px;
-  background: var(--vx-card);
-}
-
-.vx-quotes p {
-  margin: 0 0 20px;
-  color: var(--vx-ink);
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.vx-quotes footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: auto;
-}
-
-.vx-quotes img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.vx-quotes small {
-  display: block;
-  color: var(--vx-ink-3);
-  font-size: 13px;
-}
 
 /* ---- price ---- */
-.vx-offer {
-  background: radial-gradient(60% 60% at 50% 40%, #6d5cff26, transparent 70%);
-}
-
-.vx-price {
-  position: relative;
-  max-width: 520px;
-  margin: 0 auto;
-  padding: clamp(26px, 4vw, 40px);
-  border: 1px solid #8b7cff55;
-  border-radius: 26px;
-  background: linear-gradient(170deg, #1d1a2e, #13131b);
-  box-shadow: 0 0 0 6px #8b7cff10, 0 50px 120px -40px #6d5cff88;
-  text-align: center;
-}
-
-.vx-price-amt {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: center;
-  gap: 4px 12px;
-  margin: 14px 0 0;
-}
-
-.vx-price-amt b {
-  font-size: clamp(60px, 9vw, 84px);
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  color: var(--vx-lime);
-}
-
-.vx-price-amt s {
-  color: var(--vx-ink-3);
-  font-size: 22px;
-}
-
-.vx-off {
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  background: #d7f36b1f;
-  color: var(--vx-lime);
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.vx-price ul {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 14px;
-  margin: 24px 0 26px;
-  padding: 22px 0 0;
-  border-top: 1px dashed var(--vx-line-2);
-  list-style: none;
-  text-align: left;
-  font-size: 14.5px;
-  font-weight: 600;
-}
-
-.vx-price li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.vx-price .kit-tick {
-  flex: none;
-  width: 16px;
-  height: 16px;
-  color: var(--vx-lime);
-}
-
-.vx-stars {
-  display: flex;
-  gap: 2px;
-  margin-bottom: 12px;
-  color: var(--vx-lime);
-}
-
-.vx-stars svg {
-  width: 14px;
-  height: 14px;
-}
-
-.vx-price-live {
-  display: grid;
-  gap: 8px;
-  justify-items: center;
-  margin-top: 18px;
-  color: var(--vx-ink-3);
-  font-size: 13.5px;
-}
-
-.vx-seats b {
-  color: var(--vx-lime);
-}
-
-.vx-seatbar {
-  display: block;
-  width: 100%;
-  height: 6px;
-  overflow: hidden;
-  border-radius: 6px;
-  background: #ffffff14;
-}
-
-.vx-seatbar span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--vx-lime);
-}
-
-.vx-faq-wrap {
-  max-width: 760px;
-}
 
 /* ---- final ---- */
-.vx-final {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(64px, 10vw, 120px) 20px;
-  border-top: 1px solid var(--vx-line);
-  text-align: center;
-}
-
-.vx-final h2 {
-  position: relative;
-  margin: 0 0 30px;
-  font-size: clamp(34px, 5.4vw, 64px);
-}
-
-.vx-final .vx-btn {
-  position: relative;
-}
 
 @media (max-width: 960px) {
   .vx-hero-grid {
     grid-template-columns: 1fr;
   }
 
-  .vx-bento {
-    grid-template-columns: 1fr 1fr;
-  }
+  
 
-  .vx-outcomes,
-  .vx-quotes {
-    grid-template-columns: 1fr 1fr;
-  }
+  
 }
 
 @media (max-width: 640px) {
-  .vx-bento,
-  .vx-outcomes,
-  .vx-quotes,
-  .vx-path {
-    grid-template-columns: 1fr;
-  }
+  
 
-  .vx-tile-big,
-  .vx-tile-wide {
-    grid-column: auto;
-    grid-row: auto;
-  }
+  
 
   .vx-hero-cta .vx-btn {
     width: 100%;
   }
 
-  .vx-price ul {
-    grid-template-columns: 1fr;
-  }
+  
 
   .vx-bar {
     font-size: 12.5px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .vx-marquee ul {
-    animation: none;
-  }
-
-  .vx-marquee ul {
-    flex-wrap: wrap;
-    justify-content: center;
-    width: auto;
-  }
-
-  .vx-marquee li[aria-hidden='true'] {
-    display: none;
   }
 }
 
@@ -1186,37 +655,71 @@
   .vx-lede { margin-top: 14px; font-size: 15px; }
   .vx-hero-cta { margin-top: 20px; gap: 10px; }
   .vx-fine { font-size: 12px; }
-  .vx-tools { padding-bottom: 24px; }
-  .vx-marquee li { padding: 6px 12px 6px 6px; font-size: 13px; }
-  .vx-logo { width: 26px; height: 26px; }
-  .vx-logo-mark { width: 15px; height: 15px; }
-  .vx-sec { padding: 44px 0; }
-  .vx-sec-head { margin-bottom: 22px; }
-  .vx-eyebrow { font-size: 11px; }
+  
+  
+  
+  
+  
+  
+  
   .vx h2 { margin-top: 8px; font-size: 26px; }
   .vx h3 { font-size: 16.5px; }
   .vx-body { font-size: 15px; }
-  .vx-bento, .vx-outcomes, .vx-path, .vx-quotes { gap: 10px; }
-  .vx-tile { padding: 18px; border-radius: 16px; }
-  .vx-tile p { font-size: 13.5px; }
-  .vx-num { font-size: 30px; }
-  .vx-tile-big .vx-num { font-size: 42px; }
-  .vx-mini-mods li { padding: 8px 10px; font-size: 13px; }
-  .vx-out-icon, .vx-tile-icon { width: 38px; height: 38px; margin-bottom: 10px; border-radius: 11px; }
-  .vx-out-icon svg, .vx-tile-icon svg { width: 19px; height: 19px; }
-  .vx-outcomes li { padding: 18px; border-radius: 16px; }
-  .vx-outcomes p { font-size: 13.5px; }
-  .vx-path li { gap: 12px; padding: 14px; border-radius: 14px; }
-  .vx-path-dot { width: 36px; height: 36px; border-radius: 10px; font-size: 14px; }
-  .vx-path p { font-size: 13px; }
-  .vx-build { font-size: 11.5px; }
-  .vx-cert-sec .credential-copy > p, .vx-cert-sec .credential-copy li { font-size: 14px; }
-  .vx-quotes li { padding: 18px; border-radius: 16px; }
-  .vx-quotes p { font-size: 14.5px; }
-  .vx-price { padding: 22px 18px; border-radius: 20px; }
-  .vx-price-amt b { font-size: 54px; }
-  .vx-price-amt s { font-size: 17px; }
-  .vx-price ul { gap: 8px; margin: 18px 0 20px; padding-top: 16px; font-size: 13.5px; }
-  .vx-final { padding: 52px 16px; }
-  .vx-final h2 { margin-bottom: 22px; font-size: 28px; }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}
+
+/* ---- One measure for the whole page ----------------------------------------
+   The hero sat in 1120px with 20px padding while the sections below used
+   their own containers, so the page had wide, uneven margins. Header, hero and
+   every shared section now share one measure: 1240px of content, 24px gutters
+   (16px on a phone). */
+.vx-wrap,
+.vx-head {
+  max-width: 1288px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.vx-body .ea-container,
+.vx-body .wrap,
+.vx-body.ea .included .wrap,
+.vx-body.ea .accred-strip .wrap {
+  width: min(1240px, calc(100% - 48px));
+}
+
+@media (max-width: 600px) {
+  .vx-wrap,
+  .vx-head {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .vx-body .ea-container,
+  .vx-body .wrap,
+  .vx-body.ea .included .wrap,
+  .vx-body.ea .accred-strip .wrap {
+    width: calc(100% - 32px);
+  }
 }
