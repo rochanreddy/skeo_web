@@ -723,3 +723,59 @@
     width: calc(100% - 32px);
   }
 }
+
+/* ---- Hero fits one screen (desktop) ---------------------------------------
+   The bar (~48px) and header (~76px) take ~124px; the hero gets the rest of
+   the window and no more. The scene is sized by the window's height, not its
+   column's width, so on a wide, short screen it shrinks rather than pushing
+   the fold down; the copy steps down with it. */
+@media (min-width: 961px) {
+  .vx-head {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .vx-hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100svh - 124px);
+    max-height: 900px;
+    padding: 8px 0 24px;
+  }
+
+  .vx-hero > .vx-wrap {
+    width: 100%;
+  }
+
+  .vx-hero-grid {
+    grid-template-columns: 1fr auto;
+    gap: clamp(28px, 4vw, 56px);
+  }
+
+  .vx-scene {
+    width: min(520px, calc(100svh - 170px));
+    min-width: 340px;
+  }
+
+  .vx h1 {
+    margin-top: 16px;
+    font-size: clamp(38px, min(3.6vw, 6.4svh), 56px);
+  }
+
+  .vx-lede {
+    margin-top: 14px;
+    font-size: clamp(15.5px, min(1.3vw, 2.2svh), 18px);
+  }
+
+  .vx-hero-ticks {
+    margin-top: 14px;
+  }
+
+  .vx-hero-cta {
+    margin-top: 22px;
+  }
+
+  .vx-btn {
+    height: 50px;
+  }
+}
