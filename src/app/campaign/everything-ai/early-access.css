@@ -3549,3 +3549,8 @@
     font-size: 13.5px;
   }
 }
+
+/* No corner glows: they read as stray light, not ornament. */
+.ea-flow > section:not(.ea-jobs):not(.ea-final)::before {
+  content: none;
+}
