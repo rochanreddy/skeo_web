@@ -7,9 +7,8 @@ import { Included } from '@/components/sections/Included'
 import { JobBoard } from '@/components/sections/JobBoard'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { opportunities, testimonials } from '@/lib/content'
-import { build, certificate, faq, finalCta, inr, jobs, learn, mentors, offer, pricing, reviews, savePct } from '@/lib/earlyAccess'
+import { build, certificate, faq, inr, jobs, learn, mentors, offer, pricing, reviews, savePct } from '@/lib/earlyAccess'
 import { FaqList } from './FaqList'
-import { FlowBackdrop } from './FlowBackdrop'
 import { SeatsLeft } from './Live'
 import { ModuleList } from './ModuleList'
 import { PlayOnView } from './PlayOnView'
@@ -333,7 +332,6 @@ export function CampaignSections() {
 
         {/* 5. Job board — the home page's dashboard, on every screen */}
         <section className="ea-jobs" id="jobs">
-          <FlowBackdrop />
           <div className="ea-container">
             <Head eyebrow={jobs.eyebrow} title={jobs.title} />
             <p className="ea-jobs-lede">{jobs.body}</p>
@@ -451,17 +449,6 @@ export function CampaignSections() {
           </div>
         </section>
 
-        {/* Final call to action */}
-        <section className="ea-final">
-          <Ornament kind="final" />
-          <div className="ea-container">
-            <h2>
-              <Lines lines={finalCta.title} />
-            </h2>
-            <Buy className="button button-lime ea-cta">{finalCta.cta}</Buy>
-            <p className="ea-terms">{finalCta.small}</p>
-          </div>
-        </section>
       <PlayOnView selector=".ea-builds li" />
     </div>
   )
