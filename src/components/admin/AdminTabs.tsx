@@ -19,7 +19,7 @@ export const when = (iso: string | null) =>
     ? new Date(iso).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' })
     : '—'
 
-const ITEM_NAMES: Record<string, string> = {
+export const ITEM_NAMES: Record<string, string> = {
   claude: 'Claude Course',
   playbooks: 'Claude Playbooks',
   library: 'AI Library',
@@ -54,7 +54,7 @@ function useAdminList<T>(url: string, key: string) {
 }
 
 /** Download what is on screen. Quoted so commas and quotes in names survive. */
-function downloadCsv(name: string, header: string[], lines: (string | number)[][]) {
+export function downloadCsv(name: string, header: string[], lines: (string | number)[][]) {
   const cell = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`
   const csv = [header, ...lines].map((r) => r.map(cell).join(',')).join('\r\n')
   const url = URL.createObjectURL(new Blob([`﻿${csv}`], { type: 'text/csv;charset=utf-8' }))
@@ -65,7 +65,7 @@ function downloadCsv(name: string, header: string[], lines: (string | number)[][
   URL.revokeObjectURL(url)
 }
 
-const matches = (q: string, ...fields: (string | null | undefined)[]) => {
+export const matches = (q: string, ...fields: (string | null | undefined)[]) => {
   const needle = q.trim().toLowerCase()
   return !needle || fields.some((f) => (f ?? '').toLowerCase().includes(needle))
 }
@@ -91,7 +91,7 @@ function Toolbar({
 
 /* Menler's meanings: green done, accent paid, amber pending — red only for a
    real error. */
-function Status({ tone, children }: { tone: 'good' | 'paid' | 'warn' | 'bad' | 'quiet'; children: React.ReactNode }) {
+export function Status({ tone, children }: { tone: 'good' | 'paid' | 'warn' | 'bad' | 'quiet'; children: React.ReactNode }) {
   return <span className={`status status-${tone}`}>{children}</span>
 }
 

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { RANGES, type RangeKey, type Stats } from '@/lib/analytics/aggregate'
 import { BarList, Funnel, TrendChart } from './Charts'
 import { LeadsTab, OrdersTab, PlaybooksTab, needsAttention } from './AdminTabs'
+import { AttendanceTab } from './AttendanceTab'
 import type { AdminOrder } from '@/lib/admin/data'
 
 /**
@@ -104,7 +105,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
   const [live, setLive] = useState(true)
   const [metric, setMetric] = useState<'visitors' | 'revenue'>('visitors')
   /* The menler admin's layout: an overview, then the working lists. */
-  const [tab, setTab] = useState<'overview' | 'orders' | 'playbooks' | 'leads'>('overview')
+  const [tab, setTab] = useState<'overview' | 'orders' | 'playbooks' | 'leads' | 'attendance'>('overview')
   /* Paid orders the LMS has not finished — the overview's one alarm. */
   const [attention, setAttention] = useState<number | null>(null)
   useEffect(() => {
@@ -268,6 +269,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
             ['orders', 'Orders'],
             ['playbooks', 'Playbooks'],
             ['leads', 'Leads'],
+            ['attendance', 'Attendance'],
           ] as const
         ).map(([key, label]) => (
           <button key={key} type="button" role="tab" aria-selected={tab === key} className={tab === key ? 'is-on' : ''} onClick={() => setTab(key)}>
@@ -280,6 +282,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
       {tab === 'orders' && <OrdersTab />}
       {tab === 'playbooks' && <PlaybooksTab />}
       {tab === 'leads' && <LeadsTab />}
+      {tab === 'attendance' && <AttendanceTab />}
 
       {tab === 'overview' && (
       <>
