@@ -73,17 +73,16 @@ export default function ExplainedPage() {
               know what it is, what it can do for you, and one simple way to learn it properly.
             </p>
             <nav className="vg-toc" aria-label="On this page">
-              <a href="#words">1 · The words, explained</a>
-              <a href="#day">2 · An ordinary day, with AI</a>
-              <a href="#journey">3 · How you learn it</a>
-              <a href="#fit">4 · Is it for you?</a>
+              <a href="#words">The words, explained</a>
+              <a href="#day">An ordinary day, with AI</a>
+              <a href="#journey">How you learn it</a>
+              <a href="#fit">Is it for you?</a>
             </nav>
           </div>
         </section>
 
         <section className="vg-sec" id="words">
           <div className="vg-wrap">
-            <span className="vg-step">1</span>
             <h2>The words, explained.</h2>
             <p className="vg-sub">The six terms you keep hearing — and what they actually mean.</p>
             <dl className="vg-words">
@@ -102,7 +101,6 @@ export default function ExplainedPage() {
 
         <section className="vg-sec vg-sec-tint" id="day">
           <div className="vg-wrap">
-            <span className="vg-step">2</span>
             <h2>An ordinary day, with and without AI.</h2>
             <p className="vg-sub">Not science fiction — four things you might do this week.</p>
             <div className="vg-day">
@@ -134,7 +132,6 @@ export default function ExplainedPage() {
 
         <section className="vg-sec" id="journey">
           <div className="vg-wrap">
-            <span className="vg-step">3</span>
             <h2>How you learn it, step by step.</h2>
             <p className="vg-sub">
               {product} takes you through four stages. Each one ends with something you have built — not just something you have watched.
@@ -177,7 +174,6 @@ export default function ExplainedPage() {
 
         <section className="vg-sec vg-sec-tint" id="fit">
           <div className="vg-wrap">
-            <span className="vg-step">4</span>
             <h2>Is this for you? An honest answer.</h2>
             <div className="vg-fit">
               <div className="vg-fit-yes">

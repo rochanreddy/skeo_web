@@ -114,19 +114,6 @@
   background: var(--band-soft);
 }
 
-.vg-step {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin-bottom: 18px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--on-ink);
-  font-size: 18px;
-  font-weight: 800;
-}
-
 .vg h2 {
   margin: 0;
   font-size: clamp(30px, 4.4vw, 50px);
