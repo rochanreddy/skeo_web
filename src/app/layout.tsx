@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { DM_Mono, Manrope } from 'next/font/google'
 import { Analytics } from '@/components/Analytics'
+import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { ModalProvider } from '@/components/modals/ModalProvider'
 import { StructuredData } from '@/components/StructuredData'
 import { site } from '@/lib/site'
@@ -105,6 +106,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "try{var s=localStorage.getItem('skeo-palette');var p=(s==='charcoal'||s==='claude')?s:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'charcoal':'claude');document.documentElement.dataset.palette=p}catch(e){}",
           }}
         />
+        <GoogleAnalytics />
       </head>
       <body>
         <a className="skip-link" href="#top">

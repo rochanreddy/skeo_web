@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { gaPurchase } from '@/lib/analytics/ga'
 import { track } from '@/lib/analytics/track'
 import { CHECKOUT_ROWS, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
 import { clearCheckoutSession } from '@/lib/checkoutSession'
@@ -80,6 +81,13 @@ export function ThankYou() {
       if (timer) clearTimeout(timer)
     }
   }, [router])
+
+  // The sale, reported to Google Analytics once Cashfree has confirmed it. The
+  // site's own purchase event is written by the server; GA can only hear about
+  // it from the browser, and this is the first page that knows.
+  useEffect(() => {
+    if (order && (order.status === 'paid' || order.status === 'provisioned')) gaPurchase(order)
+  }, [order])
 
   // Above the bail-outs below: hooks cannot run conditionally.
   const currency = useCurrency()

@@ -1,6 +1,7 @@
 'use client'
 
 import { randomId, type EventProps, type EventType } from './events'
+import { forwardToGa } from './ga'
 
 /**
  * How the site reports what happened. One function, called from the component
@@ -42,6 +43,10 @@ export const sessionId = () => stored('session', SESSION_KEY)
  */
 export function track(type: EventType, props?: EventProps): void {
   if (typeof window === 'undefined') return
+
+  // The same moment, reported to Google Analytics under GA's own event names.
+  // A no-op unless NEXT_PUBLIC_GA_ID is set.
+  forwardToGa(type, props)
 
   const body = JSON.stringify({
     type,
