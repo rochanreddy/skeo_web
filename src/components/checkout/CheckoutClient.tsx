@@ -175,7 +175,7 @@ export function CheckoutClient() {
               ✓ Verified
             </span>
           </h2>
-          <dl className="checkout-info">
+          <dl className="checkout-info" data-clarity-mask="true">
             <div>
               <dt>Name</dt>
               <dd>{session.contact.name}</dd>

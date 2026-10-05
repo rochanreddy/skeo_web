@@ -94,7 +94,7 @@ export function ThankYou() {
 
   if (!order) {
     return (
-      <main className="thanks">
+      <main className="thanks" data-clarity-mask="true">
         <div className="thanks-card">
           <header className="thanks-head">
             <h1>Confirming your payment…</h1>
@@ -107,7 +107,7 @@ export function ThankYou() {
 
   if (order.status === 'failed') {
     return (
-      <main className="thanks">
+      <main className="thanks" data-clarity-mask="true">
         <div className="thanks-card">
           <header className="thanks-head">
             <h1>The payment didn&rsquo;t go through.</h1>
@@ -128,7 +128,7 @@ export function ThankYou() {
   // Cashfree has not said PAID yet — usually a matter of seconds.
   if (order.status === 'pending') {
     return (
-      <main className="thanks">
+      <main className="thanks" data-clarity-mask="true">
         <div className="thanks-card">
           <header className="thanks-head">
             <h1>{timedOut ? 'Still waiting for the bank.' : 'Confirming your payment…'}</h1>
@@ -162,7 +162,7 @@ export function ThankYou() {
   const withPlaybooks = isAllAccess(order.items) || order.items.some((item) => item === 'playbooks' || item === 'library')
 
   return (
-    <main className="thanks">
+    <main className="thanks" data-clarity-mask="true">
       <div className="thanks-card">
         <header className="thanks-head">
           <div className="success-mark" aria-hidden="true">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { DM_Mono, Manrope } from 'next/font/google'
 import { Analytics } from '@/components/Analytics'
+import { Clarity } from '@/components/Clarity'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { ModalProvider } from '@/components/modals/ModalProvider'
 import { StructuredData } from '@/components/StructuredData'
@@ -107,6 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <GoogleAnalytics />
+        <Clarity />
       </head>
       <body>
         <a className="skip-link" href="#top">
