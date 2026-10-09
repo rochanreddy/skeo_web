@@ -21,13 +21,12 @@ to the apex, change this value in the same deploy.
 | Share image (1200×630) | `src/app/opengraph-image.tsx`, drawn in `src/lib/og.tsx` | Rendered at build time in Manrope (`src/assets/fonts`, OFL). |
 | Logo for search results | `/logo.png` (`src/app/logo.png/route.tsx`) | 512×512. Referenced by `Organization.logo`. |
 | Apple touch icon and manifest | `src/app/apple-icon.tsx`, `src/app/manifest.ts`, `/icon-192.png` | |
-| Structured data (JSON-LD) | `src/components/StructuredData.tsx` | Site-wide: `Organization` + `EducationalOrganization` and `WebSite`. Home: `WebPage`, `FAQPage`, `ItemList` of `Course`. `/courses/claude`: `Course` with `syllabusSections`, `PT15H` workload and offer. `/campaign/everything-ai`: `Course` with the offer and its deadline, plus its own `FAQPage`. `/about`: `AboutPage`. Subpages: `BreadcrumbList`. |
-| Claude course page | `src/app/courses/claude/page.tsx` | The curriculum otherwise only exists inside a click-to-open modal that crawlers never see. Built from `claudeSyllabus`, so it cannot drift from the modal. |
+| Structured data (JSON-LD) | `src/components/StructuredData.tsx` | Site-wide: `Organization` + `EducationalOrganization` and `WebSite`. Home: `WebPage`, `FAQPage`, `ItemList` of `Course`. `/campaign/everything-ai`: `Course` with the offer and its deadline, plus its own `FAQPage`. `/about`: `AboutPage`. Subpages: `BreadcrumbList`. |
 | robots.txt | `src/app/robots.ts` | Answer-engine crawlers named and allowed. `/admin`, `/api`, `/checkout` and `/thank-you` are disallowed. |
 | sitemap.xml | `src/app/sitemap.ts` | Add every new indexable page here. |
 | llms.txt | `src/app/llms.txt/route.ts` | Plain-prose summary for LLM tools, generated from the same data the pages render. |
 | Search-console verification | `src/app/layout.tsx` | Reads `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` and `YANDEX_VERIFICATION` from the environment. |
-| IndexNow | `public/349ff793ed6fa8d7f2e1027abab599cc.txt`, `scripts/indexnow.mjs` | `npm run indexnow` after a deploy that changes content, or `npm run indexnow -- /courses/claude` for specific pages. |
+| IndexNow | `public/349ff793ed6fa8d7f2e1027abab599cc.txt`, `scripts/indexnow.mjs` | `npm run indexnow` after a deploy that changes content, or `npm run indexnow -- /about` for specific pages. |
 
 Rules the structured data follows, which should be kept:
 
@@ -42,7 +41,7 @@ Rules the structured data follows, which should be kept:
    URL-prefix property for `https://www.skeoai.com/`, put the token in Vercel as
    `GOOGLE_SITE_VERIFICATION`, and redeploy. Then submit
    `https://www.skeoai.com/sitemap.xml`, and use URL Inspection → *Request
-   indexing* on `/`, `/courses/claude` and `/campaign/everything-ai`.
+   indexing* on `/` and `/campaign/everything-ai`.
 2. **Bing Webmaster Tools.** Import the site from Search Console (one click), or
    verify with `BING_SITE_VERIFICATION`. Submit the sitemap. Bing's index feeds
    ChatGPT search, Copilot and DuckDuckGo, so this matters for GEO as much as

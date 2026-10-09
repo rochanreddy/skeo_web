@@ -1,4 +1,4 @@
-import { claudeSyllabus, faqs, promiseStats } from '@/lib/content'
+import { faqs, promiseStats } from '@/lib/content'
 import { faq as campaignFaq, offer } from '@/lib/earlyAccess'
 import { COMING_SOON, MODULE_ROWS, PLANS } from '@/lib/plans'
 import { abs } from '@/lib/seo'
@@ -84,8 +84,6 @@ export function SiteSchema() {
 /** The home page: the page itself, its FAQ, and the tracks it sells. */
 export function HomeSchema() {
   const courses = MODULE_ROWS.map((m) => {
-    /* The Claude course has a page of its own, and one node describing it. */
-    if (m.key === 'claude') return { '@id': CLAUDE_COURSE, '@type': 'Course', name: m.title, url: abs(CLAUDE_PATH) }
     const plan = PLANS[m.key]
     return {
       '@type': 'Course',
@@ -208,53 +206,6 @@ export function CampaignSchema() {
           },
           breadcrumbs([{ name: 'Everything AI', path }]),
         ],
-      }}
-    />
-  )
-}
-
-const CLAUDE_PATH = '/courses/claude'
-const CLAUDE_COURSE = `${abs(CLAUDE_PATH)}#course`
-
-/** /courses/claude: the course, its syllabus by module, and its price. */
-export function ClaudeCourseSchema() {
-  const plan = PLANS.claude
-  const url = abs(CLAUDE_PATH)
-  return (
-    <JsonLd
-      data={{
-        '@context': 'https://schema.org',
-        '@type': 'Course',
-        '@id': CLAUDE_COURSE,
-        name: plan.title,
-        description: `${claudeSyllabus.intro} ${MODULE_ROWS.find((m) => m.key === 'claude')?.subtitle ?? ''}.`,
-        url,
-        inLanguage: 'en',
-        isAccessibleForFree: false,
-        educationalLevel: 'Beginner to advanced',
-        about: { '@type': 'SoftwareApplication', name: 'Claude', applicationCategory: 'AI assistant', author: { '@type': 'Organization', name: 'Anthropic' } },
-        teaches: claudeSyllabus.modules.map((m) => m.title),
-        syllabusSections: claudeSyllabus.modules.map((m) => ({
-          '@type': 'Syllabus',
-          name: m.title,
-          description: m.topics.join('; '),
-        })),
-        educationalCredentialAwarded: { '@type': 'EducationalOccupationalCredential', name: 'skeo Claude certificate', credentialCategory: 'Certificate' },
-        provider: { '@id': ORG },
-        offers: {
-          '@type': 'Offer',
-          price: plan.amount,
-          priceCurrency: 'INR',
-          category: 'Paid',
-          availability: 'https://schema.org/InStock',
-          url,
-        },
-        hasCourseInstance: {
-          '@type': 'CourseInstance',
-          courseMode: 'Online',
-          /* "15 hours", the figure on the course card and the curriculum. */
-          courseWorkload: 'PT15H',
-        },
       }}
     />
   )

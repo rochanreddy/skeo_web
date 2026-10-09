@@ -78,7 +78,6 @@ Support: ${site.email}.
 
 ## Links
 - [skeo — home](${site.url}): what skeo teaches, the tracks, pricing and FAQ
-- [Claude Course](${site.url}/courses/claude): the full Claude curriculum, module by module
 - [Everything AI](${site.url}/campaign/everything-ai): every course in one one-time pass
 - [About](${site.url}/about): what skeo is and who is behind it
 - [Refund policy](${site.url}/refund)

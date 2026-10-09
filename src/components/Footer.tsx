@@ -18,7 +18,6 @@ const columns = [
          too now, and "#tools" there resolves against the current URL — a link
          to an element that does not exist, which silently does nothing. */
       { label: 'Tools', href: '/#tools' },
-      { label: 'Claude Course', href: '/courses/claude' },
       { label: 'Job Board', href: '/#jobs' },
       { label: 'Reviews', href: '/#reviews' },
       { label: 'Pricing', href: '/#pricing' },
