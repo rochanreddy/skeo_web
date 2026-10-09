@@ -1,3 +1,7 @@
+import type { Metadata } from 'next'
+import { HomeSchema } from '@/components/StructuredData'
+import { pageMeta } from '@/lib/seo'
+import { site } from '@/lib/site'
 import { Footer } from '@/components/Footer'
 import { HashScroll } from '@/components/HashScroll'
 import { Nav } from '@/components/Nav'
@@ -15,6 +19,15 @@ import { Projects } from '@/components/sections/Projects'
 import { CorePromise } from '@/components/sections/CorePromise'
 import { Testimonials } from '@/components/sections/Testimonials'
 import { Tools } from '@/components/sections/Tools'
+
+/* Absolute: the home page's title is the one most searches land on, so it
+   names the tools people actually type rather than wearing the template. */
+export const metadata: Metadata = pageMeta({
+  path: '/',
+  title: `${site.name} — Learn Claude, ChatGPT & AI tools by building projects`,
+  description: site.description,
+  absoluteTitle: true,
+})
 
 export default function Home() {
   return (
@@ -38,6 +51,7 @@ export default function Home() {
       </main>
       <Footer />
       <HashScroll />
+      <HomeSchema />
     </>
   )
 }

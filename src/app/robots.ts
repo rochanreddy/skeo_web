@@ -20,12 +20,17 @@ const ANSWER_ENGINES = [
   'Applebot-Extended',
   'CCBot',           // Common Crawl, which several models train from
   'cohere-ai',
+  'Amazonbot',       // Alexa / Rufus answers
+  'meta-externalagent', // Meta AI
+  'DuckAssistBot',   // DuckDuckGo's answers
+  'MistralAI-User',  // Le Chat opening a link
 ]
 
-/* /admin is a login screen and /api answers only to the app. Neither is
-   content, and both are noindex in their own metadata — this just stops a
-   crawler asking in the first place. */
-const PRIVATE = ['/admin', '/api']
+/* /admin is a login screen and /api answers only to the app; /checkout and
+   /thank-you are steps in a purchase, meaningless without the cart or the
+   order behind them. None is content, all are noindex in their own metadata —
+   this just stops a crawler spending its visits asking. */
+const PRIVATE = ['/admin', '/api', '/checkout', '/thank-you']
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -34,5 +39,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: ANSWER_ENGINES, allow: '/', disallow: PRIVATE },
     ],
     sitemap: `${site.url}/sitemap.xml`,
+    host: site.url,
   }
 }

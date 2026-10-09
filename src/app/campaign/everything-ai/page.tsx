@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { CampaignSchema } from '@/components/StructuredData'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { pageMeta } from '@/lib/seo'
 import { announcement, hero, inr, offer, savePct, valueStack } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
 import { JoinToasts, SeatsLeft } from './Live'
@@ -9,12 +11,11 @@ import { Buy, CampaignSections, Check, Lines } from './Sections'
 import { StickyCta } from './StickyCta'
 import './early-access.css'
 
-export const metadata: Metadata = {
-  title: `Early Access — everything in skeo for ${inr(offer.price)}`,
-  description:
-    'Learn the AI tools, build real projects, and become job-ready — 10+ courses, 50+ tools and 20+ projects for a one-time ₹499.',
-  alternates: { canonical: '/campaign/everything-ai' },
-}
+export const metadata: Metadata = pageMeta({
+  path: '/campaign/everything-ai',
+  title: `Everything AI — every skeo course for ${inr(offer.price)}`,
+  description: `Learn ChatGPT, Claude and 50+ AI tools, build 20+ real projects and get certified — 10+ courses for a one-time ${inr(offer.price)}, with lifetime access.`,
+})
 
 function Price({ big = false }: { big?: boolean }) {
   return (
@@ -164,6 +165,7 @@ export default function EarlyAccessPage() {
 
       <StickyCta />
       <JoinToasts />
+      <CampaignSchema />
     </div>
   )
 }

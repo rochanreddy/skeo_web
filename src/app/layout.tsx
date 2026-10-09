@@ -4,7 +4,7 @@ import { Analytics } from '@/components/Analytics'
 import { Clarity } from '@/components/Clarity'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { ModalProvider } from '@/components/modals/ModalProvider'
-import { StructuredData } from '@/components/StructuredData'
+import { SiteSchema } from '@/components/StructuredData'
 import { site } from '@/lib/site'
 import './globals.css'
 import { cn } from '@/lib/utils'
@@ -27,6 +27,19 @@ const dmMono = DM_Mono({
   display: 'swap',
 })
 
+/* Search-console ownership tags, read from the environment so the tokens are
+   set in Vercel rather than committed. Unset means the tag is simply absent —
+   DNS verification works just as well and needs none of this. */
+const verification: Metadata['verification'] = {
+  google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+  yandex: process.env.YANDEX_VERIFICATION || undefined,
+  other: process.env.BING_SITE_VERIFICATION ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } : undefined,
+}
+
+/* Site-wide defaults only. No canonical and no og:url here: anything set at
+   the root is inherited by every route that does not override it, which is
+   how a 404 or a new page ends up declaring itself to be the home page. Each
+   indexable page sets its own through pageMeta (lib/seo). */
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -34,36 +47,39 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description: site.description,
+  openGraph: { type: 'website', siteName: site.name, locale: site.locale },
+  twitter: { card: 'summary_large_image' },
   applicationName: site.name,
+  authors: [{ name: site.legalName, url: site.url }],
+  creator: site.legalName,
+  publisher: site.legalName,
+  category: 'education',
   keywords: [
-    'AI skills',
-    'AI courses',
-    'Claude',
-    'ChatGPT',
+    'AI courses India',
+    'learn AI tools',
+    'Claude course',
+    'ChatGPT course',
     'Gemini',
-    'n8n',
+    'n8n automation course',
+    'Lovable',
     'AI certification',
+    'AI projects for portfolio',
     'AI job board',
+    'prompt engineering course',
   ],
-  alternates: { canonical: '/' },
-  openGraph: {
-    type: 'website',
-    url: site.url,
-    siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: site.twitter,
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
-  },
+  formatDetection: { telephone: false, email: false, address: false },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
   },
+  verification,
 }
 
 export const viewport: Viewport = {
@@ -117,7 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="noise" aria-hidden="true" />
         <ModalProvider>{children}</ModalProvider>
         <Analytics />
-        <StructuredData />
+        <SiteSchema />
       </body>
     </html>
   )

@@ -1,6 +1,6 @@
 import { claudeSyllabus, faqs, featuredTool } from '@/lib/content'
 import { MODULE_ROWS, PLANS, money } from '@/lib/plans'
-import { site } from '@/lib/site'
+import { lms, site } from '@/lib/site'
 
 /**
  * /llms.txt — the site in plain prose, for answer engines.
@@ -72,9 +72,19 @@ ${syllabus}
 ## Frequently asked questions
 
 ${faqLines}
+## Who runs it
+skeo is a product of ${site.legalName}, a company registered in India.
+Support: ${site.email}.
+
 ## Links
-- [skeo](${site.url})
-- [Sign in to the LMS](${site.url.replace('//', '//lms.')})
+- [skeo — home](${site.url}): what skeo teaches, the tracks, pricing and FAQ
+- [Claude Course](${site.url}/courses/claude): the full Claude curriculum, module by module
+- [Everything AI](${site.url}/campaign/everything-ai): every course in one one-time pass
+- [About](${site.url}/about): what skeo is and who is behind it
+- [Refund policy](${site.url}/refund)
+- [Terms](${site.url}/terms)
+- [Privacy policy](${site.url}/privacy)
+- [Sign in to the LMS](${lms.web})
 
 Last built ${new Date().toISOString().slice(0, 10)}.
 `

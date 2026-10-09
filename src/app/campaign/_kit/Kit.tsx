@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { PurchaseButton } from '@/components/ActionButton'
+import { pageMeta } from '@/lib/seo'
 import './kit.css'
 
 /**
@@ -57,9 +58,6 @@ export function KitFooter({ className = 'kit-foot' }: { className?: string }) {
  * search so they never compete with /campaign/everything-ai, which is.
  */
 export const variantMeta = (path: string, title: string, description: string): Metadata => ({
-  title,
-  description,
-  alternates: { canonical: path },
+  ...pageMeta({ path, title, description }),
   robots: { index: false, follow: true },
-  openGraph: { title, description, url: path },
 })
