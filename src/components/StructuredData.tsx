@@ -1,6 +1,5 @@
 import { faqs, promiseStats } from '@/lib/content'
-import { faq as campaignFaq, offer } from '@/lib/earlyAccess'
-import { COMING_SOON, MODULE_ROWS, PLANS } from '@/lib/plans'
+import { getCatalog } from '@/lib/cms'
 import { abs } from '@/lib/seo'
 import { site } from '@/lib/site'
 
@@ -82,7 +81,9 @@ export function SiteSchema() {
 }
 
 /** The home page: the page itself, its FAQ, and the tracks it sells. */
-export function HomeSchema() {
+export async function HomeSchema() {
+  /* The published prices, so the markup always matches the number on the page. */
+  const { modules: MODULE_ROWS, plans: PLANS, comingSoon: COMING_SOON } = await getCatalog()
   const courses = MODULE_ROWS.map((m) => {
     const plan = PLANS[m.key]
     return {
@@ -157,7 +158,10 @@ export function HomeSchema() {
 }
 
 /** /campaign/everything-ai: the bundle on sale, its price and deadline, and its FAQ. */
-export function CampaignSchema() {
+export async function CampaignSchema() {
+  const { plans: PLANS, campaign } = await getCatalog()
+  const offer = { endsAt: campaign.endsAt }
+  const campaignFaq = { items: campaign.faq }
   const path = '/campaign/everything-ai'
   const url = abs(path)
   const plan = PLANS.earlyaccess

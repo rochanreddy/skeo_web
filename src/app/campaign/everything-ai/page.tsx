@@ -4,20 +4,26 @@ import { CampaignSchema } from '@/components/StructuredData'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { pageMeta } from '@/lib/seo'
-import { announcement, hero, inr, offer, savePct, valueStack } from '@/lib/earlyAccess'
+import { offerOf, savePctOf, type Catalog } from '@/lib/catalog'
+import { getCatalog } from '@/lib/cms'
+import { announcement as announcementCode, inr } from '@/lib/earlyAccess'
 import { Countdown } from './Countdown'
 import { JoinToasts, SeatsLeft } from './Live'
 import { Buy, CampaignSections, Check, Lines } from './Sections'
 import { StickyCta } from './StickyCta'
 import './early-access.css'
 
-export const metadata: Metadata = pageMeta({
-  path: '/campaign/everything-ai',
-  title: `Everything AI — every skeo course for ${inr(offer.price)}`,
-  description: `Learn ChatGPT, Claude and 50+ AI tools, build 20+ real projects and get certified — 10+ courses for a one-time ${inr(offer.price)}, with lifetime access.`,
-})
+/* The price is in the title, so the title follows the price in Sanity. */
+export async function generateMetadata(): Promise<Metadata> {
+  const { price } = offerOf(await getCatalog())
+  return pageMeta({
+    path: '/campaign/everything-ai',
+    title: `Everything AI — every skeo course for ${inr(price)}`,
+    description: `Learn ChatGPT, Claude and 50+ AI tools, build 20+ real projects and get certified — 10+ courses for a one-time ${inr(price)}, with lifetime access.`,
+  })
+}
 
-function Price({ big = false }: { big?: boolean }) {
+function Price({ big = false, offer }: { big?: boolean; offer: ReturnType<typeof offerOf> }) {
   return (
     <p className={big ? 'ea-price ea-price-big' : 'ea-price'}>
       <strong>{inr(offer.price)}</strong>
@@ -26,7 +32,13 @@ function Price({ big = false }: { big?: boolean }) {
   )
 }
 
-export default function EarlyAccessPage() {
+export default async function EarlyAccessPage() {
+  const catalog: Catalog = await getCatalog()
+  const offer = offerOf(catalog)
+  const savePct = savePctOf(catalog)
+  const { hero, valueStack: valueStackItems } = catalog.campaign
+  const announcement = { ...announcementCode, ...catalog.campaign.announcement, offer: `${savePct}% OFF` }
+  const valueStack = { items: valueStackItems }
   return (
     <div className="ea">
       {/* Announcement */}
@@ -75,7 +87,7 @@ export default function EarlyAccessPage() {
               </h1>
               <p className="ea-lede">{hero.lede}</p>
               <div className="ea-hero-price">
-                <Price big />
+                <Price big offer={offer} />
                 <span className="ea-save">{savePct}% OFF</span>
               </div>
               <p className="ea-terms">{offer.terms}</p>

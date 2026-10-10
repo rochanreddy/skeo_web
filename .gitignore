@@ -14,3 +14,9 @@ next-env.d.ts
 
 # Analytics events written by /api/track — local data, never committed.
 .data
+
+# Sanity Studio build output and local runtime.
+studio/dist
+studio/.sanity
+# Side builds (NEXT_DIST_DIR) used to test without touching the dev server's .next.
+.next-*

@@ -2,9 +2,10 @@ import { PurchaseButton } from '@/components/ActionButton'
 import { ModuleCart } from '@/components/ModuleCart'
 import { Price } from '@/components/Price'
 import { Reveal } from '@/components/Reveal'
-import { PLANS } from '@/lib/plans'
+import { getCatalog } from '@/lib/cms'
 
-export function Pricing() {
+export async function Pricing() {
+  const { plans: PLANS } = await getCatalog()
   const allAccess = PLANS.member
 
   return (

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { offer } from '@/lib/earlyAccess'
+import { useCatalog } from '@/components/CatalogProvider'
 import { useLiveStats } from '../everything-ai/Live'
 
 /**
@@ -17,7 +17,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
 
 /** "6d 11h 52m 08s", ticking. Dashes until mounted, so it never hydrates a second out. */
 export function TimeLeft({ className, endedText = 'This offer has ended' }: { className?: string; endedText?: string }) {
-  const end = Date.parse(offer.endsAt)
+  const end = Date.parse(useCatalog().campaign.endsAt)
   const [left, setLeft] = useState<number | null>(null)
   useEffect(() => {
     const tick = () => setLeft(end - Date.now())

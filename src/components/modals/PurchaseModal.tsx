@@ -4,7 +4,8 @@ import { useState, type FormEvent } from 'react'
 import { Modal, useDialogId } from './Modal'
 import { BackgroundField } from '@/components/forms/BackgroundField'
 import { price, useCurrency } from '@/lib/currency'
-import { PLANS, type PlanKey } from '@/lib/plans'
+import { useCatalog } from '@/components/CatalogProvider'
+import type { PlanKey } from '@/lib/plans'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 
 type Field = 'name' | 'email' | 'phone' | 'background'
@@ -19,6 +20,7 @@ type Errors = Partial<Record<Field, string>>
 export function PurchaseModal({ planKeys, onClose }: { planKeys: PlanKey[]; onClose: () => void }) {
   const titleId = useDialogId('purchase-title')
   const currency = useCurrency()
+  const { plans: PLANS } = useCatalog()
   const plans = planKeys.map((key) => PLANS[key])
   // A cart of one behaves exactly as the old single-plan checkout did.
   const single = plans.length === 1 ? plans[0] : null

@@ -6,7 +6,8 @@ const compat = new FlatCompat({ baseDirectory: dirname(fileURLToPath(import.meta
 
 export default [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
-  { ignores: ['.next/**', 'node_modules/**'] },
+  // studio/ is its own npm project (the Sanity Studio), linted by its own tooling.
+  { ignores: ['.next/**', 'node_modules/**', 'studio/**'] },
   {
     rules: {
       // A leading underscore marks an argument that is part of a signature we

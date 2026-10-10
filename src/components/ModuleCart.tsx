@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { track } from '@/lib/analytics/track'
 import { price, useCurrency } from '@/lib/currency'
-import { COMING_SOON, MODULE_ROWS, type ModuleKey } from '@/lib/plans'
+import { useCatalog } from '@/components/CatalogProvider'
+import type { ModuleKey } from '@/lib/plans'
 import {
   ChatGptMark,
   ClaudeAutomationsMark,
@@ -40,6 +41,7 @@ const MARKS = {
 export function ModuleCart() {
   const { openVerify } = useModal()
   const currency = useCurrency()
+  const { modules: MODULE_ROWS, comingSoon: COMING_SOON } = useCatalog()
   const [cart, setCart] = useState<ModuleKey[]>([])
 
   const total = MODULE_ROWS.filter((row) => cart.includes(row.key)).reduce((sum, row) => sum + row.amount, 0)

@@ -1,5 +1,6 @@
 import { claudeSyllabus, faqs, featuredTool } from '@/lib/content'
-import { MODULE_ROWS, PLANS, money } from '@/lib/plans'
+import { getCatalog } from '@/lib/cms'
+import { money } from '@/lib/plans'
 import { lms, site } from '@/lib/site'
 
 /**
@@ -19,11 +20,13 @@ import { lms, site } from '@/lib/site'
  * version for tools that look for it.
  */
 
-export const dynamic = 'force-static'
+/* Rebuilt at most every minute, so a price edited in Sanity reaches it too. */
+export const revalidate = 60
 
 const bullet = (s: string) => `- ${s}`
 
-export function GET() {
+export async function GET() {
+  const { modules: MODULE_ROWS, plans: PLANS } = await getCatalog()
   const modules = MODULE_ROWS.map((m) =>
     bullet(`${m.title} — ${money(m.amount)}. ${m.subtitle}`),
   ).join('\n')

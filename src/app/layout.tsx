@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next'
 import { DM_Mono, Manrope } from 'next/font/google'
 import { Analytics } from '@/components/Analytics'
+import { CatalogProvider } from '@/components/CatalogProvider'
 import { Clarity } from '@/components/Clarity'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { ModalProvider } from '@/components/modals/ModalProvider'
 import { SiteSchema } from '@/components/StructuredData'
+import { getCatalog } from '@/lib/cms'
 import { site } from '@/lib/site'
 import './globals.css'
 import { cn } from '@/lib/utils'
@@ -91,7 +93,8 @@ export const viewport: Viewport = {
   colorScheme: 'light dark',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const catalog = await getCatalog()
   return (
     <html
       lang="en"
@@ -131,7 +134,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <div className="noise" aria-hidden="true" />
-        <ModalProvider>{children}</ModalProvider>
+        <CatalogProvider catalog={catalog}>
+          <ModalProvider>{children}</ModalProvider>
+        </CatalogProvider>
         <Analytics />
         <SiteSchema />
       </body>

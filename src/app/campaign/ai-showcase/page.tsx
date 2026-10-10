@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { Buy, KitFooter, variantMeta } from '../_kit/Kit'
 import { JoinedToast, TimeLeft } from '../_kit/Live'
-import { endsOn, price, product, savePct, was } from '../_kit/facts'
+import { getCatalog } from '@/lib/cms'
+import { liveFacts, product } from '../_kit/facts'
 import { CampaignSections } from '../everything-ai/Sections'
 import { StickyCta } from '../everything-ai/StickyCta'
 import '../everything-ai/early-access.css'
@@ -18,13 +19,17 @@ import './showcase.css'
  * Same facts, same checkout.
  */
 
-export const metadata = variantMeta(
-  '/campaign/ai-showcase',
-  `${product} — learn AI, build real work · ${price}`,
-  'Go from never having used AI to building real projects with it. 10+ courses, 50+ tools, 20+ projects and a certificate, for a one-time ₹499.',
-)
+export async function generateMetadata() {
+  const { price } = liveFacts(await getCatalog())
+  return variantMeta(
+    '/campaign/ai-showcase',
+    `${product} — learn AI, build real work · ${price}`,
+    `Go from never having used AI to building real projects with it. 10+ courses, 50+ tools, 20+ projects and a certificate, for a one-time ${price}.`,
+  )
+}
 
-export default function ShowcasePage() {
+export default async function ShowcasePage() {
+  const { price, was, savePct, endsOn } = liveFacts(await getCatalog())
   return (
     <div className="vx">
       <NightOnly />

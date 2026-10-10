@@ -10,9 +10,9 @@ import {
 } from '@/lib/checkoutSession'
 import { track } from '@/lib/analytics/track'
 import { startPayment } from '@/lib/payment'
-import { CHECKOUT_ROWS, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
+import { useCatalog } from '@/components/CatalogProvider'
+import { checkoutRows, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
 import { price, useCurrency } from '@/lib/currency'
-import { MODULE_ROWS, PLANS } from '@/lib/plans'
 import {
   ChatGptMark,
   ClaudeAutomationsMark,
@@ -106,10 +106,14 @@ export function CheckoutClient() {
 
   // Above the bail-out below: hooks cannot run conditionally.
   const currency = useCurrency()
+  /* The prices this page was rendered with — the same ones Sanity has
+     published. The server re-prices the order itself; these are for display. */
+  const catalog = useCatalog()
+  const { modules: MODULE_ROWS, plans: PLANS } = catalog
 
   if (!session) return null
 
-  const rows = CHECKOUT_ROWS.filter((row) => session.modules.includes(row.key))
+  const rows = checkoutRows(catalog).filter((row) => session.modules.includes(row.key))
   // Everything AI already includes every tool, so there is nothing to add to it.
   const isMember = isAllAccess(session.modules)
   const extras = isMember ? [] : MODULE_ROWS.filter((row) => !session.modules.includes(row.key))

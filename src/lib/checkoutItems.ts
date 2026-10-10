@@ -1,4 +1,5 @@
-import { MODULE_KEYS, MODULE_ROWS, PLANS, type ModuleKey, type ModuleRow } from '@/lib/plans'
+import { defaultCatalog, type Catalog } from '@/lib/catalog'
+import { MODULE_KEYS, type ModuleKey, type ModuleRow } from '@/lib/plans'
 
 /**
  * Everything a checkout can hold: the individual tools, or the whole of skeo.
@@ -20,26 +21,36 @@ export const isAllAccess = (items: readonly string[]) => items.includes('member'
 export const isCheckoutItem = (value: unknown): value is CheckoutItem =>
   typeof value === 'string' && (CHECKOUT_ITEMS as readonly string[]).includes(value)
 
-/** Everything AI as a row, so the checkout can list it the way it lists a tool. */
-const MEMBER_ROW: Omit<ModuleRow, 'key'> & { key: 'member' } = {
-  key: 'member',
-  title: PLANS.member.title,
-  subtitle: 'Every tool, every batch — including the ones added later',
-  amount: PLANS.member.amount,
-  marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
-}
-
-const EARLY_ROW: Omit<ModuleRow, 'key'> & { key: 'earlyaccess' } = {
-  key: 'earlyaccess',
-  title: PLANS.earlyaccess.title,
-  subtitle: 'Everything in skeo, at the early-access price',
-  amount: PLANS.earlyaccess.amount,
-  marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
-}
-
 export type CheckoutRow = Omit<ModuleRow, 'key'> & { key: CheckoutItem }
 
-export const CHECKOUT_ROWS: readonly CheckoutRow[] = [...MODULE_ROWS, MEMBER_ROW, EARLY_ROW]
+/**
+ * Every row a checkout can show, priced from a catalog — the one the page was
+ * rendered with in the browser, the one Sanity has published now on the server.
+ * Everything AI and its early-access price are listed the way a tool is.
+ */
+export function checkoutRows(c: Catalog): readonly CheckoutRow[] {
+  return [
+    ...c.modules,
+    {
+      key: 'member',
+      title: c.plans.member.title,
+      subtitle: 'Every tool, every batch — including the ones added later',
+      amount: c.plans.member.amount,
+      marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
+    },
+    {
+      key: 'earlyaccess',
+      title: c.plans.earlyaccess.title,
+      subtitle: 'Everything in skeo, at the early-access price',
+      amount: c.plans.earlyaccess.amount,
+      marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
+    },
+  ]
+}
+
+/** The code's own rows. For labels in the admin and analytics, which only need
+ *  a title per key — never for a price a buyer sees or pays. */
+export const CHECKOUT_ROWS = checkoutRows(defaultCatalog)
 
 /**
  * The cart as it will be charged: known keys only, no repeats, and Everything
@@ -52,7 +63,9 @@ export function normaliseItems(items: readonly unknown[]): CheckoutItem[] {
   return known.includes('member') ? ['member'] : known
 }
 
-/** Rupees, from the keys alone. */
-export function priceOf(items: readonly CheckoutItem[]): number {
-  return normaliseItems(items).reduce((sum, key) => sum + (CHECKOUT_ROWS.find((r) => r.key === key)?.amount ?? 0), 0)
+/** Rupees, from the keys alone, at the catalog's prices. The catalog is
+ *  required on purpose: the order route must price with what is published now. */
+export function priceOf(items: readonly CheckoutItem[], c: Catalog): number {
+  const rows = checkoutRows(c)
+  return normaliseItems(items).reduce((sum, key) => sum + (rows.find((r) => r.key === key)?.amount ?? 0), 0)
 }

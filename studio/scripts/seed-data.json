@@ -1,0 +1,181 @@
+[
+  {
+    "_id": "plan-claude",
+    "_type": "plan",
+    "key": "claude",
+    "title": "Claude Course",
+    "eyebrow": "CLAUDE COURSE",
+    "features": [
+      "Prompts that hold up",
+      "Long-document research",
+      "Certificate on completion"
+    ],
+    "amount": 699,
+    "subtitle": "Master Claude across Chat, Cowork, Code, automations, vibe coding, research and more in one practical course"
+  },
+  {
+    "_id": "plan-playbooks",
+    "_type": "plan",
+    "key": "playbooks",
+    "title": "Claude Playbooks",
+    "eyebrow": "CLAUDE PLAYBOOKS",
+    "features": [
+      "Everyday work and coding",
+      "Research and design",
+      "Workflows you can reuse"
+    ],
+    "amount": 99,
+    "subtitle": "From everyday work to coding, research, design, and workflows"
+  },
+  {
+    "_id": "plan-library",
+    "_type": "plan",
+    "key": "library",
+    "title": "AI Library",
+    "eyebrow": "AI LIBRARY",
+    "features": [
+      "Ready-to-use resources",
+      "Workflows and prompts",
+      "Guides for every tool"
+    ],
+    "amount": 99,
+    "subtitle": "Ready-to-use resources, workflows, prompts and guides to help you get more from AI"
+  },
+  {
+    "_id": "plan-member",
+    "_type": "plan",
+    "key": "member",
+    "title": "Everything AI. One Access",
+    "eyebrow": "ALL ACCESS",
+    "features": [
+      "All AI tool modules",
+      "Beginner to Advanced Learning Paths",
+      "Build Real World Projects",
+      "Get Certified",
+      "Job & Freelancing Board access",
+      "Expert Sessions & Community"
+    ],
+    "amount": 799
+  },
+  {
+    "_id": "plan-earlyaccess",
+    "_type": "plan",
+    "key": "earlyaccess",
+    "title": "Everything AI — Early Access",
+    "eyebrow": "EARLY ACCESS",
+    "features": [
+      "Every course and every tool batch",
+      "Claude Playbooks and the AI Library",
+      "Real projects and a certificate",
+      "Lifetime access"
+    ],
+    "amount": 499
+  },
+  {
+    "_id": "plan-teams",
+    "_type": "plan",
+    "key": "teams",
+    "title": "Build together",
+    "eyebrow": "TEAMS PLAN",
+    "features": [
+      "Everything in All Access",
+      "Team dashboards",
+      "Custom learning paths"
+    ]
+  },
+  {
+    "_id": "comingSoon",
+    "_type": "comingSoon",
+    "title": "ChatGPT, Gemini, n8n, Lovable and more",
+    "subtitle": "We’re adding more of the tools you need to build your AI-native toolkit"
+  },
+  {
+    "_id": "campaignEverythingAi",
+    "_type": "campaign",
+    "endsAt": "2026-10-10T18:29:59.000Z",
+    "was": 25000,
+    "terms": "One-time payment · Lifetime access",
+    "announcement": {
+      "lead": "Early Access",
+      "cta": "Join Now"
+    },
+    "hero": {
+      "lines": [
+        "Don’t fear AI.",
+        "Master it.",
+        "Get paid for it."
+      ],
+      "lede": "ChatGPT, Claude & 50+ AI tools — learn them, build real projects and get job-ready, for the price of a pizza.",
+      "cta": "Get Started",
+      "checks": [
+        "Beginner Friendly",
+        "Lifetime Access",
+        "Real Projects"
+      ]
+    },
+    "valueStack": [
+      "10+ Courses",
+      "20+ Projects",
+      "50+ Tools",
+      "100+ Jobs",
+      "Live Workshops",
+      "Templates & Resources",
+      "Community Access",
+      "Certificate"
+    ],
+    "pricing": {
+      "plan": "Everything AI · Early Access",
+      "items": [
+        "10+ Courses",
+        "20+ Projects",
+        "50+ Tools",
+        "Live Workshops",
+        "Templates & Resources",
+        "Community Access",
+        "Certificate",
+        "100+ Jobs",
+        "Lifetime Access"
+      ],
+      "cta": "Get Everything",
+      "small": "One-time payment · Instant access · No hidden fees"
+    },
+    "faq": [
+      {
+        "_key": "faq0",
+        "_type": "faqItem",
+        "q": "Is this beginner friendly?",
+        "a": "Yes. Start from the basics and progress toward projects."
+      },
+      {
+        "_key": "faq1",
+        "_type": "faqItem",
+        "q": "Do I need coding experience?",
+        "a": "No, unless a specific course requires it."
+      },
+      {
+        "_key": "faq2",
+        "_type": "faqItem",
+        "q": "Is this a subscription?",
+        "a": "No. One-time payment."
+      },
+      {
+        "_key": "faq3",
+        "_type": "faqItem",
+        "q": "How long do I get access?",
+        "a": "Lifetime."
+      },
+      {
+        "_key": "faq4",
+        "_type": "faqItem",
+        "q": "Do I get certificates?",
+        "a": "Yes, if applicable to your program."
+      },
+      {
+        "_key": "faq5",
+        "_type": "faqItem",
+        "q": "Can I learn at my own pace?",
+        "a": "Yes."
+      }
+    ]
+  }
+]

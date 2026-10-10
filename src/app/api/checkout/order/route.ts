@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { normaliseItems, priceOf } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 import { mongoConfigured } from '@/lib/db/mongo'
-import { offerEnded } from '@/lib/earlyAccess'
+import { offerEndedFor } from '@/lib/catalog'
+import { getCatalogFresh } from '@/lib/cms'
 import { seatsLeft } from '@/lib/earlyAccessLive'
 import {
   cashfreeConfigured,
@@ -69,7 +70,12 @@ export async function POST(request: Request) {
   // cap is reached, Early Access is no longer sold. (Two buyers racing for the
   // last seat can both get it — a seat over is kinder than a charge refused.)
   // The same goes for the deadline the page counts down to.
-  if (items.includes('earlyaccess') && offerEnded()) {
+  /* Priced from what is published in Sanity right now, not from a cached
+     page — the deadline too. Falls back to the code's prices if Sanity is
+     unreachable (lib/cms), so a CMS outage never stops a sale. */
+  const catalog = await getCatalogFresh()
+
+  if (items.includes('earlyaccess') && offerEndedFor(catalog)) {
     return NextResponse.json(
       { error: 'Early Access has ended. Everything AI is still open.' },
       { status: 409 },
@@ -82,7 +88,7 @@ export async function POST(request: Request) {
     )
   }
 
-  const amount = priceOf(items)
+  const amount = priceOf(items, catalog)
   const orderId = newOrderId()
   // Cashfree sends the buyer back here and posts the result to the webhook.
   // SITE_URL wins so a preview deployment can still point at production; the

@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { gaPurchase } from '@/lib/analytics/ga'
 import { track } from '@/lib/analytics/track'
-import { CHECKOUT_ROWS, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
+import { useCatalog } from '@/components/CatalogProvider'
+import { checkoutRows, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
 import { clearCheckoutSession } from '@/lib/checkoutSession'
 import { price, useCurrency } from '@/lib/currency'
-import { MODULE_ROWS, type ModuleKey } from '@/lib/plans'
+import type { ModuleKey } from '@/lib/plans'
 import { lms } from '@/lib/site'
 
 /**
@@ -91,6 +92,7 @@ export function ThankYou() {
 
   // Above the bail-outs below: hooks cannot run conditionally.
   const currency = useCurrency()
+  const catalog = useCatalog()
 
   if (!order) {
     return (
@@ -152,7 +154,7 @@ export function ThankYou() {
 
   // Paid. `provisioned` means the LMS has the account and has sent the mail;
   // `paid` means it is still being set up — the steps are the same either way.
-  const rows = CHECKOUT_ROWS.filter((row) => order.items.includes(row.key))
+  const rows = checkoutRows(catalog).filter((row) => order.items.includes(row.key))
   const one = rows.length === 1
   const ready = order.status === 'provisioned'
   // Claude Playbooks and the AI Library are PDFs sent by mail, not courses on
@@ -308,7 +310,8 @@ export function ThankYou() {
  */
 function NextUp({ bought, email }: { bought: CheckoutItem[]; email: string }) {
   const [picked, setPicked] = useState<ModuleKey[]>([])
-  const remaining = isAllAccess(bought) ? [] : MODULE_ROWS.filter((row) => !bought.includes(row.key))
+  const { modules } = useCatalog()
+  const remaining = isAllAccess(bought) ? [] : modules.filter((row) => !bought.includes(row.key))
 
   if (remaining.length === 0) return null
 

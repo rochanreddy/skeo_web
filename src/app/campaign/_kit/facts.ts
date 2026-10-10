@@ -1,3 +1,4 @@
+import { offerOf, savePctOf, type Catalog } from '@/lib/catalog'
 import { get, inr, learn, offer, savePct } from '@/lib/earlyAccess'
 import { testimonials } from '@/lib/content'
 
@@ -13,11 +14,22 @@ import { testimonials } from '@/lib/content'
 
 export { inr, offer, savePct }
 
-export const price = inr(offer.price)
-export const was = inr(offer.was)
-
-/** "10 Oct" — the real deadline, as a date anyone can read. */
-export const endsOn = new Date(offer.endsAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' })
+/**
+ * The live figures — price, anchor, saving, deadline — from the catalog the
+ * page is rendered with, so a variant follows a price change in Sanity exactly
+ * as the main campaign page does. The constants elsewhere in this file are
+ * copy, and stay code.
+ */
+export function liveFacts(c: Catalog) {
+  const o = offerOf(c)
+  return {
+    price: inr(o.price),
+    was: inr(o.was),
+    savePct: savePctOf(c),
+    /** "10 Oct" — the real deadline, as a date anyone can read. */
+    endsOn: new Date(o.endsAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }),
+  }
+}
 
 export const product = 'Everything AI'
 

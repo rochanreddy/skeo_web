@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { offer } from '@/lib/earlyAccess'
+import { useCatalog } from '@/components/CatalogProvider'
 
 /**
  * Days, hours, minutes, seconds to offer.endsAt — the real deadline, the same
@@ -23,7 +23,7 @@ function parts(msLeft: number) {
  * reads "This offer has ended" — not "98% OFF ends in … has ended".
  */
 export function Countdown({ offer: offerText, endsIn, ended }: { offer: string; endsIn: string; ended: string }) {
-  const end = Date.parse(offer.endsAt)
+  const end = Date.parse(useCatalog().campaign.endsAt)
   const [left, setLeft] = useState<number | null>(null)
 
   useEffect(() => {

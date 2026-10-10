@@ -7,7 +7,9 @@ import { Included } from '@/components/sections/Included'
 import { JobBoard } from '@/components/sections/JobBoard'
 import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { opportunities, testimonials } from '@/lib/content'
-import { build, certificate, faq, inr, jobs, learn, mentors, offer, pricing, reviews, savePct } from '@/lib/earlyAccess'
+import { offerOf, savePctOf } from '@/lib/catalog'
+import { getCatalog } from '@/lib/cms'
+import { build, certificate, faq as faqCode, inr, jobs, learn, mentors, pricing as pricingCode, reviews } from '@/lib/earlyAccess'
 import { FaqList } from './FaqList'
 import { SeatsLeft } from './Live'
 import { ModuleList } from './ModuleList'
@@ -221,7 +223,14 @@ const initials = (name: string) =>
     .join('')
     .toUpperCase()
 
-export function CampaignSections() {
+export async function CampaignSections() {
+  /* The offer block and the FAQ are editable in Sanity; the rest of this copy
+     is code. Headings stay code-side so an edit cannot unbalance the layout. */
+  const catalog = await getCatalog()
+  const offer = offerOf(catalog)
+  const savePct = savePctOf(catalog)
+  const pricing = { ...pricingCode, ...catalog.campaign.pricing }
+  const faq = { ...faqCode, items: catalog.campaign.faq }
   return (
     <div className="ea-flow">
         {/* Accreditation — the home page's strip */}

@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { PurchaseButton } from '@/components/ActionButton'
-import { inr, offer } from '@/lib/earlyAccess'
+import { useCatalog } from '@/components/CatalogProvider'
+import { offerOf } from '@/lib/catalog'
+import { inr } from '@/lib/earlyAccess'
 import { SeatsLeft } from './Live'
 
 /**
@@ -13,6 +15,8 @@ import { SeatsLeft } from './Live'
  */
 export function StickyCta() {
   const [show, setShow] = useState(false)
+  const catalog = useCatalog()
+  const offer = offerOf(catalog)
 
   useEffect(() => {
     const hero = document.querySelector('.ea-hero-band')
@@ -26,7 +30,7 @@ export function StickyCta() {
     <div className={show ? 'ea-sticky is-shown' : 'ea-sticky'} inert={!show}>
       <div className="ea-sticky-inner">
         <p>
-          <span className="ea-sticky-plan">Everything AI · Early Access</span>
+          <span className="ea-sticky-plan">{catalog.campaign.pricing.plan}</span>
           <span className="ea-sticky-price">
             <strong>{inr(offer.price)}</strong>
             <s>{inr(offer.was)}</s>
