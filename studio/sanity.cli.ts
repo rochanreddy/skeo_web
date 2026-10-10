@@ -5,4 +5,5 @@ import { dataset, projectId } from './env'
 export default defineCliConfig({
   api: { projectId, dataset },
   studioHost: 'skeo',
+  deployment: { appId: 'h50b4rf7fbeke6wffragkmjp' },
 })

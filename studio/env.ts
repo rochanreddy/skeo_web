@@ -6,5 +6,5 @@
  *
  * The website reads the same project from SANITY_PROJECT_ID (see src/lib/cms).
  */
-export const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'REPLACE_WITH_PROJECT_ID'
+export const projectId = process.env.SANITY_STUDIO_PROJECT_ID || '2f5ib3fj'
 export const dataset = process.env.SANITY_STUDIO_DATASET || 'production'

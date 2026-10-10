@@ -39,29 +39,23 @@ ignored for that field only — the site keeps the code's value and logs
 - The end date must be a real date.
 - Lists can't be empty, and have a maximum length so the layout holds.
 
-## One-time setup
+## Setup
 
-The code is ready. These steps need a Sanity account with admin rights on
-the menler organisation (team@menler.in does not currently have permission to
-create projects).
+Done: project **skeoai** (`2f5ib3fj`, organisation `ooek7cy0a`, owned by
+admin@skeoai.com), public `production` dataset, schema deployed, seeded with
+the site's prices and copy, Studio deployed to https://skeo.sanity.studio.
 
-1. **Create the project.** At https://www.sanity.io/manage → menler organisation →
-   *Create project*, name it `skeo`, dataset `production`, and set the dataset
-   to **Public** (the site reads published content without a token — drafts stay
-   private either way). Copy the project ID.
-2. **Put the project ID in two places:**
-   - `studio/env.ts` — replace `REPLACE_WITH_PROJECT_ID`.
-   - Vercel → skeo_web → Settings → Environment Variables: `SANITY_PROJECT_ID`,
-     then redeploy.
-3. **Studio.** Sanity 6 needs **Node 22.12+**. This machine has Node 20, so either
-   upgrade Node or prefix commands with `npx -y -p node@22`. In `studio/`:
-   ```
-   npx sanity login
-   npm run deploy-schema
-   npm run seed          # fills Sanity with today's prices and copy
-   npm run deploy        # publishes https://skeo.sanity.studio
-   ```
-   Invite editors under sanity.io/manage → skeo → Members.
+Still to do:
+
+1. **Vercel** → skeo_web → Settings → Environment Variables:
+   `SANITY_PROJECT_ID` = `2f5ib3fj`, then redeploy. Until this is set the site
+   uses the prices in the code and ignores Sanity.
+2. **Editors**: sanity.io/manage → skeoai → Members → Invite.
+3. **Studio commands** need Node 22.12+. This machine runs Node 20, so in
+   `studio/` prefix them with `npx -y -p node@22 node node_modules/sanity/bin/sanity`
+   (e.g. `… deploy`, `… schema deploy`, `… exec scripts/seed.ts --with-user-token`).
+   Do not add an `engines` field to studio/package.json: this machine's nvm
+   reads it and tries to switch to a Node version that is not installed.
 4. **Instant updates (optional but recommended).** Add a Vercel env var
    `SANITY_REVALIDATE_SECRET` (any random string of 16+ characters) and redeploy. Then
    at sanity.io/manage → skeo → API → Webhooks → *Create webhook*:
