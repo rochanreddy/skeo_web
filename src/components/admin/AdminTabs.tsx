@@ -746,3 +746,119 @@ export function LeadsTab() {
     </section>
   )
 }
+
+/* ── Errors ──────────────────────────────────────────────────────────────────
+   Failures buyers hit while verifying or paying, reported by the page itself
+   (src/lib/friendlyError). No names or contact details — only which step
+   failed, how, and where. */
+
+type ErrorSummary = { stage: string; code: string; count: number; last: string }
+type ErrorRow = { id: string; stage: string; code: string; message: string; status: number | null; page: string; createdAt: string }
+
+const STAGE_LABELS: Record<string, string> = {
+  verify: 'Code verification',
+  order: 'Starting payment',
+  payment: 'Opening payment page',
+}
+const stageLabel = (s: string) => STAGE_LABELS[s] ?? s
+const errorWhen = (d: string) =>
+  new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })
+
+export function ErrorsTab() {
+  const [data, setData] = useState<{ last7Days: ErrorSummary[]; latest: ErrorRow[] } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const load = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/client-errors', { cache: 'no-store' })
+      if (res.status === 401) {
+        window.location.href = '/admin/login'
+        return
+      }
+      const body = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; last7Days?: ErrorSummary[]; latest?: ErrorRow[] }
+      if (!body.ok) throw new Error(body.error || `Could not load (${res.status}).`)
+      setData({ last7Days: body.last7Days ?? [], latest: body.latest ?? [] })
+      setError(null)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not load.')
+    }
+  }, [])
+  useEffect(() => {
+    void load()
+  }, [load])
+
+  if (error) return <p className="admin-notice is-error">{error}</p>
+  if (!data) return <p className="admin-empty">Loading errors…</p>
+
+  return (
+    <section className="panel panel-wide">
+      <header className="panel-head">
+        <div>
+          <h2>Errors</h2>
+          <p>What buyers ran into while verifying or paying — the last 7 days by kind, then the latest one by one.</p>
+        </div>
+        <button type="button" className="admin-btn admin-btn-quiet" onClick={() => void load()}>
+          Refresh
+        </button>
+      </header>
+
+      {data.last7Days.length === 0 ? (
+        <p className="admin-empty">No errors in the last 7 days.</p>
+      ) : (
+        <div className="table-scroll">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th>Kind</th>
+                <th>Count</th>
+                <th>Last seen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.last7Days.map((k) => (
+                <tr key={`${k.stage}-${k.code}`}>
+                  <td>{stageLabel(k.stage)}</td>
+                  <td>{k.code}</td>
+                  <td>
+                    <b>{k.count}</b>
+                  </td>
+                  <td>{errorWhen(k.last)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {data.latest.length > 0 && (
+        <div className="table-scroll" style={{ marginTop: 20 }}>
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>When</th>
+                <th>Step</th>
+                <th>Kind</th>
+                <th>Page</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.latest.map((r) => (
+                <tr key={r.id}>
+                  <td>{errorWhen(r.createdAt)}</td>
+                  <td>{stageLabel(r.stage)}</td>
+                  <td>
+                    {r.code}
+                    {r.status ? ` (${r.status})` : ''}
+                  </td>
+                  <td>{r.page}</td>
+                  <td>{r.message}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  )
+}

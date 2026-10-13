@@ -6,6 +6,7 @@ import { Modal, useDialogId } from './Modal'
 import { track } from '@/lib/analytics/track'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
 import { verifySmsOtp } from '@/lib/amplifeedOtp'
+import { friendlyError, reportError } from '@/lib/friendlyError'
 import type { CheckoutItem } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 
@@ -85,12 +86,10 @@ export function VerifyModal({ modules, onClose }: { modules: CheckoutItem[]; onC
     } catch (err) {
       setBusy(false)
       // Cancelling the provider's dialog rejects too, so this is not always an
-      // error worth alarming about — it is worded as something to retry.
-      setFailure(
-        err instanceof Error && err.message
-          ? err.message
-          : 'Verification did not complete. Please try again.',
-      )
+      // error worth alarming about — friendlyError words it as something to retry.
+      const f = friendlyError(err, 'verify')
+      reportError('verify', err, f)
+      setFailure(f.message)
       return
     }
 
@@ -186,7 +185,7 @@ export function VerifyModal({ modules, onClose }: { modules: CheckoutItem[]; onC
 
         <button type="submit" className="button modal-submit full" disabled={busy}>
           <span className="btn-label">
-            {leaving ? 'Opening checkout…' : busy ? 'Verifying…' : 'Send code'}
+            {leaving ? 'Opening checkout…' : busy ? 'Verifying…' : failure ? 'Try again' : 'Send code'}
           </span>
           <span className={busy ? 'spinner' : ''} aria-hidden="true">
             {busy ? '' : '→'}

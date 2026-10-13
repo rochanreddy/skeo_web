@@ -6248,6 +6248,25 @@ details p {
   font-weight: 700;
   color: #d64545;
 }
+.checkout-error p {
+  margin: 0;
+  line-height: 1.45;
+}
+/* Same red as the message, so the two read as one notice. */
+.checkout-retry {
+  margin-top: 8px;
+  padding: 7px 14px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.checkout-retry:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 
 /* Two claims, both taken from the module's own pricing copy. */
 .checkout-assurances {

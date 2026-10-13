@@ -1,6 +1,7 @@
 import type { CheckoutItem } from '@/lib/checkoutItems'
 import type { CheckoutContact } from '@/lib/checkoutSession'
 import { sessionId, visitorId } from '@/lib/analytics/track'
+import { apiError, friendlyError, reportError, type Stage } from '@/lib/friendlyError'
 
 /**
  * Paying, from the browser's side: ask our server for an order, then hand the
@@ -13,7 +14,15 @@ import { sessionId, visitorId } from '@/lib/analytics/track'
  * in a browser into a free account.
  */
 
-type StartResult = { ok: true } | { ok: false; error: string }
+/* `retry` says whether pressing Pay again can help: yes for a dropped
+   connection or a slow server, no for "Early Access has ended". */
+type StartResult = { ok: true } | { ok: false; error: string; retry: boolean }
+
+function failed(stage: Stage, err: unknown): StartResult {
+  const f = friendlyError(err, stage)
+  reportError(stage, err, f)
+  return { ok: false, error: f.message, retry: f.retry }
+}
 
 type CashfreeCheckout = { checkout: (opts: { paymentSessionId: string; redirectTarget?: '_self' | '_blank' }) => Promise<unknown> }
 declare global {
@@ -40,19 +49,21 @@ function loadSdk(): Promise<void> {
 }
 
 export async function startPayment(order: { items: CheckoutItem[]; contact: CheckoutContact }): Promise<StartResult> {
-  let session: { paymentSessionId?: string; mode?: 'sandbox' | 'production'; error?: string }
+  let res: Response
   try {
-    const res = await fetch('/api/checkout/order', {
+    res = await fetch('/api/checkout/order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...order, visitorId: visitorId(), sessionId: sessionId() }),
+      signal: AbortSignal.timeout(30_000),
     })
-    session = await res.json()
-    if (!res.ok || !session.paymentSessionId) {
-      return { ok: false, error: session.error || 'Could not start the payment. Please try again.' }
-    }
-  } catch {
-    return { ok: false, error: 'Could not reach skeo. Check your connection and try again.' }
+  } catch (err) {
+    const timedOut = err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError')
+    return failed('order', apiError(timedOut ? 'The server took too long to respond.' : 'Could not reach skeo.', { kind: timedOut ? 'timeout' : 'network' }))
+  }
+  const session = (await res.json().catch(() => ({}))) as { paymentSessionId?: string; mode?: 'sandbox' | 'production'; error?: string }
+  if (!res.ok || !session.paymentSessionId) {
+    return failed('order', apiError(session.error || 'Could not start the payment.', { kind: 'http', status: res.ok ? 502 : res.status }))
   }
 
   try {
@@ -63,6 +74,6 @@ export async function startPayment(order: { items: CheckoutItem[]; contact: Chec
     await cashfree.checkout({ paymentSessionId: session.paymentSessionId, redirectTarget: '_self' })
     return { ok: true }
   } catch (err) {
-    return { ok: false, error: err instanceof Error ? err.message : 'The payment page did not open. Please try again.' }
+    return failed('payment', err)
   }
 }

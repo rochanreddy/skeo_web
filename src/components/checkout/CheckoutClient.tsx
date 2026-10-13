@@ -65,7 +65,7 @@ export function CheckoutClient() {
   const router = useRouter()
   const [session, setSession] = useState<CheckoutSession | null>(null)
   const [paying, setPaying] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<{ message: string; retry: boolean } | null>(null)
   const [confirmLeave, setConfirmLeave] = useState(false)
   const leaveTitleId = useId()
 
@@ -158,7 +158,7 @@ export function CheckoutClient() {
     const result = await startPayment({ items: session!.modules, contact: session!.contact })
     if (!result.ok) {
       setPaying(false)
-      setError(result.error)
+      setError({ message: result.error, retry: result.retry })
     }
   }
 
@@ -307,9 +307,14 @@ export function CheckoutClient() {
           </button>
 
           {error && (
-            <p className="checkout-error" role="alert">
-              {error}
-            </p>
+            <div className="checkout-error" role="alert">
+              <p>{error.message}</p>
+              {error.retry && (
+                <button type="button" className="checkout-retry" onClick={() => void pay()} disabled={paying}>
+                  Try again
+                </button>
+              )}
+            </div>
           )}
 
           {/* Both claims come from the tool's own pricing copy — nothing here
