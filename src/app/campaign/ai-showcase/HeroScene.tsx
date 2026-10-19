@@ -25,7 +25,7 @@ const TOOLS = [
   { name: 'Claude', mark: 'claude', x: 92, y: 288, glow: '#e8875a' },
   { name: 'ChatGPT', mark: 'chatgpt', x: 58, y: 405, glow: '#9ff0d0' },
   { name: 'Cursor', mark: 'cursor', x: 128, y: 535, glow: '#b9b5ff' },
-  { name: 'Gemini', mark: 'gemini', x: 505, y: 175, glow: '#7aa8ff' },
+  { name: 'Grok', mark: 'grok', x: 505, y: 175, glow: '#e4e4e7' },
   { name: 'n8n', mark: 'n8n', x: 548, y: 340, glow: '#ff7a9a' },
   { name: 'Lovable', mark: 'lovable', x: 486, y: 500, glow: '#ff9ad0' },
 ] as const
@@ -37,7 +37,7 @@ const pct = (n: number) => `${(n / 600) * 100}%`
 
 export function HeroScene({ photo }: { photo?: string }) {
   return (
-    <div className="vx-scene" role="img" aria-label="A learner at a laptop, with Claude, ChatGPT, Gemini, n8n, Lovable and Cursor glowing around them">
+    <div className="vx-scene" role="img" aria-label="A learner at a laptop, with Claude, ChatGPT, Grok, n8n, Lovable and Cursor glowing around them">
       <svg className="vx-scene-svg" viewBox="0 0 600 600" aria-hidden="true">
         <defs>
           <radialGradient id="vxs-bg" cx="50%" cy="42%" r="70%">

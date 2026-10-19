@@ -2,7 +2,7 @@
  * One short looping scene per tool, played inside the stage panel — each one
  * showing what that tool is actually for: a workflow wiring itself up (n8n),
  * code being written (Claude), a conversation (ChatGPT), images and video
- * being generated (Gemini) and a site assembling itself (Lovable).
+ * being generated (Grok) and a site assembling itself (Lovable).
  *
  * Everything is inline SVG driven by keyframes in globals.css (`.scene-*`), so
  * there is no animation library and reduced-motion visitors land on the final
@@ -15,7 +15,7 @@
  */
 
 import type { CSSProperties } from 'react'
-import { CLAUDE_PATH, GEMINI_PATH, LovableMark, OPENAI_PATH } from './marks'
+import { CLAUDE_PATH, GROK_PATH, LovableMark, OPENAI_PATH } from './marks'
 
 const step = (n: number) => ({ '--step': n }) as CSSProperties
 
@@ -231,8 +231,8 @@ export function ChatGptScene() {
   )
 }
 
-/** Gemini: one prompt, two boxes — a still being generated, and a clip. */
-export function GeminiScene() {
+/** Grok: one prompt, two boxes — a still being generated, and a clip. */
+export function GrokScene() {
   /* The mosaic that resolves into the still — a coarse 3x3 that fades out as
      the finished picture fades in underneath it. */
   const mosaic = Array.from({ length: 9 }, (_, i) => ({
@@ -241,35 +241,35 @@ export function GeminiScene() {
     i,
   }))
   return (
-    <svg viewBox="0 0 120 120" className="scene-art scene-gemini" aria-hidden="true">
+    <svg viewBox="0 0 120 120" className="scene-art scene-grok" aria-hidden="true">
       <defs>
-        <linearGradient id="scene-gemini-grad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#4285f4" />
-          <stop offset="55%" stopColor="#9b72f2" />
-          <stop offset="100%" stopColor="#d96570" />
+        <linearGradient id="scene-grok-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#18181b" />
+          <stop offset="55%" stopColor="#3f3f46" />
+          <stop offset="100%" stopColor="#71717a" />
         </linearGradient>
-        <linearGradient id="scene-gemini-scan" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id="scene-grok-scan" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#fff" stopOpacity="0" />
           <stop offset="55%" stopColor="#fff" stopOpacity="0.75" />
           <stop offset="100%" stopColor="#fff" stopOpacity="0" />
         </linearGradient>
-        <clipPath id="scene-gemini-still">
+        <clipPath id="scene-grok-still">
           <rect x="12" y="44" width="45" height="60" rx="6" />
         </clipPath>
-        <clipPath id="scene-gemini-clip">
+        <clipPath id="scene-grok-clip">
           <rect x="63" y="44" width="45" height="60" rx="6" />
         </clipPath>
       </defs>
 
       <g className="prompt">
         <rect className="bar" x="12" y="14" width="96" height="18" rx="9" />
-        <path className="spark" d={GEMINI_PATH} transform="translate(23 23) scale(0.42) translate(-12 -12)" />
+        <path className="spark" d={GROK_PATH} transform="translate(23 23) scale(0.42) translate(-12 -12)" />
         <rect className="typed" x="34" y="20.5" width="58" height="5" rx="2.5" />
       </g>
 
       {/* Left box: a still being generated. */}
       <g className="still" style={step(0)}>
-        <g clipPath="url(#scene-gemini-still)">
+        <g clipPath="url(#scene-grok-still)">
           <g className="photo">
             <rect x="12" y="44" width="45" height="60" />
             <circle className="sun" cx="44" cy="60" r="5.5" />
@@ -285,7 +285,7 @@ export function GeminiScene() {
 
       {/* Right box: a clip being generated — frames land, then it plays. */}
       <g className="clip" style={step(1)}>
-        <g clipPath="url(#scene-gemini-clip)">
+        <g clipPath="url(#scene-grok-clip)">
           <rect className="plate" x="63" y="44" width="45" height="60" />
           <path className="ridge" d="M63 104V86l12-10 10 9 7-7 16 15v11z" />
           {[0, 1, 2, 3].map((i) => (

@@ -101,7 +101,7 @@ export type ModuleRow = {
     | 'claudeCode'
     | 'claudeAutomations'
     | 'chatgpt'
-    | 'gemini'
+    | 'grok'
     | 'n8n'
     | 'lovable'
   )[]
@@ -130,7 +130,7 @@ export const MODULE_ROWS: ModuleRow[] = [
     title: 'AI Library',
     subtitle: 'Ready-to-use resources, workflows, prompts and guides to help you get more from AI',
     amount: 99,
-    marks: ['claude', 'chatgpt', 'gemini', 'n8n'],
+    marks: ['claude', 'chatgpt', 'grok', 'n8n'],
   },
 ]
 
@@ -142,9 +142,9 @@ export const MODULE_ROWS: ModuleRow[] = [
  * would otherwise read as the whole catalogue, and the whole catalogue is the
  * reason to come back. */
 export const COMING_SOON = {
-  title: 'ChatGPT, Gemini, n8n, Lovable and more',
+  title: 'ChatGPT, Grok, n8n, Lovable and more',
   subtitle: 'We’re adding more of the tools you need to build your AI-native toolkit',
-  marks: ['chatgpt', 'gemini', 'n8n', 'lovable'],
+  marks: ['chatgpt', 'grok', 'n8n', 'lovable'],
 } as const
 
 /** The base currency, for the internal figures — orders, revenue, averages.

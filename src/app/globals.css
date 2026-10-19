@@ -1252,36 +1252,36 @@ h2 em {
   }
 }
 
-/* Gemini — one prompt, two boxes: a still generating, and a clip */
-.scene-gemini .bar {
-  fill: #f5f3fb;
-  stroke: #e8e3f4;
+/* Grok — one prompt, two boxes: a still generating, and a clip */
+.scene-grok .bar {
+  fill: #f4f4f5;
+  stroke: #e4e4e7;
   stroke-width: 1.2;
 }
 
-.scene-gemini .spark {
-  fill: url(#scene-gemini-grad);
+.scene-grok .spark {
+  fill: #71717a;
   transform-box: fill-box;
   transform-origin: center;
   animation: twinkle 3.4s ease-in-out infinite;
 }
 
-.scene-gemini .typed {
-  fill: #d9d2e8;
+.scene-grok .typed {
+  fill: #d4d4d8;
   transform-box: fill-box;
   transform-origin: left center;
   animation: type-line 5s ease-in-out infinite;
 }
 
-.scene-gemini .still,
-.scene-gemini .clip {
+.scene-grok .still,
+.scene-grok .clip {
   transform-box: fill-box;
   transform-origin: center;
   animation: tile-in 5.6s ease-in-out infinite both;
   animation-delay: calc(var(--step) * 0.4s);
 }
 
-.scene-gemini .edge {
+.scene-grok .edge {
   fill: none;
   stroke: #fff;
   stroke-width: 1.2;
@@ -1289,35 +1289,35 @@ h2 em {
 }
 
 /* Left box: the mosaic dissolves and the finished still shows through. */
-.scene-gemini .photo rect,
-.scene-gemini .plate {
-  fill: url(#scene-gemini-grad);
+.scene-grok .photo rect,
+.scene-grok .plate {
+  fill: url(#scene-grok-grad);
 }
 
-.scene-gemini .photo .sun {
+.scene-grok .photo .sun {
   fill: #fff;
   opacity: 0.9;
 }
 
-.scene-gemini .ridge {
+.scene-grok .ridge {
   fill: #fff;
   opacity: 0.42;
 }
 
-.scene-gemini .photo {
+.scene-grok .photo {
   animation: still-develop 5.6s ease-in-out infinite;
 }
 
-.scene-gemini .cell {
-  fill: url(#scene-gemini-grad);
+.scene-grok .cell {
+  fill: url(#scene-grok-grad);
   stroke: #fff;
   stroke-width: 0.8;
   animation: mosaic-out 5.6s ease-in-out infinite;
   animation-delay: calc(var(--step) * 0.09s);
 }
 
-.scene-gemini .scan {
-  fill: url(#scene-gemini-scan);
+.scene-grok .scan {
+  fill: url(#scene-grok-scan);
   animation: scan-sweep 5.6s ease-in-out infinite;
 }
 
@@ -1362,7 +1362,7 @@ h2 em {
 }
 
 /* Right box: frames land along the top, then the clip plays through. */
-.scene-gemini .frame {
+.scene-grok .frame {
   fill: #fff;
   animation: frame-land 5.6s ease-in-out infinite both;
   animation-delay: calc(var(--step) * 0.28s);
@@ -1379,21 +1379,21 @@ h2 em {
   }
 }
 
-.scene-gemini .play-bg {
+.scene-grok .play-bg {
   fill: #fff;
   opacity: 0.92;
 }
 
-.scene-gemini .play {
-  fill: #6a4fd0;
+.scene-grok .play {
+  fill: #18181b;
 }
 
-.scene-gemini .track {
+.scene-grok .track {
   fill: #fff;
   opacity: 0.4;
 }
 
-.scene-gemini .fill {
+.scene-grok .fill {
   fill: #fff;
   transform-box: fill-box;
   transform-origin: left center;

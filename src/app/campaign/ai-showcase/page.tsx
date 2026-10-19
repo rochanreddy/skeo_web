@@ -67,7 +67,7 @@ export default async function ShowcasePage() {
                 <br />
                 <em>For just {price}.</em>
               </h1>
-              <p className="vx-lede">ChatGPT, Claude, Gemini &amp; more — from zero to real projects. No coding.</p>
+              <p className="vx-lede">ChatGPT, Claude, Grok &amp; more — from zero to real projects. No coding.</p>
               <ul className="vx-hero-ticks">
                 <li>Beginner friendly</li>
                 <li>Certificate</li>

@@ -22,7 +22,7 @@ import { promiseStats } from '@/lib/content'
 
 /* Straight from the Included section, so the two lists cannot disagree about
    which tools are taught. */
-const TOOLS = ['Claude', 'ChatGPT', 'Gemini', 'n8n', 'Lovable']
+const TOOLS = ['Claude', 'ChatGPT', 'Grok', 'n8n', 'Lovable']
 
 const WHAT_A_SEAT_INCLUDES = [
   ['Every tool, in order', 'Each one builds on the last, so the sequence teaches something the tools cannot teach separately.'],

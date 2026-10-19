@@ -164,6 +164,6 @@ export const siteCard = () =>
     eyebrow: 'Learn AI by building',
     title: 'Master the AI tools',
     accent: 'that matter.',
-    lede: 'Claude, ChatGPT, Gemini, n8n, Lovable and more — short challenges, real projects, verified certificates.',
+    lede: 'Claude, ChatGPT, Grok, n8n, Lovable and more — short challenges, real projects, verified certificates.',
     chips: ['Real projects', 'Certificates', 'Job board'],
   })

@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     'learn AI tools',
     'Claude course',
     'ChatGPT course',
-    'Gemini',
+    'Grok',
     'n8n automation course',
     'Lovable',
     'AI certification',

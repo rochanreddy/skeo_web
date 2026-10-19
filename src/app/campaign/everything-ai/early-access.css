@@ -2312,9 +2312,8 @@
     right: 0;
   }
 
-  /* Hidden, not display:none: the Gemini mark here holds the gradient every
-     other Gemini mark on the page points at, and a display:none svg takes its
-     gradient with it — the logo on the pass went blank. */
+  /* Hidden, not display:none: a display:none svg takes any gradient it
+     defines with it, and other marks on the page can point at those. */
   .ea-float-3,
   .ea-float-4 {
     visibility: hidden;

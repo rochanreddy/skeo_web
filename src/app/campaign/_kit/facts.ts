@@ -35,7 +35,7 @@ export const product = 'Everything AI'
 
 /** One sentence: what this is. */
 export const whatItIs =
-  'Everything AI is an online program by skeo that teaches you to use AI tools — ChatGPT, Claude, Gemini and 50+ more — for real work, step by step, in plain language.'
+  'Everything AI is an online program by skeo that teaches you to use AI tools — ChatGPT, Claude, Grok and 50+ more — for real work, step by step, in plain language.'
 
 /** What is included, as the main campaign page lists it. */
 export const included = get.items.map((i) => ({ title: i.title, body: i.body }))

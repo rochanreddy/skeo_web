@@ -1,4 +1,4 @@
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { hasToolLogo, ToolLogoMark } from '../everything-ai/ToolLogos'
 
 /**
@@ -12,8 +12,8 @@ export function ToolMark({ name, mark, className, id = '' }: { name: string; mar
       return <ClaudeMark className={className} />
     case 'chatgpt':
       return <ChatGptMark className={`${className ?? ''} kit-mono`} />
-    case 'gemini':
-      return <GeminiMark className={className} />
+    case 'grok':
+      return <GrokMark className={`${className ?? ''} kit-mono`} />
     case 'n8n':
       return <N8nMark className={className} />
     case 'lovable':

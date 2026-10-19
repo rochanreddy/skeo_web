@@ -3,7 +3,7 @@
 import Image, { type StaticImageData } from 'next/image'
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { Reveal } from '@/components/Reveal'
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import anthropic from '@/assets/accreditation/anthropic.webp'
 import sarvam from '@/assets/accreditation/sarvam-cut.png'
 import msme from '@/assets/accreditation/msme.webp'
@@ -45,8 +45,8 @@ const CERT_TOOLS = [
     code: 'GP',
   },
   {
-    name: 'Gemini',
-    Mark: GeminiMark,
+    name: 'Grok',
+    Mark: GrokMark,
     accent: '#4285f4',
     code: 'GM',
   },

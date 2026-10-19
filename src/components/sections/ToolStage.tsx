@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState, type CSSProperties, type ReactElement } from 'react'
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
-import { ChatGptScene, ClaudeScene, GeminiScene, LovableScene, N8nScene } from '@/components/tools/scenes'
+import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptScene, ClaudeScene, GrokScene, LovableScene, N8nScene } from '@/components/tools/scenes'
 
 /**
  * Hero visual: five tool cards ringed around a panel — exactly two cards wide
@@ -55,12 +55,12 @@ const TOOLS: Tool[] = [
     floatDelay: '-2.8s',
   },
   {
-    id: 'gemini',
-    name: 'Gemini',
+    id: 'grok',
+    name: 'Grok',
     blurb: 'Research at speed',
-    tint: '#7d6cf0',
-    mark: GeminiMark,
-    scene: GeminiScene,
+    tint: '#52525b',
+    mark: GrokMark,
+    scene: GrokScene,
     rotate: '7deg',
     floatDelay: '-4.2s',
   },

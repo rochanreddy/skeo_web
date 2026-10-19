@@ -19,7 +19,7 @@ import {
   ClaudeCodeMark,
   ClaudeCoworkMark,
   ClaudeMark,
-  GeminiMark,
+  GrokMark,
   LovableMark,
   N8nMark,
 } from '@/components/tools/marks'
@@ -30,7 +30,7 @@ const MARKS = {
   claudeCode: ClaudeCodeMark,
   claudeAutomations: ClaudeAutomationsMark,
   chatgpt: ChatGptMark,
-  gemini: GeminiMark,
+  grok: GrokMark,
   n8n: N8nMark,
   lovable: LovableMark,
 }

@@ -59,7 +59,7 @@ const INCLUDED = [
   {
     icon: 'tools',
     title: 'AI Learning System',
-    detail: 'Claude, ChatGPT, Gemini, n8n, Lovable and more — taught in order, so each tool builds on the last.',
+    detail: 'Claude, ChatGPT, Grok, n8n, Lovable and more — taught in order, so each tool builds on the last.',
   },
   {
     icon: 'community',

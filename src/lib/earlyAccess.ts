@@ -96,7 +96,7 @@ export const learn = {
     },
     {
       title: 'AI for Research & Writing',
-      learn: ['Claude Projects', 'Gemini', 'Deep research', 'Notion AI'],
+      learn: ['Claude Projects', 'Grok', 'Deep research', 'Notion AI'],
       build: 'Content Engine',
     },
     {
@@ -131,7 +131,7 @@ export const learn = {
   tools: [
     { name: 'Claude', mark: 'claude' },
     { name: 'ChatGPT', mark: 'chatgpt' },
-    { name: 'Gemini', mark: 'gemini' },
+    { name: 'Grok', mark: 'grok' },
     { name: 'n8n', mark: 'n8n' },
     { name: 'Lovable', mark: 'lovable' },
     { name: 'Antigravity', mark: 'antigravity' },

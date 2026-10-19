@@ -5,7 +5,7 @@ import { CertificatePicker } from '@/components/CertificatePicker'
 import { Accreditation } from '@/components/sections/Accreditation'
 import { Included } from '@/components/sections/Included'
 import { JobBoard } from '@/components/sections/JobBoard'
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { opportunities, testimonials } from '@/lib/content'
 import { offerOf, savePctOf } from '@/lib/catalog'
 import { getCatalog } from '@/lib/cms'
@@ -64,8 +64,8 @@ function ToolLogo({ name, mark }: { name: string; mark?: string }) {
       return <ClaudeMark className="ea-tool-mark" />
     case 'chatgpt':
       return <ChatGptMark className="ea-tool-mark ea-mono" />
-    case 'gemini':
-      return <GeminiMark className="ea-tool-mark" />
+    case 'grok':
+      return <GrokMark className="ea-tool-mark ea-mono" />
     case 'n8n':
       return <N8nMark className="ea-tool-mark" />
     case 'lovable':
@@ -116,7 +116,7 @@ function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' }) {
       <div className="ea-deco ea-deco-marks" aria-hidden="true">
         <ClaudeMark className="dm dm-1" />
         <N8nMark className="dm dm-2" />
-        <GeminiMark className="dm dm-3" />
+        <GrokMark className="dm dm-3" />
         <ChatGptMark className="dm dm-4" />
         <LovableMark className="dm dm-5" idPrefix="ea-deco-lovable" />
       </div>
@@ -136,7 +136,7 @@ function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' }) {
           <code>
             <u>{'/* your stack */'}</u>{'\n'}
             tools: [<i>&quot;Claude&quot;</i>, <i>&quot;n8n&quot;</i>,{'\n'}
-            {'        '}<i>&quot;Gemini&quot;</i>, <i>&quot;Lovable&quot;</i>]
+            {'        '}<i>&quot;Grok&quot;</i>, <i>&quot;Lovable&quot;</i>]
           </code>
         </pre>
       </div>

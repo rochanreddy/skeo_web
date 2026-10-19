@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { GhostCursor } from '@/components/sections/GhostCursor'
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
 
 /**
  * The Job & Freelancing Board, shown rather than described.
@@ -38,7 +38,7 @@ type Track = {
 const MARKS = {
   claude: ClaudeMark,
   chatgpt: ChatGptMark,
-  gemini: GeminiMark,
+  grok: GrokMark,
   n8n: N8nMark,
   lovable: LovableMark,
 }
@@ -153,7 +153,7 @@ const TRACKS: Track[] = [
     skills: [
       { label: 'Claude', value: 95, mark: 'claude' },
       { label: 'ChatGPT', value: 88, mark: 'chatgpt' },
-      { label: 'Gemini', value: 71, mark: 'gemini' },
+      { label: 'Grok', value: 71, mark: 'grok' },
       { label: 'n8n', value: 62, mark: 'n8n' },
     ],
     roles: FREELANCE_ROLES,
@@ -171,7 +171,7 @@ const TRACKS: Track[] = [
     skills: [
       { label: 'ChatGPT', value: 81, mark: 'chatgpt' },
       { label: 'Claude', value: 74, mark: 'claude' },
-      { label: 'Gemini', value: 69, mark: 'gemini' },
+      { label: 'Grok', value: 69, mark: 'grok' },
       { label: 'n8n', value: 48, mark: 'n8n' },
     ],
     roles: INTERNSHIP_ROLES,

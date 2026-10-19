@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { CampaignSchema } from '@/components/StructuredData'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { ChatGptMark, ClaudeMark, GeminiMark, LovableMark, N8nMark } from '@/components/tools/marks'
+import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { pageMeta } from '@/lib/seo'
 import { offerOf, savePctOf, type Catalog } from '@/lib/catalog'
 import { getCatalog } from '@/lib/cms'
@@ -116,7 +116,7 @@ export default async function EarlyAccessPage() {
                 <N8nMark className="ea-float-mark" />
               </span>
               <span className="ea-float ea-float-3" aria-hidden="true">
-                <GeminiMark className="ea-float-mark" />
+                <GrokMark className="ea-float-mark" />
               </span>
               <span className="ea-float ea-float-4" aria-hidden="true">
                 <LovableMark className="ea-float-mark" idPrefix="ea-float-lovable" />
@@ -140,10 +140,10 @@ export default async function EarlyAccessPage() {
                     </li>
                   ))}
                 </ul>
-                <div className="ea-pass-marks" aria-label="Tools included: Claude, ChatGPT, Gemini, n8n, Lovable and more">
+                <div className="ea-pass-marks" aria-label="Tools included: Claude, ChatGPT, Grok, n8n, Lovable and more">
                   <ClaudeMark className="ea-pass-mark" />
                   <ChatGptMark className="ea-pass-mark ea-pass-mono" />
-                  <GeminiMark className="ea-pass-mark" />
+                  <GrokMark className="ea-pass-mark ea-pass-mono" />
                   <N8nMark className="ea-pass-mark" />
                   <LovableMark className="ea-pass-mark" idPrefix="ea-pass-lovable" />
                   <span className="ea-pass-more">+45</span>

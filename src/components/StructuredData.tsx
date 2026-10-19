@@ -54,7 +54,7 @@ export function SiteSchema() {
             description: site.description,
             email: site.email,
             areaServed: 'Worldwide',
-            knowsAbout: ['Artificial intelligence', 'Claude', 'ChatGPT', 'Gemini', 'n8n', 'Lovable', 'Prompt engineering', 'AI automation'],
+            knowsAbout: ['Artificial intelligence', 'Claude', 'ChatGPT', 'Grok', 'n8n', 'Lovable', 'Prompt engineering', 'AI automation'],
             contactPoint: {
               '@type': 'ContactPoint',
               contactType: 'customer support',

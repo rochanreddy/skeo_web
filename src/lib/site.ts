@@ -32,7 +32,7 @@ export const site = {
   url: 'https://www.skeoai.com',
   tagline: 'Master the AI tools that matter',
   description:
-    'Learn Claude, ChatGPT, Gemini, n8n, Lovable and more by building real projects. Short challenges, verified certificates and a job & freelancing board — from skeo.',
+    'Learn Claude, ChatGPT, Grok, n8n, Lovable and more by building real projects. Short challenges, verified certificates and a job & freelancing board — from skeo.',
   /** The registered company behind the brand, as the Terms and Privacy Policy name it. */
   legalName: 'Menler Learning Systems Private Limited',
   email: 'support@skeoai.com',

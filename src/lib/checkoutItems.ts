@@ -36,14 +36,14 @@ export function checkoutRows(c: Catalog): readonly CheckoutRow[] {
       title: c.plans.member.title,
       subtitle: 'Every tool, every batch — including the ones added later',
       amount: c.plans.member.amount,
-      marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
+      marks: ['claude', 'chatgpt', 'grok', 'n8n', 'lovable'],
     },
     {
       key: 'earlyaccess',
       title: c.plans.earlyaccess.title,
       subtitle: 'Everything in skeo, at the early-access price',
       amount: c.plans.earlyaccess.amount,
-      marks: ['claude', 'chatgpt', 'gemini', 'n8n', 'lovable'],
+      marks: ['claude', 'chatgpt', 'grok', 'n8n', 'lovable'],
     },
   ]
 }
