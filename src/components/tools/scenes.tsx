@@ -1,8 +1,8 @@
 /**
  * One short looping scene per tool, played inside the stage panel — each one
  * showing what that tool is actually for: a workflow wiring itself up (n8n),
- * code being written (Claude), a conversation (ChatGPT), images and video
- * being generated (Grok) and a site assembling itself (Lovable).
+ * code being written (Claude), a conversation (ChatGPT), a live answer
+ * built from posts on X (Grok) and a site assembling itself (Lovable).
  *
  * Everything is inline SVG driven by keyframes in globals.css (`.scene-*`), so
  * there is no animation library and reduced-motion visitors land on the final
@@ -15,7 +15,7 @@
  */
 
 import type { CSSProperties } from 'react'
-import { CLAUDE_PATH, GROK_PATH, LovableMark, OPENAI_PATH } from './marks'
+import { CLAUDE_PATH, GROK_PATH, LovableMark, OPENAI_PATH, X_PATH } from './marks'
 
 const step = (n: number) => ({ '--step': n }) as CSSProperties
 
@@ -231,72 +231,52 @@ export function ChatGptScene() {
   )
 }
 
-/** Grok: one prompt, two boxes — a still being generated, and a clip. */
+/**
+ * Grok: a question answered from what is happening right now. Live posts
+ * stream in, each is read in turn, and they feed a cited answer.
+ */
 export function GrokScene() {
-  /* The mosaic that resolves into the still — a coarse 3x3 that fades out as
-     the finished picture fades in underneath it. */
-  const mosaic = Array.from({ length: 9 }, (_, i) => ({
-    x: 13 + (i % 3) * 14.6,
-    y: 45 + Math.floor(i / 3) * 19.6,
-    i,
-  }))
+  const posts = [0, 1, 2].map((i) => ({ y: 38 + i * 22, i }))
   return (
     <svg viewBox="0 0 120 120" className="scene-art scene-grok" aria-hidden="true">
-      <defs>
-        <linearGradient id="scene-grok-grad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#18181b" />
-          <stop offset="55%" stopColor="#3f3f46" />
-          <stop offset="100%" stopColor="#71717a" />
-        </linearGradient>
-        <linearGradient id="scene-grok-scan" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fff" stopOpacity="0" />
-          <stop offset="55%" stopColor="#fff" stopOpacity="0.75" />
-          <stop offset="100%" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-        <clipPath id="scene-grok-still">
-          <rect x="12" y="44" width="45" height="60" rx="6" />
-        </clipPath>
-        <clipPath id="scene-grok-clip">
-          <rect x="63" y="44" width="45" height="60" rx="6" />
-        </clipPath>
-      </defs>
-
       <g className="prompt">
-        <rect className="bar" x="12" y="14" width="96" height="18" rx="9" />
-        <path className="spark" d={GROK_PATH} transform="translate(23 23) scale(0.42) translate(-12 -12)" />
-        <rect className="typed" x="34" y="20.5" width="58" height="5" rx="2.5" />
+        <rect className="bar" x="12" y="12" width="96" height="18" rx="9" />
+        <g className="spark">
+          <path d={GROK_PATH} transform="translate(21 21) scale(0.42) translate(-12 -12)" />
+        </g>
+        <rect className="typed" x="30" y="18.5" width="52" height="5" rx="2.5" />
+        {/* The live signal: Grok reads X as it happens. */}
+        <circle className="live-ring" cx="99" cy="21" r="2.4" />
+        <circle className="live" cx="99" cy="21" r="2.4" />
       </g>
 
-      {/* Left box: a still being generated. */}
-      <g className="still" style={step(0)}>
-        <g clipPath="url(#scene-grok-still)">
-          <g className="photo">
-            <rect x="12" y="44" width="45" height="60" />
-            <circle className="sun" cx="44" cy="60" r="5.5" />
-            <path className="ridge" d="M12 104V88l11-11 9 9 8-8 17 16v10z" />
+      {/* Left: the live feed, each post read in turn. */}
+      {posts.map(({ y, i }) => (
+        <g key={i} style={step(i)}>
+          <g className="post">
+            <rect className="card" x="12" y={y} width="44" height="18" rx="5" />
+            <circle className={i === 1 ? 'avatar alt' : 'avatar'} cx="20.5" cy={y + 9} r="4.5" />
+            <rect className="line" x="28" y={y + 5} width="23" height="3" rx="1.5" />
+            <rect className="line" x="28" y={y + 10.5} width={i === 2 ? 12 : 17} height="3" rx="1.5" />
+            <rect className="read" x="10.5" y={y - 1.5} width="47" height="21" rx="6.5" />
           </g>
-          {mosaic.map((cell) => (
-            <rect key={cell.i} className="cell" x={cell.x} y={cell.y} width="13.6" height="18.6" style={step(cell.i)} />
-          ))}
-          <rect className="scan" x="12" y="38" width="45" height="12" />
+          <path className="link" d={`M56 ${y + 9}C60 ${y + 9} 60 ${57 + i * 7} 64 ${57 + i * 7}`} />
         </g>
-        <rect className="edge" x="12" y="44" width="45" height="60" rx="6" />
-      </g>
+      ))}
 
-      {/* Right box: a clip being generated — frames land, then it plays. */}
-      <g className="clip" style={step(1)}>
-        <g clipPath="url(#scene-grok-clip)">
-          <rect className="plate" x="63" y="44" width="45" height="60" />
-          <path className="ridge" d="M63 104V86l12-10 10 9 7-7 16 15v11z" />
-          {[0, 1, 2, 3].map((i) => (
-            <rect key={i} className="frame" x={68 + i * 9.5} y="50" width="7" height="4.4" rx="1.6" style={step(i)} />
-          ))}
-        </g>
-        <circle className="play-bg" cx="85" cy="72" r="9" />
-        <path className="play" d="M82 67.4 89.2 72 82 76.6Z" />
-        <rect className="track" x="68" y="95" width="35" height="2.6" rx="1.3" />
-        <rect className="fill" x="68" y="95" width="35" height="2.6" rx="1.3" />
-        <rect className="edge" x="63" y="44" width="45" height="60" rx="6" />
+      {/* Right: the answer, written from those posts, with its sources. */}
+      <g className="answer">
+        <rect className="panel" x="64" y="38" width="44" height="62" rx="6" />
+        <path className="mark" d={GROK_PATH} transform="translate(72 46) scale(0.3) translate(-12 -12)" />
+        {[30, 26, 30, 18].map((w, i) => (
+          <rect key={i} className="ans-line" x="70" y={55 + i * 7} width={w} height="3" rx="1.5" style={step(i)} />
+        ))}
+        {[0, 1].map((i) => (
+          <g key={i} className="chip" style={step(i)}>
+            <rect x={70 + i * 17} y="86" width="14" height="8" rx="4" />
+            <path d={X_PATH} transform={`translate(${77 + i * 17} 90) scale(0.2) translate(-12 -12)`} />
+          </g>
+        ))}
       </g>
     </svg>
   )

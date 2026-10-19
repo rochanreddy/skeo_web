@@ -1252,7 +1252,9 @@ h2 em {
   }
 }
 
-/* Grok — one prompt, two boxes: a still generating, and a clip */
+/* Grok — live posts stream in, are read in turn, and feed a cited answer.
+   One 6.4s loop; every keyframe ends on the finished frame, so reduced
+   motion lands on the complete answer. */
 .scene-grok .bar {
   fill: #f4f4f5;
   stroke: #e4e4e7;
@@ -1263,174 +1265,225 @@ h2 em {
   fill: #71717a;
   transform-box: fill-box;
   transform-origin: center;
-  animation: twinkle 3.4s ease-in-out infinite;
+  animation: grok-spin 6.4s ease-in-out infinite;
 }
 
 .scene-grok .typed {
   fill: #d4d4d8;
   transform-box: fill-box;
   transform-origin: left center;
-  animation: type-line 5s ease-in-out infinite;
+  animation: grok-type 6.4s ease-in-out infinite;
 }
 
-.scene-grok .still,
-.scene-grok .clip {
+.scene-grok .live {
+  fill: #ef4444;
+  animation: grok-live 1.2s ease-in-out infinite;
+}
+
+.scene-grok .live-ring {
+  fill: #ef4444;
   transform-box: fill-box;
   transform-origin: center;
-  animation: tile-in 5.6s ease-in-out infinite both;
-  animation-delay: calc(var(--step) * 0.4s);
+  animation: grok-ring 1.6s ease-out infinite;
 }
 
-.scene-grok .edge {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 1.2;
-  opacity: 0.5;
+.scene-grok .post {
+  animation: grok-post 6.4s ease-out infinite both;
+  animation-delay: calc(var(--step) * 0.3s);
 }
 
-/* Left box: the mosaic dissolves and the finished still shows through. */
-.scene-grok .photo rect,
-.scene-grok .plate {
-  fill: url(#scene-grok-grad);
-}
-
-.scene-grok .photo .sun {
+.scene-grok .card {
   fill: #fff;
-  opacity: 0.9;
+  stroke: #e4e4e7;
+  stroke-width: 1;
 }
 
-.scene-grok .ridge {
-  fill: #fff;
-  opacity: 0.42;
-}
-
-.scene-grok .photo {
-  animation: still-develop 5.6s ease-in-out infinite;
-}
-
-.scene-grok .cell {
-  fill: url(#scene-grok-grad);
-  stroke: #fff;
-  stroke-width: 0.8;
-  animation: mosaic-out 5.6s ease-in-out infinite;
-  animation-delay: calc(var(--step) * 0.09s);
-}
-
-.scene-grok .scan {
-  fill: url(#scene-grok-scan);
-  animation: scan-sweep 5.6s ease-in-out infinite;
-}
-
-@keyframes still-develop {
-  0%,
-  22% {
-    opacity: 0;
-  }
-  55%,
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes mosaic-out {
-  0%,
-  26% {
-    opacity: 1;
-  }
-  52%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes scan-sweep {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  8% {
-    opacity: 1;
-  }
-  52% {
-    transform: translateY(66px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(66px);
-    opacity: 0;
-  }
-}
-
-/* Right box: frames land along the top, then the clip plays through. */
-.scene-grok .frame {
-  fill: #fff;
-  animation: frame-land 5.6s ease-in-out infinite both;
-  animation-delay: calc(var(--step) * 0.28s);
-}
-
-@keyframes frame-land {
-  0%,
-  10% {
-    opacity: 0;
-  }
-  26%,
-  100% {
-    opacity: 0.85;
-  }
-}
-
-.scene-grok .play-bg {
-  fill: #fff;
-  opacity: 0.92;
-}
-
-.scene-grok .play {
+.scene-grok .avatar {
   fill: #18181b;
 }
 
-.scene-grok .track {
-  fill: #fff;
-  opacity: 0.4;
+.scene-grok .avatar.alt {
+  fill: #a1a1aa;
 }
 
-.scene-grok .fill {
+.scene-grok .line {
+  fill: #d4d4d8;
+}
+
+.scene-grok .read {
+  fill: none;
+  stroke: #a1a1aa;
+  stroke-width: 1.4;
+  opacity: 0;
+  animation: grok-read 6.4s ease-in-out infinite;
+  animation-delay: calc(var(--step) * 0.32s);
+}
+
+.scene-grok .link {
+  fill: none;
+  stroke: #a1a1aa;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-dasharray: 30;
+  animation: grok-link 6.4s ease-in-out infinite both;
+  animation-delay: calc(var(--step) * 0.32s);
+}
+
+.scene-grok .answer {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: grok-card 6.4s ease-out infinite both;
+}
+
+.scene-grok .panel {
+  fill: #18181b;
+  stroke: #52525b;
+  stroke-width: 1;
+}
+
+.scene-grok .mark {
   fill: #fff;
+}
+
+.scene-grok .ans-line {
+  fill: #fff;
+  opacity: 0.82;
   transform-box: fill-box;
   transform-origin: left center;
-  animation: clip-progress 5.6s linear infinite;
+  animation: grok-write 6.4s ease-in-out infinite both;
+  animation-delay: calc(var(--step) * 0.14s);
 }
 
-@keyframes tile-in {
+.scene-grok .chip {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: grok-chip 6.4s ease-out infinite both;
+  animation-delay: calc(var(--step) * 0.16s);
+}
+
+.scene-grok .chip rect {
+  fill: #3f3f46;
+}
+
+.scene-grok .chip path {
+  fill: #fff;
+}
+
+@keyframes grok-type {
   0% {
-    opacity: 0;
-    transform: scale(0.92);
+    transform: scaleX(0);
   }
-  14%,
+  12%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes grok-spin {
+  0%,
+  40%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-24deg);
+  }
+}
+
+@keyframes grok-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes grok-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes grok-post {
+  0%,
+  12% {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  22%,
   100% {
     opacity: 1;
     transform: none;
   }
 }
 
-@keyframes clip-progress {
+@keyframes grok-read {
   0%,
-  20% {
+  28% {
+    opacity: 0;
+  }
+  33%,
+  40% {
+    opacity: 1;
+  }
+  48%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes grok-link {
+  0%,
+  32% {
+    stroke-dashoffset: 30;
+  }
+  46%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes grok-card {
+  0%,
+  36% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  46%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes grok-write {
+  0%,
+  48% {
     transform: scaleX(0);
   }
+  62%,
   100% {
     transform: scaleX(1);
   }
 }
 
-@keyframes twinkle {
+@keyframes grok-chip {
   0%,
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
+  68% {
+    opacity: 0;
+    transform: scale(0.6);
   }
-  50% {
-    transform: scale(1.14) rotate(12deg);
-    opacity: 0.82;
+  76%,
+  100% {
+    opacity: 1;
+    transform: none;
   }
 }
 
