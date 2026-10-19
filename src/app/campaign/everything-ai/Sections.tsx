@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { AppWindow, BriefcaseBusiness, Rocket, Workflow } from 'lucide-react'
+import { AppWindow, Bot, BrainCircuit, BriefcaseBusiness, Clapperboard, Mic, Palette, Rocket, Workflow } from 'lucide-react'
 import { PurchaseButton } from '@/components/ActionButton'
 import { CertificatePicker } from '@/components/CertificatePicker'
 import { Accreditation } from '@/components/sections/Accreditation'
@@ -83,8 +83,13 @@ function ToolLogo({ name, mark }: { name: string; mark?: string }) {
 /* The "What you'll build" glyphs: lucide's multi-stroke drawings, which read
    as crafted icons where the single-path ones read as placeholders. */
 const BUILD_GLYPHS = {
-  globe: AppWindow,
+  content: Clapperboard,
+  design: Palette,
+  voice: Mic,
+  bot: Bot,
   flow: Workflow,
+  agent: BrainCircuit,
+  globe: AppWindow,
   folder: BriefcaseBusiness,
   rocket: Rocket,
 } as const
@@ -241,7 +246,7 @@ export async function CampaignSections() {
           <Deco kind="marks" />
           <div className="ea-container">
             <Head eyebrow={learn.eyebrow} title={learn.title} />
-            <ModuleList modules={learn.modules} />
+            <ModuleList levels={learn.levels} />
             <div className="ea-toolrow">
               <span className="ea-toolrow-label">{learn.toolsLabel}</span>
               {/* Claude stays put on the left — it is the core of the course — and

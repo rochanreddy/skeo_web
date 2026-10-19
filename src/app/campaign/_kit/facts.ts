@@ -40,7 +40,8 @@ export const whatItIs =
 /** What is included, as the main campaign page lists it. */
 export const included = get.items.map((i) => ({ title: i.title, body: i.body }))
 
-export const modules = learn.modules
+type Module = { title: string; build: string; body: string; isNew?: boolean }
+export const modules = learn.levels.flatMap((l): readonly Module[] => l.modules)
 
 /** Things a beginner will be able to do — everyday outcomes, not features. `icon` names a glyph in _kit/Icons. */
 export const outcomes = [

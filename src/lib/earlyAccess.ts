@@ -82,47 +82,43 @@ export const get = {
 /** 2 — What you'll learn */
 export const learn = {
   eyebrow: 'What you’ll learn',
-  title: 'From AI basics to shipping real work.',
-  modules: [
+  title: 'From using AI to building with it.',
+  /* Four levels, ten modules, numbered straight through. `isNew` puts a
+     "New" badge on a module. */
+  levels: [
     {
-      title: 'AI Foundations',
-      learn: ['AI fundamentals', 'LLMs', 'ChatGPT', 'Claude', 'Prompting'],
-      build: 'AI Research Assistant',
+      label: 'Level 1 · Use AI',
+      tagline: 'Do your everyday work faster.',
+      modules: [
+        { title: 'AI Foundations', build: 'Personal AI Research Assistant', body: 'Learn how ChatGPT, Claude and Grok work, and get answers you can trust.' },
+        { title: 'Prompt Engineering', build: 'Personal Prompt Library', body: 'Write prompts that get the right output the first time.' },
+      ],
     },
     {
-      title: 'Prompt Engineering',
-      learn: ['Prompt frameworks', 'System prompts', 'Structured outputs', 'Advanced prompting'],
-      build: 'Personal Prompt Library',
+      label: 'Level 2 · Create with AI',
+      tagline: 'Make more, in less time.',
+      modules: [
+        { title: 'AI for Writing & Research', build: 'Content Engine', body: 'Posts, emails, reports and summaries in your voice, in minutes.' },
+        { title: 'AI for Design & Visuals', build: 'Brand Kit', body: 'Logos, images and social creatives without a designer.' },
+        { title: 'AI for Video & Voice', build: 'AI-Made Reel', body: 'Scripts, voiceovers and edits for short-form video.' },
+      ],
     },
     {
-      title: 'AI for Research & Writing',
-      learn: ['Claude Projects', 'Grok', 'Deep research', 'Notion AI'],
-      build: 'Content Engine',
+      label: 'Level 3 · Automate with AI',
+      tagline: 'Put repeat work on autopilot.',
+      modules: [
+        { title: 'AI for Data & Analysis', build: 'Smart Dashboard', body: 'Turn spreadsheets into insights and charts by asking in plain English.', isNew: true },
+        { title: 'AI Automation', build: 'Automated Lead System', body: 'Workflows in n8n that capture, sort and follow up on their own.' },
+        { title: 'AI Agents', build: 'Personal AI Agent', body: 'Agents that research, decide and act for you.' },
+      ],
     },
     {
-      title: 'AI for Design',
-      learn: ['Canva', 'Figma', 'Image generation', 'Brand systems'],
-      build: 'Brand Kit',
-    },
-    {
-      title: 'AI Automation',
-      learn: ['n8n', 'Make', 'APIs', 'Webhooks'],
-      build: 'Automated Lead System',
-    },
-    {
-      title: 'AI Agents',
-      learn: ['Tool use', 'MCP', 'Multi-step agents', 'Memory'],
-      build: 'Personal AI Agent',
-    },
-    {
-      title: 'Build With AI',
-      learn: ['Lovable', 'Antigravity', 'No-code apps', 'Deployment'],
-      build: 'Portfolio Website',
-    },
-    {
-      title: 'Code & Ship With AI',
-      learn: ['Cursor', 'Claude Code', 'GitHub', 'Vercel'],
-      build: 'Live Web App',
+      label: 'Level 4 · Build with AI',
+      tagline: 'Ship products, without a dev team.',
+      modules: [
+        { title: 'Build With AI', build: 'Portfolio Website', body: 'Design and launch your own site with Lovable. No code.' },
+        { title: 'Code & Ship With AI', build: 'Live Web App', body: 'Turn an idea into a working app with Claude.' },
+      ],
     },
   ],
   toolsLabel: 'Tools you’ll use — 50+ in all',
@@ -149,10 +145,14 @@ export const build = {
   eyebrow: 'What you’ll build',
   title: 'Don’t just learn. Build something.',
   items: [
-    { icon: 'globe', title: 'A Website', body: 'From idea → design → deployment.' },
+    { icon: 'content', title: 'A Content Studio', body: 'Posts, carousels and videos, made in minutes.' },
+    { icon: 'design', title: 'A Design System', body: 'Logos, colours and visuals, always on-brand.' },
+    { icon: 'voice', title: 'An AI Voice', body: 'Scripts and voiceovers that sound human.' },
+    { icon: 'bot', title: 'An AI Bot', body: 'Answers questions and chats, 24/7.' },
     { icon: 'flow', title: 'An Automation', body: 'Repetitive work that now runs itself.' },
-    { icon: 'folder', title: 'Your Portfolio', body: 'Projects you can actually show.' },
-    { icon: 'rocket', title: 'A Side Project', body: 'Something people can use.' },
+    { icon: 'agent', title: 'An AI Agent', body: 'Researches, decides and acts for you.' },
+    { icon: 'globe', title: 'A Web App', body: 'From idea → design → deployment.' },
+    { icon: 'folder', title: 'A Portfolio', body: 'All your work, live and ready to show.' },
   ],
 } as const
 
