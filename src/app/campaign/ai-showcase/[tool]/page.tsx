@@ -99,7 +99,7 @@ export default async function ShowcaseToolPage({ params }: Props) {
               <p className="vx-fine">One-time payment · Instant access · Certificate included</p>
             </div>
 
-            <HeroScene orbs={c.showcase.orbs} ask={c.showcase.ask} tag={`${c.name} · 6 modules · 4 projects`} />
+            <HeroScene tool={{ name: c.name, mark: c.slug }} features={c.showcase.features} ask={c.showcase.ask} tag={`${c.name} · 6 modules · 4 projects`} />
           </div>
         </section>
       </main>

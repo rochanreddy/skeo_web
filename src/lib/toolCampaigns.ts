@@ -34,9 +34,9 @@ export type ToolCampaign = {
   /** What the pass in the hero lists. */
   pass: readonly string[]
   /** The /campaign/ai-showcase/<tool> hero: a one-line pitch, what the
-   *  learner asks the tool in the floating chat, and the logos round the
-   *  laptop — the tool first, then apps it really works with. */
-  showcase: { lede: string; ask: string; orbs: readonly { name: string; mark: string }[] }
+   *  learner asks the tool in the floating chat, and the tool's own features
+   *  round the laptop (an icon name from HeroScene's FEATURE_ICONS each). */
+  showcase: { lede: string; ask: string; features: readonly { label: string; icon: string }[] }
   learn: { title: string; modules: readonly { title: string; body: string; build: string; isNew?: boolean }[] }
   build: { title: string; items: readonly { icon: BuildKind; title: string; body: string }[] }
   certificate: string
@@ -69,13 +69,13 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
     showcase: {
       lede: 'Chat, Projects, Cowork & Claude Code — from first prompt to a shipped app. No coding needed.',
       ask: 'Read this 60-page report and give me the 5 decisions',
-      orbs: [
-        { name: 'Claude', mark: 'claude' },
-        { name: 'Notion', mark: 'notion' },
-        { name: 'GitHub', mark: 'github' },
-        { name: 'Figma', mark: 'figma' },
-        { name: 'Canva', mark: 'canva' },
-        { name: 'Vercel', mark: 'vercel' },
+      features: [
+        { label: 'Chat', icon: 'chat' },
+        { label: 'Projects', icon: 'folder' },
+        { label: 'Research', icon: 'read' },
+        { label: 'Cowork', icon: 'laptop' },
+        { label: 'Claude Code', icon: 'terminal' },
+        { label: 'Connectors', icon: 'plug' },
       ],
     },
     learn: {
@@ -126,12 +126,13 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
     showcase: {
       lede: 'Projects, custom GPTs, deep research & agent mode — the parts of ChatGPT most people never open.',
       ask: 'Compare my top 5 competitors, with sources',
-      orbs: [
-        { name: 'ChatGPT', mark: 'chatgpt' },
-        { name: 'Notion', mark: 'notion' },
-        { name: 'GitHub', mark: 'github' },
-        { name: 'Canva', mark: 'canva' },
-        { name: 'Figma', mark: 'figma' },
+      features: [
+        { label: 'Projects', icon: 'folder' },
+        { label: 'Canvas', icon: 'pen' },
+        { label: 'Custom GPTs', icon: 'bot' },
+        { label: 'Deep Research', icon: 'search' },
+        { label: 'Images', icon: 'image' },
+        { label: 'Agent mode', icon: 'pointer' },
       ],
     },
     learn: {
@@ -182,9 +183,13 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
     showcase: {
       lede: 'Live answers from X & the web, Grok Imagine, and Grok Bots that run your routines.',
       ask: 'What is X saying about our launch today?',
-      orbs: [
-        { name: 'Grok', mark: 'grok' },
-        { name: 'X', mark: 'x' },
+      features: [
+        { label: 'Live from X', icon: 'radio' },
+        { label: 'DeepSearch', icon: 'search' },
+        { label: 'Imagine', icon: 'image' },
+        { label: 'Grok Bots', icon: 'bot' },
+        { label: 'Routines', icon: 'repeat' },
+        { label: 'Team bots', icon: 'users' },
       ],
     },
     learn: {
@@ -235,12 +240,13 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
     showcase: {
       lede: 'Workflows that run themselves & AI agents with memory and tools. Built visually, no code.',
       ask: 'When a lead fills the form, reply and add them to my CRM',
-      orbs: [
-        { name: 'n8n', mark: 'n8n' },
-        { name: 'Claude', mark: 'claude' },
-        { name: 'ChatGPT', mark: 'chatgpt' },
-        { name: 'Notion', mark: 'notion' },
-        { name: 'GitHub', mark: 'github' },
+      features: [
+        { label: 'Triggers', icon: 'zap' },
+        { label: 'Workflows', icon: 'workflow' },
+        { label: 'AI Agent', icon: 'bot' },
+        { label: 'Memory', icon: 'database' },
+        { label: 'RAG', icon: 'filesearch' },
+        { label: 'Approvals', icon: 'check' },
       ],
     },
     learn: {
@@ -291,11 +297,13 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
     showcase: {
       lede: 'Describe it and Lovable builds it — screens, logins, a database and a live link. No code.',
       ask: 'Build a booking app for my salon, with logins',
-      orbs: [
-        { name: 'Lovable', mark: 'lovable' },
-        { name: 'GitHub', mark: 'github' },
-        { name: 'Cursor', mark: 'cursor' },
-        { name: 'Vercel', mark: 'vercel' },
+      features: [
+        { label: 'Prompt', icon: 'chat' },
+        { label: 'Design', icon: 'palette' },
+        { label: 'Supabase', icon: 'database' },
+        { label: 'Logins', icon: 'lock' },
+        { label: 'GitHub sync', icon: 'branch' },
+        { label: 'Publish', icon: 'globe' },
       ],
     },
     learn: {

@@ -1,4 +1,30 @@
 import type { CSSProperties } from 'react'
+import {
+  Bot,
+  BookOpenText,
+  CircleCheck,
+  Database,
+  FileSearch,
+  FolderOpen,
+  GitBranch,
+  Globe,
+  Image,
+  Laptop,
+  Lock,
+  MessageSquare,
+  MousePointerClick,
+  Palette,
+  PenLine,
+  Plug,
+  Radio,
+  Repeat,
+  Search,
+  SquareTerminal,
+  Users,
+  Workflow,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react'
 import { ToolMark } from '../_kit/ToolMark'
 
 /**
@@ -41,11 +67,53 @@ const GLOW: Record<string, string> = {
   canva: '#7de2f2',
 }
 
-type Orb = { name: string; mark: string }
+/* Each tool's own colour, for its feature icons. */
+const ACCENT: Record<string, string> = {
+  claude: '#d97757',
+  chatgpt: '#10a37f',
+  grok: '#18181b',
+  n8n: '#ea4b71',
+  lovable: '#e5487a',
+}
 
-/* Brought-in logos alternate sides — left, right, left… — so two or four
-   still balance the scene. Indexes into TOOLS. */
-const SLOTS = [0, 3, 1, 4, 2, 5]
+const FEATURE_ICONS: Record<string, LucideIcon> = {
+  chat: MessageSquare,
+  folder: FolderOpen,
+  read: BookOpenText,
+  laptop: Laptop,
+  terminal: SquareTerminal,
+  plug: Plug,
+  pen: PenLine,
+  bot: Bot,
+  search: Search,
+  image: Image,
+  pointer: MousePointerClick,
+  radio: Radio,
+  repeat: Repeat,
+  users: Users,
+  zap: Zap,
+  workflow: Workflow,
+  database: Database,
+  filesearch: FileSearch,
+  check: CircleCheck,
+  palette: Palette,
+  lock: Lock,
+  branch: GitBranch,
+  globe: Globe,
+}
+
+type Feature = { label: string; icon: string }
+
+/* Where a tool page's feature pills sit — further in than the logo tiles,
+   since a pill is wider, and clear of the chat panel; left, right, left… */
+const FEATURE_SLOTS = [
+  { x: 128, y: 300 },
+  { x: 474, y: 196 },
+  { x: 112, y: 412 },
+  { x: 492, y: 330 },
+  { x: 138, y: 528 },
+  { x: 470, y: 466 },
+]
 
 /* The beams start at the laptop's glowing logo. */
 const HUB = { x: 300, y: 512 }
@@ -53,25 +121,29 @@ const HUB = { x: 300, y: 512 }
 const pct = (n: number) => `${(n / 600) * 100}%`
 
 /**
- * `orbs` replaces the six tools (they take the same places, in order), `ask`
- * is what the floating chat is asked, and `tag` the label at the foot — a
- * tool's own page passes all three, with the tool itself first.
+ * A tool's own page passes `tool` and its `features`: the chat panel is that
+ * tool, and its features — not other apps — glow round the laptop as pills
+ * in its colour. `ask` is what the chat is asked, `tag` the label at the top.
  */
 export function HeroScene({
   photo,
-  orbs,
+  tool,
+  features,
   ask = 'Plan a week of posts for my bakery',
   tag = '50+ AI tools inside',
 }: {
   photo?: string
-  orbs?: readonly Orb[]
+  tool?: { name: string; mark: string }
+  features?: readonly Feature[]
   ask?: string
   tag?: string
 }) {
-  const tools: readonly { name: string; mark: string; x: number; y: number; glow: string }[] = orbs
-    ? orbs.slice(0, TOOLS.length).map((o, i) => ({ ...TOOLS[SLOTS[i]], name: o.name, mark: o.mark, glow: GLOW[o.mark] ?? '#e4e4e7' }))
+  const glow = tool ? (GLOW[tool.mark] ?? '#e4e4e7') : ''
+  const tools: readonly { name: string; mark: string; x: number; y: number; glow: string; icon?: string }[] = features
+    ? features.slice(0, FEATURE_SLOTS.length).map((f, i) => ({ ...FEATURE_SLOTS[i], name: f.label, mark: `f${i}`, icon: f.icon, glow }))
     : TOOLS
-  const chat = orbs ? tools[0] : { name: 'Claude', mark: 'claude' }
+  const chat = tool ?? { name: 'Claude', mark: 'claude' }
+  const accent = tool ? (ACCENT[tool.mark] ?? '#6d5bd0') : ''
   return (
     <div className="vx-scene" role="img" aria-label={`A learner at a laptop, with ${tools.map((t) => t.name).join(', ')} glowing around them`}>
       <svg className="vx-scene-svg" viewBox="0 0 600 600" aria-hidden="true">
@@ -264,17 +336,30 @@ export function HeroScene({
         <span className="vx-holo-line vx-holo-short" />
       </div>
 
-      {/* the tools, glowing */}
-      {tools.map((t, i) => (
-        <span
-          key={t.name}
-          className="vx-orb"
-          aria-hidden="true"
-          style={{ left: pct(t.x), top: pct(t.y), '--orb-glow': t.glow, animationDelay: `${i * -0.9}s` } as CSSProperties}
-        >
-          <ToolMark name={t.name} mark={t.mark} className="vx-orb-mark" id={`orb-${t.mark}`} />
-        </span>
-      ))}
+      {/* the tools — or, on a tool's page, its features — glowing */}
+      {tools.map((t, i) => {
+        const Icon = t.icon ? FEATURE_ICONS[t.icon] : undefined
+        return Icon ? (
+          <span
+            key={t.name}
+            className="vx-feat"
+            aria-hidden="true"
+            style={{ left: pct(t.x), top: pct(t.y), '--orb-glow': t.glow, '--feat-ink': accent, animationDelay: `${i * -0.9}s` } as CSSProperties}
+          >
+            <Icon className="vx-feat-icon" strokeWidth={2.2} />
+            {t.name}
+          </span>
+        ) : (
+          <span
+            key={t.name}
+            className="vx-orb"
+            aria-hidden="true"
+            style={{ left: pct(t.x), top: pct(t.y), '--orb-glow': t.glow, animationDelay: `${i * -0.9}s` } as CSSProperties}
+          >
+            <ToolMark name={t.name} mark={t.mark} className="vx-orb-mark" id={`orb-${t.mark}`} />
+          </span>
+        )
+      })}
 
       <span className="vx-scene-tag" aria-hidden="true">
         <i /> {tag}

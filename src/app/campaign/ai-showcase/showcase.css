@@ -793,3 +793,40 @@
     padding-bottom: 32px;
   }
 }
+
+/* A tool page's features round the laptop: light pills, the icon in the
+   tool's colour, floating like the logo tiles do. */
+.vx-feat {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.5em 0.85em 0.5em 0.6em;
+  border-radius: 999px;
+  background: #f7f6fb;
+  color: #18181b;
+  font-size: clamp(10px, 0.55vw + 5px, 13.5px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  box-shadow:
+    0 0 0 1px #ffffff40,
+    0 0 20px 1px color-mix(in srgb, var(--orb-glow) 55%, transparent),
+    0 0 50px 8px color-mix(in srgb, var(--orb-glow) 22%, transparent);
+  transform: translate(-50%, -50%);
+  animation: vx-float 6s ease-in-out infinite;
+}
+
+.vx-feat-icon {
+  width: 1.3em;
+  height: 1.3em;
+  flex: none;
+  color: var(--feat-ink, #6d5bd0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vx-feat {
+    animation: none;
+  }
+}
