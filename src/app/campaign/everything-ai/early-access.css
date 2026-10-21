@@ -5018,3 +5018,83 @@
   z-index: 1;
   background: var(--card-bg);
 }
+
+/* ── The track, alive: once drawn, a soft light travels 1 → 4 on a loop and
+   each step ripples as it passes. One cycle every 4.8s, mostly at rest. ──── */
+.ea .ea-lv-step::after {
+  background-image: linear-gradient(
+    90deg,
+    var(--lv-accent) 0 42%,
+    color-mix(in srgb, var(--lv-accent) 35%, #fff) 50%,
+    var(--lv-accent) 58% 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ea .ea-lv.is-in .ea-lv-step::after {
+    animation:
+      ea-lv-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--lv) * 0.35s) both,
+      ea-lv-shine 4.8s linear calc(2s + var(--lv) * 0.72s) infinite;
+  }
+
+  .ea .ea-lv.is-in .ea-lv-dot {
+    animation:
+      ea-lv-fade 0.6s ease calc(var(--lv) * 0.35s) both,
+      ea-lv-ripple 4.8s ease-out calc(2.5s + var(--lv) * 0.72s) infinite;
+  }
+}
+
+@keyframes ea-lv-shine {
+  0% {
+    background-position: 100% 0;
+  }
+  30%,
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes ea-lv-ripple {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--lv-accent) 55%, transparent);
+  }
+  14%,
+  100% {
+    box-shadow: 0 0 0 9px color-mix(in srgb, var(--lv-accent) 0%, transparent);
+  }
+}
+
+/* phones: the light runs down the line instead */
+@media (max-width: 680px) {
+  .ea .ea-lv-step::after,
+  .ea .ea-lv-col:first-child .ea-lv-step::after {
+    background-image: linear-gradient(
+      180deg,
+      var(--lv-accent) 0 42%,
+      color-mix(in srgb, var(--lv-accent) 35%, #fff) 50%,
+      var(--lv-accent) 58% 100%
+    );
+    background-size: 100% 300%;
+    background-position: 0 100%;
+  }
+}
+
+@media (max-width: 680px) and (prefers-reduced-motion: no-preference) {
+  .ea .ea-lv.is-in .ea-lv-step::after {
+    animation:
+      ea-lv-draw-down 0.7s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--lv) * 0.35s) both,
+      ea-lv-shine-down 4.8s linear calc(2s + var(--lv) * 0.72s) infinite;
+  }
+}
+
+@keyframes ea-lv-shine-down {
+  0% {
+    background-position: 0 100%;
+  }
+  30%,
+  100% {
+    background-position: 0 0;
+  }
+}
