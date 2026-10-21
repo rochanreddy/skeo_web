@@ -15,7 +15,7 @@ import { BuildIcon } from './BuildIcons'
 import { FaqList } from './FaqList'
 import { FeaturedReview } from './FeaturedReview'
 import { SeatsLeft } from './Live'
-import { ModuleList } from './ModuleList'
+import { LevelList } from './ModuleList'
 import { PlayOnView } from './PlayOnView'
 import { hasToolLogo, ToolLogoMark } from './ToolLogos'
 
@@ -385,7 +385,7 @@ export async function CampaignSections() {
           <Deco kind="marks" />
           <div className="ea-container">
             <Head eyebrow={learn.eyebrow} title={learn.title} />
-            <ModuleList modules={learn.modules} />
+            <LevelList levels={learn.levels} />
             <div className="ea-toolrow">
               <span className="ea-toolrow-label">{learn.toolsLabel}</span>
               {/* The five core tools stay put on the left; the rest scroll past

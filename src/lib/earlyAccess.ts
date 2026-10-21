@@ -79,22 +79,52 @@ export const get = {
   ],
 } as const
 
+/* Ten modules in four levels, numbered straight through; one short line
+   each and what you build. `isNew` puts a "New" badge on a module. */
+const LEVELS = [
+  {
+    label: 'Level 1 · Use AI',
+    tagline: 'Do your everyday work faster.',
+    modules: [
+      { title: 'AI Foundations', body: 'How ChatGPT, Claude and Grok work.', build: 'Personal AI Research Assistant' },
+      { title: 'Prompt Engineering', body: 'Prompts that work the first time.', build: 'Personal Prompt Library' },
+    ],
+  },
+  {
+    label: 'Level 2 · Create with AI',
+    tagline: 'Make more, in less time.',
+    modules: [
+      { title: 'AI for Writing & Research', body: 'Posts and reports in your voice.', build: 'Content Engine' },
+      { title: 'AI for Design & Visuals', body: 'Logos and creatives, no designer.', build: 'Brand Kit' },
+      { title: 'AI for Video & Voice', body: 'Scripts, voiceovers and reel edits.', build: 'AI-Made Reel' },
+    ],
+  },
+  {
+    label: 'Level 3 · Automate with AI',
+    tagline: 'Put repeat work on autopilot.',
+    modules: [
+      { title: 'AI for Data & Analysis', body: 'Charts and insights in plain English.', build: 'Smart Dashboard', isNew: true },
+      { title: 'AI Automation', body: 'n8n flows that follow up for you.', build: 'Automated Lead System' },
+      { title: 'AI Agents', body: 'Agents that research, decide and act.', build: 'Personal AI Agent' },
+    ],
+  },
+  {
+    label: 'Level 4 · Build with AI',
+    tagline: 'Ship products, without a dev team.',
+    modules: [
+      { title: 'Build With AI', body: 'Launch your own site with Lovable.', build: 'Portfolio Website' },
+      { title: 'Code & Ship With AI', body: 'Turn an idea into an app with Claude.', build: 'Live Web App' },
+    ],
+  },
+] as const
+
 /** 2 — What you'll learn */
 export const learn = {
   eyebrow: 'What you’ll learn',
   title: 'From using AI to building with it.',
-  /* Eight modules, one line each and what you build. `isNew` puts a "New"
-     badge on a module. */
-  modules: [
-    { title: 'AI Foundations', body: 'How ChatGPT, Claude and Grok really work.', build: 'Personal AI Research Assistant' },
-    { title: 'Prompt Engineering', body: 'Prompts that work the first time.', build: 'Personal Prompt Library' },
-    { title: 'AI for Writing & Research', body: 'Posts, emails and reports in minutes.', build: 'Content Engine' },
-    { title: 'AI for Design & Video', body: 'Visuals, voiceovers and reels, no designer.', build: 'Brand Kit & AI Reel' },
-    { title: 'AI for Data & Analysis', body: 'Charts and insights in plain English.', build: 'Smart Dashboard', isNew: true },
-    { title: 'AI Automation', body: 'n8n workflows that run on their own.', build: 'Automated Lead System' },
-    { title: 'AI Agents', body: 'Agents that research, decide and act.', build: 'Personal AI Agent' },
-    { title: 'Build & Ship With AI', body: 'Your site with Lovable, your app with Claude.', build: 'Portfolio Site & Web App' },
-  ],
+  levels: LEVELS,
+  /* The same ten, in one list, for anything that does not show the levels. */
+  modules: LEVELS.flatMap((l) => [...l.modules] as { title: string; body: string; build: string; isNew?: boolean }[]),
   toolsLabel: 'Tools you’ll use — 50+ in all',
   /* `mark` picks the logo: the site's own marks (tools/marks.tsx) for the five
      it already draws, the rest from ToolLogos.tsx. */
