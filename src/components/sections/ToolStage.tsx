@@ -56,7 +56,7 @@ const TOOLS: Tool[] = [
   },
   {
     id: 'grok',
-    name: 'Grok',
+    name: 'Grok Bot',
     blurb: 'Research at speed',
     tint: '#52525b',
     mark: GrokMark,
