@@ -1,6 +1,6 @@
 'use client'
 
-import { useId, useState } from 'react'
+import { useId, useState, type CSSProperties } from 'react'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -52,24 +52,51 @@ export function ModuleList({ modules, start = 0 }: { modules: readonly Module[];
 type Level = { label: string; tagline: string; modules: readonly Module[] }
 
 /**
- * The Everything AI curriculum, in levels: each level opens with its label
- * and one-line promise, then its modules; the numbers run straight through
- * the levels. The four levels stand side by side as a ladder on wide screens
- * and stack on phones.
+ * The Everything AI curriculum as a four-step track. A numbered step for each
+ * level, joined by a line that brightens as it climbs; under each step, one
+ * panel: the level's name and promise, then its modules as a short list —
+ * number, title, one line, what you build. The panels share a height, so the
+ * four read as one row. On phones the track turns vertical: the steps run
+ * down the left, each panel beside its step.
  */
 export function LevelList({ levels }: { levels: readonly Level[] }) {
   const starts = levels.map((_, i) => levels.slice(0, i).reduce((n, l) => n + l.modules.length, 0))
   return (
-    <div className="ea-levels">
-      {levels.map((level, li) => (
-        <section key={level.label} className="ea-level" aria-label={level.label}>
-          <header className="ea-level-head">
-            <span className="ea-level-label">{level.label}</span>
-            <p className="ea-level-tag">{level.tagline}</p>
-          </header>
-          <ModuleList modules={level.modules} start={starts[li]} />
-        </section>
-      ))}
-    </div>
+    <ol className="ea-lv">
+      {levels.map((level, li) => {
+        const [step, name] = level.label.split(' · ')
+        return (
+          <li key={level.label} className="ea-lv-col" style={{ '--lv': li } as CSSProperties}>
+            <span className="ea-lv-step" aria-hidden="true">
+              <span className="ea-lv-dot">{li + 1}</span>
+            </span>
+            <section className="ea-lv-panel" aria-label={level.label}>
+              <header className="ea-lv-head">
+                <span className="ea-lv-kicker">{step}</span>
+                <h3 className="ea-lv-name">{name ?? level.label}</h3>
+                <p className="ea-lv-tag">{level.tagline}</p>
+              </header>
+              <ol className="ea-lv-mods" start={starts[li] + 1}>
+                {level.modules.map((m, mi) => (
+                  <li key={m.title}>
+                    <span className="ea-lv-num">{pad(starts[li] + mi + 1)}</span>
+                    <div className="ea-lv-mod">
+                      <h4>
+                        {m.title}
+                        {m.isNew && <span className="ea-mod-new">New</span>}
+                      </h4>
+                      <p>{m.body}</p>
+                      <p className="ea-lv-build">
+                        <span>You build</span> {m.build}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          </li>
+        )
+      })}
+    </ol>
   )
 }
