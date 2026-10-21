@@ -5007,3 +5007,14 @@
   }
 }
 
+
+/* the step circles sit on top of the line, never under it */
+.ea .ea-lv-step::before,
+.ea .ea-lv-step::after {
+  z-index: 0;
+}
+
+.ea .ea-lv-dot {
+  z-index: 1;
+  background: var(--card-bg);
+}
