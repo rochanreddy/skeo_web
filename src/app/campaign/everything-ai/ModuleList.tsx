@@ -1,8 +1,6 @@
 'use client'
 
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react'
-import { Rocket, Sparkles, Workflow, Zap, type LucideIcon } from 'lucide-react'
-import { ToolMark } from '../_kit/ToolMark'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -51,18 +49,16 @@ export function ModuleList({ modules, start = 0 }: { modules: readonly Module[];
   )
 }
 
-type Level = { label: string; tagline: string; icon?: string; modules: readonly (Module & { tools?: readonly string[] })[] }
-
-const LEVEL_ICONS: Record<string, LucideIcon> = { use: Zap, create: Sparkles, automate: Workflow, build: Rocket }
+type Level = { label: string; tagline: string; modules: readonly Module[] }
 
 /**
- * The Everything AI curriculum as a four-step track. A numbered step for each
- * level, joined by a line that fills in, level by level, as the section comes
- * into view; under each step, one panel: the level's glyph, name and promise,
- * then its modules — number, title, one line, what you build and the tools
- * it uses — and a count at the foot. The panels share a height, so the four
- * read as one row. On phones the track turns vertical: the steps run down the
- * left, each panel beside its step.
+ * The Everything AI curriculum as a four-step track: a numbered step for each
+ * level on one line, and under each step a panel with the level's name, its
+ * promise and its modules. The panels share a height, so the four read as one
+ * row; on phones the track runs down the left instead.
+ *
+ * One entrance, played once as the section comes into view: the line draws
+ * from step to step while the panels and their modules fade up in turn.
  */
 export function LevelList({ levels }: { levels: readonly Level[] }) {
   const starts = levels.map((_, i) => levels.slice(0, i).reduce((n, l) => n + l.modules.length, 0))
@@ -79,7 +75,7 @@ export function LevelList({ levels }: { levels: readonly Level[] }) {
           io.disconnect()
         }
       },
-      { threshold: 0.2 },
+      { threshold: 0.15 },
     )
     io.observe(el)
     return () => io.disconnect()
@@ -89,8 +85,6 @@ export function LevelList({ levels }: { levels: readonly Level[] }) {
     <ol ref={ref} className={shown ? 'ea-lv is-in' : 'ea-lv'}>
       {levels.map((level, li) => {
         const [step, name] = level.label.split(' · ')
-        const Icon = LEVEL_ICONS[level.icon ?? ''] ?? Zap
-        const count = level.modules.length
         return (
           <li key={level.label} className="ea-lv-col" style={{ '--lv': li } as CSSProperties}>
             <span className="ea-lv-step" aria-hidden="true">
@@ -98,16 +92,13 @@ export function LevelList({ levels }: { levels: readonly Level[] }) {
             </span>
             <section className="ea-lv-panel" aria-label={level.label}>
               <header className="ea-lv-head">
-                <span className="ea-lv-icon" aria-hidden="true">
-                  <Icon strokeWidth={2} absoluteStrokeWidth />
-                </span>
                 <span className="ea-lv-kicker">{step}</span>
                 <h3 className="ea-lv-name">{name ?? level.label}</h3>
                 <p className="ea-lv-tag">{level.tagline}</p>
               </header>
               <ol className="ea-lv-mods" start={starts[li] + 1}>
                 {level.modules.map((m, mi) => (
-                  <li key={m.title}>
+                  <li key={m.title} style={{ '--m': mi } as CSSProperties}>
                     <span className="ea-lv-num">{pad(starts[li] + mi + 1)}</span>
                     <div className="ea-lv-mod">
                       <h4>
@@ -118,28 +109,10 @@ export function LevelList({ levels }: { levels: readonly Level[] }) {
                       <p className="ea-lv-build">
                         <span>You build</span> {m.build}
                       </p>
-                      {m.tools?.length ? (
-                        <span className="ea-lv-tools" aria-label={`Tools: ${m.tools.join(', ')}`}>
-                          {m.tools.map((t) => (
-                            <span key={t} className="ea-lv-tool" title={t}>
-                              <ToolMark name={t} mark={t} className="ea-lv-tool-mark" id={`lv-${starts[li] + mi}-${t}`} />
-                            </span>
-                          ))}
-                        </span>
-                      ) : null}
                     </div>
                   </li>
                 ))}
               </ol>
-              <footer className="ea-lv-foot">
-                <span>
-                  {count} modules · {count} projects
-                </span>
-                <span aria-hidden="true">
-                  <span className="ea-lv-next">{li < levels.length - 1 ? 'Next level ' : 'Ship it '}</span>
-                  {li < levels.length - 1 ? '→' : '✦'}
-                </span>
-              </footer>
             </section>
           </li>
         )
