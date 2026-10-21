@@ -4877,3 +4877,245 @@
     margin: 0;
   }
 }
+
+/* ── The track, finished: glyphs, tools, a count, and motion ──────────────── */
+.ea .ea-lv-panel {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+
+/* a soft glow in the panel's top corner, stronger each level */
+.ea .ea-lv-panel::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--lv-accent) calc(10% + var(--lv) * 8%), transparent), transparent 70%);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .ea .ea-lv-col:hover .ea-lv-panel {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--lv-accent) 45%, var(--line));
+    box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--lv-accent) 55%, transparent);
+  }
+
+  .ea .ea-lv-col:hover .ea-lv-dot {
+    transform: scale(1.12);
+  }
+}
+
+.ea .ea-lv-head {
+  position: relative;
+}
+
+.ea .ea-lv-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--lv-accent), color-mix(in srgb, var(--lv-accent) 55%, var(--lime)));
+  color: #fff;
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--lv-accent) 80%, transparent);
+}
+
+.ea .ea-lv-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ea .ea-lv-kicker {
+  display: block;
+}
+
+.ea .ea-lv-tools {
+  display: flex;
+  gap: 5px;
+  margin-top: 9px;
+}
+
+.ea .ea-lv-tool {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--ink) 4%, var(--card-bg));
+  color: var(--ink);
+}
+
+.ea .ea-lv-tool-mark {
+  width: 14px;
+  height: 14px;
+}
+
+.ea .ea-lv-tool img.ea-lv-tool-mark {
+  object-fit: contain;
+}
+
+.ea .ea-lv-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding: 12px 0 10px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-3);
+  font: 500 11px var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ea .ea-lv-foot span:last-child {
+  color: var(--purple-ink);
+}
+
+/* motion: the line fills step by step, each dot and panel arriving in turn */
+.ea .ea-lv-dot {
+  transition: transform 0.3s var(--ease);
+}
+
+.ea .ea-lv-step::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  right: -8px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--lv-accent), color-mix(in srgb, var(--lv-accent) 60%, var(--lime)));
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+}
+
+.ea .ea-lv-col:first-child .ea-lv-step::after {
+  left: 50%;
+}
+
+.ea .ea-lv-col:last-child .ea-lv-step::after {
+  right: 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ea .ea-lv:not(.is-in) .ea-lv-panel {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  .ea .ea-lv.is-in .ea-lv-panel {
+    animation: ea-lv-rise 0.6s var(--ease) backwards;
+    animation-delay: calc(var(--lv) * 0.14s);
+  }
+
+  .ea .ea-lv.is-in .ea-lv-step::after {
+    animation: ea-lv-fill 0.45s ease-out both;
+    animation-delay: calc(var(--lv) * 0.3s);
+  }
+
+  .ea .ea-lv.is-in .ea-lv-dot {
+    animation: ea-lv-pop 0.45s var(--ease) backwards;
+    animation-delay: calc(var(--lv) * 0.3s + 0.15s);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea .ea-lv-step::after {
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes ea-lv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ea-lv-fill {
+  to {
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+
+@keyframes ea-lv-pop {
+  0% {
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* tablets have no line; phones run it downwards */
+@media (min-width: 681px) and (max-width: 1099px) {
+  .ea .ea-lv-step::after {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .ea .ea-lv-step::after,
+  .ea .ea-lv-col:first-child .ea-lv-step::after,
+  .ea .ea-lv-col:last-child .ea-lv-step::after {
+    top: 34px;
+    bottom: -18px;
+    left: 50%;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg, var(--lv-accent), color-mix(in srgb, var(--lv-accent) 60%, var(--lime)));
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: top;
+  }
+
+  .ea .ea-lv-col:last-child .ea-lv-step::after {
+    display: none;
+  }
+
+  @keyframes ea-lv-fill-down {
+    to {
+      transform: translateX(-50%) scaleY(1);
+    }
+  }
+
+  .ea .ea-lv.is-in .ea-lv-step::after {
+    animation-name: ea-lv-fill-down;
+  }
+
+  .ea .ea-lv-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  .ea .ea-lv-step::after {
+    transform: translateX(-50%) scaleY(1);
+  }
+}
+
+/* four narrow panels: the foot keeps to one line — the count and an arrow */
+.ea .ea-lv-foot span {
+  white-space: nowrap;
+}
+
+@media (min-width: 1100px) {
+  .ea .ea-lv-next {
+    display: none;
+  }
+}
