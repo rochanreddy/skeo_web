@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Award, BookOpen, BriefcaseBusiness, FileText, Radio, ReceiptText, Rocket, ShieldCheck, Users, Wrench, Zap } from 'lucide-react'
 import { PurchaseButton } from '@/components/ActionButton'
+import type { PlanKey } from '@/lib/plans'
 import { CertificatePicker } from '@/components/CertificatePicker'
 import { Accreditation } from '@/components/sections/Accreditation'
 import { Included } from '@/components/sections/Included'
@@ -31,10 +32,19 @@ import { hasToolLogo, ToolLogoMark } from './ToolLogos'
  * here is scoped to it.
  */
 
-/** Every CTA on the page buys the same thing: verify → /checkout → Cashfree. */
-export function Buy({ children, className = 'button ea-cta' }: { children: ReactNode; className?: string }) {
+/** Every CTA on a page buys the same thing: verify → /checkout → Cashfree.
+ *  Early Access unless the page sells one tool (/campaign/<tool>). */
+export function Buy({
+  children,
+  className = 'button ea-cta',
+  plan = 'earlyaccess',
+}: {
+  children: ReactNode
+  className?: string
+  plan?: PlanKey
+}) {
   return (
-    <PurchaseButton plan="earlyaccess" className={className}>
+    <PurchaseButton plan={plan} className={className}>
       {children}
     </PurchaseButton>
   )
@@ -60,7 +70,7 @@ export function Check() {
   )
 }
 
-function ToolLogo({ name, mark }: { name: string; mark?: string }) {
+export function ToolLogo({ name, mark }: { name: string; mark?: string }) {
   switch (mark) {
     case 'claude':
       return <ClaudeMark className="ea-tool-mark" />
@@ -86,7 +96,7 @@ function ToolLogo({ name, mark }: { name: string; mark?: string }) {
 const PINNED = ['Claude', 'ChatGPT', 'Grok', 'n8n', 'Lovable']
 
 /* An icon for each line of the offer, picked by what the line is about. */
-function OfferIcon({ item }: { item: string }) {
+export function OfferIcon({ item }: { item: string }) {
   const t = item.toLowerCase()
   const I = t.includes('course')
     ? BookOpen
@@ -109,7 +119,7 @@ function OfferIcon({ item }: { item: string }) {
 }
 
 /* "10+ Courses" → the figure picked out from the words. */
-function OfferItem({ item }: { item: string }) {
+export function OfferItem({ item }: { item: string }) {
   const m = item.match(/^(\d[\d,+]*\+?)\s+(.*)$/)
   return m ? (
     <>
@@ -120,10 +130,10 @@ function OfferItem({ item }: { item: string }) {
   )
 }
 
-const TRUST_ICONS = [ShieldCheck, Zap, ReceiptText]
+export const TRUST_ICONS = [ShieldCheck, Zap, ReceiptText]
 
 /** Every section below the hero opens the same way: a small label, one line. */
-function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
+export function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <header className="ea-head">
       <span className="ea-eyebrow">{eyebrow}</span>
@@ -138,7 +148,7 @@ function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
  * screen readers, never clickable, and gone below 1024px where there is no
  * empty side to fill.
  */
-function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' }) {
+export function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' }) {
   if (kind === 'marks') {
     return (
       <div className="ea-deco ea-deco-marks" aria-hidden="true">
@@ -195,7 +205,7 @@ function Deco({ kind }: { kind: 'code' | 'marks' | 'prompt' }) {
  * The quietest layer: a dot-grid patch, a thin ring, a few sparkles. Used
  * where a section would otherwise be a flat colour with a card on it.
  */
-function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
+export function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
   const spark = (cls: string) => (
     <svg className={`orn-spark ${cls}`} viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 2c.6 4.8 2.2 6.4 7 7-4.8.6-6.4 2.2-7 7-.6-4.8-2.2-6.4-7-7 4.8-.6 6.4-2.2 7-7z" />
@@ -250,6 +260,112 @@ const initials = (name: string) =>
     .map((part) => part[0])
     .join('')
     .toUpperCase()
+
+/** The sample certificate — the home page's live specimen. */
+export function Certificate({
+  body = certificate.body,
+  points = certificate.points,
+  tool,
+}: {
+  body?: string
+  points?: readonly string[]
+  /** The certificate shown first, by tool name. */
+  tool?: string
+}) {
+  return (
+    <section className="ea-sec ea-sec-soft ea-cert" id="certificate">
+      <div className="wrap credential">
+        <CertificatePicker initial={tool}>
+          {/* "eyebrow" too, so the phone layout lifts it above the heading with it */}
+          <span className="eyebrow ea-eyebrow">{certificate.eyebrow}</span>
+          <h2>{certificate.title}</h2>
+          <p>{body}</p>
+          <ul>
+            {points.map((point) => (
+              <li key={point}>
+                <b aria-hidden="true">✓</b> {point}
+              </li>
+            ))}
+          </ul>
+        </CertificatePicker>
+      </div>
+    </section>
+  )
+}
+
+/** Mentors — three across. */
+export function Mentors() {
+  return (
+    <section className="ea-sec ea-mentors-sec" id="mentors">
+      <div className="ea-container">
+        <Head eyebrow={mentors.eyebrow} title={mentors.title} />
+        <div className="ea-mentors">
+          <ul>
+            {mentors.people.map((m) => (
+              <li key={m.name} className="ea-mentor">
+                <span className="ea-avatar">
+                  {m.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={m.photo} alt={m.name} />
+                  ) : (
+                    <span aria-hidden="true">{m.initials}</span>
+                  )}
+                </span>
+                <h3>{m.name}</h3>
+                <p className="ea-role">{m.role}</p>
+                <p>{m.bio}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** Testimonials — a featured quote that changes every five seconds, beside a
+ *  wall of the rest; on phones, a row you swipe. */
+export function Reviews() {
+  return (
+    <section className="ea-sec ea-reviews" id="reviews">
+      <div className="ea-container">
+        <Head eyebrow={reviews.eyebrow} title={reviews.title} />
+        <div className="ea-rv">
+          <FeaturedReview items={testimonials} />
+          {/* Two columns drifting in opposite directions on wide screens;
+              one row drifting sideways on phones. Each track holds its
+              quotes twice so the loop has no seam; the copy is hidden
+              from screen readers. */}
+          <div className="ea-rv-wall">
+            {[0, 1].map((col) => (
+              <div key={col} className={`ea-rv-col ea-rv-col-${col}`}>
+                <ul className="ea-rv-track">
+                  {[0, 1].map((copy) =>
+                    testimonials
+                      .slice(1)
+                      .filter((_, i) => i % 2 === col)
+                      .map((item, i) => (
+                        <ReviewCard key={`${copy}-${item.name}`} item={item} tint={(i + col) % 3} hidden={copy === 1} />
+                      )),
+                  )}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="ea-rv-row">
+            <ul className="ea-rv-track">
+              {[0, 1].map((copy) =>
+                testimonials
+                  .slice(1)
+                  .map((item, i) => <ReviewCard key={`${copy}-${item.name}`} item={item} tint={i % 3} hidden={copy === 1} />),
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 export async function CampaignSections() {
   /* The offer block and the FAQ are editable in Sanity; the rest of this copy
@@ -327,23 +443,7 @@ export async function CampaignSections() {
         </section>
 
         {/* 3. Sample certificate — the home page's live specimen */}
-        <section className="ea-sec ea-sec-soft ea-cert" id="certificate">
-          <div className="wrap credential">
-            <CertificatePicker>
-              {/* "eyebrow" too, so the phone layout lifts it above the heading with it */}
-              <span className="eyebrow ea-eyebrow">{certificate.eyebrow}</span>
-              <h2>{certificate.title}</h2>
-              <p>{certificate.body}</p>
-              <ul>
-                {certificate.points.map((point) => (
-                  <li key={point}>
-                    <b aria-hidden="true">✓</b> {point}
-                  </li>
-                ))}
-              </ul>
-            </CertificatePicker>
-          </div>
-        </section>
+        <Certificate />
 
         {/* 4. Job board — the home page's dashboard, on every screen */}
         <section className="ea-jobs" id="jobs">
@@ -368,70 +468,10 @@ export async function CampaignSections() {
         <Included />
 
         {/* 6. Mentors — three across */}
-        <section className="ea-sec ea-mentors-sec" id="mentors">
-          <div className="ea-container">
-            <Head eyebrow={mentors.eyebrow} title={mentors.title} />
-            <div className="ea-mentors">
-              <ul>
-                {mentors.people.map((m) => (
-                  <li key={m.name} className="ea-mentor">
-                    <span className="ea-avatar">
-                      {m.photo ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo} alt={m.name} />
-                      ) : (
-                        <span aria-hidden="true">{m.initials}</span>
-                      )}
-                    </span>
-                    <h3>{m.name}</h3>
-                    <p className="ea-role">{m.role}</p>
-                    <p>{m.bio}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
+        <Mentors />
 
-        {/* 7. Testimonials — a featured quote that changes every five seconds, beside a wall of the rest;
-            on phones, a row you swipe. */}
-        <section className="ea-sec ea-reviews" id="reviews">
-          <div className="ea-container">
-            <Head eyebrow={reviews.eyebrow} title={reviews.title} />
-            <div className="ea-rv">
-              <FeaturedReview items={testimonials} />
-              {/* Two columns drifting in opposite directions on wide screens;
-                  one row drifting sideways on phones. Each track holds its
-                  quotes twice so the loop has no seam; the copy is hidden
-                  from screen readers. */}
-              <div className="ea-rv-wall">
-                {[0, 1].map((col) => (
-                  <div key={col} className={`ea-rv-col ea-rv-col-${col}`}>
-                    <ul className="ea-rv-track">
-                      {[0, 1].map((copy) =>
-                        testimonials
-                          .slice(1)
-                          .filter((_, i) => i % 2 === col)
-                          .map((item, i) => (
-                            <ReviewCard key={`${copy}-${item.name}`} item={item} tint={(i + col) % 3} hidden={copy === 1} />
-                          )),
-                      )}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-              <div className="ea-rv-row">
-                <ul className="ea-rv-track">
-                  {[0, 1].map((copy) =>
-                    testimonials
-                      .slice(1)
-                      .map((item, i) => <ReviewCard key={`${copy}-${item.name}`} item={item} tint={i % 3} hidden={copy === 1} />),
-                  )}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* 7. Testimonials — a featured quote that changes every five seconds, beside a wall of the rest */}
+        <Reviews />
 
         {/* 8. The offer */}
         <section className="ea-sec ea-sec-soft" id="offer">

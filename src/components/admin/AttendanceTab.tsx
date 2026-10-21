@@ -15,7 +15,7 @@ import { Drawer, Facts, Pager, openRow, useListView, type SortOption } from './A
  * stored, so sending someone to another tab first would be pure friction.
  */
 
-const COURSES = ['claude', 'playbooks', 'library', 'member', 'earlyaccess'] as const
+const COURSES = ['claude', 'chatgpt', 'grok', 'n8n', 'lovable', 'playbooks', 'library', 'member', 'earlyaccess'] as const
 
 const day = (iso: string | null) =>
   iso ? new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }) : '—'

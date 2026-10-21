@@ -4575,3 +4575,33 @@
     font-size: 14px;
   }
 }
+
+/* ── One-tool pages (/campaign/<tool>) ─────────────────────────────────────
+   One price, no anchor: "one-time" sits where the struck-out price would. */
+.ea-once {
+  color: var(--ink-3);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ea-pass-tool {
+  color: var(--on-dark);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.ea-sticky-once {
+  color: var(--on-dark-3);
+  font-size: 13px;
+  font-style: normal;
+}
+
+/* Six modules on a tool page: three across fills both rows. */
+@media (min-width: 1100px) {
+  .ea .ea-tool-learn .ea-modules {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1000px;
+    margin-inline: auto;
+  }
+}

@@ -16,6 +16,7 @@ import {
   N8nMark,
 } from '@/components/tools/marks'
 import { useModal } from './modals/ModalProvider'
+import { ToolLogoMark } from '@/app/campaign/everything-ai/ToolLogos'
 
 const MARKS = {
   claude: ClaudeMark,
@@ -101,8 +102,12 @@ export function ModuleCart() {
               {COMING_SOON.title}
               <span className="module-marks" aria-hidden="true">
                 {COMING_SOON.marks.map((mark) => {
-                  const Mark = MARKS[mark]
-                  return <Mark key={mark} className="module-mark" />
+                  const Mark = (MARKS as Record<string, (typeof MARKS)[keyof typeof MARKS]>)[mark]
+                  return Mark ? (
+                    <Mark key={mark} className="module-mark" />
+                  ) : (
+                    <ToolLogoMark key={mark} mark={mark} className="module-mark" />
+                  )
                 })}
               </span>
             </b>

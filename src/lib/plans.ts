@@ -1,4 +1,14 @@
-export type PlanKey = 'claude' | 'playbooks' | 'library' | 'member' | 'earlyaccess' | 'teams'
+export type PlanKey =
+  | 'claude'
+  | 'chatgpt'
+  | 'grok'
+  | 'n8n'
+  | 'lovable'
+  | 'playbooks'
+  | 'library'
+  | 'member'
+  | 'earlyaccess'
+  | 'teams'
 
 export type Plan = {
   eyebrow: string
@@ -20,6 +30,44 @@ export const PLANS: Record<PlanKey, Plan> = {
     period: '/ one-time',
     billing: 'one-time',
     features: ['Prompts that hold up', 'Long-document research', 'Certificate on completion'],
+    cta: 'Confirm and start this tool',
+  },
+  /* One course per tool, each sold on its own page (/campaign/<tool>) and on
+     the pricing card. A course unlocks the LMS batch named after the tool. */
+  chatgpt: {
+    eyebrow: 'CHATGPT COURSE',
+    title: 'ChatGPT Course',
+    amount: 499,
+    period: '/ one-time',
+    billing: 'one-time',
+    features: ['Projects, Canvas and custom GPTs', 'Deep research with sources', 'Certificate on completion'],
+    cta: 'Confirm and start this tool',
+  },
+  grok: {
+    eyebrow: 'GROK COURSE',
+    title: 'Grok Course',
+    amount: 499,
+    period: '/ one-time',
+    billing: 'one-time',
+    features: ['Live answers from X and the web', 'Grok Bots that work on routines', 'Certificate on completion'],
+    cta: 'Confirm and start this tool',
+  },
+  n8n: {
+    eyebrow: 'N8N COURSE',
+    title: 'n8n Course',
+    amount: 499,
+    period: '/ one-time',
+    billing: 'one-time',
+    features: ['Workflows that run on their own', 'AI agents with memory and tools', 'Certificate on completion'],
+    cta: 'Confirm and start this tool',
+  },
+  lovable: {
+    eyebrow: 'LOVABLE COURSE',
+    title: 'Lovable Course',
+    amount: 499,
+    period: '/ one-time',
+    billing: 'one-time',
+    features: ['Apps built from a prompt', 'Logins and a database with Supabase', 'Certificate on completion'],
     cta: 'Confirm and start this tool',
   },
   playbooks: {
@@ -84,7 +132,7 @@ export const PLANS: Record<PlanKey, Plan> = {
 }
 
 /** The individually purchasable items, in the order the pricing card lists them. */
-export const MODULE_KEYS = ['claude', 'playbooks', 'library'] as const
+export const MODULE_KEYS = ['claude', 'chatgpt', 'grok', 'n8n', 'lovable', 'playbooks', 'library'] as const
 
 export type ModuleKey = (typeof MODULE_KEYS)[number]
 
@@ -117,6 +165,34 @@ export const MODULE_ROWS: ModuleRow[] = [
     marks: ['claude'],
   },
   {
+    key: 'chatgpt',
+    title: 'ChatGPT Course',
+    subtitle: 'Use ChatGPT for real work: Projects, Canvas, custom GPTs, deep research, images and agent mode',
+    amount: 499,
+    marks: ['chatgpt'],
+  },
+  {
+    key: 'grok',
+    title: 'Grok Course',
+    subtitle: 'Live answers from X and the web, and Grok Bots that take on your routine work',
+    amount: 499,
+    marks: ['grok'],
+  },
+  {
+    key: 'n8n',
+    title: 'n8n Course',
+    subtitle: 'Automate your work with n8n: workflows, AI agents, RAG and approvals, without writing code',
+    amount: 499,
+    marks: ['n8n'],
+  },
+  {
+    key: 'lovable',
+    title: 'Lovable Course',
+    subtitle: 'Build and ship a working web app from a prompt, with logins, a database and your own link',
+    amount: 499,
+    marks: ['lovable'],
+  },
+  {
     key: 'playbooks',
     title: 'Claude Playbooks',
     subtitle: 'From everyday work to coding, research, design, and workflows',
@@ -142,9 +218,9 @@ export const MODULE_ROWS: ModuleRow[] = [
  * would otherwise read as the whole catalogue, and the whole catalogue is the
  * reason to come back. */
 export const COMING_SOON = {
-  title: 'ChatGPT, Grok, n8n, Lovable and more',
+  title: 'Antigravity, Cursor and more',
   subtitle: 'We’re adding more of the tools you need to build your AI-native toolkit',
-  marks: ['chatgpt', 'grok', 'n8n', 'lovable'],
+  marks: ['antigravity', 'cursor'],
 } as const
 
 /** The base currency, for the internal figures — orders, revenue, averages.

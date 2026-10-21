@@ -72,6 +72,15 @@ function pick<T>(field: string, next: T | undefined, raw: unknown, fallback: T):
   return fallback
 }
 
+/* "Coming soon" must not name a tool that is already for sale — the pricing
+   card would list it twice, once with a price and once as not ready. */
+function notOnSale(title: string | undefined, modules: { title: string }[]) {
+  if (!title) return undefined
+  const sold = modules.filter((m) => m.title.endsWith(' Course')).map((m) => m.title.slice(0, -7).toLowerCase())
+  const words = title.toLowerCase().split(/[^a-z0-9]+/)
+  return sold.some((name) => words.includes(name)) ? undefined : title
+}
+
 function mergePlan(key: PlanKey, base: Plan, doc: Record<string, unknown> | undefined): Plan {
   if (!doc) return base
   return {
@@ -106,7 +115,7 @@ export function mergeCatalog(raw: Raw, base: Catalog = defaultCatalog): Catalog 
   const cs = obj(raw.comingSoon)
   const comingSoon = {
     ...base.comingSoon,
-    title: pick('comingSoon.title', text(cs.title, 120), cs.title, base.comingSoon.title),
+    title: pick('comingSoon.title', notOnSale(text(cs.title, 120), modules), cs.title, base.comingSoon.title),
     subtitle: pick('comingSoon.subtitle', text(cs.subtitle, 200), cs.subtitle, base.comingSoon.subtitle),
   }
 

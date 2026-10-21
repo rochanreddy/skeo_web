@@ -21,6 +21,10 @@ export const when = (iso: string | null) =>
 
 export const ITEM_NAMES: Record<string, string> = {
   claude: 'Claude Course',
+  chatgpt: 'ChatGPT Course',
+  grok: 'Grok Course',
+  n8n: 'n8n Course',
+  lovable: 'Lovable Course',
   playbooks: 'Claude Playbooks',
   library: 'AI Library',
   member: 'Everything AI',

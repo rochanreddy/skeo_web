@@ -76,8 +76,9 @@ const CERT_TOOLS = [
    only the rest of its props. */
 const SPECIMEN_ID = 'certificate-specimen'
 
-export function CertificatePicker({ children }: { children: ReactNode }) {
-  const [tool, setTool] = useState(CERT_TOOLS[0])
+export function CertificatePicker({ children, initial }: { children: ReactNode; initial?: string }) {
+  /* A tool's own page opens on that tool's certificate. */
+  const [tool, setTool] = useState(CERT_TOOLS.find((t) => t.name === initial) ?? CERT_TOOLS[0])
   const { Mark } = tool
 
   function pick(option: (typeof CERT_TOOLS)[number]) {

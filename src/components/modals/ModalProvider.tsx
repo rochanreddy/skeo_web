@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import type { PlanKey } from '@/lib/plans'
-import type { CheckoutItem } from '@/lib/checkoutItems'
+import { isCheckoutItem, type CheckoutItem } from '@/lib/checkoutItems'
 import { AuthModal } from './AuthModal'
 import { PurchaseModal } from './PurchaseModal'
 import { SyllabusModal } from './SyllabusModal'
@@ -46,7 +46,9 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const openPurchase = useCallback(
     (plan: PlanKey) =>
       setState(
-        plan === 'member' || plan === 'earlyaccess'
+        /* Anything checkout can charge for goes the real way — verify →
+           /checkout → Cashfree. Only a plan with no price (teams) is left. */
+        isCheckoutItem(plan)
           ? { kind: 'verify', modules: [plan] }
           : { kind: 'purchase', plans: [plan] },
       ),
