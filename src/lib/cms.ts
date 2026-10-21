@@ -89,7 +89,8 @@ function mergePlan(key: PlanKey, base: Plan, doc: Record<string, unknown> | unde
     title: pick(`${key}.title`, text(doc.title, 80), doc.title, base.title),
     /* A custom-priced plan has no amount to edit. */
     amount: base.billing === 'custom' ? base.amount : pick(`${key}.amount`, price(doc.amount), doc.amount, base.amount),
-    features: pick(`${key}.features`, list(doc.features, 10), doc.features, base.features),
+    /* No plan promises lifetime access any more, whatever Sanity still says. */
+    features: pick(`${key}.features`, list(doc.features, 10), doc.features, base.features).filter((f) => !/lifetime/i.test(f)),
   }
 }
 
