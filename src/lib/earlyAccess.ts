@@ -16,7 +16,7 @@ import { PLANS } from '@/lib/plans'
 export const offer = {
   price: PLANS.earlyaccess.amount,
   was: 25000,
-  terms: 'One-time payment · Lifetime access',
+  terms: 'One-time payment · Instant access',
   /**
    * When the Early Access price ends — one real moment, the same for every
    * visitor. The countdown in the top bar counts to it, and the order route
@@ -46,7 +46,7 @@ export const hero = {
   lines: ['Don’t fear AI.', 'Master it.', 'Get paid for it.'],
   lede: 'ChatGPT, Claude & 50+ AI tools — learn them, build real projects and get job-ready, for the price of a pizza.',
   cta: 'Get Started',
-  checks: ['Beginner Friendly', 'Lifetime Access', 'Real Projects'],
+  checks: ['Beginner Friendly', 'Certificate', 'Real Projects'],
 } as const
 
 /** What the pass in the hero lists. */
@@ -60,7 +60,7 @@ export const numbers = [
   { value: '10+', label: 'Courses' },
   { value: '50+', label: 'Tools' },
   { value: '20+', label: 'Projects' },
-  { value: 'Lifetime', label: 'Access' },
+  { value: '100+', label: 'Jobs' },
 ] as const
 
 /** 1 — What you get */
@@ -83,43 +83,17 @@ export const get = {
 export const learn = {
   eyebrow: 'What you’ll learn',
   title: 'From using AI to building with it.',
-  /* Four levels, ten modules, numbered straight through. `isNew` puts a
-     "New" badge on a module. */
-  levels: [
-    {
-      label: 'Level 1 · Use AI',
-      tagline: 'Do your everyday work faster.',
-      modules: [
-        { title: 'AI Foundations', build: 'Personal AI Research Assistant', body: 'Learn how ChatGPT, Claude and Grok work, and get answers you can trust.' },
-        { title: 'Prompt Engineering', build: 'Personal Prompt Library', body: 'Write prompts that get the right output the first time.' },
-      ],
-    },
-    {
-      label: 'Level 2 · Create with AI',
-      tagline: 'Make more, in less time.',
-      modules: [
-        { title: 'AI for Writing & Research', build: 'Content Engine', body: 'Posts, emails, reports and summaries in your voice, in minutes.' },
-        { title: 'AI for Design & Visuals', build: 'Brand Kit', body: 'Logos, images and social creatives without a designer.' },
-        { title: 'AI for Video & Voice', build: 'AI-Made Reel', body: 'Scripts, voiceovers and edits for short-form video.' },
-      ],
-    },
-    {
-      label: 'Level 3 · Automate with AI',
-      tagline: 'Put repeat work on autopilot.',
-      modules: [
-        { title: 'AI for Data & Analysis', build: 'Smart Dashboard', body: 'Turn spreadsheets into insights and charts by asking in plain English.', isNew: true },
-        { title: 'AI Automation', build: 'Automated Lead System', body: 'Workflows in n8n that capture, sort and follow up on their own.' },
-        { title: 'AI Agents', build: 'Personal AI Agent', body: 'Agents that research, decide and act for you.' },
-      ],
-    },
-    {
-      label: 'Level 4 · Build with AI',
-      tagline: 'Ship products, without a dev team.',
-      modules: [
-        { title: 'Build With AI', build: 'Portfolio Website', body: 'Design and launch your own site with Lovable. No code.' },
-        { title: 'Code & Ship With AI', build: 'Live Web App', body: 'Turn an idea into a working app with Claude.' },
-      ],
-    },
+  /* Eight modules, one line each and what you build. `isNew` puts a "New"
+     badge on a module. */
+  modules: [
+    { title: 'AI Foundations', body: 'How ChatGPT, Claude and Grok really work.', build: 'Personal AI Research Assistant' },
+    { title: 'Prompt Engineering', body: 'Prompts that work the first time.', build: 'Personal Prompt Library' },
+    { title: 'AI for Writing & Research', body: 'Posts, emails and reports in minutes.', build: 'Content Engine' },
+    { title: 'AI for Design & Video', body: 'Visuals, voiceovers and reels, no designer.', build: 'Brand Kit & AI Reel' },
+    { title: 'AI for Data & Analysis', body: 'Charts and insights in plain English.', build: 'Smart Dashboard', isNew: true },
+    { title: 'AI Automation', body: 'n8n workflows that run on their own.', build: 'Automated Lead System' },
+    { title: 'AI Agents', body: 'Agents that research, decide and act.', build: 'Personal AI Agent' },
+    { title: 'Build & Ship With AI', body: 'Your site with Lovable, your app with Claude.', build: 'Portfolio Site & Web App' },
   ],
   toolsLabel: 'Tools you’ll use — 50+ in all',
   /* `mark` picks the logo: the site's own marks (tools/marks.tsx) for the five
@@ -197,7 +171,7 @@ export const pricing = {
   eyebrow: 'The offer',
   title: 'One price. Everything included.',
   plan: 'Everything AI · Early Access',
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '100+ Jobs', 'Lifetime Access'],
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '100+ Jobs'],
   cta: 'Get Everything',
   small: 'One-time payment · Instant access · No hidden fees',
 } as const
@@ -210,7 +184,6 @@ export const faq = {
     { q: 'Is this beginner friendly?', a: 'Yes. Start from the basics and progress toward projects.' },
     { q: 'Do I need coding experience?', a: 'No, unless a specific course requires it.' },
     { q: 'Is this a subscription?', a: 'No. One-time payment.' },
-    { q: 'How long do I get access?', a: 'Lifetime.' },
     { q: 'Do I get certificates?', a: 'Yes, if applicable to your program.' },
     { q: 'Can I learn at my own pace?', a: 'Yes.' },
   ],

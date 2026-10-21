@@ -153,7 +153,25 @@ export function mergeCatalog(raw: Raw, base: Catalog = defaultCatalog): Catalog 
     ),
   }
 
-  return { plans, modules, comingSoon, campaign }
+  return { plans, modules, comingSoon, campaign: withoutLifetime(campaign) }
+}
+
+/* skeo does not sell lifetime access, so no wording that promises it may
+   reach the campaign — not even if it is still typed in Sanity. A line that
+   mentions it is dropped (an FAQ about it goes whole), a hero tick becomes
+   another true one, and "· Lifetime access" falls out of the terms line. */
+const LIFETIME = /life\s*-?\s*time/i
+function withoutLifetime(c: CampaignCopy): CampaignCopy {
+  const keep = (xs: readonly string[]) => xs.filter((x) => !LIFETIME.test(x))
+  const checks = c.hero.checks.map((x) => (LIFETIME.test(x) ? 'Certificate' : x))
+  return {
+    ...c,
+    terms: c.terms.split('·').map((x) => x.trim()).filter((x) => x && !LIFETIME.test(x)).join(' · '),
+    hero: { ...c.hero, checks: [...new Set(checks)] },
+    valueStack: keep(c.valueStack),
+    pricing: { ...c.pricing, items: keep(c.pricing.items), small: c.pricing.small.split('·').map((x) => x.trim()).filter((x) => x && !LIFETIME.test(x)).join(' · ') },
+    faq: c.faq.filter((f) => !LIFETIME.test(f.q) && !LIFETIME.test(f.a)),
+  }
 }
 
 async function load(fresh: boolean): Promise<Catalog> {

@@ -80,8 +80,9 @@ function ago(iso: string) {
 }
 
 /**
- * "Priya S. joined · 12 min ago" — real purchases from the last week, one at a
- * time, each shown once per visit. Closing it stops it for the visit.
+ * "Priya S. joined · 12 min ago" — real purchases from the last 30 days, one
+ * at a time, a new one every five seconds, each name shown once per visit
+ * (never looped). Closing it stops it for the visit.
  */
 export function JoinedToast({ className = 'kit-toast' }: { className?: string }) {
   const stats = useLiveStats()
@@ -91,12 +92,14 @@ export function JoinedToast({ className = 'kit-toast' }: { className?: string })
 
   useEffect(() => {
     if (off || !stats?.recent.length) return
+    const seen = new Set<string>()
+    const queue = stats.recent.filter((j) => !seen.has(j.name) && (seen.add(j.name), true))
     const timers: number[] = []
-    let t = 8_000
-    for (const j of stats.recent) {
+    let t = 4_000
+    for (const j of queue) {
       timers.push(window.setTimeout(() => { setCurrent(j); setOpen(true) }, t))
-      timers.push(window.setTimeout(() => setOpen(false), t + 5_500))
-      t += 5_500 + 15_000 + Math.round(Math.random() * 8_000)
+      timers.push(window.setTimeout(() => setOpen(false), t + 4_000))
+      t += 5_000
     }
     return () => timers.forEach((id) => window.clearTimeout(id))
   }, [stats, off])

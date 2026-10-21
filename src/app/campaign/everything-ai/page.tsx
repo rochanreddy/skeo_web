@@ -19,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMeta({
     path: '/campaign/everything-ai',
     title: `Everything AI — every skeo course for ${inr(price)}`,
-    description: `Learn ChatGPT, Claude and 50+ AI tools, build 20+ real projects and get certified — 10+ courses for a one-time ${inr(price)}, with lifetime access.`,
+    description: `Learn ChatGPT, Claude and 50+ AI tools, build 20+ real projects and get certified — 10+ courses for a one-time ${inr(price)}.`,
   })
 }
 
@@ -151,7 +151,7 @@ export default async function EarlyAccessPage() {
                 <SeatsLeft />
                 <footer className="ea-pass-foot">
                   <span>One-time payment</span>
-                  <span>Lifetime access</span>
+                  <span>Instant access</span>
                 </footer>
               </article>
             </div>

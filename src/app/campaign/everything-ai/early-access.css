@@ -950,37 +950,6 @@
   text-align: right;
 }
 
-/* Levels: a pill and a one-line promise, then that level's modules in one
-   row (two, three or two cards), so each level reads as a step up. */
-
-.ea-level-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  margin-bottom: 16px;
-}
-
-.ea-level-label {
-  padding: 5px 12px;
-  border: 1px solid var(--purple-line);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--purple) 8%, transparent);
-  color: var(--purple-ink);
-  font: 500 11px var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.ea .ea-level-tag {
-  margin: 0;
-  color: var(--ink);
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
-}
 
 .ea .ea-mod-desc {
   margin: 0;
@@ -1967,14 +1936,6 @@
     margin: 0 16px 14px;
   }
 
-  .ea-level-head {
-    margin-bottom: 12px;
-  }
-
-  .ea .ea-level-tag {
-    font-size: 16.5px;
-  }
-
   .ea .ea-mod-desc {
     padding: 0 16px;
     font-size: 13.5px;
@@ -2572,45 +2533,6 @@
   animation: ea-b-ring 0.9s ease-out;
 }
 
-/* each glyph does what it stands for */
-.ea-b-globe:hover .ea-b-glyph,
-.ea-b-globe.is-play .ea-b-glyph {
-  animation: ea-b-load 0.8s var(--ease);
-}
-
-.ea-b-flow:hover .ea-b-glyph,
-.ea-b-flow.is-play .ea-b-glyph {
-  animation: ea-b-shuffle 0.8s ease-in-out;
-}
-
-.ea-b-folder:hover .ea-b-glyph,
-.ea-b-folder.is-play .ea-b-glyph {
-  animation: ea-b-hop 0.7s var(--ease);
-}
-
-.ea-b-rocket:hover .ea-b-glyph,
-.ea-b-rocket.is-play .ea-b-glyph {
-  animation: ea-b-launch 1s var(--ease);
-}
-
-.ea-b-content:hover .ea-b-glyph,
-.ea-b-content.is-play .ea-b-glyph,
-.ea-b-design:hover .ea-b-glyph,
-.ea-b-design.is-play .ea-b-glyph {
-  animation: ea-b-load 0.8s var(--ease);
-}
-
-.ea-b-voice:hover .ea-b-glyph,
-.ea-b-voice.is-play .ea-b-glyph,
-.ea-b-bot:hover .ea-b-glyph,
-.ea-b-bot.is-play .ea-b-glyph {
-  animation: ea-b-hop 0.7s var(--ease);
-}
-
-.ea-b-agent:hover .ea-b-glyph,
-.ea-b-agent.is-play .ea-b-glyph {
-  animation: ea-b-shuffle 0.8s ease-in-out;
-}
 
 @keyframes ea-b-ring {
   from {
@@ -3805,85 +3727,851 @@
 }
 
 /* ======================================================================== *
- * What you will learn, in levels: the four levels side by side as a ladder,
- * each level's modules stacked under its pill and promise. Last in the file
- * so it overrides the four-across module grid above.
+ * 21 Oct campaign pass. Last in the file so it wins over the older rules.
  * ======================================================================== */
-.ea .ea-levels {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  width: 100%;
-  max-width: none;
-  margin: 0 auto;
+
+/* ---- What you'll learn: eight cards, one line each ----------------------- */
+.ea .ea-mod-desc {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 13.5px;
+  line-height: 1.5;
 }
 
-.ea .ea-level {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.ea .ea-level-head {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  min-height: 92px;
-  margin-bottom: 10px;
-}
-
-.ea .ea-level-tag {
-  font-size: 17px;
-}
-
-.ea .ea-level .ea-modules {
-  grid-template-columns: 1fr;
-  gap: 10px;
-}
-
-@media (min-width: 681px) and (max-width: 1099px) {
-  .ea .ea-levels {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px 14px;
-  }
-
-  .ea .ea-level-head {
-    min-height: 0;
-  }
-}
-
-/* Phones: one level after another, its modules two across; a level with an
-   odd count lets its last card take the full row. */
 @media (max-width: 680px) {
-  .ea .ea-levels {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .ea .ea-level-head {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    min-height: 0;
-    margin-bottom: 12px;
-  }
-
-  .ea .ea-level-tag {
-    font-size: 15.5px;
-  }
-
-  .ea .ea-level .ea-modules {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .ea .ea-level .ea-modules > li:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-
   .ea .ea-mod-desc {
     padding: 0;
     font-size: 12.5px;
     line-height: 1.45;
+  }
+}
+
+/* ---- Tools row: the core five pinned, the rest scrolling right→left ------ */
+.ea .ea-toolrow .ea-tr-pins {
+  display: flex;
+  flex: none;
+  gap: 6px;
+  margin: 0;
+  padding: 5px;
+  border: 1px solid color-mix(in srgb, var(--purple) 32%, var(--line));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--purple) 7%, var(--card-bg));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--purple) 7%, transparent), 0 12px 30px -16px color-mix(in srgb, var(--purple) 70%, transparent);
+}
+
+.ea .ea-toolrow .ea-tr-pins li {
+  flex: none;
+  padding: 7px 13px 7px 7px;
+  border-color: color-mix(in srgb, var(--purple) 18%, var(--line));
+}
+
+@media (max-width: 1100px) {
+  .ea .ea-toolrow .ea-tr-pins li span {
+    display: none;
+  }
+
+  .ea .ea-toolrow .ea-tr-pins li {
+    padding: 7px;
+  }
+}
+
+@media (max-width: 680px) {
+  .ea .ea-tr {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .ea .ea-toolrow .ea-tr-pins {
+    justify-content: center;
+    align-self: center;
+  }
+
+  .ea .ea-toolrow .ea-tr-marquee {
+    width: 100%;
+  }
+}
+
+/* ---- What you'll build: each icon acts out what it is -------------------- */
+.bi * {
+  transform-box: fill-box;
+}
+
+.bi-wave,
+.bi-signal {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Content studio: the clapper snaps shut and swings open again. */
+  .bi-clap-top {
+    transform-origin: 0% 100%;
+  }
+
+  .ea-builds li:hover .bi-clap-top,
+  .ea-builds li.is-play .bi-clap-top {
+    animation: bi-clap 0.95s cubic-bezier(0.3, 0.7, 0.3, 1);
+  }
+
+  /* Design system: the brush sweeps and lays down its stroke. */
+  .bi-brush {
+    transform-origin: 100% 0%;
+  }
+
+  .bi-paint {
+    stroke-dasharray: 12;
+  }
+
+  .ea-builds li:hover .bi-brush,
+  .ea-builds li.is-play .bi-brush {
+    animation: bi-brush 1s ease-in-out;
+  }
+
+  .ea-builds li:hover .bi-paint,
+  .ea-builds li.is-play .bi-paint {
+    animation: bi-paint 1s ease-in-out;
+  }
+
+  /* AI voice: sound goes out either side of the mic, twice. */
+  .bi-wave-l {
+    transform-origin: 100% 50%;
+  }
+
+  .bi-wave-r {
+    transform-origin: 0% 50%;
+  }
+
+  .ea-builds li:hover .bi-wave,
+  .ea-builds li.is-play .bi-wave {
+    animation: bi-wave 0.7s ease-out 2;
+  }
+
+  .ea-builds li:hover .bi-mic,
+  .ea-builds li.is-play .bi-mic {
+    animation: bi-bob 0.7s ease-in-out 2;
+  }
+
+  /* AI bot: it blinks twice and wiggles its antenna. */
+  .bi-eyes {
+    transform-origin: 50% 50%;
+  }
+
+  .bi-antenna {
+    transform-origin: 100% 100%;
+  }
+
+  .ea-builds li:hover .bi-eyes,
+  .ea-builds li.is-play .bi-eyes {
+    animation: bi-blink 1s ease-in-out;
+  }
+
+  .ea-builds li:hover .bi-antenna,
+  .ea-builds li.is-play .bi-antenna {
+    animation: bi-antenna 0.9s ease-in-out;
+  }
+
+  /* Automation: a signal runs down the connector and the next step lights. */
+  .bi-signal {
+    stroke-width: 3.2;
+    stroke-dasharray: 3 24;
+  }
+
+  .bi-step {
+    transform-origin: 50% 50%;
+  }
+
+  .ea-builds li:hover .bi-signal,
+  .ea-builds li.is-play .bi-signal {
+    animation: bi-signal 0.75s linear 2;
+  }
+
+  .ea-builds li:hover .bi-step,
+  .ea-builds li.is-play .bi-step {
+    animation: bi-pop 0.75s ease-in-out 2;
+  }
+
+  /* AI agent: the circuit lights up line by line, then its nodes. */
+  .bi-circuit path {
+    stroke-dasharray: 10;
+  }
+
+  .ea-builds li:hover .bi-circuit path,
+  .ea-builds li.is-play .bi-circuit path {
+    animation: bi-draw 0.55s ease-out both;
+  }
+
+  .ea-builds li:hover .bi-c2,
+  .ea-builds li.is-play .bi-c2 {
+    animation-delay: 0.12s;
+  }
+
+  .ea-builds li:hover .bi-c3,
+  .ea-builds li.is-play .bi-c3 {
+    animation-delay: 0.24s;
+  }
+
+  .ea-builds li:hover .bi-c4,
+  .ea-builds li.is-play .bi-c4 {
+    animation-delay: 0.36s;
+  }
+
+  .ea-builds li:hover .bi-nodes,
+  .ea-builds li.is-play .bi-nodes {
+    animation: bi-flash 0.4s ease-out 0.55s both;
+  }
+
+  /* Web app: the page content loads in, top line then the next. */
+  .bi-load {
+    transform-origin: 0% 50%;
+  }
+
+  .ea-builds li:hover .bi-load,
+  .ea-builds li.is-play .bi-load {
+    animation: bi-load 0.7s var(--ease) both;
+  }
+
+  .ea-builds li:hover .bi-load-2,
+  .ea-builds li.is-play .bi-load-2 {
+    animation-delay: 0.18s;
+  }
+
+  /* Portfolio: the briefcase lifts its handle and settles. */
+  .bi-handle {
+    transform-origin: 50% 100%;
+  }
+
+  .ea-builds li:hover .bi-handle,
+  .ea-builds li.is-play .bi-handle {
+    animation: bi-lift 0.8s var(--ease);
+  }
+
+  .ea-builds li:hover .bi-case,
+  .ea-builds li.is-play .bi-case {
+    animation: bi-bob 0.8s var(--ease);
+  }
+}
+
+@keyframes bi-clap {
+  0% { transform: rotate(0deg); }
+  28%, 42% { transform: rotate(17deg); }
+  70% { transform: rotate(-8deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes bi-brush {
+  0%, 100% { transform: rotate(0deg); }
+  35% { transform: rotate(-11deg); }
+  70% { transform: rotate(6deg); }
+}
+
+@keyframes bi-paint {
+  0%, 25% { stroke-dashoffset: 12; }
+  80%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes bi-wave {
+  0% { opacity: 0; transform: scale(0.6); }
+  35% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+
+@keyframes bi-bob {
+  0%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-1.2px); }
+}
+
+@keyframes bi-blink {
+  0%, 30%, 60%, 100% { transform: scaleY(1); }
+  15%, 45% { transform: scaleY(0.1); }
+}
+
+@keyframes bi-antenna {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-16deg); }
+  65% { transform: rotate(10deg); }
+}
+
+@keyframes bi-signal {
+  0% { opacity: 1; stroke-dashoffset: 3; }
+  100% { opacity: 1; stroke-dashoffset: -12; }
+}
+
+@keyframes bi-pop {
+  0%, 60%, 100% { transform: scale(1); }
+  80% { transform: scale(1.14); }
+}
+
+@keyframes bi-draw {
+  from { stroke-dashoffset: 10; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes bi-flash {
+  0% { transform: scale(1); }
+  50% { transform: scale(2.4); }
+  100% { transform: scale(1); }
+}
+
+@keyframes bi-load {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes bi-lift {
+  0%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-2.2px); }
+}
+
+/* ---- Testimonials: the featured quote changes every five seconds ---------- */
+.ea .ea-rv-slide {
+  position: relative;
+}
+
+.ea .ea-rv-slide blockquote {
+  min-height: calc(1.35em * 5);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ea .ea-rv-slide {
+    animation: ea-rv-in 0.6s var(--ease) both;
+  }
+}
+
+@keyframes ea-rv-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.ea-rv-dots {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  margin-top: 24px;
+}
+
+.ea-rv-dots button {
+  position: relative;
+  width: 14px;
+  height: 6px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: #ffffff2e;
+  cursor: pointer;
+  transition: width 0.3s var(--ease), background 0.3s ease;
+}
+
+.ea-rv-dots button:hover {
+  background: #ffffff55;
+}
+
+.ea-rv-dots button.is-on {
+  width: 34px;
+  background: #ffffff40;
+}
+
+.ea-rv-dots button:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+
+.ea-rv-dot-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--lime);
+  transform-origin: left center;
+  animation: ea-rv-fill 5s linear both;
+}
+
+@keyframes ea-rv-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (max-width: 680px) {
+  .ea .ea-rv-slide blockquote {
+    min-height: calc(1.35em * 4);
+  }
+}
+
+/* ---- The offer: a pass on the left, everything included on the right ----- */
+@property --deal-a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.ea .ea-deal {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: var(--r-2xl);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg), 0 30px 70px -40px color-mix(in srgb, var(--purple) 60%, transparent);
+}
+
+/* a light running round the edge */
+.ea .ea-deal::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  z-index: -1;
+  padding: 1.5px;
+  border-radius: calc(var(--r-2xl) + 1.5px);
+  background: conic-gradient(from var(--deal-a), var(--line) 0deg, var(--purple) 70deg, var(--lime) 110deg, var(--purple) 150deg, var(--line) 220deg, var(--line) 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: ea-deal-spin 7s linear infinite;
+}
+
+@keyframes ea-deal-spin {
+  to { --deal-a: 360deg; }
+}
+
+.ea .ea-deal-pass {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(28px, 3.4vw, 44px);
+  border-radius: var(--r-2xl) 0 0 var(--r-2xl);
+  background: var(--band-ink-grad);
+  color: var(--on-dark);
+}
+
+.ea .ea-deal-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ea .ea-deal-plan {
+  color: var(--on-dark-2);
+  font: 500 11.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea .ea-deal-save {
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: var(--lime);
+  color: #26331e;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.ea .ea-deal-price {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin: 22px 0 0;
+}
+
+.ea .ea-deal-price strong {
+  color: var(--lime);
+  font-size: clamp(58px, 6.4vw, 80px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+}
+
+.ea .ea-deal-price > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 4px;
+}
+
+.ea .ea-deal-price s {
+  color: var(--on-dark-3);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ea .ea-deal-price em {
+  color: var(--on-dark-2);
+  font: normal 500 11px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea .ea-deal-note {
+  margin: 12px 0 0;
+  color: var(--on-dark-2);
+  font-size: 14px;
+}
+
+.ea .ea-deal-note b {
+  color: var(--on-dark);
+}
+
+.ea .ea-deal-pass .ea-seats {
+  margin-top: 18px;
+}
+
+.ea .ea-deal-pass .ea-deal-cta {
+  width: 100%;
+  margin-top: 24px;
+  background: var(--lime);
+  color: #26331e;
+}
+
+.ea .ea-deal-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 18px 0 0;
+  padding: 16px 0 0;
+  border-top: 1px dashed #ffffff26;
+  list-style: none;
+  color: var(--on-dark-2);
+  font-size: 12.5px;
+}
+
+.ea .ea-deal-trust li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ea .ea-deal-trust svg {
+  width: 14px;
+  height: 14px;
+  color: var(--lime);
+  flex: none;
+}
+
+.ea .ea-deal-list {
+  padding: clamp(28px, 3.4vw, 44px);
+}
+
+.ea .ea-deal-h {
+  margin: 0 0 16px;
+  color: var(--ink-3);
+  font: 500 11.5px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ea .ea-deal-list ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea .ea-deal-list li {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: transform 0.25s var(--ease), border-color 0.25s ease;
+}
+
+.ea .ea-deal-list li:hover {
+  transform: translateY(-2px);
+  border-color: var(--purple-line);
+}
+
+.ea .ea-deal-list li b {
+  color: var(--purple-ink);
+  font-weight: 800;
+}
+
+.ea .ea-deal-ico {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--purple-soft);
+  color: var(--purple-ink);
+}
+
+.ea .ea-deal-ico-svg {
+  width: 17px;
+  height: 17px;
+}
+
+@media (max-width: 820px) {
+  .ea .ea-deal {
+    grid-template-columns: 1fr;
+  }
+
+  .ea .ea-deal-pass {
+    border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ea .ea-deal-list ul {
+    gap: 8px;
+  }
+
+  .ea .ea-deal-list li {
+    gap: 8px;
+    padding: 8px 9px;
+    font-size: 12.5px;
+    line-height: 1.3;
+  }
+
+  .ea .ea-deal-ico {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+  }
+
+  .ea .ea-deal-ico-svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea .ea-deal::before {
+    animation: none;
+  }
+}
+
+/* ---- FAQ: the heading and a help card beside an accordion ----------------- */
+.ea .ea-faq-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+  max-width: 1080px;
+}
+
+.ea .ea-faq-side {
+  position: sticky;
+  top: calc(var(--ea-top, 116px) + 24px);
+}
+
+.ea .ea-faq-side h2 {
+  margin: 16px 0 12px;
+  color: var(--ink);
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.08;
+  text-align: left;
+}
+
+.ea .ea-faq-side > p {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.ea .ea-faq-help {
+  display: grid;
+  gap: 4px;
+  margin-top: 26px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card-bg);
+}
+
+.ea .ea-faq-help b {
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.ea .ea-faq-help span {
+  color: var(--ink-3);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.ea .ea-faq-help a {
+  width: fit-content;
+  margin-top: 8px;
+  color: var(--purple-ink);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ea .ea-faq-help a:hover {
+  text-decoration: underline;
+}
+
+.ea .ea-qa {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea .ea-qa-item {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card-bg);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ea .ea-qa-item:hover {
+  border-color: var(--purple-line);
+}
+
+.ea .ea-qa-item.is-open {
+  border-color: var(--purple-line);
+  box-shadow: 0 16px 36px -22px color-mix(in srgb, var(--purple) 60%, transparent);
+}
+
+.ea .ea-qa-h {
+  margin: 0;
+  font-size: inherit;
+}
+
+.ea .ea-qa-h button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 20px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ea .ea-qa-h button:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -2px;
+  border-radius: 18px;
+}
+
+.ea .ea-qa-n {
+  min-width: 22px;
+  color: var(--ink-4);
+  font: 500 12px var(--mono);
+  transition: color 0.25s ease;
+}
+
+.ea .ea-qa-item.is-open .ea-qa-n {
+  color: var(--purple-ink);
+}
+
+.ea .ea-qa-q {
+  flex: 1;
+}
+
+.ea .ea-qa-icon {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: background 0.25s ease, transform 0.3s var(--ease);
+}
+
+.ea .ea-qa-icon::before,
+.ea .ea-qa-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ink-2);
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s var(--ease), background 0.25s ease;
+}
+
+.ea .ea-qa-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.ea .ea-qa-item.is-open .ea-qa-icon {
+  background: var(--purple);
+}
+
+.ea .ea-qa-item.is-open .ea-qa-icon::before,
+.ea .ea-qa-item.is-open .ea-qa-icon::after {
+  background: #fff;
+}
+
+.ea .ea-qa-item.is-open .ea-qa-icon::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.ea .ea-qa-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--ease);
+}
+
+.ea .ea-qa-item.is-open .ea-qa-body {
+  grid-template-rows: 1fr;
+}
+
+.ea .ea-qa-body > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ea .ea-qa-body p {
+  margin: 0;
+  padding: 0 20px 20px 56px;
+  color: var(--ink-3);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 820px) {
+  .ea .ea-faq-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .ea .ea-faq-side {
+    position: static;
+    text-align: center;
+  }
+
+  .ea .ea-faq-side h2 {
+    text-align: center;
+  }
+
+  .ea .ea-faq-help {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .ea .ea-qa-h button {
+    gap: 10px;
+    padding: 15px 16px;
+    font-size: 15px;
+  }
+
+  .ea .ea-qa-body p {
+    padding: 0 16px 16px 48px;
+    font-size: 14px;
   }
 }

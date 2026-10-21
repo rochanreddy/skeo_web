@@ -82,9 +82,10 @@ const DISMISS_KEY = 'skeo-ea-joins-off'
 
 /**
  * "Priya S. joined Everything AI · 12 min ago" — one real purchase at a time,
- * bottom-left. Each person is shown once per visit, never looped, so the same
- * three names do not come round again like a script. Closing it stops it for
- * the rest of the visit.
+ * bottom-left, a new one every five seconds (four on screen, one off). Each
+ * person is shown once per visit and the list is never looped, so no name
+ * comes round twice; when the real buyers run out, it simply stops. Closing
+ * it stops it for the rest of the visit.
  */
 export function JoinToasts() {
   const stats = useLiveStats()
@@ -102,13 +103,14 @@ export function JoinToasts() {
 
   useEffect(() => {
     if (off || !stats?.recent.length) return
-    const queue = [...stats.recent]
+    const seen = new Set<string>()
+    const queue = stats.recent.filter((j) => !seen.has(j.name) && (seen.add(j.name), true))
     const timers: number[] = []
-    let t = 7_000 // let the hero land first
+    let t = 4_000 // let the hero land first
     for (const j of queue) {
       timers.push(window.setTimeout(() => { setCurrent(j); setOpen(true) }, t))
-      timers.push(window.setTimeout(() => setOpen(false), t + 5_500))
-      t += 5_500 + 14_000 + Math.round(Math.random() * 8_000)
+      timers.push(window.setTimeout(() => setOpen(false), t + 4_000))
+      t += 5_000
     }
     return () => timers.forEach((id) => window.clearTimeout(id))
   }, [stats, off])

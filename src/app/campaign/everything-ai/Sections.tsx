@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { AppWindow, Bot, BrainCircuit, BriefcaseBusiness, Clapperboard, Mic, Palette, Rocket, Workflow } from 'lucide-react'
+import { Award, BookOpen, BriefcaseBusiness, FileText, Radio, ReceiptText, Rocket, ShieldCheck, Users, Wrench, Zap } from 'lucide-react'
 import { PurchaseButton } from '@/components/ActionButton'
 import { CertificatePicker } from '@/components/CertificatePicker'
 import { Accreditation } from '@/components/sections/Accreditation'
@@ -10,7 +10,9 @@ import { opportunities, testimonials } from '@/lib/content'
 import { offerOf, savePctOf } from '@/lib/catalog'
 import { getCatalog } from '@/lib/cms'
 import { build, certificate, faq as faqCode, inr, jobs, learn, mentors, pricing as pricingCode, reviews } from '@/lib/earlyAccess'
+import { BuildIcon } from './BuildIcons'
 import { FaqList } from './FaqList'
+import { FeaturedReview } from './FeaturedReview'
 import { SeatsLeft } from './Live'
 import { ModuleList } from './ModuleList'
 import { PlayOnView } from './PlayOnView'
@@ -20,8 +22,8 @@ import { hasToolLogo, ToolLogoMark } from './ToolLogos'
  * Everything below a campaign page's hero, in one place, so every campaign
  * page that sells Early Access tells the same story in the same order:
  *
- *   accreditation → what you'll learn (and the tools) → what all you get →
- *   mentors → what you'll build → certificate → job board → reviews →
+ *   accreditation → what you'll learn (and the tools) → what you'll build →
+ *   certificate → job board → what all you get → mentors → reviews →
  *   the offer → FAQ → final call.
  *
  * Used by /campaign/everything-ai and /campaign/ai-showcase. Render it inside
@@ -80,24 +82,45 @@ function ToolLogo({ name, mark }: { name: string; mark?: string }) {
   }
 }
 
-/* The "What you'll build" glyphs: lucide's multi-stroke drawings, which read
-   as crafted icons where the single-path ones read as placeholders. */
-const BUILD_GLYPHS = {
-  content: Clapperboard,
-  design: Palette,
-  voice: Mic,
-  bot: Bot,
-  flow: Workflow,
-  agent: BrainCircuit,
-  globe: AppWindow,
-  folder: BriefcaseBusiness,
-  rocket: Rocket,
-} as const
+/* The core five in the tools row: always in view, never scrolling away. */
+const PINNED = ['Claude', 'ChatGPT', 'Grok', 'n8n', 'Lovable']
 
-function BuildGlyph({ kind }: { kind: string }) {
-  const G = BUILD_GLYPHS[kind as keyof typeof BUILD_GLYPHS] ?? AppWindow
-  return <G className="ea-b-glyph" strokeWidth={1.75} absoluteStrokeWidth />
+/* An icon for each line of the offer, picked by what the line is about. */
+function OfferIcon({ item }: { item: string }) {
+  const t = item.toLowerCase()
+  const I = t.includes('course')
+    ? BookOpen
+    : t.includes('project')
+      ? Rocket
+      : t.includes('tool')
+        ? Wrench
+        : t.includes('workshop') || t.includes('live')
+          ? Radio
+          : t.includes('template') || t.includes('resource')
+            ? FileText
+            : t.includes('community')
+              ? Users
+              : t.includes('certificate')
+                ? Award
+                : t.includes('job')
+                  ? BriefcaseBusiness
+                  : Zap
+  return <I className="ea-deal-ico-svg" strokeWidth={1.9} absoluteStrokeWidth aria-hidden="true" />
 }
+
+/* "10+ Courses" → the figure picked out from the words. */
+function OfferItem({ item }: { item: string }) {
+  const m = item.match(/^(\d[\d,+]*\+?)\s+(.*)$/)
+  return m ? (
+    <>
+      <b>{m[1]}</b> {m[2]}
+    </>
+  ) : (
+    <>{item}</>
+  )
+}
+
+const TRUST_ICONS = [ShieldCheck, Zap, ReceiptText]
 
 /** Every section below the hero opens the same way: a small label, one line. */
 function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
@@ -241,28 +264,35 @@ export async function CampaignSections() {
         {/* Accreditation — the home page's strip */}
         <Accreditation />
 
-        {/* What you'll learn — the modules, then the tools */}
+        {/* 1. What you'll learn — the modules, then the tools */}
         <section className="ea-sec ea-sec-soft" id="learn">
           <Deco kind="marks" />
           <div className="ea-container">
             <Head eyebrow={learn.eyebrow} title={learn.title} />
-            <ModuleList levels={learn.levels} />
+            <ModuleList modules={learn.modules} />
             <div className="ea-toolrow">
               <span className="ea-toolrow-label">{learn.toolsLabel}</span>
-              {/* Claude stays put on the left — it is the core of the course — and
-                  the rest scroll past beside it, right to left. The list is
-                  drawn twice so the loop has no seam; the copy is hidden from
-                  screen readers. */}
+              {/* The five core tools stay put on the left; the rest scroll past
+                  beside them, right to left. The scrolling list is drawn twice
+                  so the loop has no seam; the copy is hidden from screen
+                  readers. */}
               <div className="ea-tr">
-                <span className="ea-tr-lead" title="Claude">
-                  <ToolLogo name="Claude" mark="claude" />
-                  <span>Claude</span>
-                </span>
+                <ul className="ea-tr-pins" aria-label="Core tools">
+                  {PINNED.map((name) => {
+                    const t = learn.tools.find((x) => x.name === name)
+                    return (
+                      <li key={name} title={name}>
+                        <ToolLogo name={name} mark={t && 'mark' in t ? t.mark : undefined} />
+                        <span>{name}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
                 <div className="ea-tr-marquee">
                   <ul>
                     {[0, 1].map((copy) =>
                       learn.tools
-                        .filter((t) => t.name !== 'Claude')
+                        .filter((t) => !PINNED.includes(t.name))
                         .map((t) => (
                           <li key={`${copy}-${t.name}`} title={t.name} aria-hidden={copy === 1 || undefined}>
                             <ToolLogo name={t.name} mark={'mark' in t ? t.mark : undefined} />
@@ -277,10 +307,67 @@ export async function CampaignSections() {
           </div>
         </section>
 
-        {/* What all you get — the home page's section */}
+        {/* 2. What you'll build — each icon acts out what it is on hover */}
+        <section className="ea-sec ea-build-sec" id="build">
+          <Deco kind="prompt" />
+          <div className="ea-container">
+            <Head eyebrow={build.eyebrow} title={build.title} />
+            <ul className="ea-builds">
+              {build.items.map((b) => (
+                <li key={b.title} className={`ea-b-${b.icon}`}>
+                  <span className="ea-b-icon" aria-hidden="true">
+                    <BuildIcon kind={b.icon} />
+                  </span>
+                  <h3>{b.title}</h3>
+                  <p>{b.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* 3. Sample certificate — the home page's live specimen */}
+        <section className="ea-sec ea-sec-soft ea-cert" id="certificate">
+          <div className="wrap credential">
+            <CertificatePicker>
+              {/* "eyebrow" too, so the phone layout lifts it above the heading with it */}
+              <span className="eyebrow ea-eyebrow">{certificate.eyebrow}</span>
+              <h2>{certificate.title}</h2>
+              <p>{certificate.body}</p>
+              <ul>
+                {certificate.points.map((point) => (
+                  <li key={point}>
+                    <b aria-hidden="true">✓</b> {point}
+                  </li>
+                ))}
+              </ul>
+            </CertificatePicker>
+          </div>
+        </section>
+
+        {/* 4. Job board — the home page's dashboard, on every screen */}
+        <section className="ea-jobs" id="jobs">
+          <div className="ea-container">
+            <Head eyebrow={jobs.eyebrow} title={jobs.title} />
+            <p className="ea-jobs-lede">{jobs.body}</p>
+            <ul className="ea-jobs-opps" aria-label="What the board opens up">
+              {opportunities.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="ea-jobs-desk">
+              <JobBoard />
+            </div>
+            <div className="ea-jobs-cta">
+              <Buy className="button button-lime ea-cta">{jobs.cta}</Buy>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. What all you get — the home page's section */}
         <Included />
 
-        {/* Mentors — three across */}
+        {/* 6. Mentors — three across */}
         <section className="ea-sec ea-mentors-sec" id="mentors">
           <div className="ea-container">
             <Head eyebrow={mentors.eyebrow} title={mentors.title} />
@@ -306,92 +393,13 @@ export async function CampaignSections() {
           </div>
         </section>
 
-        {/* 3. What you'll build */}
-        <section className="ea-sec ea-build-sec" id="build">
-          <Deco kind="prompt" />
-          <div className="ea-container">
-            <Head eyebrow={build.eyebrow} title={build.title} />
-            <ul className="ea-builds">
-              {build.items.map((b) => (
-                <li key={b.title} className={`ea-b-${b.icon}`}>
-                  <span className="ea-b-icon" aria-hidden="true">
-                    <BuildGlyph kind={b.icon} />
-                  </span>
-                  <h3>{b.title}</h3>
-                  <p>{b.body}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* 4. Sample certificate — the home page's live specimen */}
-        <section className="ea-sec ea-sec-soft ea-cert" id="certificate">
-          <div className="wrap credential">
-            <CertificatePicker>
-              {/* "eyebrow" too, so the phone layout lifts it above the heading with it */}
-              <span className="eyebrow ea-eyebrow">{certificate.eyebrow}</span>
-              <h2>{certificate.title}</h2>
-              <p>{certificate.body}</p>
-              <ul>
-                {certificate.points.map((point) => (
-                  <li key={point}>
-                    <b aria-hidden="true">✓</b> {point}
-                  </li>
-                ))}
-              </ul>
-            </CertificatePicker>
-          </div>
-        </section>
-
-        {/* 5. Job board — the home page's dashboard, on every screen */}
-        <section className="ea-jobs" id="jobs">
-          <div className="ea-container">
-            <Head eyebrow={jobs.eyebrow} title={jobs.title} />
-            <p className="ea-jobs-lede">{jobs.body}</p>
-            <ul className="ea-jobs-opps" aria-label="What the board opens up">
-              {opportunities.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <div className="ea-jobs-desk">
-              <JobBoard />
-            </div>
-            <div className="ea-jobs-cta">
-              <Buy className="button button-lime ea-cta">{jobs.cta}</Buy>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Testimonials — one featured quote beside a wall of the rest;
+        {/* 7. Testimonials — a featured quote that changes every five seconds, beside a wall of the rest;
             on phones, a row you swipe. */}
         <section className="ea-sec ea-reviews" id="reviews">
           <div className="ea-container">
             <Head eyebrow={reviews.eyebrow} title={reviews.title} />
             <div className="ea-rv">
-              <figure className="ea-rv-feature">
-                <span className="ea-rv-mark" aria-hidden="true">
-                  “
-                </span>
-                <div className="ea-rv-stars" role="img" aria-label="Rated 5 out of 5">
-                  ★★★★★
-                </div>
-                <blockquote>{testimonials[0].quote}</blockquote>
-                <figcaption>
-                  <span className="ea-rv-avatar" aria-hidden="true">
-                    {testimonials[0].photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={testimonials[0].photo} alt="" loading="lazy" />
-                  ) : (
-                    initials(testimonials[0].name)
-                  )}
-                  </span>
-                  <span>
-                    <b>{testimonials[0].name}</b>
-                    <span>{testimonials[0].role}</span>
-                  </span>
-                </figcaption>
-              </figure>
+              <FeaturedReview items={testimonials} />
               {/* Two columns drifting in opposite directions on wide screens;
                   one row drifting sideways on phones. Each track holds its
                   quotes twice so the loop has no seam; the copy is hidden
@@ -425,40 +433,78 @@ export async function CampaignSections() {
           </div>
         </section>
 
-        {/* 7. The offer */}
+        {/* 8. The offer */}
         <section className="ea-sec ea-sec-soft" id="offer">
           <Ornament kind="offer" />
           <div className="ea-container">
             <Head eyebrow={pricing.eyebrow} title={pricing.title} />
-            <div className="ea-offer">
-              <div className="ea-offer-price">
-                <span className="ea-offer-plan">{pricing.plan}</span>
-                <p className="ea-price ea-price-big">
+            <div className="ea-deal">
+              <div className="ea-deal-pass">
+                <div className="ea-deal-top">
+                  <span className="ea-deal-plan">{pricing.plan}</span>
+                  <span className="ea-deal-save">{savePct}% OFF</span>
+                </div>
+                <p className="ea-deal-price">
                   <strong>{inr(offer.price)}</strong>
-                  <s aria-label={`was ${inr(offer.was)}`}>{inr(offer.was)}</s>
+                  <span>
+                    <s aria-label={`was ${inr(offer.was)}`}>{inr(offer.was)}</s>
+                    <em>one-time</em>
+                  </span>
                 </p>
-                <span className="ea-save">{savePct}% OFF</span>
+                <p className="ea-deal-note">
+                  You save <b>{inr(offer.was - offer.price)}</b>
+                </p>
                 <SeatsLeft />
-                <Buy className="button ea-cta">{pricing.cta}</Buy>
-                <p className="ea-offer-small">{pricing.small}</p>
+                <Buy className="button ea-cta ea-deal-cta">{pricing.cta}</Buy>
+                <ul className="ea-deal-trust">
+                  {pricing.small
+                    .split('·')
+                    .map((x) => x.trim())
+                    .filter(Boolean)
+                    .map((x, n) => {
+                      const T = TRUST_ICONS[n % TRUST_ICONS.length]
+                      return (
+                        <li key={x}>
+                          <T strokeWidth={2} absoluteStrokeWidth aria-hidden="true" />
+                          {x}
+                        </li>
+                      )
+                    })}
+                </ul>
               </div>
-              <ul className="ea-offer-list">
-                {pricing.items.map((i) => (
-                  <li key={i}>
-                    <Check />
-                    {i}
-                  </li>
-                ))}
-              </ul>
+              <div className="ea-deal-list">
+                <p className="ea-deal-h">Everything included</p>
+                <ul>
+                  {pricing.items.map((i) => (
+                    <li key={i}>
+                      <span className="ea-deal-ico">
+                        <OfferIcon item={i} />
+                      </span>
+                      <span>
+                        <OfferItem item={i} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* 8. FAQ */}
+        {/* 9. FAQ */}
         <section className="ea-sec ea-faq-sec" id="faq">
           <Ornament kind="faq" />
-          <div className="ea-container">
-            <Head eyebrow={faq.eyebrow} title={faq.title} />
+          <div className="ea-container ea-faq-wrap">
+            <div className="ea-faq-side">
+              <span className="ea-eyebrow">{faq.eyebrow}</span>
+              <h2>{faq.title}</h2>
+              <p>Everything people ask before they join.</p>
+              <div className="ea-faq-help">
+                <b>Still have a question?</b>
+                <span>Write to us and a real person replies within a day.</span>
+                <a href="mailto:support@skeoai.com">support@skeoai.com</a>
+              </div>
+            </div>
             <FaqList items={faq.items} />
           </div>
         </section>

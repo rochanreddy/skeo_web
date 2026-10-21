@@ -3,6 +3,9 @@ const nextConfig = {
   // Lets a second dev/build run use its own output dir instead of fighting over
   // .next with the server you already have running.
   distDir: process.env.NEXT_DIST_DIR || '.next',
+  // On a machine short of memory, NEXT_BUILD_LOW_MEM=1 builds the static pages
+  // in one worker instead of one per core. Unset (Vercel), nothing changes.
+  ...(process.env.NEXT_BUILD_LOW_MEM ? { experimental: { cpus: 1, workerThreads: false } } : {}),
   reactStrictMode: true,
   poweredByHeader: false,
   // The campaign page moved under /campaign; links already shared keep working.

@@ -68,7 +68,7 @@ export const PLANS: Record<PlanKey, Plan> = {
       'Every course and every tool batch',
       'Claude Playbooks and the AI Library',
       'Real projects and a certificate',
-      'Lifetime access',
+      'Live workshops and the community',
     ],
     cta: 'Get everything',
   },

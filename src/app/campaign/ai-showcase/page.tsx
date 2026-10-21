@@ -71,7 +71,7 @@ export default async function ShowcasePage() {
               <ul className="vx-hero-ticks">
                 <li>Beginner friendly</li>
                 <li>Certificate</li>
-                <li>Lifetime access</li>
+                <li>Real projects</li>
               </ul>
               <div className="vx-hero-cta">
                 <Buy className="vx-btn">Claim my seat — {price}</Buy>
