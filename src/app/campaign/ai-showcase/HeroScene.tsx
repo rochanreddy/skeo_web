@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react'
-import { ClaudeMark } from '@/components/tools/marks'
 import { ToolMark } from '../_kit/ToolMark'
 
 /**
@@ -30,14 +29,51 @@ const TOOLS = [
   { name: 'Lovable', mark: 'lovable', x: 486, y: 500, glow: '#ff9ad0' },
 ] as const
 
+/* Each logo's glow, for scenes that bring their own tools (a tool's page). */
+const GLOW: Record<string, string> = {
+  claude: '#e8875a',
+  chatgpt: '#9ff0d0',
+  cursor: '#b9b5ff',
+  grok: '#e4e4e7',
+  n8n: '#ff7a9a',
+  lovable: '#ff9ad0',
+  figma: '#a259ff',
+  canva: '#7de2f2',
+}
+
+type Orb = { name: string; mark: string }
+
+/* Brought-in logos alternate sides — left, right, left… — so two or four
+   still balance the scene. Indexes into TOOLS. */
+const SLOTS = [0, 3, 1, 4, 2, 5]
+
 /* The beams start at the laptop's glowing logo. */
 const HUB = { x: 300, y: 512 }
 
 const pct = (n: number) => `${(n / 600) * 100}%`
 
-export function HeroScene({ photo }: { photo?: string }) {
+/**
+ * `orbs` replaces the six tools (they take the same places, in order), `ask`
+ * is what the floating chat is asked, and `tag` the label at the foot — a
+ * tool's own page passes all three, with the tool itself first.
+ */
+export function HeroScene({
+  photo,
+  orbs,
+  ask = 'Plan a week of posts for my bakery',
+  tag = '50+ AI tools inside',
+}: {
+  photo?: string
+  orbs?: readonly Orb[]
+  ask?: string
+  tag?: string
+}) {
+  const tools: readonly { name: string; mark: string; x: number; y: number; glow: string }[] = orbs
+    ? orbs.slice(0, TOOLS.length).map((o, i) => ({ ...TOOLS[SLOTS[i]], name: o.name, mark: o.mark, glow: GLOW[o.mark] ?? '#e4e4e7' }))
+    : TOOLS
+  const chat = orbs ? tools[0] : { name: 'Claude', mark: 'claude' }
   return (
-    <div className="vx-scene" role="img" aria-label="A learner at a laptop, with Claude, ChatGPT, Grok, n8n, Lovable and Cursor glowing around them">
+    <div className="vx-scene" role="img" aria-label={`A learner at a laptop, with ${tools.map((t) => t.name).join(', ')} glowing around them`}>
       <svg className="vx-scene-svg" viewBox="0 0 600 600" aria-hidden="true">
         <defs>
           <radialGradient id="vxs-bg" cx="50%" cy="42%" r="70%">
@@ -87,7 +123,7 @@ export function HeroScene({ photo }: { photo?: string }) {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          {TOOLS.map((t) => (
+          {tools.map((t) => (
             <linearGradient key={t.name} id={`vxs-beam-${t.mark}`} gradientUnits="userSpaceOnUse" x1={HUB.x} y1={HUB.y} x2={t.x} y2={t.y}>
               <stop offset="0" stopColor="#d7f36b" stopOpacity="0.9" />
               <stop offset="1" stopColor={t.glow} stopOpacity="0.9" />
@@ -120,7 +156,7 @@ export function HeroScene({ photo }: { photo?: string }) {
 
         {/* beams: laptop → each tool, with light running along them */}
         <g className="vx-scene-beams">
-          {TOOLS.map((t, i) => (
+          {tools.map((t, i) => (
             <g key={t.name}>
               <line x1={HUB.x} y1={HUB.y} x2={t.x} y2={t.y} stroke={`url(#vxs-beam-${t.mark})`} strokeOpacity="0.22" strokeWidth="1.5" />
               <line
@@ -215,21 +251,21 @@ export function HeroScene({ photo }: { photo?: string }) {
         <img className="vx-scene-photo" src={photo} alt="" />
       )}
 
-      {/* Claude, drafting — a glass panel above the scene */}
+      {/* A tool drafting — a glass panel above the scene */}
       <div className="vx-holo" aria-hidden="true">
         <div className="vx-holo-top">
-          <ClaudeMark className="vx-holo-mark" />
-          <b>Claude</b>
+          <ToolMark name={chat.name} mark={chat.mark} className="vx-holo-mark" id="holo" />
+          <b>{chat.name}</b>
           <i />
         </div>
-        <p className="vx-holo-ask">Plan a week of posts for my bakery</p>
+        <p className="vx-holo-ask">{ask}</p>
         <span className="vx-holo-line" />
         <span className="vx-holo-line" />
         <span className="vx-holo-line vx-holo-short" />
       </div>
 
       {/* the tools, glowing */}
-      {TOOLS.map((t, i) => (
+      {tools.map((t, i) => (
         <span
           key={t.name}
           className="vx-orb"
@@ -241,7 +277,7 @@ export function HeroScene({ photo }: { photo?: string }) {
       ))}
 
       <span className="vx-scene-tag" aria-hidden="true">
-        <i /> 50+ AI tools inside
+        <i /> {tag}
       </span>
     </div>
   )

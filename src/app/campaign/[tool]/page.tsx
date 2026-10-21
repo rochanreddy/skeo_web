@@ -2,33 +2,16 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { ReactElement } from 'react'
-import { Accreditation } from '@/components/sections/Accreditation'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { getCatalog } from '@/lib/cms'
-import { inr, learn as learnCode, pricing as pricingCode } from '@/lib/earlyAccess'
+import { inr } from '@/lib/earlyAccess'
 import { pageMeta } from '@/lib/seo'
 import { TOOL_CAMPAIGNS, TOOL_SLUGS, type ToolSlug } from '@/lib/toolCampaigns'
-import { BuildIcon } from '../everything-ai/BuildIcons'
-import { FaqList } from '../everything-ai/FaqList'
 import { JoinToasts } from '../everything-ai/Live'
-import { ModuleList } from '../everything-ai/ModuleList'
-import { PlayOnView } from '../everything-ai/PlayOnView'
-import {
-  Buy,
-  Certificate,
-  Check,
-  Deco,
-  Head,
-  Lines,
-  Mentors,
-  OfferIcon,
-  OfferItem,
-  Ornament,
-  Reviews,
-  TRUST_ICONS,
-} from '../everything-ai/Sections'
+import { Buy, Check, Lines } from '../everything-ai/Sections'
 import { StickyCta } from '../everything-ai/StickyCta'
+import { ToolSections } from '../everything-ai/ToolSections'
 import '../everything-ai/early-access.css'
 
 /**
@@ -100,10 +83,6 @@ export default async function ToolCampaignPage({ params }: Props) {
   const plan = plans[c.plan]
   const price = inr(plan.amount)
   const course = `${c.name} Course`
-  const trust = pricingCode.small
-    .split('·')
-    .map((x) => x.trim())
-    .filter(Boolean)
 
   return (
     <div className="ea">
@@ -192,122 +171,7 @@ export default async function ToolCampaignPage({ params }: Props) {
           </div>
         </section>
 
-        <div className="ea-flow">
-          <Accreditation />
-
-          {/* 1. What you'll learn */}
-          <section className="ea-sec ea-sec-soft ea-tool-learn" id="learn">
-            <Deco kind="marks" />
-            <div className="ea-container">
-              <Head eyebrow={learnCode.eyebrow} title={c.learn.title} />
-              <ModuleList modules={c.learn.modules} />
-            </div>
-          </section>
-
-          {/* 2. What you'll build — each icon acts out what it is on hover */}
-          <section className="ea-sec ea-build-sec ea-build-four" id="build">
-            <Deco kind="prompt" />
-            <div className="ea-container">
-              <Head eyebrow="What you’ll build" title={c.build.title} />
-              <ul className="ea-builds">
-                {c.build.items.map((b) => (
-                  <li key={b.title} className={`ea-b-${b.icon}`}>
-                    <span className="ea-b-icon" aria-hidden="true">
-                      <BuildIcon kind={b.icon} />
-                    </span>
-                    <h3>{b.title}</h3>
-                    <p>{b.body}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* 3. Certificate */}
-          <Certificate
-            body={c.certificate}
-            tool={c.name}
-            points={['Verified, tool-specific credential', 'Earned through practical projects', 'Build a profile of proven skills']}
-          />
-
-          {/* 4. Mentors */}
-          <Mentors />
-
-          {/* 5. Testimonials */}
-          <Reviews />
-
-          {/* 6. The offer — one course, one price, no anchor */}
-          <section className="ea-sec ea-sec-soft" id="offer">
-            <Ornament kind="offer" />
-            <div className="ea-container">
-              <Head eyebrow="The offer" title={`The ${course}. One price.`} />
-              <div className="ea-deal">
-                <div className="ea-deal-pass">
-                  <div className="ea-deal-top">
-                    <span className="ea-deal-plan">{course}</span>
-                    <span className="ea-deal-save">One course</span>
-                  </div>
-                  <p className="ea-deal-price">
-                    <strong>{price}</strong>
-                    <span>
-                      <em>one-time</em>
-                    </span>
-                  </p>
-                  <p className="ea-deal-note">Your login arrives by email straight after payment.</p>
-                  <Buy plan={c.plan} className="button ea-cta ea-deal-cta">
-                    Get the {course}
-                  </Buy>
-                  <ul className="ea-deal-trust">
-                    {trust.map((x, n) => {
-                      const T = TRUST_ICONS[n % TRUST_ICONS.length]
-                      return (
-                        <li key={x}>
-                          <T strokeWidth={2} absoluteStrokeWidth aria-hidden="true" />
-                          {x}
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-                <div className="ea-deal-list">
-                  <p className="ea-deal-h">What’s included</p>
-                  <ul>
-                    {c.offer.items.map((i) => (
-                      <li key={i}>
-                        <span className="ea-deal-ico">
-                          <OfferIcon item={i.replace(/^\d+ Modules$/, 'course')} />
-                        </span>
-                        <span>
-                          <OfferItem item={i} />
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 7. FAQ */}
-          <section className="ea-sec ea-faq-sec" id="faq">
-            <Ornament kind="faq" />
-            <div className="ea-container ea-faq-wrap">
-              <div className="ea-faq-side">
-                <span className="ea-eyebrow">FAQ</span>
-                <h2>Quick answers.</h2>
-                <p>What people ask before they start the {course}.</p>
-                <div className="ea-faq-help">
-                  <b>Still have a question?</b>
-                  <span>Write to us and a real person replies within a day.</span>
-                  <a href="mailto:support@skeoai.com">support@skeoai.com</a>
-                </div>
-              </div>
-              <FaqList items={c.faq} />
-            </div>
-          </section>
-
-          <PlayOnView selector=".ea-builds li" />
-        </div>
+        <ToolSections c={c} />
       </main>
 
       {/* A campaign page ends on its ask, not on the site's navigation. */}

@@ -33,6 +33,10 @@ export type ToolCampaign = {
   }
   /** What the pass in the hero lists. */
   pass: readonly string[]
+  /** The /campaign/ai-showcase/<tool> hero: a one-line pitch, what the
+   *  learner asks the tool in the floating chat, and the logos round the
+   *  laptop — the tool first, then apps it really works with. */
+  showcase: { lede: string; ask: string; orbs: readonly { name: string; mark: string }[] }
   learn: { title: string; modules: readonly { title: string; body: string; build: string; isNew?: boolean }[] }
   build: { title: string; items: readonly { icon: BuildKind; title: string; body: string }[] }
   certificate: string
@@ -62,6 +66,18 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
       checks: ['Beginner Friendly', 'Certificate', 'Real Projects'],
     },
     pass: ['6 Modules', '4 Projects', 'Chat & Projects', 'Cowork', 'Claude Code', 'Certificate'],
+    showcase: {
+      lede: 'Chat, Projects, Cowork & Claude Code — from first prompt to a shipped app. No coding needed.',
+      ask: 'Read this 60-page report and give me the 5 decisions',
+      orbs: [
+        { name: 'Claude', mark: 'claude' },
+        { name: 'Notion', mark: 'notion' },
+        { name: 'GitHub', mark: 'github' },
+        { name: 'Figma', mark: 'figma' },
+        { name: 'Canva', mark: 'canva' },
+        { name: 'Vercel', mark: 'vercel' },
+      ],
+    },
     learn: {
       title: 'Every way to work with Claude.',
       modules: [
@@ -107,6 +123,17 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
       checks: ['Beginner Friendly', 'Certificate', 'Real Projects'],
     },
     pass: ['6 Modules', '4 Projects', 'Custom GPTs', 'Deep Research', 'Agent Mode', 'Certificate'],
+    showcase: {
+      lede: 'Projects, custom GPTs, deep research & agent mode — the parts of ChatGPT most people never open.',
+      ask: 'Compare my top 5 competitors, with sources',
+      orbs: [
+        { name: 'ChatGPT', mark: 'chatgpt' },
+        { name: 'Notion', mark: 'notion' },
+        { name: 'GitHub', mark: 'github' },
+        { name: 'Canva', mark: 'canva' },
+        { name: 'Figma', mark: 'figma' },
+      ],
+    },
     learn: {
       title: 'From quick answers to finished work.',
       modules: [
@@ -152,6 +179,14 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
       checks: ['Beginner Friendly', 'Certificate', 'Real Projects'],
     },
     pass: ['6 Modules', '4 Projects', 'Live X Research', 'Grok Imagine', 'Grok Bots', 'Certificate'],
+    showcase: {
+      lede: 'Live answers from X & the web, Grok Imagine, and Grok Bots that run your routines.',
+      ask: 'What is X saying about our launch today?',
+      orbs: [
+        { name: 'Grok', mark: 'grok' },
+        { name: 'X', mark: 'x' },
+      ],
+    },
     learn: {
       title: 'From live answers to bots that work.',
       modules: [
@@ -197,6 +232,17 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
       checks: ['No Code Needed', 'Certificate', 'Real Projects'],
     },
     pass: ['6 Modules', '4 Projects', 'Workflows', 'AI Agents', 'RAG Chatbots', 'Certificate'],
+    showcase: {
+      lede: 'Workflows that run themselves & AI agents with memory and tools. Built visually, no code.',
+      ask: 'When a lead fills the form, reply and add them to my CRM',
+      orbs: [
+        { name: 'n8n', mark: 'n8n' },
+        { name: 'Claude', mark: 'claude' },
+        { name: 'ChatGPT', mark: 'chatgpt' },
+        { name: 'Notion', mark: 'notion' },
+        { name: 'GitHub', mark: 'github' },
+      ],
+    },
     learn: {
       title: 'From one trigger to AI agents.',
       modules: [
@@ -242,6 +288,16 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
       checks: ['No Code Needed', 'Certificate', 'Real Projects'],
     },
     pass: ['6 Modules', '4 Projects', 'Prompt to App', 'Supabase', 'GitHub', 'Certificate'],
+    showcase: {
+      lede: 'Describe it and Lovable builds it — screens, logins, a database and a live link. No code.',
+      ask: 'Build a booking app for my salon, with logins',
+      orbs: [
+        { name: 'Lovable', mark: 'lovable' },
+        { name: 'GitHub', mark: 'github' },
+        { name: 'Cursor', mark: 'cursor' },
+        { name: 'Vercel', mark: 'vercel' },
+      ],
+    },
     learn: {
       title: 'From a prompt to a live app.',
       modules: [

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { PurchaseButton } from '@/components/ActionButton'
+import type { PlanKey } from '@/lib/plans'
 import { pageMeta } from '@/lib/seo'
 import './kit.css'
 
@@ -10,10 +11,21 @@ import './kit.css'
  * the FAQ and the footer. Server components.
  */
 
-/** Every buy button on every variant buys the same thing: verify → /checkout → Cashfree. */
-export function Buy({ children, className = 'button', arrow = '→' }: { children: ReactNode; className?: string; arrow?: string }) {
+/** Every buy button on a variant buys the same thing: verify → /checkout → Cashfree.
+ *  Early Access unless the page sells one tool. */
+export function Buy({
+  children,
+  className = 'button',
+  arrow = '→',
+  plan = 'earlyaccess',
+}: {
+  children: ReactNode
+  className?: string
+  arrow?: string
+  plan?: PlanKey
+}) {
   return (
-    <PurchaseButton plan="earlyaccess" className={className} arrow={arrow}>
+    <PurchaseButton plan={plan} className={className} arrow={arrow}>
       {children}
     </PurchaseButton>
   )
