@@ -242,7 +242,7 @@ export function GrokScene() {
       <g className="prompt">
         <rect className="bar" x="12" y="12" width="96" height="18" rx="9" />
         <g className="spark">
-          <path d={GROK_PATH} transform="translate(21 21) scale(0.42) translate(-12 -12)" />
+          <path d={GROK_PATH} fillRule="evenodd" transform="translate(21 21) scale(0.42) translate(-12 -12)" />
         </g>
         <rect className="typed" x="30" y="18.5" width="52" height="5" rx="2.5" />
         {/* The live signal: Grok reads X as it happens. */}
@@ -267,7 +267,7 @@ export function GrokScene() {
       {/* Right: the answer, written from those posts, with its sources. */}
       <g className="answer">
         <rect className="panel" x="64" y="38" width="44" height="62" rx="6" />
-        <path className="mark" d={GROK_PATH} transform="translate(72 46) scale(0.3) translate(-12 -12)" />
+        <path className="mark" d={GROK_PATH} fillRule="evenodd" transform="translate(72 46) scale(0.3) translate(-12 -12)" />
         {[30, 26, 30, 18].map((w, i) => (
           <rect key={i} className="ans-line" x="70" y={55 + i * 7} width={w} height="3" rx="1.5" style={step(i)} />
         ))}
