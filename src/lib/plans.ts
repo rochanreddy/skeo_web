@@ -26,7 +26,7 @@ export const PLANS: Record<PlanKey, Plan> = {
   claude: {
     eyebrow: 'CLAUDE COURSE',
     title: 'Claude Course',
-    amount: 699,
+    amount: 299,
     period: '/ one-time',
     billing: 'one-time',
     features: ['Prompts that hold up', 'Long-document research', 'Certificate on completion'],
@@ -37,7 +37,7 @@ export const PLANS: Record<PlanKey, Plan> = {
   chatgpt: {
     eyebrow: 'CHATGPT COURSE',
     title: 'ChatGPT Course',
-    amount: 499,
+    amount: 299,
     period: '/ one-time',
     billing: 'one-time',
     features: ['Projects, Canvas and custom GPTs', 'Deep research with sources', 'Certificate on completion'],
@@ -46,7 +46,7 @@ export const PLANS: Record<PlanKey, Plan> = {
   grok: {
     eyebrow: 'GROK COURSE',
     title: 'Grok Course',
-    amount: 499,
+    amount: 299,
     period: '/ one-time',
     billing: 'one-time',
     features: ['Live answers from X and the web', 'Grok Bots that work on routines', 'Certificate on completion'],
@@ -55,7 +55,7 @@ export const PLANS: Record<PlanKey, Plan> = {
   n8n: {
     eyebrow: 'N8N COURSE',
     title: 'n8n Course',
-    amount: 499,
+    amount: 299,
     period: '/ one-time',
     billing: 'one-time',
     features: ['Workflows that run on their own', 'AI agents with memory and tools', 'Certificate on completion'],
@@ -64,7 +64,7 @@ export const PLANS: Record<PlanKey, Plan> = {
   lovable: {
     eyebrow: 'LOVABLE COURSE',
     title: 'Lovable Course',
-    amount: 499,
+    amount: 299,
     period: '/ one-time',
     billing: 'one-time',
     features: ['Apps built from a prompt', 'Logins and a database with Supabase', 'Certificate on completion'],
@@ -161,35 +161,35 @@ export const MODULE_ROWS: ModuleRow[] = [
     title: 'Claude Course',
     subtitle:
       'Master Claude across Chat, Cowork, Code, automations, vibe coding, research and more in one practical course',
-    amount: 699,
+    amount: 299,
     marks: ['claude'],
   },
   {
     key: 'chatgpt',
     title: 'ChatGPT Course',
     subtitle: 'Use ChatGPT for real work: Projects, Canvas, custom GPTs, deep research, images and agent mode',
-    amount: 499,
+    amount: 299,
     marks: ['chatgpt'],
   },
   {
     key: 'grok',
     title: 'Grok Course',
     subtitle: 'Live answers from X and the web, and Grok Bots that take on your routine work',
-    amount: 499,
+    amount: 299,
     marks: ['grok'],
   },
   {
     key: 'n8n',
     title: 'n8n Course',
     subtitle: 'Automate your work with n8n: workflows, AI agents, RAG and approvals, without writing code',
-    amount: 499,
+    amount: 299,
     marks: ['n8n'],
   },
   {
     key: 'lovable',
     title: 'Lovable Course',
     subtitle: 'Build and ship a working web app from a prompt, with logins, a database and your own link',
-    amount: 499,
+    amount: 299,
     marks: ['lovable'],
   },
   {
