@@ -226,6 +226,13 @@ export function Ornament({ kind }: { kind: 'offer' | 'faq' | 'final' }) {
 
 type Review = (typeof testimonials)[number]
 
+/* The review wall's two columns: learners in India on the left, learners
+   abroad on the right — read from the city at the end of each role. */
+const INDIAN_CITIES = ['Mumbai', 'Bengaluru', 'Bangalore', 'Pune', 'Hyderabad', 'Chennai', 'Delhi', 'New Delhi', 'Noida', 'Gurugram', 'Kolkata', 'Kochi', 'Ahmedabad', 'Jaipur', 'India']
+const inIndia = (r: Review) => INDIAN_CITIES.includes(r.role.split(',').pop()?.trim() ?? '')
+const REVIEWS_INDIA = testimonials.filter(inIndia)
+const REVIEWS_ABROAD = testimonials.filter((r) => !inIndia(r))
+
 function ReviewCard({ item, tint, hidden }: { item: Review; tint: number; hidden?: boolean }) {
   return (
     <li className={`ea-rv-card ea-rv-tint-${tint}`} aria-hidden={hidden || undefined}>
@@ -337,16 +344,15 @@ export function Reviews() {
               quotes twice so the loop has no seam; the copy is hidden
               from screen readers. */}
           <div className="ea-rv-wall">
-            {[0, 1].map((col) => (
+            {/* Left: learners in India. Right: learners abroad. Each column
+                drifts at the same pace however many quotes it holds. */}
+            {[REVIEWS_INDIA, REVIEWS_ABROAD].map((list, col) => (
               <div key={col} className={`ea-rv-col ea-rv-col-${col}`}>
-                <ul className="ea-rv-track">
+                <ul className="ea-rv-track" style={{ animationDuration: `${list.length * 9}s` }}>
                   {[0, 1].map((copy) =>
-                    testimonials
-                      .slice(1)
-                      .filter((_, i) => i % 2 === col)
-                      .map((item, i) => (
-                        <ReviewCard key={`${copy}-${item.name}`} item={item} tint={(i + col) % 3} hidden={copy === 1} />
-                      )),
+                    list.map((item, i) => (
+                      <ReviewCard key={`${copy}-${item.name}`} item={item} tint={(i + col) % 3} hidden={copy === 1} />
+                    )),
                   )}
                 </ul>
               </div>
