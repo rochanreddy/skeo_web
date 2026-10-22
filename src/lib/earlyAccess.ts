@@ -166,34 +166,37 @@ export const build = {
  * whatever is here. `photo` is a path in /public (e.g. '/mentors/rochan.jpg');
  * empty draws the initials.
  */
+/* A mentor without a photo shows their initials instead. */
+type Mentor = { name: string; initials: string; photo: string; role: string; bio: string }
+
 export const mentors = {
   eyebrow: 'Your mentors',
   title: 'Learn from people who build with AI.',
+  /* Roles and credentials as menler's mentor roster states them; photos from
+     the same roster, in /public/mentors. */
   people: [
     {
-      name: 'Rochan Reddy',
-      initials: 'RR',
-      photo: '',
-      role: 'Full Stack Developer & DevOps Engineer',
-      bio: 'Building products, shipping projects and teaching what actually works.',
-    },
-    /* Placeholders until the real mentors are confirmed — swap name, initials,
-       role, bio (and a photo) for the real people. */
-    {
-      name: 'Ananya Rao',
-      initials: 'AR',
-      photo: '',
-      role: 'AI Automation Specialist',
-      bio: 'Turns repetitive work into workflows that run themselves.',
+      name: 'Sridevi Edupuganti',
+      initials: 'SE',
+      photo: '/mentors/sridevi.webp',
+      role: 'AI Generalist & AI Automation Specialist',
+      bio: 'Co-founder of ZenithWorks AI. Ex-Microsoft, IIT Guwahati and ISB.',
     },
     {
-      name: 'Karthik Menon',
-      initials: 'KM',
-      photo: '',
-      role: 'Product Designer & AI Builder',
-      bio: 'Designs and ships products with AI, from first sketch to launch.',
+      name: 'Deepak K',
+      initials: 'DK',
+      photo: '/mentors/deepak.webp',
+      role: 'AI Operations Lead',
+      bio: 'Puts AI to work in day-to-day operations, across real teams.',
     },
-  ],
+    {
+      name: 'Divya Bhandari',
+      initials: 'DB',
+      photo: '/mentors/divya.webp',
+      role: 'Generative AI & Digital Marketing Trainer',
+      bio: 'Growth strategist with ₹2Cr+ in revenue generated.',
+    },
+  ] as readonly Mentor[],
 } as const
 
 /** 4 — The offer */
