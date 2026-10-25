@@ -1,6 +1,7 @@
 import { faqs, promiseStats } from '@/lib/content'
 import { getCatalog } from '@/lib/cms'
 import { abs } from '@/lib/seo'
+import type { Guide } from '@/lib/guides'
 import { site } from '@/lib/site'
 import { toolFaq, type ToolCampaign } from '@/lib/toolCampaigns'
 
@@ -265,6 +266,49 @@ export async function ToolSchema({ c }: { c: ToolCampaign }) {
             })),
           },
           breadcrumbs([{ name: `${c.name} Course`, path }]),
+        ],
+      }}
+    />
+  )
+}
+
+/** /guides/<slug>: the article, its FAQ as shown, and where it sits. */
+export function GuideSchema({ guide: g }: { guide: Guide }) {
+  const path = `/guides/${g.slug}`
+  const url = abs(path)
+  return (
+    <JsonLd
+      data={{
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Article',
+            '@id': `${url}#article`,
+            headline: g.title,
+            description: g.description,
+            url,
+            mainEntityOfPage: url,
+            inLanguage: 'en',
+            datePublished: g.published,
+            dateModified: g.updated,
+            keywords: g.keywords.join(', '),
+            image: `${site.url}/opengraph-image`,
+            author: { '@id': ORG },
+            publisher: { '@id': ORG },
+            isPartOf: { '@id': WEBSITE },
+            /* The answer paragraph the page opens with. */
+            abstract: g.answer,
+          },
+          {
+            '@type': 'FAQPage',
+            '@id': `${url}#faq`,
+            mainEntity: g.faq.map((f) => ({
+              '@type': 'Question',
+              name: f.q,
+              acceptedAnswer: { '@type': 'Answer', text: f.a },
+            })),
+          },
+          breadcrumbs([{ name: 'Guides', path: '/guides' }, { name: g.title, path }]),
         ],
       }}
     />

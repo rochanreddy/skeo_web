@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { site } from '@/lib/site'
+import { GUIDES } from '@/lib/guides'
 import { TOOL_SLUGS } from '@/lib/toolCampaigns'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -22,6 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
+    })),
+    /* The guides, dated by their own last update. */
+    { url: `${site.url}/guides`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.7 },
+    ...GUIDES.map((g) => ({
+      url: `${site.url}/guides/${g.slug}`,
+      lastModified: new Date(g.updated),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     })),
     /* The policies. Low priority and rarely changed, but they belong in the
        sitemap: a payment gateway or an app store reviewer looking for a refund

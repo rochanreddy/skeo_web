@@ -10534,3 +10534,171 @@ details p {
     column-gap: clamp(48px, 7vw, 140px);
   }
 }
+
+/* ── Guides (/guides) ─────────────────────────────────────────
+   The policy pages' prose layout, plus the four things a guide has that a
+   policy does not: the boxed answer, numbered steps, comparison tables and a
+   closing call to the course. */
+.guide-label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.guide-answer {
+  margin-top: 36px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ink);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+.guide-answer p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.guide-steps {
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.guide-steps li {
+  position: relative;
+  margin: 0 0 16px;
+  padding-left: 44px;
+  counter-increment: step;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+.guide-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+.guide-steps strong {
+  display: block;
+  color: var(--ink);
+}
+.guide-table-wrap {
+  margin: 0 0 18px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.guide-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.guide-table th,
+.guide-table td {
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+}
+.guide-table thead th {
+  border-top: 0;
+  font-weight: 700;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+.guide-table tbody th {
+  font-weight: 600;
+  color: var(--ink);
+}
+.guide-faq + .guide-faq .legal-sub {
+  margin-top: 22px;
+}
+.guide-cta {
+  margin-top: 56px;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--ink) 3%, transparent);
+}
+.guide-cta h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.guide-cta p {
+  margin: 0 0 18px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.guide-more {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.guide-more a {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+.guide-more a:hover {
+  text-decoration: underline;
+}
+.guide-index {
+  margin: 44px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+.guide-index a {
+  display: grid;
+  gap: 6px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+.guide-index a:hover {
+  border-color: var(--ink-4);
+}
+.guide-index strong {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.guide-index span {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+.guide-index em {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink-4);
+}

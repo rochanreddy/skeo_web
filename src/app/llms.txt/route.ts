@@ -1,6 +1,7 @@
 import { claudeSyllabus, faqs, featuredTool } from '@/lib/content'
 import { getCatalog } from '@/lib/cms'
 import { money } from '@/lib/plans'
+import { GUIDES } from '@/lib/guides'
 import { lms, site } from '@/lib/site'
 import { TOOL_CAMPAIGNS, TOOL_SLUGS, toolFaq } from '@/lib/toolCampaigns'
 
@@ -93,6 +94,8 @@ ${syllabus}
 ## Frequently asked questions
 
 ${faqLines}
+## Guides
+${GUIDES.map((g) => `### [${g.title}](${site.url}/guides/${g.slug})\n\n${g.answer}\n`).join('\n')}
 ## Who runs it
 skeo is a product of ${site.legalName}, a company registered in India.
 Support: ${site.email}.
@@ -101,6 +104,7 @@ Support: ${site.email}.
 - [skeo — home](${site.url}): what skeo teaches, the tracks, pricing and FAQ
 - [Everything AI](${site.url}/campaign/everything-ai): every course in one one-time pass
 ${TOOL_SLUGS.map((slug) => `- [${TOOL_CAMPAIGNS[slug].name} Course](${site.url}/campaign/${slug}): ${TOOL_CAMPAIGNS[slug].meta.title}`).join('\n')}
+${GUIDES.map((g) => `- [${g.title}](${site.url}/guides/${g.slug}): ${g.description}`).join('\n')}
 - [About](${site.url}/about): what skeo is and who is behind it
 - [Refund policy](${site.url}/refund)
 - [Terms](${site.url}/terms)
