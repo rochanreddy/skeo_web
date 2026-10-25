@@ -2,6 +2,7 @@ import { faqs, promiseStats } from '@/lib/content'
 import { getCatalog } from '@/lib/cms'
 import { abs } from '@/lib/seo'
 import { site } from '@/lib/site'
+import { toolFaq, type ToolCampaign } from '@/lib/toolCampaigns'
 
 /**
  * JSON-LD, split by page.
@@ -209,6 +210,61 @@ export async function CampaignSchema() {
             })),
           },
           breadcrumbs([{ name: 'Everything AI', path }]),
+        ],
+      }}
+    />
+  )
+}
+
+/** /campaign/<tool>: one tool's course, its price, its FAQ as the page shows it. */
+export async function ToolSchema({ c }: { c: ToolCampaign }) {
+  const { plans } = await getCatalog()
+  const plan = plans[c.plan]
+  const path = `/campaign/${c.slug}`
+  const url = abs(path)
+  return (
+    <JsonLd
+      data={{
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Course',
+            '@id': `${url}#course`,
+            name: `${c.name} Course`,
+            description: c.meta.description,
+            url,
+            inLanguage: 'en',
+            isAccessibleForFree: false,
+            educationalLevel: 'Beginner',
+            /* The modules the page lists, and what each one builds. */
+            teaches: c.learn.modules.map((m) => `${m.title}: ${m.body}`),
+            about: { '@type': 'Thing', name: c.name },
+            provider: { '@id': ORG },
+            educationalCredentialAwarded: `Verified ${c.name} certificate`,
+            offers: {
+              '@type': 'Offer',
+              price: plan.amount,
+              priceCurrency: 'INR',
+              category: 'Paid',
+              availability: 'https://schema.org/InStock',
+              url,
+            },
+            hasCourseInstance: {
+              '@type': 'CourseInstance',
+              courseMode: 'Online',
+              courseWorkload: `${c.learn.modules.length} modules, ${c.build.items.length} projects`,
+            },
+          },
+          {
+            '@type': 'FAQPage',
+            '@id': `${url}#faq`,
+            mainEntity: toolFaq(c).map((f) => ({
+              '@type': 'Question',
+              name: f.q,
+              acceptedAnswer: { '@type': 'Answer', text: f.a },
+            })),
+          },
+          breadcrumbs([{ name: `${c.name} Course`, path }]),
         ],
       }}
     />

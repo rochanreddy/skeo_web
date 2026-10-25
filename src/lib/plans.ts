@@ -155,6 +155,8 @@ export type ModuleRow = {
   )[]
 }
 
+/* Only Claude is sold on its own for now. The ChatGPT, Grok, n8n and Lovable
+   rows come back here when those courses go on the pricing card again. */
 export const MODULE_ROWS: ModuleRow[] = [
   {
     key: 'claude',
@@ -163,34 +165,6 @@ export const MODULE_ROWS: ModuleRow[] = [
       'Master Claude across Chat, Cowork, Code, automations, vibe coding, research and more in one practical course',
     amount: 299,
     marks: ['claude'],
-  },
-  {
-    key: 'chatgpt',
-    title: 'ChatGPT Course',
-    subtitle: 'Use ChatGPT for real work: Projects, Canvas, custom GPTs, deep research, images and agent mode',
-    amount: 299,
-    marks: ['chatgpt'],
-  },
-  {
-    key: 'grok',
-    title: 'Grok Course',
-    subtitle: 'Live answers from X and the web, and Grok Bots that take on your routine work',
-    amount: 299,
-    marks: ['grok'],
-  },
-  {
-    key: 'n8n',
-    title: 'n8n Course',
-    subtitle: 'Automate your work with n8n: workflows, AI agents, RAG and approvals, without writing code',
-    amount: 299,
-    marks: ['n8n'],
-  },
-  {
-    key: 'lovable',
-    title: 'Lovable Course',
-    subtitle: 'Build and ship a working web app from a prompt, with logins, a database and your own link',
-    amount: 299,
-    marks: ['lovable'],
   },
   {
     key: 'playbooks',

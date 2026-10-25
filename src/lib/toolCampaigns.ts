@@ -338,3 +338,25 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
 }
 
 export const TOOL_SLUGS = Object.keys(TOOL_CAMPAIGNS) as ToolSlug[]
+
+const list = (xs: readonly string[]) =>
+  xs.length > 1 ? `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}` : xs.join('')
+
+/**
+ * A tool page's FAQ as shown and as marked up: one answer-first question on
+ * what the course covers, written from the modules and projects above so it
+ * can never disagree with them, then the hand-written ones. "What does the
+ * n8n course cover?" is the question people put to search and answer engines;
+ * this is the page answering it in one quotable paragraph.
+ */
+export function toolFaq(c: ToolCampaign): readonly { q: string; a: string }[] {
+  const modules = c.learn.modules.map((m) => m.title)
+  const projects = c.build.items.map((b) => b.title.replace(/^(A|An) /, ''))
+  return [
+    {
+      q: `What does the ${c.name} course cover?`,
+      a: `${modules.length} modules: ${list(modules)}. Along the way you build ${projects.length} projects — ${list(projects)} — and earn a verified ${c.name} certificate. It is self-paced, with a one-time payment.`,
+    },
+    ...c.faq,
+  ]
+}

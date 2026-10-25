@@ -2,6 +2,7 @@ import { claudeSyllabus, faqs, featuredTool } from '@/lib/content'
 import { getCatalog } from '@/lib/cms'
 import { money } from '@/lib/plans'
 import { lms, site } from '@/lib/site'
+import { TOOL_CAMPAIGNS, TOOL_SLUGS, toolFaq } from '@/lib/toolCampaigns'
 
 /**
  * /llms.txt — the site in plain prose, for answer engines.
@@ -42,6 +43,18 @@ export async function GET() {
     .map((m) => bullet(`${m.title} (${m.meta}) — ${m.topics.join('; ')}`))
     .join('\n')
 
+  /* One paragraph per single-tool course: its page, its price, and the same
+     "what does it cover" answer the page itself gives. */
+  const toolCourses = TOOL_SLUGS.map((slug) => {
+    const c = TOOL_CAMPAIGNS[slug]
+    return `### [${c.name} Course](${site.url}/campaign/${slug}) — ${money(PLANS[c.plan].amount)}, one-time
+
+${c.meta.description}
+
+${toolFaq(c)[0].a}
+`
+  }).join('\n')
+
   const faqLines = faqs.map((f) => `**${f.q}**\n\n${f.a}\n`).join('\n')
 
   const body = `# skeo
@@ -67,6 +80,11 @@ ${plans}
 
 Prices are in Indian rupees for visitors in India and in US dollars elsewhere.
 
+## Single-tool courses
+Each tool is also sold on its own, as a self-paced course with projects and a
+certificate.
+
+${toolCourses}
 ## What the Claude track covers
 ${claudeSyllabus.intro}
 
@@ -82,6 +100,7 @@ Support: ${site.email}.
 ## Links
 - [skeo — home](${site.url}): what skeo teaches, the tracks, pricing and FAQ
 - [Everything AI](${site.url}/campaign/everything-ai): every course in one one-time pass
+${TOOL_SLUGS.map((slug) => `- [${TOOL_CAMPAIGNS[slug].name} Course](${site.url}/campaign/${slug}): ${TOOL_CAMPAIGNS[slug].meta.title}`).join('\n')}
 - [About](${site.url}/about): what skeo is and who is behind it
 - [Refund policy](${site.url}/refund)
 - [Terms](${site.url}/terms)

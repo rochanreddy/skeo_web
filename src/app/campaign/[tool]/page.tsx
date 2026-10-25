@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { ReactElement } from 'react'
+import { ToolSchema } from '@/components/StructuredData'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
 import { getCatalog } from '@/lib/cms'
@@ -86,6 +87,7 @@ export default async function ToolCampaignPage({ params }: Props) {
 
   return (
     <div className="ea">
+      <ToolSchema c={c} />
       <header className="wrap ea-header">
         <Link className="brand" href="/" aria-label="skeo home">
           <span>skeo</span>

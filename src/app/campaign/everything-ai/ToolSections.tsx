@@ -1,7 +1,7 @@
 import { getCatalog } from '@/lib/cms'
 import { Accreditation } from '@/components/sections/Accreditation'
 import { inr, learn as learnCode, pricing as pricingCode } from '@/lib/earlyAccess'
-import type { ToolCampaign } from '@/lib/toolCampaigns'
+import { toolFaq, type ToolCampaign } from '@/lib/toolCampaigns'
 import { BuildIcon } from './BuildIcons'
 import { FaqList } from './FaqList'
 import { ModuleList } from './ModuleList'
@@ -133,7 +133,7 @@ export async function ToolSections({ c }: { c: ToolCampaign }) {
               <a href="mailto:support@skeoai.com">support@skeoai.com</a>
             </div>
           </div>
-          <FaqList items={c.faq} />
+          <FaqList items={toolFaq(c)} />
         </div>
       </section>
 
