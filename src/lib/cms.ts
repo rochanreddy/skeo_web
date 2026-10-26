@@ -116,7 +116,7 @@ export function mergeCatalog(raw: Raw, base: Catalog = defaultCatalog): Catalog 
   const cs = obj(raw.comingSoon)
   const comingSoon = {
     ...base.comingSoon,
-    title: pick('comingSoon.title', notOnSale(text(cs.title, 120), modules), cs.title, base.comingSoon.title),
+    title: pick('comingSoon.title', notOnSale(text(cs.title, 120), modules.filter((m) => m.listed !== false)), cs.title, base.comingSoon.title),
     subtitle: pick('comingSoon.subtitle', text(cs.subtitle, 200), cs.subtitle, base.comingSoon.subtitle),
   }
 

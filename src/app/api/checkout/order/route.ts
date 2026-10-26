@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { normaliseItems, priceOf } from '@/lib/checkoutItems'
+import { after } from 'next/server'
+import { checkoutRows, normaliseItems, priceOf } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 import { mongoConfigured } from '@/lib/db/mongo'
 import { offerEndedFor } from '@/lib/catalog'
@@ -12,7 +13,8 @@ import {
   cashfreePhone,
   createCashfreeOrder,
 } from '@/lib/payments/cashfree'
-import { newOrderId, ordersCollection } from '@/lib/payments/orders'
+import { metaContextFrom, metaCustomData, sendInitiateCheckout } from '@/lib/payments/meta'
+import { newOrderId, ordersCollection, type OrderDoc } from '@/lib/payments/orders'
 
 /**
  * POST /api/checkout/order — start paying for a cart.
@@ -95,18 +97,22 @@ export async function POST(request: Request) {
   // request's own origin is right for everything else.
   const origin = (process.env.SITE_URL || new URL(request.url).origin).replace(/\/+$/, '')
 
+  const rows = checkoutRows(catalog)
   const orders = await ordersCollection()
-  await orders.insertOne({
+  const doc: OrderDoc = {
     _id: orderId,
     items,
     amount,
+    title: items.map((key) => rows.find((r) => r.key === key)?.title ?? key).join(' + '),
     contact,
     visitorId: str(body?.visitorId, 40),
     sessionId: str(body?.sessionId, 40),
+    meta: metaContextFrom(request, body),
     status: 'created',
     createdAt: new Date(),
     provision: { attempts: 0 },
-  })
+  }
+  await orders.insertOne(doc)
 
   try {
     const cf = await createCashfreeOrder({
@@ -123,7 +129,16 @@ export async function POST(request: Request) {
     })
     if (!cf.payment_session_id) throw new Error('Cashfree returned no payment session.')
     await orders.updateOne({ _id: orderId }, { $set: { paymentSessionId: cf.payment_session_id } })
-    return NextResponse.json({ orderId, amount, paymentSessionId: cf.payment_session_id, mode: cashfreeMode() })
+    // Meta's server copy of the checkout, after the response so it never
+    // slows the buyer down. The browser fires its own with the same id.
+    after(() => sendInitiateCheckout(doc))
+    return NextResponse.json({
+      orderId,
+      amount,
+      paymentSessionId: cf.payment_session_id,
+      mode: cashfreeMode(),
+      meta: metaCustomData(doc),
+    })
   } catch (err) {
     console.error(`[checkout] ${orderId}: Cashfree order failed:`, err)
     await orders.deleteOne({ _id: orderId, status: 'created' })

@@ -1,5 +1,6 @@
 import { faqs, promiseStats } from '@/lib/content'
 import { getCatalog } from '@/lib/cms'
+import { listedModules } from '@/lib/plans'
 import { abs } from '@/lib/seo'
 import type { Guide } from '@/lib/guides'
 import { site } from '@/lib/site'
@@ -85,7 +86,8 @@ export function SiteSchema() {
 /** The home page: the page itself, its FAQ, and the tracks it sells. */
 export async function HomeSchema() {
   /* The published prices, so the markup always matches the number on the page. */
-  const { modules: MODULE_ROWS, plans: PLANS, comingSoon: COMING_SOON } = await getCatalog()
+  const { modules: allModules, plans: PLANS, comingSoon: COMING_SOON } = await getCatalog()
+  const MODULE_ROWS = listedModules(allModules)
   const courses = MODULE_ROWS.map((m) => {
     const plan = PLANS[m.key]
     return {

@@ -9,6 +9,7 @@ import '../everything-ai/early-access.css'
 import { HeroScene } from './HeroScene'
 import { NightOnly } from './NightOnly'
 import './showcase.css'
+import { MetaViewContent } from '@/components/MetaViewContent'
 
 /**
  * Variant: SHOWCASE — the best-looking one.
@@ -29,9 +30,11 @@ export async function generateMetadata() {
 }
 
 export default async function ShowcasePage() {
-  const { price, was, savePct, endsOn } = liveFacts(await getCatalog())
+  const catalog = await getCatalog()
+  const { price, was, savePct, endsOn } = liveFacts(catalog)
   return (
     <div className="vx">
+      <MetaViewContent ids={['earlyaccess']} name={catalog.plans.earlyaccess.title} value={catalog.plans.earlyaccess.amount} />
       <NightOnly />
       <div className="vx-bar">
         <span>

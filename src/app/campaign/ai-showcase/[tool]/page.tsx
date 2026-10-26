@@ -11,6 +11,7 @@ import '../../everything-ai/early-access.css'
 import { HeroScene } from '../HeroScene'
 import { NightOnly } from '../NightOnly'
 import '../showcase.css'
+import { MetaViewContent } from '@/components/MetaViewContent'
 
 /**
  * /campaign/ai-showcase/<tool> — one tool's course in the SHOWCASE style.
@@ -45,9 +46,11 @@ export default async function ShowcaseToolPage({ params }: Props) {
   if (!c) notFound()
   const { plans } = await getCatalog()
   const price = inr(plans[c.plan].amount)
+  const view = <MetaViewContent ids={[c.plan]} name={`${c.name} Course`} value={plans[c.plan].amount} />
   const course = `${c.name} Course`
   return (
     <div className="vx">
+      {view}
       <NightOnly />
       <div className="vx-bar">
         <span>

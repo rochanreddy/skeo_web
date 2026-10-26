@@ -12,6 +12,7 @@ import { JoinToasts, SeatsLeft } from './Live'
 import { Buy, CampaignSections, Check, Lines } from './Sections'
 import { StickyCta } from './StickyCta'
 import './early-access.css'
+import { MetaViewContent } from '@/components/MetaViewContent'
 
 /* The price is in the title, so the title follows the price in Sanity. */
 export async function generateMetadata(): Promise<Metadata> {
@@ -41,6 +42,7 @@ export default async function EarlyAccessPage() {
   const valueStack = { items: valueStackItems }
   return (
     <div className="ea">
+      <MetaViewContent ids={['earlyaccess']} name={catalog.plans.earlyaccess.title} value={offer.price} />
       {/* Announcement */}
       {/* Pinned to the top: the offer, the real deadline, and the button. */}
       <div className="ea-announce">

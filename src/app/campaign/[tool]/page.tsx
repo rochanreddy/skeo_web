@@ -14,6 +14,7 @@ import { Buy, Check, Lines } from '../everything-ai/Sections'
 import { StickyCta } from '../everything-ai/StickyCta'
 import { ToolSections } from '../everything-ai/ToolSections'
 import '../everything-ai/early-access.css'
+import { MetaViewContent } from '@/components/MetaViewContent'
 
 /**
  * /campaign/claude, /campaign/chatgpt, /campaign/grok, /campaign/n8n,
@@ -88,6 +89,7 @@ export default async function ToolCampaignPage({ params }: Props) {
   return (
     <div className="ea">
       <ToolSchema c={c} />
+      <MetaViewContent ids={[c.plan]} name={course} value={plan.amount} />
       <header className="wrap ea-header">
         <Link className="brand" href="/" aria-label="skeo home">
           <span>skeo</span>

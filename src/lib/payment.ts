@@ -1,5 +1,6 @@
 import type { CheckoutItem } from '@/lib/checkoutItems'
 import type { CheckoutContact } from '@/lib/checkoutSession'
+import { metaContext, metaInitiateCheckout, type MetaOrder } from '@/lib/analytics/meta'
 import { sessionId, visitorId } from '@/lib/analytics/track'
 import { apiError, friendlyError, reportError, type Stage } from '@/lib/friendlyError'
 
@@ -54,17 +55,22 @@ export async function startPayment(order: { items: CheckoutItem[]; contact: Chec
     res = await fetch('/api/checkout/order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...order, visitorId: visitorId(), sessionId: sessionId() }),
+      // metaContext: the pixel's cookies and this page, so the server's copy of
+      // the sale can be matched to the ad click (lib/payments/meta.ts).
+      body: JSON.stringify({ ...order, visitorId: visitorId(), sessionId: sessionId(), ...metaContext() }),
       signal: AbortSignal.timeout(30_000),
     })
   } catch (err) {
     const timedOut = err instanceof Error && (err.name === 'TimeoutError' || err.name === 'AbortError')
     return failed('order', apiError(timedOut ? 'The server took too long to respond.' : 'Could not reach skeo.', { kind: timedOut ? 'timeout' : 'network' }))
   }
-  const session = (await res.json().catch(() => ({}))) as { paymentSessionId?: string; mode?: 'sandbox' | 'production'; error?: string }
+  const session = (await res.json().catch(() => ({}))) as { paymentSessionId?: string; mode?: 'sandbox' | 'production'; error?: string; meta?: MetaOrder }
   if (!res.ok || !session.paymentSessionId) {
     return failed('order', apiError(session.error || 'Could not start the payment.', { kind: 'http', status: res.ok ? 502 : res.status }))
   }
+
+  // The order exists and Cashfree is about to open: the checkout has begun.
+  metaInitiateCheckout(session.meta)
 
   try {
     await loadSdk()

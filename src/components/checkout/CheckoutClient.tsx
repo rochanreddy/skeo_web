@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { listedModules } from '@/lib/plans'
 import { Modal } from '@/components/modals/Modal'
 import {
   readCheckoutSession,
@@ -116,7 +117,7 @@ export function CheckoutClient() {
   const rows = checkoutRows(catalog).filter((row) => session.modules.includes(row.key))
   // Everything AI already includes every tool, so there is nothing to add to it.
   const isMember = isAllAccess(session.modules)
-  const extras = isMember ? [] : MODULE_ROWS.filter((row) => !session.modules.includes(row.key))
+  const extras = isMember ? [] : listedModules(MODULE_ROWS).filter((row) => !session.modules.includes(row.key))
   const subtotal = rows.reduce((sum, row) => sum + row.amount, 0)
   const total = subtotal
 

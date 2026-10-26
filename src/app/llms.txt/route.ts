@@ -1,6 +1,6 @@
 import { claudeSyllabus, faqs, featuredTool } from '@/lib/content'
 import { getCatalog } from '@/lib/cms'
-import { money } from '@/lib/plans'
+import { listedModules, money } from '@/lib/plans'
 import { GUIDES } from '@/lib/guides'
 import { lms, site } from '@/lib/site'
 import { TOOL_CAMPAIGNS, TOOL_SLUGS, toolFaq } from '@/lib/toolCampaigns'
@@ -29,7 +29,7 @@ const bullet = (s: string) => `- ${s}`
 
 export async function GET() {
   const { modules: MODULE_ROWS, plans: PLANS } = await getCatalog()
-  const modules = MODULE_ROWS.map((m) =>
+  const modules = listedModules(MODULE_ROWS).map((m) =>
     bullet(`${m.title} — ${money(m.amount)}. ${m.subtitle}`),
   ).join('\n')
 

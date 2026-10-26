@@ -2,6 +2,7 @@
 
 import { randomId, type EventProps, type EventType } from './events'
 import { forwardToGa } from './ga'
+import { forwardToMeta } from './meta'
 
 /**
  * How the site reports what happened. One function, called from the component
@@ -47,6 +48,8 @@ export function track(type: EventType, props?: EventProps): void {
   // The same moment, reported to Google Analytics under GA's own event names.
   // A no-op unless NEXT_PUBLIC_GA_ID is set.
   forwardToGa(type, props)
+  // And to the Meta Pixel, for the few Meta's ads optimise on.
+  forwardToMeta(type, props)
 
   const body = JSON.stringify({
     type,

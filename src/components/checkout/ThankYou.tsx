@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { gaPurchase } from '@/lib/analytics/ga'
+import { metaPurchase, type MetaOrder } from '@/lib/analytics/meta'
 import { track } from '@/lib/analytics/track'
 import { useCatalog } from '@/components/CatalogProvider'
 import { checkoutRows, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
@@ -29,6 +30,7 @@ type OrderView = {
   items: CheckoutItem[]
   amount: number
   email: string
+  meta?: MetaOrder
 }
 
 const POLL_MS = 2500
@@ -87,7 +89,12 @@ export function ThankYou() {
   // site's own purchase event is written by the server; GA can only hear about
   // it from the browser, and this is the first page that knows.
   useEffect(() => {
-    if (order && (order.status === 'paid' || order.status === 'provisioned')) gaPurchase(order)
+    if (order && (order.status === 'paid' || order.status === 'provisioned')) {
+      gaPurchase(order)
+      // Meta's copy carries the order id as its event id, as the server's
+      // does, so a refresh or the server's own Purchase is never a second sale.
+      metaPurchase(order.meta)
+    }
   }, [order])
 
   // Above the bail-outs below: hooks cannot run conditionally.

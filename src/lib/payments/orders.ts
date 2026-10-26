@@ -3,6 +3,7 @@ import type { Collection } from 'mongodb'
 import { mongoDb } from '@/lib/db/mongo'
 import type { CheckoutItem } from '@/lib/checkoutItems'
 import type { PaymentMethod } from '@/lib/payments/cashfree'
+import type { MetaContext } from '@/lib/payments/meta'
 
 /**
  * Orders, in skeo's own database.
@@ -31,6 +32,10 @@ export type OrderDoc = {
   visitorId: string
   sessionId: string
   status: OrderStatus
+  /** What was bought, by name ("Claude Course"), as priced — for Meta and the CRM. */
+  title?: string
+  /** The buying browser, for matching the sale to the ad click (lib/payments/meta). */
+  meta?: MetaContext
   paymentSessionId?: string
   createdAt: Date
   paidAt?: Date

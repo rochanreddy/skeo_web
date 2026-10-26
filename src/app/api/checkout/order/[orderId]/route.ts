@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { finalizeOrder } from '@/lib/payments/finalize'
+import { metaCustomData } from '@/lib/payments/meta'
 
 /**
  * GET /api/checkout/order/:orderId — where does this order stand?
@@ -31,6 +32,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ ord
       items: order.items,
       amount: order.amount,
       email: order.contact.email,
+      // The pixel's Purchase on /thank-you, with the server's values and id.
+      meta: metaCustomData(order),
     })
   } catch (err) {
     console.error(`[checkout] ${orderId}: status check failed:`, err)

@@ -1,6 +1,9 @@
 import { append } from '@/lib/analytics/store'
 import { randomId } from '@/lib/analytics/events'
+import { after } from 'next/server'
 import { getCashfreeOrder } from '@/lib/payments/cashfree'
+import { sendSaleToCrm } from '@/lib/payments/crm'
+import { sendPurchase } from '@/lib/payments/meta'
 import { ordersCollection, type OrderDoc } from '@/lib/payments/orders'
 
 /**
@@ -58,6 +61,11 @@ export async function finalizeOrder(orderId: string): Promise<FinalState> {
           name: order.contact.name,
         },
       }).catch((err) => console.error(`[orders] ${orderId}: purchase event not recorded:`, err))
+      // The same once-only moment tells Meta and the CRM. After the response:
+      // neither may hold up the webhook or the buyer's thank-you page, and
+      // neither throws.
+      const paid = won
+      after(() => Promise.all([sendPurchase(paid), sendSaleToCrm(paid)]))
     }
     order = (await orders.findOne({ _id: orderId }))!
     if (order.status === 'provisioned') return { status: 'provisioned', order }

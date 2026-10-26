@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { listedModules } from '@/lib/plans'
 import { track } from '@/lib/analytics/track'
 import { price, useCurrency } from '@/lib/currency'
 import { useCatalog } from '@/components/CatalogProvider'
@@ -42,7 +43,8 @@ const MARKS = {
 export function ModuleCart() {
   const { openVerify } = useModal()
   const currency = useCurrency()
-  const { modules: MODULE_ROWS, comingSoon: COMING_SOON } = useCatalog()
+  const { modules: allModules, comingSoon: COMING_SOON } = useCatalog()
+  const MODULE_ROWS = listedModules(allModules)
   const [cart, setCart] = useState<ModuleKey[]>([])
 
   const total = MODULE_ROWS.filter((row) => cart.includes(row.key)).reduce((sum, row) => sum + row.amount, 0)

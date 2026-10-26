@@ -10,6 +10,7 @@ import { getCatalog } from '@/lib/cms'
 import { site } from '@/lib/site'
 import './globals.css'
 import { cn } from '@/lib/utils'
+import { MetaPixel } from '@/components/MetaPixel'
 
 // Self-hosted at build time: no render-blocking request to fonts.googleapis.com,
 // and `display: swap` plus automatic fallback metrics keep CLS at zero.
@@ -35,7 +36,13 @@ const dmMono = DM_Mono({
 const verification: Metadata['verification'] = {
   google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
   yandex: process.env.YANDEX_VERIFICATION || undefined,
-  other: process.env.BING_SITE_VERIFICATION ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } : undefined,
+  other: {
+    ...(process.env.BING_SITE_VERIFICATION ? { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } : {}),
+    /* Meta: Business Settings → Brand safety → Domains → skeoai.com →
+       "Meta-tag verification". Proves the domain is skeo's, which Meta needs
+       before it will optimise ads on the events this site sends. */
+    ...(process.env.META_DOMAIN_VERIFICATION ? { 'facebook-domain-verification': process.env.META_DOMAIN_VERIFICATION } : {}),
+  },
 }
 
 /* Site-wide defaults only. No canonical and no og:url here: anything set at
@@ -127,6 +134,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
         <GoogleAnalytics />
+        <MetaPixel />
         <Clarity />
       </head>
       <body>
