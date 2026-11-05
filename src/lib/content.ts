@@ -36,9 +36,11 @@ export const promiseStats = [
  */
 /* The product walkthrough. Leave `src` empty until the cut exists — the poster
    renders as plain content rather than a dead button while it is missing. Point
-   it at a file in /public (or any direct video URL) to switch the lightbox on. */
+   it at a file in /public (or any direct video URL) to switch the player on.
+   `poster` is the thumbnail shown until someone presses play. */
 export const walkthrough = {
-  src: '',
+  src: '/walkthrough.mp4',
+  poster: '/walkthrough-poster.jpg',
   label: 'Watch how skeo works',
   duration: '2 MIN',
 } as const

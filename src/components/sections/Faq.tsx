@@ -1,5 +1,5 @@
 import { Reveal } from '@/components/Reveal'
-import { VideoDialog } from '@/components/ui/video-dialog'
+import { VideoPlayer } from '@/components/ui/video-player'
 import { faqs, walkthrough } from '@/lib/content'
 
 /**
@@ -24,7 +24,7 @@ export function Faq() {
           <br />
           what you walk away with, and what it costs.
         </p>
-        <VideoDialog src={walkthrough.src} label={walkthrough.label} duration={walkthrough.duration} />
+        <VideoPlayer src={walkthrough.src} poster={walkthrough.poster} label={walkthrough.label} duration={walkthrough.duration} />
       </Reveal>
 
       <Reveal className="faq-list" delay={1}>
