@@ -121,12 +121,18 @@ export function ThankYou() {
           <header className="thanks-head">
             <h1>The payment didn&rsquo;t go through.</h1>
             <p>
-              Nothing was charged for order <b>{order.orderId}</b>. You can try again from the pricing section.
+              Order <b>{order.orderId}</b> wasn&rsquo;t paid, and your cart is still saved. You can try again now.
             </p>
           </header>
           <footer className="thanks-foot">
-            <Link className="button" href="/#pricing">
-              <span className="btn-label">Back to pricing</span> <span aria-hidden="true">→</span>
+            {lms.support && (
+              <p>
+                Money left your account anyway?{' '}
+                <a href={`mailto:${lms.support}?subject=Order ${order.orderId}`}>{lms.support}</a>
+              </p>
+            )}
+            <Link className="button" href="/checkout">
+              <span className="btn-label">Try again</span> <span aria-hidden="true">→</span>
             </Link>
           </footer>
         </div>
@@ -147,11 +153,17 @@ export function ThankYou() {
                 : 'This takes a few seconds. Please keep this page open.'}
             </p>
           </header>
-          {timedOut && lms.support && (
+          {timedOut && (
             <footer className="thanks-foot">
-              <p>
-                Questions? <a href={`mailto:${lms.support}?subject=Order ${order.orderId}`}>{lms.support}</a>
-              </p>
+              {lms.support && (
+                <p>
+                  Questions? <a href={`mailto:${lms.support}?subject=Order ${order.orderId}`}>{lms.support}</a>
+                </p>
+              )}
+              <p>Left the payment page without paying? Nothing is lost.</p>
+              <Link className="button button-outline" href="/checkout">
+                <span className="btn-label">Try again</span> <span aria-hidden="true">→</span>
+              </Link>
             </footer>
           )}
         </div>
@@ -260,7 +272,7 @@ export function ThankYou() {
                 rel="noreferrer"
                 onClick={() => track('lms_open', { target: 'mobile', orderId: order.orderId, email: order.email })}
               >
-                <span className="btn-label">Download the app</span> <span aria-hidden="true">↓</span>
+                <span className="btn-label">Install the app</span> <span aria-hidden="true">↗</span>
               </a>
             </div>
           </li>

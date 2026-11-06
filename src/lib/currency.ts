@@ -1,7 +1,3 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-
 export type Currency = 'INR' | 'USD'
 
 /**
@@ -33,37 +29,13 @@ export const usdFor = (inr: number) =>
 export const price = (inr: number, currency: Currency) =>
   currency === 'INR' ? `₹${inr.toLocaleString('en-IN')}` : `$${usdFor(inr)}`
 
-/* The timezone is the signal, with the language as a fallback: both are on the
-   browser already, neither costs a request, and neither is an IP lookup that
-   would put a third party between a reader and a price.
-   It answers "in India" rather than "abroad" so that anything unreadable —
-   a locked-down browser, a stripped Intl — falls back to the home market
-   rather than silently charging someone twice. */
-const inIndia = () => {
-  try {
-    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    if (zone) return zone === 'Asia/Kolkata' || zone === 'Asia/Calcutta'
-    return (navigator.language || '').toLowerCase().endsWith('-in')
-  } catch {
-    return true
-  }
-}
-
 /**
- * India is the home market, so rupees are what the server renders and what the
- * first client pass shows; an overseas reader is switched a beat later.
- *
- * That order is deliberate rather than lazy. The check needs the browser, so
- * running it during render would make the server's HTML and the client's first
- * pass disagree — and React does not repair text that mismatches, so the page
- * can be left showing a price that belongs to neither.
+ * Rupees for every reader, wherever they are. Checkout charges INR — Cashfree
+ * is sent order_currency INR and nothing else — so showing anyone a dollar
+ * price would promise a figure the payment page then contradicts. When
+ * international payments are enabled on the Cashfree account and orders are
+ * really charged in USD, this is the switch to turn back on.
  */
 export function useCurrency(): Currency {
-  const [currency, setCurrency] = useState<Currency>('INR')
-
-  useEffect(() => {
-    if (!inIndia()) setCurrency('USD')
-  }, [])
-
-  return currency
+  return 'INR'
 }

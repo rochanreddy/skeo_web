@@ -8,7 +8,7 @@
  */
 export const lms = {
   web: 'https://lms.skeoai.com',
-  mobile: 'https://lms.skeoai.com/download/skeo-lms.apk',
+  mobile: 'https://lms.skeoai.com/install',
   support: 'support@skeoai.com',
   /** How the thank-you page describes the wait for the credentials email. */
   credentialsEta: 'within 5 minutes',

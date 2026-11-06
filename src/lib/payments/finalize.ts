@@ -1,7 +1,7 @@
 import { append } from '@/lib/analytics/store'
 import { randomId } from '@/lib/analytics/events'
 import { after } from 'next/server'
-import { getCashfreeOrder } from '@/lib/payments/cashfree'
+import { allAttemptsFailed, getCashfreeOrder } from '@/lib/payments/cashfree'
 import { sendSaleToCrm } from '@/lib/payments/crm'
 import { sendPurchase } from '@/lib/payments/meta'
 import { ordersCollection, type OrderDoc } from '@/lib/payments/orders'
@@ -29,7 +29,10 @@ export async function finalizeOrder(orderId: string): Promise<FinalState> {
   if (order.status === 'created') {
     const cf = await getCashfreeOrder(orderId)
     if (cf.order_status !== 'PAID') {
-      return { status: cf.order_status === 'ACTIVE' ? 'pending' : 'failed', order }
+      // A failed attempt leaves the order ACTIVE. Reporting it changes nothing
+      // here: the order stays 'created', so a later success still goes through.
+      const dead = cf.order_status !== 'ACTIVE' || (await allAttemptsFailed(orderId))
+      return { status: dead ? 'failed' : 'pending', order }
     }
     // The amount was set by this server when the order was made, so a
     // mismatch means something is badly wrong — stop rather than provision.
@@ -126,7 +129,8 @@ async function provisionInLms(order: OrderDoc): Promise<LmsResult | 'busy'> {
       phone: order.contact.phone,
       items: order.items,
     }),
-    signal: AbortSignal.timeout(25_000),
+    // The LMS can be asleep on Render and take 20s or more to wake.
+    signal: AbortSignal.timeout(50_000),
   })
   // Another request for this same order is mid-flight on the LMS. Not an
   // error — the next confirmation will find it done.

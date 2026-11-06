@@ -4,6 +4,8 @@ import { finalizeOrder } from '@/lib/payments/finalize'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+// Long enough for Cashfree, a sleeping LMS and the sale records after the response.
+export const maxDuration = 60
 
 /**
  * POST /api/admin/orders/:orderId/verify — "Verify with Cashfree".

@@ -92,12 +92,14 @@ export function verifyWebhookSignature(signature: string | null, rawBody: string
   return a.length === b.length && crypto.timingSafeEqual(a, b)
 }
 
-/** Cashfree wants a 10-digit Indian number; the form accepts any format. */
+/** Cashfree takes an Indian number as 10 digits and any other with its leading
+ *  +, and refuses a foreign number without one. The form accepts any format. */
 export function cashfreePhone(raw: string): string {
-  const digits = raw.replace(/\D/g, '')
+  const digits = raw.replace(/\D/g, '').replace(/^00/, '')
   if (digits.length === 12 && digits.startsWith('91')) return digits.slice(2)
   if (digits.length === 11 && digits.startsWith('0')) return digits.slice(1)
-  return digits
+  if (digits.length === 10 && !raw.trim().startsWith('+')) return digits
+  return `+${digits}`
 }
 
 /** Cashfree's customer_id allows letters, digits and _ -; derived from the email
@@ -132,6 +134,19 @@ const getCashfreePayments = async (orderId: string) => {
 }
 
 const isSuccess = (p: CfPayment) => String(p.payment_status || '').toUpperCase() === 'SUCCESS'
+
+const DEAD_ATTEMPT = new Set(['FAILED', 'USER_DROPPED', 'CANCELLED', 'VOID'])
+
+/**
+ * Whether every attempt at an order has ended without money. Cashfree leaves
+ * the order ACTIVE after a failed attempt, because the buyer may try again on
+ * the same order, so the order's status alone cannot say this. No attempts, or
+ * one still in progress, is not a failure; neither is a lookup that fails.
+ */
+export async function allAttemptsFailed(orderId: string): Promise<boolean> {
+  const payments = await getCashfreePayments(orderId).catch(() => [])
+  return payments.length > 0 && payments.every((p) => DEAD_ATTEMPT.has(String(p.payment_status || '').toUpperCase()))
+}
 
 export type PaymentMethod = { label: string; emi: boolean; detail: string; bank: string; reference: string }
 

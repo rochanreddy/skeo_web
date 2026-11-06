@@ -16,6 +16,8 @@ import { metaCustomData } from '@/lib/payments/meta'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+// Long enough for Cashfree, a sleeping LMS and the sale records after the response.
+export const maxDuration = 60
 
 export async function GET(_request: Request, { params }: { params: Promise<{ orderId: string }> }) {
   const { orderId } = await params
