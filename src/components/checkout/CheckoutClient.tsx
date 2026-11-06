@@ -150,9 +150,9 @@ export function CheckoutClient() {
   /* Hands the buyer to Cashfree. The price is worked out on the server from
      the items, and nothing is unlocked until Cashfree tells the server the
      order is PAID — so the sale is recorded there too, not here. On success
-     this page is replaced by Cashfree's, which returns to /thank-you; the
+     Cashfree's popup closes and this page moves on to /thank-you; the
      checkout session is cleared there, once the payment is confirmed, so
-     backing out of the payment page leaves the order ready to try again. */
+     closing the popup leaves the order ready to try again. */
   async function pay() {
     setError(null)
     setPaying(true)
