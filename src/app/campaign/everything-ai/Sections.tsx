@@ -14,7 +14,6 @@ import { build, certificate, faq as faqCode, inr, jobs, learn, mentors, pricing 
 import { BuildIcon } from './BuildIcons'
 import { FaqList } from './FaqList'
 import { FeaturedReview } from './FeaturedReview'
-import { SeatsLeft } from './Live'
 import { LevelList } from './ModuleList'
 import { PlayOnView } from './PlayOnView'
 import { hasToolLogo, ToolLogoMark } from './ToolLogos'
@@ -505,7 +504,6 @@ export async function CampaignSections() {
                 <p className="ea-deal-note">
                   You save <b>{inr(offer.was - offer.price)}</b>
                 </p>
-                <SeatsLeft />
                 <Buy className="button ea-cta ea-deal-cta">{pricing.cta}</Buy>
                 <ul className="ea-deal-trust">
                   {pricing.small

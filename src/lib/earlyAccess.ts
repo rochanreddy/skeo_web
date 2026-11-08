@@ -103,7 +103,7 @@ const LEVELS = [
     label: 'Level 3 · Automate with AI',
     tagline: 'Put repeat work on autopilot.',
     modules: [
-      { title: 'AI for Data & Analysis', body: 'Turn spreadsheets into insights and charts by asking in plain English.', build: 'Smart Dashboard', isNew: true },
+      { title: 'AI for Data & Analysis', body: 'Turn spreadsheets into insights and charts by asking in plain English.', build: 'Smart Dashboard' },
       { title: 'AI Automation', body: 'Workflows in n8n that capture, sort and follow up on their own.', build: 'Automated Lead System' },
       { title: 'AI Agents', body: 'Agents that research, decide and act for you.', build: 'Personal AI Agent' },
     ],

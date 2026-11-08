@@ -185,7 +185,6 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
                       <span className="ea-pass-more">+45</span>
                     </div>
                   )}
-                  <SeatsLeft />
                   <footer className="ea-pass-foot">
                     <span>One-time payment</span>
                     <span>Instant access</span>
