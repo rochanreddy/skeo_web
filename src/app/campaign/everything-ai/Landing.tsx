@@ -11,6 +11,7 @@ import { landingHero, type LandingKind } from '@/lib/landings'
 import { JoinToasts, SeatsLeft } from './Live'
 import { Buy, CampaignSections, Check, Lines } from './Sections'
 import { StickyCta } from './StickyCta'
+import { WindowTimer } from './WindowTimer'
 import './early-access.css'
 import { MetaViewContent } from '@/components/MetaViewContent'
 
@@ -52,11 +53,7 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
               </span>
             </span>
           </p>
-          {/* No deadline, so no countdown: just the offer. */}
-          <span className="ea-announce-offer">
-            <strong>{announcement.offer}</strong>
-            <span className="ea-announce-ends"> · open now</span>
-          </span>
+          <WindowTimer offer={announcement.offer} />
           <span className="ea-announce-seats">
             <SeatsLeft variant="inline" />
           </span>

@@ -5,6 +5,7 @@ import { getCatalog } from '@/lib/cms'
 import { liveFacts, product } from '../_kit/facts'
 import { CampaignSections } from '../everything-ai/Sections'
 import { StickyCta } from '../everything-ai/StickyCta'
+import { WindowTimer } from '../everything-ai/WindowTimer'
 import '../everything-ai/early-access.css'
 import { HeroScene } from './HeroScene'
 import { NightOnly } from './NightOnly'
@@ -38,8 +39,9 @@ export default async function ShowcasePage() {
       <NightOnly />
       <div className="vx-bar">
         <span>
-          <b>Early Access</b> · {savePct}% off · open now
+          <b>Early Access</b>
         </span>
+        <WindowTimer offer={`${savePct}% off`} />
         <Buy className="vx-bar-cta" arrow="→">
           Claim {price}
         </Buy>
