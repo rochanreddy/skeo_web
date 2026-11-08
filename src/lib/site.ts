@@ -45,10 +45,12 @@ export const site = {
   social: {
     instagram: 'https://www.instagram.com/skeo_ai/',
     facebook: 'https://www.facebook.com/profile.php?id=61596444447079',
+    youtube: 'https://www.youtube.com/channel/UC20FXWYPxEIqRORYlIZW92w',
   },
   sameAs: [
     'https://www.instagram.com/skeo_ai/',
     'https://www.facebook.com/profile.php?id=61596444447079',
+    'https://www.youtube.com/channel/UC20FXWYPxEIqRORYlIZW92w',
   ] as string[],
 } as const
 

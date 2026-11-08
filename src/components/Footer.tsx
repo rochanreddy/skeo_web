@@ -59,6 +59,14 @@ const social = [
   },
 ]
 
+/* After the menler mark rather than in the list above: the row reads as
+   skeo's own profiles, the parent company, then the channel. */
+const youtube = {
+  label: 'YouTube',
+  href: site.social.youtube,
+  path: 'M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z',
+}
+
 export function Footer() {
   return (
     <footer className="footer">
@@ -122,7 +130,15 @@ export function Footer() {
               >
                 <Image src={menlerMark} alt="" />
               </a>
+              <a href={youtube.href} rel="noopener noreferrer" target="_blank" aria-label={youtube.label}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={youtube.path} fill="currentColor" />
+                </svg>
+              </a>
             </div>
+            <a className="footer-support" href={`mailto:${site.email}`}>
+              Support: {site.email}
+            </a>
           </div>
 
           <div className="footer-nav">

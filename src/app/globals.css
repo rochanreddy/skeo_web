@@ -5268,6 +5268,23 @@ details p {
   height: 14px;
 }
 
+/* Under the marks, in the tagline's face and size, so the brand block reads
+   logo, line, marks, then where to write. */
+.footer-support {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--on-dark-3);
+  font-family: var(--font);
+  font-size: 12.5px;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.footer-support:hover {
+  color: #fff;
+}
+
 .footer-social a:hover {
   color: #fff;
   border-color: #ffffff54;
