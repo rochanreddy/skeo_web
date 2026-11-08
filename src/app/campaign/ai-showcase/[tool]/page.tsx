@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getCatalog } from '@/lib/cms'
 import { inr } from '@/lib/earlyAccess'
-import { TOOL_CAMPAIGNS, TOOL_SLUGS, type ToolSlug } from '@/lib/toolCampaigns'
+import { LIVE_TOOL_SLUGS, TOOL_CAMPAIGNS, type ToolSlug } from '@/lib/toolCampaigns'
 import { Buy, KitFooter, variantMeta } from '../../_kit/Kit'
 import { JoinedToast } from '../../_kit/Live'
 import { StickyCta } from '../../everything-ai/StickyCta'
@@ -27,12 +27,12 @@ import { MetaViewContent } from '@/components/MetaViewContent'
 export const dynamicParams = false
 
 export function generateStaticParams() {
-  return TOOL_SLUGS.map((tool) => ({ tool }))
+  return LIVE_TOOL_SLUGS.map((tool) => ({ tool }))
 }
 
 type Props = { params: Promise<{ tool: string }> }
 
-const campaignOf = (tool: string) => ((TOOL_SLUGS as string[]).includes(tool) ? TOOL_CAMPAIGNS[tool as ToolSlug] : null)
+const campaignOf = (tool: string) => ((LIVE_TOOL_SLUGS as string[]).includes(tool) ? TOOL_CAMPAIGNS[tool as ToolSlug] : null)
 
 export async function generateMetadata({ params }: Props) {
   const c = campaignOf((await params).tool)

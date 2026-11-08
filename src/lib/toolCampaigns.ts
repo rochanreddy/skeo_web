@@ -339,6 +339,13 @@ export const TOOL_CAMPAIGNS: Record<ToolSlug, ToolCampaign> = {
 
 export const TOOL_SLUGS = Object.keys(TOOL_CAMPAIGNS) as ToolSlug[]
 
+/* Tools whose campaign pages are off for now: no page, and left out of the
+   sitemap and llms.txt. Remove a slug here to bring its pages back. */
+const HIDDEN_TOOL_PAGES: readonly ToolSlug[] = ['chatgpt']
+
+/** The tools with a campaign page live: /campaign/<tool> and /campaign/ai-showcase/<tool>. */
+export const LIVE_TOOL_SLUGS = TOOL_SLUGS.filter((slug) => !HIDDEN_TOOL_PAGES.includes(slug))
+
 const list = (xs: readonly string[]) =>
   xs.length > 1 ? `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}` : xs.join('')
 

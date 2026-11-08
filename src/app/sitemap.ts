@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { site } from '@/lib/site'
 import { GUIDES } from '@/lib/guides'
-import { TOOL_SLUGS } from '@/lib/toolCampaigns'
+import { LIVE_TOOL_SLUGS } from '@/lib/toolCampaigns'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     /* One page per tool course. */
-    ...TOOL_SLUGS.map((slug) => ({
+    ...LIVE_TOOL_SLUGS.map((slug) => ({
       url: `${site.url}/campaign/${slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
