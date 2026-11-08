@@ -160,10 +160,9 @@ export async function HomeSchema() {
   )
 }
 
-/** /campaign/everything-ai: the bundle on sale, its price and deadline, and its FAQ. */
+/** /campaign/everything-ai: the bundle on sale, its price, and its FAQ. */
 export async function CampaignSchema() {
   const { plans: PLANS, campaign } = await getCatalog()
-  const offer = { endsAt: campaign.endsAt }
   const campaignFaq = { items: campaign.faq }
   const path = '/campaign/everything-ai'
   const url = abs(path)
@@ -192,9 +191,6 @@ export async function CampaignSchema() {
               category: 'Paid',
               url,
               availability: 'https://schema.org/InStock',
-              /* The real deadline: the order route stops selling at this moment. */
-              priceValidUntil: offer.endsAt.slice(0, 10),
-              validThrough: offer.endsAt,
             },
             hasCourseInstance: {
               '@type': 'CourseInstance',

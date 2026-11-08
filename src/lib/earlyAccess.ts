@@ -27,7 +27,6 @@ export const offer = {
   endsAt: process.env.NEXT_PUBLIC_EARLY_ACCESS_ENDS || '2026-10-10T23:59:59+05:30',
 } as const
 
-export const offerEnded = (now = Date.now()) => now >= Date.parse(offer.endsAt)
 
 export const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`
 

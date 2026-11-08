@@ -37,8 +37,13 @@ export function landingHero(kind: LandingKind, price: string) {
         lede,
         passName: 'Claude',
         items,
-        /* What the Claude pass shows in place of the row of tool logos. */
-        features: ['Claude Cowork', 'Claude Code', 'Claude Design'],
+        /* What the Claude pass shows in place of the row of tool logos, each
+           with its own logo (in /public/logos) — they float round the card too. */
+        features: [
+          { label: 'Claude Cowork', logo: '/logos/claude-cowork.webp', wide: false },
+          { label: 'Claude Code', logo: '/logos/claude-code.webp', wide: true },
+          { label: 'Claude Design', logo: '/logos/claude-design.svg', wide: false },
+        ],
       }
     : {
         lines: ['AI tools.', 'Learn on the go.', '1 Lakh+ paid projects.'],

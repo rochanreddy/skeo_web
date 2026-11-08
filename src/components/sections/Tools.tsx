@@ -2,10 +2,9 @@ import type { ReactElement } from 'react'
 import { SyllabusButton } from '@/components/ActionButton'
 import { Reveal } from '@/components/Reveal'
 import { TiltCard } from '@/components/sections/TiltCard'
-import { featuredTool, toolsIntro } from '@/lib/content'
+import { ToolSwitcher } from '@/components/sections/ToolSwitcher'
+import { toolLibrary, toolsIntro } from '@/lib/content'
 import { site } from '@/lib/site'
-
-const { badge, name, maker, tagline, poster, capsules, facts, blurb, cta, syllabus } = featuredTool
 
 const iconMap: Record<string, ReactElement> = {
   book: (
@@ -38,11 +37,69 @@ const iconMap: Record<string, ReactElement> = {
 }
 
 /**
- * The featured tool on one white card floating on the violet field: the poster
- * on the left, the detail rail on the right. Both panes stretch to the
- * same height, so the card has no dead margin at either end. The white-panel-on-
- * dark-field treatment is the same one the hero stage and the job board use.
+ * Each tool on one white card floating on the violet field: the poster on the
+ * left, the detail rail on the right. Both panes stretch to the same height,
+ * so the card has no dead margin at either end. The white-panel-on-dark-field
+ * treatment is the same one the hero stage and the job board use.
  */
+function ToolCard({ tool }: { tool: (typeof toolLibrary)[number] }) {
+  const { badge, name, maker, tagline, poster, capsules, facts, blurb, cta, syllabus } = tool
+  return (
+    <TiltCard className="tool-card">
+      {/* Decorative restatement of the copy on the right — hidden from screen readers. */}
+      <div className="tool-poster" aria-hidden="true">
+        <b className="poster-brand">{site.name.toLowerCase()}</b>
+        <div className="poster-body">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="poster-logo" src={poster.logo} alt="" width={168} height={168} />
+          <div className="poster-copy">
+            <span className="poster-kicker">✦ {poster.kicker}</span>
+            <p className="poster-title">
+              {poster.lines.map((line) => (
+                <b key={line}>{line}</b>
+              ))}
+            </p>
+            <p className="poster-note">{poster.note}</p>
+          </div>
+        </div>
+        <span className="poster-footer">{poster.footer}</span>
+      </div>
+
+      <div className="tool-detail">
+        <span className="tool-badge">{badge}</span>
+        {/* The card title sits under the section heading above, so it is
+            an h3 rather than a second h2 competing with it. */}
+        <h3 className="tool-name">
+          {name} <i>{maker}</i>
+        </h3>
+        <p className="tool-tagline">{tagline}</p>
+        <ul className="tool-capsules">
+          {capsules.map((capsule) => (
+            <li key={capsule}>{capsule}</li>
+          ))}
+        </ul>
+        <ul className="tool-facts">
+          {facts.map((fact) => (
+            <li key={fact.label}>
+              <span aria-hidden="true" className="fact-icon">
+                {iconMap[fact.icon] || fact.icon}
+              </span>{' '}
+              {fact.label}
+            </li>
+          ))}
+        </ul>
+        <p className="tool-blurb">{blurb}</p>
+        <div className="tool-cta">
+          <a className="button" href={cta.href}>
+            <span className="btn-label">{cta.label}</span> <span aria-hidden="true">↗</span>
+          </a>
+          {syllabus && <SyllabusButton className="button button-outline">{syllabus.label}</SyllabusButton>}
+        </div>
+      </div>
+    </TiltCard>
+  )
+}
+
 export function Tools() {
   return (
     <section className="tools" id="tools" aria-labelledby="tools-title">
@@ -54,58 +111,12 @@ export function Tools() {
         </Reveal>
 
         <Reveal className="tool-shell">
-          <TiltCard className="tool-card">
-            {/* Decorative restatement of the copy on the right — hidden from screen readers. */}
-            <div className="tool-poster" aria-hidden="true">
-              <b className="poster-brand">{site.name.toLowerCase()}</b>
-              <div className="poster-body">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="poster-logo" src={poster.logo} alt="" width={168} height={168} />
-                <div className="poster-copy">
-                  <span className="poster-kicker">✦ {poster.kicker}</span>
-                  <p className="poster-title">
-                    {poster.lines.map((line) => (
-                      <b key={line}>{line}</b>
-                    ))}
-                  </p>
-                  <p className="poster-note">{poster.note}</p>
-                </div>
-              </div>
-              <span className="poster-footer">{poster.footer}</span>
-            </div>
-
-            <div className="tool-detail">
-              <span className="tool-badge">{badge}</span>
-              {/* The card title sits under the section heading above, so it is
-                  an h3 rather than a second h2 competing with it. */}
-              <h3 className="tool-name">
-                {name} <i>{maker}</i>
-              </h3>
-              <p className="tool-tagline">{tagline}</p>
-              <ul className="tool-capsules">
-                {capsules.map((capsule) => (
-                  <li key={capsule}>{capsule}</li>
-                ))}
-              </ul>
-              <ul className="tool-facts">
-                {facts.map((fact) => (
-                  <li key={fact.label}>
-                    <span aria-hidden="true" className="fact-icon">
-                      {iconMap[fact.icon] || fact.icon}
-                    </span>{' '}
-                    {fact.label}
-                  </li>
-                ))}
-              </ul>
-              <p className="tool-blurb">{blurb}</p>
-              <div className="tool-cta">
-                <a className="button" href={cta.href}>
-                  <span className="btn-label">{cta.label}</span> <span aria-hidden="true">↗</span>
-                </a>
-                <SyllabusButton className="button button-outline">{syllabus.label}</SyllabusButton>
-              </div>
-            </div>
-          </TiltCard>
+          <ToolSwitcher
+            tabs={toolLibrary.map(({ id, name, poster }) => ({ id, name, logo: poster.logo }))}
+            panels={toolLibrary.map((tool) => (
+              <ToolCard key={tool.id} tool={tool} />
+            ))}
+          />
         </Reveal>
       </div>
     </section>

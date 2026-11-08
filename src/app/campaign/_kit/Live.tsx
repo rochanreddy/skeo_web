@@ -1,50 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useCatalog } from '@/components/CatalogProvider'
 import { useLiveStats } from '../everything-ai/Live'
 
 /**
- * The live bits the campaign variants share: time left, seats left and who
- * just joined. Each reads the same real sources the main campaign page does —
- * offer.endsAt, and /api/early-access/stats (real paid orders) — and renders
+ * The live bits the campaign variants share: seats left and who just joined.
+ * Each reads the same real source the main campaign page does —
+ * /api/early-access/stats (real paid orders) — and renders
  * nothing rather than a guess when it has nothing to show.
  *
  * Unstyled on purpose: every variant dresses them in its own class.
  */
-
-const pad = (n: number) => String(n).padStart(2, '0')
-
-/** "6d 11h 52m 08s", ticking. Dashes until mounted, so it never hydrates a second out. */
-export function TimeLeft({ className, endedText = 'This offer has ended' }: { className?: string; endedText?: string }) {
-  const end = Date.parse(useCatalog().campaign.endsAt)
-  const [left, setLeft] = useState<number | null>(null)
-  useEffect(() => {
-    const tick = () => setLeft(end - Date.now())
-    tick()
-    const t = window.setInterval(tick, 1000)
-    return () => window.clearInterval(t)
-  }, [end])
-
-  if (left != null && left <= 0) return <span className={className}>{endedText}</span>
-  const s = left == null ? null : Math.floor(left / 1000)
-  const units: [string, string][] = [
-    ['d', s == null ? '--' : String(Math.floor(s / 86400))],
-    ['h', s == null ? '--' : pad(Math.floor((s % 86400) / 3600))],
-    ['m', s == null ? '--' : pad(Math.floor((s % 3600) / 60))],
-    ['s', s == null ? '--' : pad(s % 60)],
-  ]
-  return (
-    <span className={className} role="timer" aria-live="off" aria-label={s == null ? 'Time left' : `${units[0][1]} days ${units[1][1]} hours left`}>
-      {units.map(([u, v]) => (
-        <span key={u} aria-hidden="true">
-          <b>{v}</b>
-          <i>{u}</i>
-        </span>
-      ))}
-    </span>
-  )
-}
 
 /** "37 of 500 seats left" — only when there is a real cap. */
 export function SeatsText({ className }: { className?: string }) {

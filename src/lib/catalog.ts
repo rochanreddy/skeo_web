@@ -63,4 +63,3 @@ export function offerOf(c: Catalog) {
 
 export const savePctOf = (c: Catalog) => Math.round((1 - c.plans.earlyaccess.amount / c.campaign.was) * 100)
 
-export const offerEndedFor = (c: Catalog, now = Date.now()) => now >= Date.parse(c.campaign.endsAt)

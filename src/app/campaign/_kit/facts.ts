@@ -26,8 +26,6 @@ export function liveFacts(c: Catalog) {
     price: inr(o.price),
     was: inr(o.was),
     savePct: savePctOf(c),
-    /** "10 Oct" — the real deadline, as a date anyone can read. */
-    endsOn: new Date(o.endsAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'Asia/Kolkata' }),
   }
 }
 

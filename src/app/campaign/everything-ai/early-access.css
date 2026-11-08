@@ -509,12 +509,42 @@
   font-weight: 700;
 }
 
-.ea .ea-pass-feature-mark {
+/* Each product's own logo: the square ones as small tiles, Claude Code's
+   wordmark at its own width. */
+.ea .ea-pass-feature-logo {
   width: 24px;
   height: 24px;
-  padding: 4px;
-  border-radius: 50%;
-  background: #fff;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.ea .ea-pass-feature-logo.is-wide {
+  width: 44px;
+  border-radius: 0;
+}
+
+/* The same logos floating round the Claude card. */
+.ea .ea-float-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.ea .ea-float-logo.is-wide {
+  width: 46px;
+  border-radius: 0;
+}
+
+@media (max-width: 680px) {
+  .ea .ea-float-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  .ea .ea-float-logo.is-wide {
+    width: 36px;
+  }
 }
 
 /* Tool marks drifting around the pass. */

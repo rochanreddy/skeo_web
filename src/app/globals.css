@@ -2192,6 +2192,101 @@ h2 em {
   perspective: 1400px;
 }
 
+/* The tool switcher: pills on the violet field, the active one turned white
+   so it reads as the tab the card below belongs to. */
+.tool-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 auto clamp(22px, 2.6vw, 32px);
+}
+
+.tool-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 18px 10px 14px;
+  border: 1px solid #ffffff24;
+  border-radius: var(--r-pill);
+  background: #ffffff0f;
+  color: #ffffffd9;
+  font: 600 14px var(--font);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s var(--ease-out);
+}
+
+.tool-tab img {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.tool-tab:hover {
+  border-color: #ffffff4d;
+  background: #ffffff1f;
+  transform: translateY(-1px);
+}
+
+.tool-tab:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.tool-tab[aria-selected='true'] {
+  border-color: #fff;
+  background: #fff;
+  /* Fixed, not var(--ink): the dark palette turns --ink light, which put
+     white text on this white pill. */
+  color: #191527;
+  box-shadow: 0 10px 26px #0c072540;
+}
+
+/* The light marks (ChatGPT, Grok) are white for the poster; on the white
+   active pill they flip dark so they do not disappear. */
+.tool-tab[aria-selected='true'] img[src$='chatgpt.svg'],
+.tool-tab[aria-selected='true'] img[src$='grok.svg'] {
+  filter: invert(1);
+}
+
+.tool-panel:not([hidden]) {
+  animation: tool-panel-in 0.45s var(--ease-out);
+}
+
+@keyframes tool-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-panel:not([hidden]) {
+    animation: none;
+  }
+}
+
+@media (max-width: 680px) {
+  /* One scrolling row on a phone rather than three wrapped ones. */
+  .tool-tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: -6px;
+    padding: 2px 6px 6px;
+  }
+  .tool-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tool-tab {
+    flex: none;
+    padding: 9px 15px 9px 12px;
+    font-size: 13px;
+  }
+}
+
 .tool-card {
   position: relative;
   display: grid;

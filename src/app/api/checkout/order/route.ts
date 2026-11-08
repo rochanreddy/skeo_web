@@ -3,7 +3,6 @@ import { after } from 'next/server'
 import { checkoutRows, normaliseItems, priceOf } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
 import { mongoConfigured } from '@/lib/db/mongo'
-import { offerEndedFor } from '@/lib/catalog'
 import { getCatalogFresh } from '@/lib/cms'
 import { seatsLeft } from '@/lib/earlyAccessLive'
 import {
@@ -71,18 +70,12 @@ export async function POST(request: Request) {
   // "Limited seats" is a promise the page makes, so it is kept here: once the
   // cap is reached, Early Access is no longer sold. (Two buyers racing for the
   // last seat can both get it — a seat over is kinder than a charge refused.)
-  // The same goes for the deadline the page counts down to.
+  // There is no deadline: Early Access stays on sale until the price changes.
   /* Priced from what is published in Sanity right now, not from a cached
      page — the deadline too. Falls back to the code's prices if Sanity is
      unreachable (lib/cms), so a CMS outage never stops a sale. */
   const catalog = await getCatalogFresh()
 
-  if (items.includes('earlyaccess') && offerEndedFor(catalog)) {
-    return NextResponse.json(
-      { error: 'Early Access has ended. Everything AI is still open.' },
-      { status: 409 },
-    )
-  }
   if (items.includes('earlyaccess') && (await seatsLeft()) === 0) {
     return NextResponse.json(
       { error: 'Early Access is full — every seat has been taken. Everything AI is still open.' },

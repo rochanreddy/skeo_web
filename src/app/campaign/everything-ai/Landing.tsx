@@ -8,7 +8,6 @@ import { offerOf, savePctOf, type Catalog } from '@/lib/catalog'
 import { getCatalog } from '@/lib/cms'
 import { announcement as announcementCode, inr } from '@/lib/earlyAccess'
 import { landingHero, type LandingKind } from '@/lib/landings'
-import { Countdown } from './Countdown'
 import { JoinToasts, SeatsLeft } from './Live'
 import { Buy, CampaignSections, Check, Lines } from './Sections'
 import { StickyCta } from './StickyCta'
@@ -53,7 +52,11 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
               </span>
             </span>
           </p>
-          <Countdown offer={announcement.offer} endsIn={announcement.endsIn} ended={announcement.ended} />
+          {/* No deadline, so no countdown: just the offer. */}
+          <span className="ea-announce-offer">
+            <strong>{announcement.offer}</strong>
+            <span className="ea-announce-ends"> · open now</span>
+          </span>
           <span className="ea-announce-seats">
             <SeatsLeft variant="inline" />
           </span>
@@ -111,7 +114,13 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
               <span className="ea-float ea-float-1" aria-hidden="true">
                 <ClaudeMark className="ea-float-mark" />
               </span>
-              {/* the Claude pages float only Claude's mark */}
+              {/* the Claude pages float Claude's own products round the card */}
+              {h.features?.map((f, i) => (
+                <span key={f.label} className={`ea-float ea-float-${i + 2}`} aria-hidden="true">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className={f.wide ? 'ea-float-logo is-wide' : 'ea-float-logo'} src={f.logo} alt="" />
+                </span>
+              ))}
               {kind === 'all' && (
                 <>
                   <span className="ea-float ea-float-2" aria-hidden="true">
@@ -159,9 +168,10 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
                   {h.features ? (
                     <ul className="ea-pass-features" aria-label="Inside the Claude track">
                       {h.features.map((f) => (
-                        <li key={f}>
-                          <ClaudeMark className="ea-pass-feature-mark" />
-                          {f}
+                        <li key={f.label}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img className={f.wide ? 'ea-pass-feature-logo is-wide' : 'ea-pass-feature-logo'} src={f.logo} alt="" />
+                          {f.label}
                         </li>
                       ))}
                     </ul>

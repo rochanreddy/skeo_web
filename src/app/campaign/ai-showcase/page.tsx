@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Buy, KitFooter, variantMeta } from '../_kit/Kit'
-import { JoinedToast, TimeLeft } from '../_kit/Live'
+import { JoinedToast } from '../_kit/Live'
 import { getCatalog } from '@/lib/cms'
 import { liveFacts, product } from '../_kit/facts'
 import { CampaignSections } from '../everything-ai/Sections'
@@ -31,16 +31,15 @@ export async function generateMetadata() {
 
 export default async function ShowcasePage() {
   const catalog = await getCatalog()
-  const { price, was, savePct, endsOn } = liveFacts(catalog)
+  const { price, was, savePct } = liveFacts(catalog)
   return (
     <div className="vx">
       <MetaViewContent ids={['earlyaccess']} name={catalog.plans.earlyaccess.title} value={catalog.plans.earlyaccess.amount} />
       <NightOnly />
       <div className="vx-bar">
         <span>
-          <b>Early Access</b> · {savePct}% off ends in
+          <b>Early Access</b> · {savePct}% off · open now
         </span>
-        <TimeLeft className="vx-time" />
         <Buy className="vx-bar-cta" arrow="→">
           Claim {price}
         </Buy>
@@ -83,7 +82,7 @@ export default async function ShowcasePage() {
                 </a>
               </div>
               <p className="vx-fine">
-                One-time payment · <s>{was}</s> · price ends {endsOn}
+                One-time payment · <s>{was}</s> · instant access
               </p>
             </div>
 
