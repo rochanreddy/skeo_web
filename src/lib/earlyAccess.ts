@@ -187,7 +187,7 @@ export const mentors = {
       name: 'Deepak K',
       initials: 'DK',
       photo: '/mentors/deepak.webp',
-      role: 'AI Operations Lead',
+      role: 'AI Program & Ops Manager',
       bio: 'Puts AI to work in day-to-day operations, across real teams.',
     },
     {
