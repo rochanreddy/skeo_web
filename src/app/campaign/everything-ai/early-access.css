@@ -5386,3 +5386,22 @@
     margin-top: 8px;
   }
 }
+
+/* ---- Phones: every headline line on one line ------------------------------
+   The longest line on any campaign hero ("1 Lakh+ paid projects.") is about
+   8.6 times its font size wide, so the heading is sized to the hero's own
+   width (cqi) and capped at the size it had — a little smaller on most
+   phones, never wrapping a line in two. */
+@media (max-width: 680px) {
+  .ea .ea-hero {
+    container-type: inline-size;
+  }
+
+  .ea .ea-hero h1 {
+    font-size: min(42px, 10cqi);
+  }
+
+  .ea .ea-hero h1 .ea-line {
+    white-space: nowrap;
+  }
+}

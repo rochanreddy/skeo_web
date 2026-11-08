@@ -46,7 +46,7 @@ export function landingHero(kind: LandingKind, price: string) {
         ],
       }
     : {
-        lines: ['AI tools.', 'Learn on the go.', '1 Lakh+ paid projects.'],
+        lines: ['Top AI Tools.', 'Learn on the go.', '1 Lakh+ paid projects.'],
         lede,
         passName: 'Everything AI',
         items,
