@@ -37,13 +37,19 @@ export const site = {
   legalName: 'Menler Learning Systems Private Limited',
   email: 'support@skeoai.com',
   locale: 'en_IN',
-  /* Official profiles, for Organization.sameAs in the structured data — the
-     signal that ties the brand's accounts to this site for search and answer
-     engines. Empty on purpose: the footer's icons still point at the bare
-     linkedin.com / instagram.com, and a sameAs naming a platform rather than
-     a profile is worse than none. Add the real profile URLs here (and in
-     components/Footer) once they exist. */
-  sameAs: [] as string[],
+  /* Official profiles. One list, read by the footer icons and by
+     Organization.sameAs in the structured data, the signal that ties the
+     brand's accounts to this site for search and answer engines. Clean URLs:
+     the share links these came from carried tracking parameters (xtok, sk=)
+     that do not belong in a permanent link. */
+  social: {
+    instagram: 'https://www.instagram.com/skeo_ai/',
+    facebook: 'https://www.facebook.com/profile.php?id=61596444447079',
+  },
+  sameAs: [
+    'https://www.instagram.com/skeo_ai/',
+    'https://www.facebook.com/profile.php?id=61596444447079',
+  ] as string[],
 } as const
 
 /* Ordered to match the order the sections appear down the page, so the active
