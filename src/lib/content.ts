@@ -15,8 +15,7 @@ export const problems = [
 ] as const
 
 /* Split into a number and its suffix so the value can be counted up rather than
-   printed. `1000+` matches how the job board section already states the same
-   figure — it read as a flat `1000` here. */
+   printed. `1 Lakh+` matches how the job board section states the same figure. */
 /* `short` is the phone wording and nothing else. A third of a small phone
  * cannot hold 'Real Time Projects' on one line at a size worth reading, but
  * the desktop chip has room to spare — so the full label stays the label, and
@@ -26,7 +25,7 @@ export const promiseStats = [
   { value: 5, suffix: '+', label: 'AI Tools', short: 'AI Tools' },
   { value: 30, suffix: '', label: 'Minutes A Day', short: 'Minutes/Day' },
   { value: 100, suffix: '', label: 'Real Time Projects', short: 'Real Projects' },
-  { value: 1000, suffix: '+', label: 'Job Opportunities', short: 'Job Openings' },
+  { value: 1, suffix: ' Lakh+', label: 'Job Opportunities', short: 'Job Openings' },
 ] as const
 
 /**
@@ -49,7 +48,7 @@ export const walkthrough = {
    no heading to say what the reader was looking at. */
 export const toolsIntro = {
   eyebrow: 'Tool library',
-  title: 'Start with one tool. Go deep.',
+  title: 'Pick a tool. Go deep.',
   body: 'Every tool is taken from first principles to shipped work.',
 } as const
 
@@ -83,6 +82,127 @@ export const featuredTool = {
      the reader who wants to see what is taught before paying for it. */
   syllabus: { label: 'View Curriculum' },
 } as const
+
+type LibraryTool = {
+  id: string
+  badge: string
+  name: string
+  maker: string
+  tagline: string
+  poster: { logo: string; kicker: string; lines: readonly string[]; note: string; footer: string }
+  capsules: readonly string[]
+  facts: readonly { icon: string; label: string }[]
+  blurb: string
+  cta: { label: string; href: string }
+  /* Only tools with a written curriculum get the overlay button. */
+  syllabus?: { label: string }
+}
+
+/**
+ * Every tool in the library, in the order the tabs show them. Claude leads —
+ * it is the featured track and the only one with a curriculum overlay — and
+ * the rest are drawn on the same card, so the switcher changes the content,
+ * never the shape.
+ */
+export const toolLibrary: readonly LibraryTool[] = [
+  { id: 'claude', ...featuredTool },
+  {
+    id: 'chatgpt',
+    badge: 'Included tool',
+    name: 'ChatGPT',
+    maker: 'by OpenAI',
+    tagline: 'The everyday assistant, used like a professional.',
+    poster: {
+      logo: '/logos/chatgpt.svg',
+      kicker: 'AI tool library',
+      lines: ['Learn ChatGPT', 'end to end'],
+      note: 'Prompting, custom GPTs, and daily workflows.',
+      footer: 'From beginner to advanced level',
+    },
+    capsules: ['ChatGPT Chat', 'Custom GPTs', 'Deep Research'],
+    facts: [
+      { icon: 'book', label: '6+ modules' },
+      { icon: 'rocket', label: '8+ projects' },
+      { icon: 'clock', label: '10 hours' },
+      { icon: 'compass', label: 'Self-paced' },
+    ],
+    blurb:
+      'Go past quick questions: structure prompts, build your own GPTs, run cited research and turn ChatGPT into a dependable part of your working day.',
+    cta: { label: 'Start Learning', href: '#pricing' },
+  },
+  {
+    id: 'grok',
+    badge: 'Included tool',
+    name: 'Grok',
+    maker: 'by xAI',
+    tagline: 'Real-time answers, straight from what is happening now.',
+    poster: {
+      logo: '/logos/grok.svg',
+      kicker: 'AI tool library',
+      lines: ['Learn Grok', 'end to end'],
+      note: 'Live search, trend research, and image generation.',
+      footer: 'From beginner to advanced level',
+    },
+    capsules: ['Grok Chat', 'DeepSearch', 'Grok Imagine'],
+    facts: [
+      { icon: 'book', label: '5+ modules' },
+      { icon: 'rocket', label: '6+ projects' },
+      { icon: 'clock', label: '8 hours' },
+      { icon: 'compass', label: 'Self-paced' },
+    ],
+    blurb:
+      'Use Grok for what it does best: live research on fast-moving topics, trend and audience analysis, and visuals — then put it to work on real briefs.',
+    cta: { label: 'Start Learning', href: '#pricing' },
+  },
+  {
+    id: 'n8n',
+    badge: 'Included tool',
+    name: 'n8n',
+    maker: 'Workflow automation',
+    tagline: 'Connect your apps and let the busywork run itself.',
+    poster: {
+      logo: '/logos/n8n.svg',
+      kicker: 'AI tool library',
+      lines: ['Learn n8n', 'end to end'],
+      note: 'Workflows, AI agents, and real automations.',
+      footer: 'From beginner to advanced level',
+    },
+    capsules: ['Workflows', 'AI Agents', 'Integrations'],
+    facts: [
+      { icon: 'book', label: '7+ modules' },
+      { icon: 'rocket', label: '10+ projects' },
+      { icon: 'clock', label: '12 hours' },
+      { icon: 'compass', label: 'Self-paced' },
+    ],
+    blurb:
+      'Build automations that move data between the tools you already use, add AI agents to them, and ship workflows that save hours every week.',
+    cta: { label: 'Start Learning', href: '#pricing' },
+  },
+  {
+    id: 'lovable',
+    badge: 'Included tool',
+    name: 'Lovable',
+    maker: 'AI app builder',
+    tagline: 'From an idea to a live web app — without writing the code.',
+    poster: {
+      logo: '/logos/lovable.svg',
+      kicker: 'AI tool library',
+      lines: ['Learn Lovable', 'end to end'],
+      note: 'Prompt-to-app, databases, and deployment.',
+      footer: 'From beginner to advanced level',
+    },
+    capsules: ['Prompt to App', 'Supabase', 'Publishing'],
+    facts: [
+      { icon: 'book', label: '6+ modules' },
+      { icon: 'rocket', label: '5+ projects' },
+      { icon: 'clock', label: '10 hours' },
+      { icon: 'compass', label: 'Self-paced' },
+    ],
+    blurb:
+      'Describe what you want and build it: landing pages, internal tools and full apps with logins and data — published on a link you can share.',
+    cta: { label: 'Start Learning', href: '#pricing' },
+  },
+]
 
 /**
  * The Claude curriculum, at overview depth.
@@ -222,7 +342,7 @@ export const jobs = [
 
 /* What the board opens up — listed beside the copy, not as sample roles. */
 export const opportunities = [
-  '1000+ Opportunities',
+  '1 Lakh+ Opportunities',
   'Freelance Projects',
   'Internships',
   'Full Time Jobs',
