@@ -5348,10 +5348,19 @@
    checks come last. The copy block lets its children join the hero's own
    column so they can be ordered around the card; wide screens are untouched. */
 @media (max-width: 1024px) {
+  /* No gap: the grid's column gap would otherwise open between every line of
+     the copy once its children join this column. Each keeps its own margin. */
   .ea .ea-hero {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    gap: 0;
+  }
+
+  .ea .ea-hero-visual {
+    /* room for the floating marks above the card, clear of the write-up */
+    padding-top: 46px;
+    padding-bottom: 14px;
   }
 
   .ea .ea-hero-copy {
@@ -5374,6 +5383,6 @@
   }
 
   .ea .ea-hero-copy > .ea-hero-price {
-    margin-top: 4px;
+    margin-top: 8px;
   }
 }

@@ -453,10 +453,7 @@ export async function CampaignSections() {
           </div>
         </section>
 
-        {/* 3. Sample certificate — the home page's live specimen */}
-        <Certificate />
-
-        {/* 4. Job board — the home page's dashboard, on every screen */}
+        {/* 3. Job board — the home page's dashboard, on every screen */}
         <section className="ea-jobs" id="jobs">
           <div className="ea-container">
             <Head eyebrow={jobs.eyebrow} title={jobs.title} />
@@ -474,6 +471,9 @@ export async function CampaignSections() {
             </div>
           </div>
         </section>
+
+        {/* 4. Sample certificate — the home page's live specimen */}
+        <Certificate />
 
         {/* 5. What all you get — the home page's section */}
         <Included />
