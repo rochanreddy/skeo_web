@@ -307,22 +307,27 @@ export function Mentors() {
       <div className="ea-container">
         <Head eyebrow={mentors.eyebrow} title={mentors.title} />
         <div className="ea-mentors">
+          {/* On phones the cards drift right to left on a loop, so the list is
+              drawn twice for a seamless join; the copy is hidden from screen
+              readers, and from wider screens, where the cards sit in a row. */}
           <ul>
-            {mentors.people.map((m) => (
-              <li key={m.name} className="ea-mentor">
-                <span className="ea-avatar">
-                  {m.photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={m.photo} alt={m.name} />
-                  ) : (
-                    <span aria-hidden="true">{m.initials}</span>
-                  )}
-                </span>
-                <h3>{m.name}</h3>
-                <p className="ea-role">{m.role}</p>
-                <p>{m.bio}</p>
-              </li>
-            ))}
+            {[0, 1].flatMap((copy) =>
+              mentors.people.map((m) => (
+                <li key={`${copy}-${m.name}`} className="ea-mentor" aria-hidden={copy === 1 || undefined} data-copy={copy === 1 || undefined}>
+                  <span className="ea-avatar">
+                    {m.photo ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={m.photo} alt={m.name} />
+                    ) : (
+                      <span aria-hidden="true">{m.initials}</span>
+                    )}
+                  </span>
+                  <h3>{m.name}</h3>
+                  <p className="ea-role">{m.role}</p>
+                  <p>{m.bio}</p>
+                </li>
+              )),
+            )}
           </ul>
         </div>
       </div>

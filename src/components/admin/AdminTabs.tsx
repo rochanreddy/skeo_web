@@ -255,6 +255,7 @@ export function OrdersTab() {
                   <td className="wrap">
                     {itemNames(o.items) || o.manual?.program}
                     {o.manual && <small>added by hand</small>}
+                    {o.page && <small>via {o.page}</small>}
                   </td>
                   <td className="n">{rupees(o.amount)}</td>
                   <td>{o.status === 'created' ? <Status tone="quiet">Not paid</Status> : <Status tone="paid">Paid {rupees(o.amount)}</Status>}</td>

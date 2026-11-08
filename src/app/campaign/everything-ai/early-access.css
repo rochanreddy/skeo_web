@@ -378,6 +378,145 @@
   text-transform: uppercase;
 }
 
+/* The intro video in the pass's place. It sits above the floating marks, so
+   they tuck behind its four corners and never cover the player's controls. */
+.ea-hero-video {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 560px);
+  /* A frame around the video rather than a hairline on it: a border drawn on
+     the poster itself showed the gradient behind it as a fringe at the
+     corners. */
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-2xl);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-xl);
+}
+
+.ea-hero-video .video-poster {
+  margin: 0;
+  border-radius: calc(var(--r-2xl) - 8px);
+  background: #000;
+  box-shadow: none;
+}
+
+/* The play control in the page's highlight colour, larger, with a ring that
+   keeps pulsing outwards — a dark button on a dark thumbnail did not read as
+   something to press. */
+.ea-hero-video .video-poster-play {
+  width: 76px;
+  height: 76px;
+  background: var(--lime);
+  color: #111;
+  font-size: 22px;
+  padding-left: 5px;
+  box-shadow: 0 18px 40px #0c081e80;
+}
+
+.ea-hero-video .video-poster-play::after {
+  inset: -4px;
+  border: 2px solid var(--lime);
+  animation: ea-play-pulse 2.2s ease-out infinite;
+}
+
+@keyframes ea-play-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ea-hero-video .video-poster-play::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .ea-hero-video {
+    padding: 6px;
+  }
+
+  .ea-hero-video .video-poster {
+    border-radius: calc(var(--r-2xl) - 6px);
+  }
+
+  .ea-hero-video .video-poster-play {
+    width: 62px;
+    height: 62px;
+    font-size: 18px;
+  }
+}
+
+/* Inset enough that each mark shows most of itself beside the corner it sits
+   behind. Two classes, to outrank the one-screen and tablet paddings below. */
+.ea-hero-visual.ea-hero-visual-video {
+  padding: clamp(26px, 4vh, 36px) 44px;
+}
+
+.ea-hero-visual-video .ea-float-1 {
+  top: 0;
+  left: 0;
+}
+
+.ea-hero-visual-video .ea-float-2 {
+  top: 0;
+  right: 0;
+}
+
+.ea-hero-visual-video .ea-float-3 {
+  bottom: 0;
+  left: 0;
+}
+
+.ea-hero-visual-video .ea-float-4 {
+  bottom: 0;
+  right: 0;
+}
+
+@media (max-width: 680px) {
+  .ea-hero-visual.ea-hero-visual-video {
+    padding: 24px 26px;
+  }
+}
+
+/* The Claude pass: what the track covers, as chips, in place of the logos. */
+.ea .ea-pass-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: clamp(14px, 2.4vh, 22px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ea .ea-pass-features li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  border: 1px solid #ffffff24;
+  border-radius: var(--r-pill);
+  background: #ffffff10;
+  color: var(--on-dark);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ea .ea-pass-feature-mark {
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border-radius: 50%;
+  background: #fff;
+}
+
 /* Tool marks drifting around the pass. */
 .ea-float {
   position: absolute;
@@ -3024,6 +3163,62 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
 }
 
+/* The second copy of the mentors exists only for the phone carousel. */
+.ea-mentor[data-copy] {
+  display: none;
+}
+
+/* Phones: one row of cards drifting right to left on a loop. Margins rather
+   than a gap, so half the track is exactly one copy and the loop has no seam. */
+@media (max-width: 680px) {
+  .ea-mentors-sec .ea-mentors {
+    overflow: hidden;
+    margin-inline: -24px;
+    padding: 4px 0;
+  }
+
+  .ea-mentors-sec .ea-mentors > ul {
+    display: flex;
+    width: max-content;
+    gap: 0;
+    animation: ea-mentors-slide 22s linear infinite;
+  }
+
+  .ea-mentors-sec .ea-mentor,
+  .ea-mentors-sec .ea-mentor[data-copy] {
+    display: flex;
+    flex: none;
+    width: 270px;
+    margin-right: 14px;
+  }
+
+  .ea-mentors-sec .ea-mentors:hover > ul,
+  .ea-mentors-sec .ea-mentors:active > ul {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes ea-mentors-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* No drift for anyone who asked for less motion: the row scrolls by hand. */
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  .ea-mentors-sec .ea-mentors {
+    overflow-x: auto;
+  }
+
+  .ea-mentors-sec .ea-mentors > ul {
+    animation: none;
+  }
+
+  .ea-mentors-sec .ea-mentor[data-copy] {
+    display: none;
+  }
+}
+
 /* The home page's sections, brought in, take the campaign's measure so every
    section on the page lines up to the same edges. */
 .ea .included .wrap,
@@ -4625,7 +4820,8 @@
 .ea .ea-lv {
   --lv-accent: var(--purple);
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* four levels on Everything AI, three on a tool page */
+  grid-template-columns: repeat(var(--lv-count, 4), minmax(0, 1fr));
   gap: 16px;
   margin: 0;
   padding: 0;
@@ -4798,6 +4994,11 @@
   .ea .ea-lv-step::before {
     display: none;
   }
+
+  /* three levels fit side by side here */
+  .ea .ea-lv[data-count='3'] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 680px) {
@@ -4919,9 +5120,9 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .ea .ea-lv-panel,
-  .ea .ea-lv-mods > li,
-  .ea .ea-lv-dot {
+  .ea .ea-lv.is-armed .ea-lv-panel,
+  .ea .ea-lv.is-armed .ea-lv-mods > li,
+  .ea .ea-lv.is-armed .ea-lv-dot {
     opacity: 0;
   }
 
@@ -5108,5 +5309,41 @@
   30%,
   100% {
     background-position: 0 0;
+  }
+}
+
+/* ---- One column: the pitch, then the card, then the ask -------------------
+   Where the hero is a single column, the heading and write-up lead, the pass
+   (or the video) follows straight after, and the price, the button and the
+   checks come last. The copy block lets its children join the hero's own
+   column so they can be ordered around the card; wide screens are untouched. */
+@media (max-width: 1024px) {
+  .ea .ea-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ea .ea-hero-copy {
+    display: contents;
+  }
+
+  .ea .ea-hero-copy > .ea-chip {
+    align-self: flex-start;
+  }
+
+  .ea .ea-hero-visual {
+    order: 1;
+  }
+
+  .ea .ea-hero-copy > .ea-hero-price,
+  .ea .ea-hero-copy > .ea-terms,
+  .ea .ea-hero-copy > .ea-hero-actions,
+  .ea .ea-hero-copy > .ea-checks {
+    order: 2;
+  }
+
+  .ea .ea-hero-copy > .ea-hero-price {
+    margin-top: 4px;
   }
 }

@@ -45,6 +45,8 @@ const PAID: OrderDoc['status'][] = ['paid', 'provisioned']
 
 export type AdminOrder = {
   orderId: string
+  /** The page the buyer paid from, e.g. "/campaign/claude"; '' when unknown. */
+  page: string
   createdAt: string
   paidAt: string | null
   name: string
@@ -64,10 +66,22 @@ export type AdminOrder = {
   manual: { program: string; access: boolean; verified: boolean } | null
 }
 
+/* The order keeps the buying page's full address for Meta; the admin only
+   needs its path. */
+function pagePath(url: string | undefined): string {
+  if (!url) return ''
+  try {
+    return new URL(url).pathname
+  } catch {
+    return ''
+  }
+}
+
 function toAdmin(o: OrderDoc): AdminOrder {
   const parts = o.provision?.playbookParts ?? []
   return {
     orderId: o._id,
+    page: pagePath(o.meta?.url),
     createdAt: o.createdAt.toISOString(),
     paidAt: o.paidAt ? o.paidAt.toISOString() : null,
     name: o.contact.name,

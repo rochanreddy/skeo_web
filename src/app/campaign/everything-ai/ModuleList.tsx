@@ -63,11 +63,15 @@ type Level = { label: string; tagline: string; modules: readonly Module[] }
 export function LevelList({ levels }: { levels: readonly Level[] }) {
   const starts = levels.map((_, i) => levels.slice(0, i).reduce((n, l) => n + l.modules.length, 0))
   const ref = useRef<HTMLOListElement>(null)
+  /* Hidden only once the script is watching for the track, so a slow or
+     failed load never leaves the section blank. */
+  const [armed, setArmed] = useState(false)
   const [shown, setShown] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (!el || typeof IntersectionObserver === 'undefined') return setShown(true)
+    setArmed(true)
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -82,7 +86,12 @@ export function LevelList({ levels }: { levels: readonly Level[] }) {
   }, [])
 
   return (
-    <ol ref={ref} className={shown ? 'ea-lv is-in' : 'ea-lv'}>
+    <ol
+      ref={ref}
+      className={shown ? 'ea-lv is-in' : armed ? 'ea-lv is-armed' : 'ea-lv'}
+      data-count={levels.length}
+      style={{ '--lv-count': levels.length } as CSSProperties}
+    >
       {levels.map((level, li) => {
         const [step, name] = level.label.split(' · ')
         return (

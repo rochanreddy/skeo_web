@@ -79,41 +79,43 @@ export const get = {
   ],
 } as const
 
-/* Ten modules in four levels, numbered straight through; one short line
-   each and what you build. `isNew` puts a "New" badge on a module. */
+/* Twelve modules in four levels, three a level, numbered straight through;
+   one short line each and what you build. `isNew` puts a "New" badge on a module. */
 const LEVELS = [
   {
     label: 'Level 1 · Use AI',
     tagline: 'Do your everyday work faster.',
     modules: [
-      { title: 'AI Foundations', body: 'How ChatGPT, Claude and Grok work.', build: 'Personal AI Research Assistant' },
-      { title: 'Prompt Engineering', body: 'Prompts that work the first time.', build: 'Personal Prompt Library' },
+      { title: 'AI Foundations', body: 'Learn how ChatGPT, Claude and Gemini work, and get answers you can trust.', build: 'Personal AI Research Assistant' },
+      { title: 'AI Tool Stack', body: 'Know which AI tool to use for which job, and set up a stack that fits your work.', build: 'Personal AI Stack' },
+      { title: 'Prompt Engineering', body: 'Write prompts that get the right output the first time.', build: 'Personal Prompt Library' },
     ],
   },
   {
     label: 'Level 2 · Create with AI',
     tagline: 'Make more, in less time.',
     modules: [
-      { title: 'AI for Writing & Research', body: 'Posts and reports in your voice.', build: 'Content Engine' },
-      { title: 'AI for Design & Visuals', body: 'Logos and creatives, no designer.', build: 'Brand Kit' },
-      { title: 'AI for Video & Voice', body: 'Scripts, voiceovers and reel edits.', build: 'AI-Made Reel' },
+      { title: 'AI for Writing & Research', body: 'Posts, emails, reports and summaries in your voice, in minutes.', build: 'Content Engine' },
+      { title: 'AI for Design & Visuals', body: 'Logos, images and social creatives without a designer.', build: 'Brand Kit' },
+      { title: 'AI for Video & Voice', body: 'Scripts, voiceovers and edits for short-form video.', build: 'AI-Made Reel' },
     ],
   },
   {
     label: 'Level 3 · Automate with AI',
     tagline: 'Put repeat work on autopilot.',
     modules: [
-      { title: 'AI for Data & Analysis', body: 'Charts and insights in plain English.', build: 'Smart Dashboard', isNew: true },
-      { title: 'AI Automation', body: 'n8n flows that follow up for you.', build: 'Automated Lead System' },
-      { title: 'AI Agents', body: 'Agents that research, decide and act.', build: 'Personal AI Agent' },
+      { title: 'AI for Data & Analysis', body: 'Turn spreadsheets into insights and charts by asking in plain English.', build: 'Smart Dashboard', isNew: true },
+      { title: 'AI Automation', body: 'Workflows in n8n that capture, sort and follow up on their own.', build: 'Automated Lead System' },
+      { title: 'AI Agents', body: 'Agents that research, decide and act for you.', build: 'Personal AI Agent' },
     ],
   },
   {
     label: 'Level 4 · Build with AI',
     tagline: 'Ship products, without a dev team.',
     modules: [
-      { title: 'Build With AI', body: 'Launch your own site with Lovable.', build: 'Portfolio Website' },
-      { title: 'Code & Ship With AI', body: 'Turn an idea into an app with Claude.', build: 'Live Web App' },
+      { title: 'Build With AI', body: 'Design and launch your own site with Lovable. No code.', build: 'A Fullstack Website' },
+      { title: 'Code & Ship With AI', body: 'Turn an idea into a working app with Claude.', build: 'Live Web App' },
+      { title: 'AI Portfolio', body: 'Your end-to-end career experience in one space.', build: 'A Portfolio' },
     ],
   },
 ] as const
@@ -149,12 +151,12 @@ export const build = {
   eyebrow: 'What you’ll build',
   title: 'Don’t just learn. Build something.',
   items: [
-    { icon: 'content', title: 'A Content Studio', body: 'Posts, carousels and videos, made in minutes.' },
-    { icon: 'design', title: 'A Design System', body: 'Logos, colours and visuals, always on-brand.' },
-    { icon: 'voice', title: 'An AI Voice', body: 'Scripts and voiceovers that sound human.' },
-    { icon: 'bot', title: 'An AI Bot', body: 'Answers questions and chats, 24/7.' },
-    { icon: 'flow', title: 'An Automation', body: 'Repetitive work that now runs itself.' },
-    { icon: 'agent', title: 'An AI Agent', body: 'Researches, decides and acts for you.' },
+    { icon: 'content', title: 'AI Content Studio', body: 'Posts, carousels and videos, made in minutes.' },
+    { icon: 'design', title: 'AI Design System', body: 'Logos, colours and visuals, always on-brand.' },
+    { icon: 'voice', title: 'AI Voice', body: 'Scripts and voiceovers that sound human.' },
+    { icon: 'bot', title: 'AI Bot', body: 'Answers questions and chats, 24/7.' },
+    { icon: 'flow', title: 'AI Automation', body: 'Repetitive work that now runs itself.' },
+    { icon: 'agent', title: 'AI Agent', body: 'Researches, decides and acts for you.' },
     { icon: 'globe', title: 'A Web App', body: 'From idea → design → deployment.' },
     { icon: 'folder', title: 'A Portfolio', body: 'All your work, live and ready to show.' },
   ],

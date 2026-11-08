@@ -1,6 +1,8 @@
 'use client'
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
+import { paysDirect } from '@/lib/landings'
 import type { PlanKey } from '@/lib/plans'
 import { isCheckoutItem, type CheckoutItem } from '@/lib/checkoutItems'
 import { AuthModal } from './AuthModal'
@@ -38,6 +40,7 @@ export function useModal(): ModalApi {
 
 export function ModalProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ModalState>({ kind: 'none' })
+  const pathname = usePathname()
 
   const openAuth = useCallback((mode: AuthMode) => setState({ kind: 'auth', mode }), [])
   // Everything AI is bought the way a tool is — verify, then pay at /checkout —
@@ -70,7 +73,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       {children}
       {state.kind === 'auth' && <AuthModal initialMode={state.mode} onClose={close} />}
       {state.kind === 'purchase' && <PurchaseModal planKeys={state.plans} onClose={close} />}
-      {state.kind === 'verify' && <VerifyModal modules={state.modules} onClose={close} />}
+      {state.kind === 'verify' && <VerifyModal modules={state.modules} direct={paysDirect(pathname)} onClose={close} />}
       {state.kind === 'syllabus' && <SyllabusModal onClose={close} />}
     </ModalContext.Provider>
   )

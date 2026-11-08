@@ -6,7 +6,7 @@ import { TOOL_CAMPAIGNS, TOOL_SLUGS, type ToolSlug } from '@/lib/toolCampaigns'
 import { Buy, KitFooter, variantMeta } from '../../_kit/Kit'
 import { JoinedToast } from '../../_kit/Live'
 import { StickyCta } from '../../everything-ai/StickyCta'
-import { ToolSections } from '../../everything-ai/ToolSections'
+import { CampaignSections } from '../../everything-ai/Sections'
 import '../../everything-ai/early-access.css'
 import { HeroScene } from '../HeroScene'
 import { NightOnly } from '../NightOnly'
@@ -107,9 +107,10 @@ export default async function ShowcaseToolPage({ params }: Props) {
         </section>
       </main>
 
-      {/* Below the hero: the one-tool sections, inside .ea so its stylesheet applies. */}
+      {/* Below the hero: the Everything AI sections, inside .ea so its stylesheet applies. */}
       <div className="ea vx-body">
-        <ToolSections c={c} />
+        {/* Below the hero, every campaign page is the Everything AI page. */}
+        <CampaignSections />
         <StickyCta plan={c.plan} />
       </div>
 

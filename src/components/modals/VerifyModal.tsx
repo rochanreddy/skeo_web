@@ -6,6 +6,7 @@ import { Modal, useDialogId } from './Modal'
 import { track } from '@/lib/analytics/track'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
 import { verifySmsOtp } from '@/lib/amplifeedOtp'
+import { startPayment } from '@/lib/payment'
 import { friendlyError, reportError } from '@/lib/friendlyError'
 import type { CheckoutItem } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
@@ -31,8 +32,21 @@ type Errors = Partial<Record<Field, string>>
  * here checks it with Amplifeed — skeo has no backend for this step yet. When
  * one exists it should send otp_token with the order and verify it there, the
  * way menler's /leads does before marking a lead verified.
+ *
+ * DIRECT: on the four campaign landing pages (lib/landings) there is no code
+ * and no /checkout review — the details go straight to an order and Cashfree's
+ * popup. Nothing is lost by it on the server: the order route never asked for
+ * the code, and only Cashfree answering PAID unlocks anything.
  */
-export function VerifyModal({ modules, onClose }: { modules: CheckoutItem[]; onClose: () => void }) {
+export function VerifyModal({
+  modules,
+  direct = false,
+  onClose,
+}: {
+  modules: CheckoutItem[]
+  direct?: boolean
+  onClose: () => void
+}) {
   const titleId = useDialogId('verify-title')
   const router = useRouter()
 
@@ -77,6 +91,23 @@ export function VerifyModal({ modules, onClose }: { modules: CheckoutItem[]; onC
 
     setBusy(true)
     setFailure(null)
+    const contact = { name: values.name.trim(), email: values.email.trim(), phone: values.phone.trim() }
+
+    if (direct) {
+      // Still a lead in the admin's list, called back if they do not pay.
+      track('verify_ok', { modules, ...contact })
+      saveCheckoutSession({ modules, contact, verifiedAt: Date.now() })
+      setLeaving(true)
+      const result = await startPayment({ items: modules, contact })
+      // On success the page is already moving on to /thank-you.
+      if (!result.ok) {
+        setBusy(false)
+        setLeaving(false)
+        setFailure(result.error)
+      }
+      return
+    }
+
     track('verify_sent', { modules })
 
     try {
@@ -185,14 +216,28 @@ export function VerifyModal({ modules, onClose }: { modules: CheckoutItem[]; onC
 
         <button type="submit" className="button modal-submit full" disabled={busy}>
           <span className="btn-label">
-            {leaving ? 'Opening checkout…' : busy ? 'Verifying…' : failure ? 'Try again' : 'Send code'}
+            {direct
+              ? leaving
+                ? 'Opening payment…'
+                : failure
+                  ? 'Try again'
+                  : 'Continue to payment'
+              : leaving
+                ? 'Opening checkout…'
+                : busy
+                  ? 'Verifying…'
+                  : failure
+                    ? 'Try again'
+                    : 'Send code'}
           </span>
           <span className={busy ? 'spinner' : ''} aria-hidden="true">
             {busy ? '' : '→'}
           </span>
         </button>
         <small className="purchase-note">
-          We&rsquo;ll text a code to confirm it&rsquo;s you. Your seat is held once it is verified.
+          {direct
+            ? 'Secure payment by Cashfree — UPI, cards and netbanking.'
+            : 'We’ll text a code to confirm it’s you. Your seat is held once it is verified.'}
         </small>
       </form>
     </Modal>
