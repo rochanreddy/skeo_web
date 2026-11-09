@@ -430,7 +430,7 @@ export const testimonials: readonly Testimonial[] = [
 export const faqs = [
   {
     q: 'Do I need a technical background?',
-    a: 'Not at all. skeo is designed to make practical AI accessible, whether you work in design, marketing, operations, or are just getting started.',
+    a: 'Not at all. skeo is designed to make practical AI accessible for everyone, tech or non-tech, who wants to use AI in their daily workflows and career.',
   },
   {
     q: 'How much time does a tool take?',
@@ -438,7 +438,7 @@ export const faqs = [
   },
   {
     q: 'Are the certificates recognized?',
-    a: 'Every certificate links to the actual projects and assessments behind it — so it represents concrete proof, not just completion.',
+    a: 'Every certificate is accredited by DPIIT Startup India, MSME, Anthropic CPN and Sarvam, and links to the actual projects and assessments behind it, so it represents concrete proof, not just completion.',
   },
   {
     q: 'Does completing a tool guarantee a job?',
@@ -446,7 +446,7 @@ export const faqs = [
   },
   {
     q: 'Can I cancel whenever I want?',
-    a: 'Absolutely. There are no long-term commitments. You can manage or cancel your membership at any time.',
+    a: 'This is a one-time payment, learn-on-the-go platform. So there are no memberships and no subscriptions.',
   },
   {
     q: 'Do I have to pay for the AI tools as well?',
