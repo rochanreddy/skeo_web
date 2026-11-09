@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { isAuthenticated } from '@/lib/admin/auth'
-import { computeStats, isRangeKey } from '@/lib/analytics/aggregate'
+import { computeStats, isCampaignPath, isRangeKey } from '@/lib/analytics/aggregate'
 import { readEvents, storeKind } from '@/lib/analytics/store'
 import { site } from '@/lib/site'
 
@@ -13,7 +13,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: false, error: 'unauthorised' }, { status: 401 })
   }
 
-  const range = new URL(request.url).searchParams.get('range')
+  const params = new URL(request.url).searchParams
+  const range = params.get('range')
+  // One campaign page's numbers, e.g. ?page=/campaign/claude. Anything else is the whole site.
+  const page = params.get('page')
 
   /* Reading the events is the one step here that talks to something outside
      this function, so it is the one step that can fail for reasons the
@@ -45,7 +48,13 @@ export async function GET(request: Request) {
     selfHost = undefined
   }
 
-  const stats = computeStats(events, isRangeKey(range) ? range : '7d', Date.now(), selfHost)
+  const stats = computeStats(
+    events,
+    isRangeKey(range) ? range : '7d',
+    Date.now(),
+    selfHost,
+    isCampaignPath(page) ? page : null,
+  )
 
   return NextResponse.json(
     { ok: true, stats },

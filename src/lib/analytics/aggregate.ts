@@ -103,8 +103,29 @@ export type PersonRow = {
 
 export type CountRow = { label: string; count: number; share: number }
 
+/** One campaign page, side by side with the others. */
+export type CampaignRow = {
+  path: string
+  /** Unique people who opened the page in this window. */
+  visitors: number
+  views: number
+  /** Filled in their details on this page (the lead step). */
+  leads: number
+  buyers: number
+  orders: number
+  revenue: number
+  /** Buyers as a share of visitors, as a percentage. */
+  conversion: number
+}
+
 export type Stats = {
   range: RangeKey
+  /** The campaign page the numbers are narrowed to, or null for the whole site. */
+  page: string | null
+  /** Every campaign page there is data for, for the page picker. */
+  pages: string[]
+  /** Each campaign page in this window, whole-site figures, never narrowed. */
+  campaigns: CampaignRow[]
   from: number
   to: number
   generatedAt: number
@@ -406,12 +427,83 @@ function tally(
     .map(([label, count]) => ({ label, count, share: pct(count, total) }))
 }
 
+export const isCampaignPath = (value: unknown): value is string =>
+  typeof value === 'string' && /^\/campaign\/[\w-]+$/.test(value)
+
+/** The page a sale was placed from, when the server recorded it. */
+const purchasePage = (event: AnalyticsEvent): string => asString(event.props?.page)
+
+/**
+ * Whether an event belongs to a campaign page's numbers. A sale that knows its
+ * page counts for that page alone; everything else (and older sales, recorded
+ * before the page was kept) counts when the person opened the page.
+ */
+function belongsTo(event: AnalyticsEvent, viewers: ReadonlySet<string>, page: string): boolean {
+  if (event.type === 'purchase' && purchasePage(event)) return purchasePage(event) === page
+  return event.visitorId !== 'server' && viewers.has(event.visitorId)
+}
+
+function viewersOf(events: readonly AnalyticsEvent[], page: string): Set<string> {
+  const viewers = new Set<string>()
+  for (const event of events) if (event.type === 'pageview' && event.path === page) viewers.add(event.visitorId)
+  return viewers
+}
+
+function buildCampaigns(inRange: readonly AnalyticsEvent[], all: readonly AnalyticsEvent[], pages: string[]): CampaignRow[] {
+  return pages
+    .map((path) => {
+      const viewers = viewersOf(all, path)
+      const visitors = new Set<string>()
+      const leads = new Set<string>()
+      const buyers = new Set<string>()
+      let views = 0
+      let orders = 0
+      let revenue = 0
+      for (const event of inRange) {
+        if (event.type === 'pageview' && event.path === path) {
+          views++
+          visitors.add(event.visitorId)
+        } else if (event.type === 'verify_ok' && event.path === path) {
+          leads.add(event.visitorId)
+        } else if (event.type === 'purchase' && belongsTo(event, viewers, path)) {
+          orders++
+          revenue += asNumber(event.props?.amount)
+          buyers.add(event.visitorId === 'server' ? asString(event.props?.orderId) : event.visitorId)
+        }
+      }
+      return {
+        path,
+        visitors: visitors.size,
+        views,
+        leads: leads.size,
+        buyers: buyers.size,
+        orders,
+        revenue: Math.round(revenue * 100) / 100,
+        conversion: pct(buyers.size, visitors.size),
+      }
+    })
+    .sort((a, b) => b.revenue - a.revenue || b.visitors - a.visitors)
+}
+
 export function computeStats(
-  all: readonly AnalyticsEvent[],
+  everything: readonly AnalyticsEvent[],
   range: RangeKey,
   now = Date.now(),
   selfHost?: string,
+  page: string | null = null,
 ): Stats {
+  const pages = [
+    ...new Set(
+      everything
+        .map((event) => (event.type === 'pageview' ? event.path : event.type === 'purchase' ? purchasePage(event) : ''))
+        .filter(isCampaignPath),
+    ),
+  ].sort()
+
+  // Narrowed to one campaign page: the people who opened it, and the sales it made.
+  const viewers = page ? viewersOf(everything, page) : null
+  const all = page && viewers ? everything.filter((event) => belongsTo(event, viewers, page)) : everything
+
   // Not `all[0].at`: seeded rows are appended after live ones, so the log is
   // not guaranteed to be in order.
   const earliest = all.reduce((min, event) => (event.at < min ? event.at : min), now)
@@ -431,7 +523,7 @@ export function computeStats(
 
   // One real LMS sign-in anywhere in the log means the integration is live, and
   // the whole dashboard stops treating a click-through as a login.
-  const lmsReporting = all.some((event) => event.type === 'lms_login')
+  const lmsReporting = everything.some((event) => event.type === 'lms_login')
 
   const totals = totalsFor(inRange, { firstSeen, from, now, lmsReporting })
   const previousTotals = totalsFor(prior, { firstSeen, from: from - span, now, lmsReporting })
@@ -462,13 +554,18 @@ export function computeStats(
     .sort((a, b) => b.at - a.at)
     .slice(0, 25)
 
+  const campaignsInRange = everything.filter((event) => event.at >= from && event.at <= to)
+
   return {
     range,
+    page,
+    pages,
+    campaigns: buildCampaigns(campaignsInRange, everything, pages),
     from,
     to,
     generatedAt: now,
-    totalEvents: all.length,
-    demoEvents: all.reduce((n, event) => n + (event.demo ? 1 : 0), 0),
+    totalEvents: everything.length,
+    demoEvents: everything.reduce((n, event) => n + (event.demo ? 1 : 0), 0),
     lmsReporting,
     totals,
     previous: {

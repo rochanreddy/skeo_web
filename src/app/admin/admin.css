@@ -69,6 +69,15 @@
   border-color: #ffffff40;
 }
 
+.admin-bar .admin-page-picker {
+  max-width: 230px;
+}
+
+.admin-bar .admin-page-picker option {
+  color: #111;
+  background: #fff;
+}
+
 .admin-bar .admin-btn-quiet {
   background: transparent;
 }
@@ -1162,6 +1171,10 @@
 .admin-table tr.is-clickable:hover td,
 .admin-table tr.is-clickable:focus-visible td {
   background: color-mix(in srgb, var(--purple) 6%, transparent);
+}
+
+.admin-table tr.is-clickable.is-on td {
+  background: color-mix(in srgb, var(--purple) 10%, transparent);
 }
 
 .admin-table tr.is-clickable:focus-visible {

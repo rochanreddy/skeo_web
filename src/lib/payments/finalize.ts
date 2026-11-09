@@ -62,6 +62,9 @@ export async function finalizeOrder(orderId: string): Promise<FinalState> {
           amount: order.amount,
           email: order.contact.email,
           name: order.contact.name,
+          // The page the order was placed from, so the dashboard can credit
+          // the sale to the campaign page that made it.
+          page: orderPage(order.meta?.url),
         },
       }).catch((err) => console.error(`[orders] ${orderId}: purchase event not recorded:`, err))
       // The same once-only moment tells Meta and the CRM. After the response:
@@ -142,5 +145,15 @@ async function provisionInLms(order: OrderDoc): Promise<LmsResult | 'busy'> {
     batches: body.batches ?? [],
     warnings: body.warnings ?? [],
     playbookParts: body.playbookParts ?? [],
+  }
+}
+
+/** Just the path of the page an order came from ('' when unknown). */
+function orderPage(url: string | undefined): string {
+  if (!url) return ''
+  try {
+    return new URL(url).pathname.replace(/\/+$/, '') || '/'
+  } catch {
+    return ''
   }
 }

@@ -22,6 +22,9 @@ import type { AdminOrder } from '@/lib/admin/data'
 const money = (n: number) => `₹${Math.round(n).toLocaleString('en-IN')}`
 const num = (n: number) => n.toLocaleString('en-US')
 
+/** '/campaign/claude-intro' reads as 'claude-intro' in the picker and the table. */
+const pageName = (path: string) => path.replace(/^\/campaign\//, '')
+
 const timeOf = (at: number) =>
   new Date(at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 
@@ -100,6 +103,8 @@ function Panel({
 export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }) {
   const router = useRouter()
   const [range, setRange] = useState<RangeKey>('7d')
+  /* One campaign page's numbers, or null for the whole site. */
+  const [page, setPage] = useState<string | null>(null)
   const [stats, setStats] = useState<Stats | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -119,10 +124,13 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
   // Held in a ref so the polling effect does not restart on every fetch.
   const rangeRef = useRef(range)
   rangeRef.current = range
+  const pageRef = useRef(page)
+  pageRef.current = page
 
-  const load = useCallback(async (which: RangeKey) => {
+  const load = useCallback(async (which: RangeKey, onPage: string | null) => {
     try {
-      const response = await fetch(`/api/admin/stats?range=${which}`, { cache: 'no-store' })
+      const query = `range=${which}${onPage ? `&page=${encodeURIComponent(onPage)}` : ''}`
+      const response = await fetch(`/api/admin/stats?${query}`, { cache: 'no-store' })
       if (response.status === 401) {
         // The session ran out while the tab sat open.
         window.location.href = '/admin/login'
@@ -152,13 +160,13 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
   }, [])
 
   useEffect(() => {
-    void load(range)
-  }, [load, range])
+    void load(range, page)
+  }, [load, range, page])
 
   // Auto-refresh, so a dashboard left on a second screen stays true.
   useEffect(() => {
     if (!live) return
-    const id = window.setInterval(() => void load(rangeRef.current), 20_000)
+    const id = window.setInterval(() => void load(rangeRef.current, pageRef.current), 20_000)
     return () => window.clearInterval(id)
   }, [live, load])
 
@@ -170,7 +178,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action }),
     })
-    await load(range)
+    await load(range, page)
     setBusy(false)
   }
 
@@ -215,6 +223,22 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
         </div>
 
         <div className="admin-actions">
+          {tab === 'overview' && stats.pages.length > 0 && (
+            <select
+              className="admin-btn admin-page-picker"
+              aria-label="Page"
+              value={page ?? ''}
+              onChange={(e) => setPage(e.target.value || null)}
+            >
+              <option value="">Whole site</option>
+              {stats.pages.map((path) => (
+                <option key={path} value={path}>
+                  Campaign: {pageName(path)}
+                </option>
+              ))}
+            </select>
+          )}
+
           {tab === 'overview' && (
           <div className="range-picker" role="group" aria-label="Date range">
             {RANGES.map((option) => (
@@ -235,7 +259,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
             <span>Auto-refresh</span>
           </label>
 
-          <button type="button" className="admin-btn" onClick={() => void load(range)}>
+          <button type="button" className="admin-btn" onClick={() => void load(range, page)}>
             Refresh
           </button>
           <button type="button" className="admin-btn admin-btn-quiet" onClick={() => void signOut()}>
@@ -302,6 +326,16 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
           </button>
         </p>
       ) : null}
+
+      {page && (
+        <p className="admin-notice">
+          <b>Showing {page} only.</b> Everything below counts the people who opened this page, and the sales placed
+          from it.
+          <button type="button" onClick={() => setPage(null)}>
+            Show whole site
+          </button>
+        </p>
+      )}
 
       {/* ---- The headline numbers ---- */}
       <div className="kpi-grid">
@@ -379,6 +413,58 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
           </li>
         </ul>
       </Panel>
+
+      {/* ---- Campaign pages, side by side ---- */}
+      {stats.campaigns.length > 0 && (
+        <Panel title="Campaign pages" hint={`Each page on its own, last ${rangeLabel.toLowerCase()} · click one to see only its numbers`} wide>
+          <div className="table-scroll">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Page</th>
+                  <th className="n">Visitors</th>
+                  <th className="n">Views</th>
+                  <th className="n">Filled details</th>
+                  <th className="n">Bought</th>
+                  <th className="n">Conv.</th>
+                  <th className="n">Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.campaigns.map((row) => (
+                  <tr
+                    key={row.path}
+                    className={`is-clickable${row.path === page ? ' is-on' : ''}`}
+                    tabIndex={0}
+                    onClick={() => setPage(row.path === page ? null : row.path)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        setPage(row.path === page ? null : row.path)
+                      }
+                    }}
+                  >
+                    <td>
+                      <b>{pageName(row.path)}</b>
+                      <small>{row.path}</small>
+                    </td>
+                    <td className="n">{num(row.visitors)}</td>
+                    <td className="n">{num(row.views)}</td>
+                    <td className="n">{num(row.leads)}</td>
+                    <td className="n">{num(row.buyers)}</td>
+                    <td className="n">{row.visitors > 0 ? `${row.conversion}%` : '—'}</td>
+                    <td className="n">{money(row.revenue)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="panel-note">
+            A sale counts for the page it was placed from. Sales from before 9 Nov 2026 did not record their page, so
+            those count for every campaign page the buyer had opened.
+          </p>
+        </Panel>
+      )}
 
       <div className="admin-split">
         {/* ---- Funnel ---- */}
