@@ -376,7 +376,11 @@ export function Reviews() {
   )
 }
 
-export async function CampaignSections() {
+/**
+ * `pinned`: the tools held still at the start of the tools row. A Claude page
+ * pins Claude alone, and the other four scroll past with the rest.
+ */
+export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly string[] } = {}) {
   /* The offer block and the FAQ are editable in Sanity; the rest of this copy
      is code. Headings stay code-side so an edit cannot unbalance the layout. */
   const catalog = await getCatalog()
@@ -405,7 +409,7 @@ export async function CampaignSections() {
                   readers. */}
               <div className="ea-tr">
                 <ul className="ea-tr-pins" aria-label="Core tools">
-                  {PINNED.map((name) => {
+                  {pinned.map((name) => {
                     const t = learn.tools.find((x) => x.name === name)
                     return (
                       <li key={name} title={name}>
@@ -419,7 +423,7 @@ export async function CampaignSections() {
                   <ul>
                     {[0, 1].map((copy) =>
                       learn.tools
-                        .filter((t) => !PINNED.includes(t.name))
+                        .filter((t) => !pinned.includes(t.name))
                         .map((t) => (
                           <li key={`${copy}-${t.name}`} title={t.name} aria-hidden={copy === 1 || undefined}>
                             <ToolLogo name={t.name} mark={'mark' in t ? t.mark : undefined} />

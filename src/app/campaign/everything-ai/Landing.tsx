@@ -195,7 +195,7 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
           </div>
         </section>
 
-        <CampaignSections />
+        <CampaignSections pinned={kind === 'claude' ? ['Claude'] : undefined} />
       </main>
 
       {/* A campaign page ends on its ask, not on the site's navigation: only

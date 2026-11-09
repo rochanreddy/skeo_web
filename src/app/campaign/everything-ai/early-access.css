@@ -5512,3 +5512,10 @@
     white-space: normal;
   }
 }
+
+/* "Everything included" fills column by column, as the hero pass does: the
+   four with numbers on the left, the rest on the right. */
+.ea .ea-deal-list ul {
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, auto);
+}

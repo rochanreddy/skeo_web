@@ -110,7 +110,7 @@ export default async function ShowcaseToolPage({ params }: Props) {
       {/* Below the hero: the Everything AI sections, inside .ea so its stylesheet applies. */}
       <div className="ea vx-body">
         {/* Below the hero, every campaign page is the Everything AI page. */}
-        <CampaignSections />
+        <CampaignSections pinned={c.slug === 'claude' ? ['Claude'] : undefined} />
         <StickyCta plan={c.plan} />
       </div>
 
