@@ -83,7 +83,7 @@ const DISMISS_KEY = 'skeo-ea-joins-off'
 
 /**
  * "Priya S. joined Everything AI": one at a time, bottom-left. The first comes
- * once the hero has landed, then a new one every 40 seconds, each on screen
+ * once the hero has landed, then a new one every 30 seconds, each on screen
  * for six, looping. Real buyers (with how long ago, and "verified purchase")
  * are mixed with names from sampleNames, which show neither. Closing it stops
  * it for the rest of the visit.
@@ -103,7 +103,7 @@ function mixed(real: readonly Join[]): Join[] {
 }
 
 const FIRST_MS = 6_000
-const EVERY_MS = 40_000
+const EVERY_MS = 30_000
 const SHOWN_MS = 6_000
 
 export function JoinToasts() {
@@ -121,7 +121,7 @@ export function JoinToasts() {
   }, [])
 
   /* The stats reload every minute; the rotation restarts only when the list
-     of buyers itself changes, so the 40-second rhythm is not reset. */
+     of buyers itself changes, so the 30-second rhythm is not reset. */
   const recent = stats?.recent
   const key = recent?.map((j) => `${j.name}@${j.at}`).join('|') ?? ''
   const queueRef = useRef<Join[]>([])
