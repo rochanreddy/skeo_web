@@ -177,25 +177,25 @@ export const mentors = {
      the same roster, in /public/mentors. */
   people: [
     {
+      name: 'Deepak Kerkar',
+      initials: 'DK',
+      photo: '/mentors/deepak.webp',
+      role: 'AI Program & Ops Manager, Interview Kickstart',
+      bio: 'Leads AI programs, and has shipped AI workflows in enterprise-level team ops.',
+    },
+    {
+      name: 'Divya',
+      initials: 'D',
+      photo: '/mentors/divya.webp',
+      role: 'Gen AI & Digital Marketing Expert and Senior Analyst',
+      bio: 'Digital growth strategist, with ₹2Cr+ in revenue generated.',
+    },
+    {
       name: 'Sridevi Edupuganti',
       initials: 'SE',
       photo: '/mentors/sridevi.webp',
-      role: 'AI Generalist & AI Automation Specialist',
-      bio: 'Co-founder of ZenithWorks AI. Ex-Microsoft, IIT Guwahati and ISB.',
-    },
-    {
-      name: 'Deepak K',
-      initials: 'DK',
-      photo: '/mentors/deepak.webp',
-      role: 'AI Program & Ops Manager',
-      bio: 'Puts AI to work in day-to-day operations, across real teams.',
-    },
-    {
-      name: 'Divya Bhandari',
-      initials: 'DB',
-      photo: '/mentors/divya.webp',
-      role: 'Generative AI & Digital Marketing Trainer',
-      bio: 'Growth strategist with ₹2Cr+ in revenue generated.',
+      role: 'AI Generalist, Mentor at ISB Hyderabad',
+      bio: 'Co-founder of ZenithWorks AI, ex-Microsoft, and has mentored 5,000+ professionals.',
     },
   ] as readonly Mentor[],
 } as const
