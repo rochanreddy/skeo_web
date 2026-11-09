@@ -24,7 +24,10 @@ export function Faq() {
           <br />
           what you walk away with, and what it costs.
         </p>
-        <VideoPlayer src={walkthrough.src} poster={walkthrough.poster} label={walkthrough.label} duration={walkthrough.duration} />
+        {/* Framed, with the campaign pages' lime play button. */}
+        <div className="faq-video">
+          <VideoPlayer src={walkthrough.src} poster={walkthrough.poster} label={walkthrough.label} duration={walkthrough.duration} />
+        </div>
       </Reveal>
 
       <Reveal className="faq-list" delay={1}>
