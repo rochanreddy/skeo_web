@@ -11,7 +11,7 @@ import { ordersCollection } from '@/lib/payments/orders'
  *  - Seats: EARLY_ACCESS_SEATS is the real cap. Every paid Early Access order
  *    takes one, and the order route refuses new Early Access orders once none
  *    are left — "Limited Seats" is enforced, not just said.
- *  - Recent joins: paid orders from the last 30 days, shown as first name and
+ *  - Recent joins: paid orders from the last 180 days, shown as first name and
  *    last initial with how long ago. Never an email, a phone or a full name.
  */
 
@@ -57,7 +57,7 @@ export type Join = { name: string; what: string; at: string }
 
 export async function recentJoins(limit = 40): Promise<Join[]> {
   const orders = await ordersCollection()
-  const since = new Date(Date.now() - 30 * 24 * 3600_000)
+  const since = new Date(Date.now() - 180 * 24 * 3600_000)
   const rows = await orders
     .find({ status: { $in: [...PAID] }, paidAt: { $gte: since } })
     .project<{ contact: { name: string }; items: CheckoutItem[]; paidAt: Date }>({ 'contact.name': 1, items: 1, paidAt: 1 })

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Join, LiveStats } from '@/lib/earlyAccessLive'
 
 /**
@@ -81,12 +81,16 @@ function ago(iso: string): string {
 const DISMISS_KEY = 'skeo-ea-joins-off'
 
 /**
- * "Priya S. joined Everything AI · 12 min ago" — one real purchase at a time,
- * bottom-left, a new one every five seconds (four on screen, one off). Each
- * person is shown once per visit and the list is never looped, so no name
- * comes round twice; when the real buyers run out, it simply stops. Closing
- * it stops it for the rest of the visit.
+ * "Priya S. joined Everything AI · 12 min ago": one real purchase at a time,
+ * bottom-left. The first comes once the hero has landed, then a new one every
+ * 40 seconds, each on screen for six. Only real buyers are ever shown; when
+ * the list runs out it starts again from the most recent. Closing it stops it
+ * for the rest of the visit.
  */
+const FIRST_MS = 6_000
+const EVERY_MS = 40_000
+const SHOWN_MS = 6_000
+
 export function JoinToasts() {
   const stats = useLiveStats()
   const [current, setCurrent] = useState<Join | null>(null)
@@ -101,19 +105,32 @@ export function JoinToasts() {
     }
   }, [])
 
+  /* The stats reload every minute; the rotation restarts only when the list
+     of buyers itself changes, so the 40-second rhythm is not reset. */
+  const recent = stats?.recent
+  const key = recent?.map((j) => `${j.name}@${j.at}`).join('|') ?? ''
+  const queueRef = useRef<Join[]>([])
+  queueRef.current = recent ?? []
+
   useEffect(() => {
-    if (off || !stats?.recent.length) return
-    const seen = new Set<string>()
-    const queue = stats.recent.filter((j) => !seen.has(j.name) && (seen.add(j.name), true))
-    const timers: number[] = []
-    let t = 4_000 // let the hero land first
-    for (const j of queue) {
-      timers.push(window.setTimeout(() => { setCurrent(j); setOpen(true) }, t))
-      timers.push(window.setTimeout(() => setOpen(false), t + 4_000))
-      t += 5_000
+    if (off || !key) return
+    const queue = queueRef.current
+    let n = 0
+    let hide: number | undefined
+    const show = () => {
+      setCurrent(queue[n % queue.length])
+      setOpen(true)
+      n++
+      hide = window.setTimeout(() => setOpen(false), SHOWN_MS)
     }
-    return () => timers.forEach((id) => window.clearTimeout(id))
-  }, [stats, off])
+    const first = window.setTimeout(show, FIRST_MS)
+    const every = window.setInterval(show, EVERY_MS)
+    return () => {
+      window.clearTimeout(first)
+      window.clearInterval(every)
+      if (hide) window.clearTimeout(hide)
+    }
+  }, [key, off])
 
   if (off || !current) return null
 
