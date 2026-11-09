@@ -52,14 +52,14 @@ export const hero = {
 export const valueStack = {
   /* Laid out in two columns, filled top to bottom: the numbers on the left,
      everything else on the right. */
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', '100+ Jobs', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', '1 Lakh+ Jobs', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
 } as const
 
 export const numbers = [
   { value: '10+', label: 'Courses' },
   { value: '50+', label: 'Tools' },
   { value: '20+', label: 'Projects' },
-  { value: '100+', label: 'Jobs' },
+  { value: '1 Lakh+', label: 'Jobs' },
 ] as const
 
 /** 1 — What you get */
@@ -74,7 +74,7 @@ export const get = {
     { icon: 'file', title: 'Templates & Resources', body: 'Prompts, guides and notes.' },
     { icon: 'people', title: 'Community', body: 'Learn with other builders.' },
     { icon: 'badge', title: 'Certificate', body: 'Proof of what you built.' },
-    { icon: 'briefcase', title: '100+ Jobs', body: 'Real openings to put it to work.' },
+    { icon: 'briefcase', title: '1 Lakh+ Jobs', body: 'Real openings to put it to work.' },
   ],
 } as const
 
@@ -205,7 +205,7 @@ export const pricing = {
   eyebrow: 'The offer',
   title: 'One price. Everything included.',
   plan: 'Everything AI · Early Access',
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '100+ Jobs'],
+  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '1 Lakh+ Jobs'],
   cta: 'Get Everything',
   small: 'One-time payment · Instant access · No hidden fees',
 } as const

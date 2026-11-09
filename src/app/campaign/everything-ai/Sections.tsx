@@ -117,9 +117,9 @@ export function OfferIcon({ item }: { item: string }) {
   return <I className="ea-deal-ico-svg" strokeWidth={1.9} absoluteStrokeWidth aria-hidden="true" />
 }
 
-/* "10+ Courses" → the figure picked out from the words. */
+/* "10+ Courses" → the figure picked out from the words ("1 Lakh+" counts as one figure). */
 export function OfferItem({ item }: { item: string }) {
-  const m = item.match(/^(\d[\d,+]*\+?)\s+(.*)$/)
+  const m = item.match(/^(\d[\d,]*(?:\s*Lakh)?\+?)\s+(.*)$/)
   return m ? (
     <>
       <b>{m[1]}</b> {m[2]}
