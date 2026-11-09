@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { gaPurchase } from '@/lib/analytics/ga'
@@ -88,13 +88,19 @@ export function ThankYou() {
   // The sale, reported to Google Analytics once Cashfree has confirmed it. The
   // site's own purchase event is written by the server; GA can only hear about
   // it from the browser, and this is the first page that knows.
+  //
+  // Once per order. The poll above hands this a new `order` every 2.5 seconds
+  // while the account is being set up, and each one used to report the sale
+  // again (20 Purchases for one order). gaPurchase and metaPurchase also
+  // remember it in localStorage, so a refresh does not count it twice either.
+  const reported = useRef<string | null>(null)
   useEffect(() => {
-    if (order && (order.status === 'paid' || order.status === 'provisioned')) {
-      gaPurchase(order)
-      // Meta's copy carries the order id as its event id, as the server's
-      // does, so a refresh or the server's own Purchase is never a second sale.
-      metaPurchase(order.meta)
-    }
+    if (!order || (order.status !== 'paid' && order.status !== 'provisioned')) return
+    if (reported.current === order.orderId) return
+    reported.current = order.orderId
+    gaPurchase(order)
+    // Meta's copy carries the order id as its event id, as the server's does.
+    metaPurchase(order.meta)
   }, [order])
 
   // Above the bail-outs below: hooks cannot run conditionally.

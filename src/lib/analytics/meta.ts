@@ -83,8 +83,29 @@ export function metaInitiateCheckout(order: MetaOrder | undefined): void {
   metaTrack('InitiateCheckout', params, `ic_${orderId}`)
 }
 
+/* Orders already reported from this browser. Backs up localStorage when it
+   is blocked, so at least one page view never reports the same order twice. */
+const purchasesSent = new Set<string>()
+
+/**
+ * Once per order, ever, from this browser. /thank-you and the campaign popup
+ * poll the order every few seconds while it is being set up, and each poll
+ * used to fire this again: one ₹499 order reached Meta as 20 Purchases. The
+ * event id lets Meta merge repeats with the server's copy, but it does not
+ * reliably merge them with each other, so they are stopped here, the way
+ * gaPurchase stops GA's.
+ */
 export function metaPurchase(order: MetaOrder | undefined): void {
-  if (!order?.order_id) return
+  if (!order?.order_id || typeof window === 'undefined') return
+  const key = `skeo.meta.purchase.${order.order_id}`
+  if (purchasesSent.has(key)) return
+  purchasesSent.add(key)
+  try {
+    if (window.localStorage.getItem(key)) return
+    window.localStorage.setItem(key, '1')
+  } catch {
+    // No storage: the Set above still holds it for this page.
+  }
   metaTrack('Purchase', order, order.order_id)
 }
 
