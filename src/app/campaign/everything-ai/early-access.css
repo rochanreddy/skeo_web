@@ -5519,3 +5519,9 @@
   grid-auto-flow: column;
   grid-template-rows: repeat(4, auto);
 }
+
+/* "· this window" in the same lime, bold type as "98% OFF" beside it. */
+.ea-announce-window {
+  color: var(--lime);
+  font-weight: 800;
+}
