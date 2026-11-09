@@ -27,12 +27,6 @@ const columns = [
     title: 'Company',
     links: [
       { label: 'About', href: '/about' },
-      { label: 'Guides', href: '/guides' },
-      /* There is no /contact page and there does not need to be: the company
-         block on the About page already carries the entity, the jurisdiction,
-         the address to write to and the policies. A separate page would be
-         those same four rows on their own. */
-      { label: 'Contact', href: '/about#working-with-us' },
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Refund Policy', href: '/refund' },
       { label: 'Terms & Conditions', href: '/terms' },
@@ -59,8 +53,8 @@ const social = [
   },
 ]
 
-/* After the menler mark rather than in the list above: the row reads as
-   skeo's own profiles, the parent company, then the channel. */
+/* Kept out of the list above only so the menler mark can follow it: skeo's
+   own profiles and channel first, then the parent company. */
 const youtube = {
   label: 'YouTube',
   href: site.social.youtube,
@@ -115,6 +109,11 @@ export function Footer() {
                   </svg>
                 </a>
               ))}
+              <a href={youtube.href} rel="noopener noreferrer" target="_blank" aria-label={youtube.label}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={youtube.path} fill="currentColor" />
+                </svg>
+              </a>
               {/* The parent company, not a social profile — but the mark
                   rather than the wordmark, so it sits in the same chip the
                   others do instead of widening the row. Monochrome white to
@@ -130,14 +129,9 @@ export function Footer() {
               >
                 <Image src={menlerMark} alt="" />
               </a>
-              <a href={youtube.href} rel="noopener noreferrer" target="_blank" aria-label={youtube.label}>
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d={youtube.path} fill="currentColor" />
-                </svg>
-              </a>
             </div>
             <a className="footer-support" href={`mailto:${site.email}`}>
-              Support: {site.email}
+              Contact us: {site.email}
             </a>
           </div>
 
