@@ -226,7 +226,7 @@ export function VerifyModal({
                 ? 'Opening payment…'
                 : failure
                   ? 'Try again'
-                  : 'Continue to payment'
+                  : 'Register Now'
               : leaving
                 ? 'Opening checkout…'
                 : busy
