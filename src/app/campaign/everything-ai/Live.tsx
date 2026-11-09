@@ -88,22 +88,18 @@ const DISMISS_KEY = 'skeo-ea-joins-off'
  * are mixed with names from sampleNames, which show neither. Closing it stops
  * it for the rest of the visit.
  */
-/** Real buyers first, then a sample name after every real one, shuffled. */
+/** Everyone in one shuffled list, always opening on a sample name. */
 function mixed(real: readonly Join[]): Join[] {
-  const names = [...SAMPLE_NAMES]
-  for (let i = names.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[names[i], names[j]] = [names[j], names[i]]
+  const shuffle = <T,>(xs: T[]): T[] => {
+    for (let i = xs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[xs[i], xs[j]] = [xs[j], xs[i]]
+    }
+    return xs
   }
-  const what = real[0]?.what ?? 'Everything AI · Early Access'
-  const samples = names.map((name): Join => ({ name, what, at: '' }))
-  const out: Join[] = []
-  const longest = Math.max(real.length, samples.length)
-  for (let i = 0; i < longest; i++) {
-    if (real[i]) out.push(real[i])
-    if (samples[i]) out.push(samples[i])
-  }
-  return out
+  const samples = shuffle(SAMPLE_NAMES.map((name): Join => ({ name, what: 'Everything AI · Early Access', at: '' })))
+  const [lead, ...rest] = samples
+  return [lead, ...shuffle([...rest, ...real])]
 }
 
 const FIRST_MS = 6_000
