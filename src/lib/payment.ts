@@ -17,7 +17,7 @@ import { apiError, friendlyError, reportError, type Stage } from '@/lib/friendly
 
 /* `retry` says whether pressing Pay again can help: yes for a dropped
    connection or a slow server, no for "Early Access has ended". */
-type StartResult = { ok: true } | { ok: false; error: string; retry: boolean }
+type StartResult = { ok: true; orderId: string } | { ok: false; error: string; retry: boolean }
 
 function failed(stage: Stage, err: unknown): StartResult {
   const f = friendlyError(err, stage)
@@ -50,7 +50,13 @@ function loadSdk(): Promise<void> {
   })
 }
 
-export async function startPayment(order: { items: CheckoutItem[]; contact: CheckoutContact }): Promise<StartResult> {
+/* `stay`: the campaign pages keep the buyer where they are once Cashfree
+   closes and show the result in their own dialog (PaidNotice), rather than
+   moving on to /thank-you. */
+export async function startPayment(
+  order: { items: CheckoutItem[]; contact: CheckoutContact },
+  { stay = false }: { stay?: boolean } = {},
+): Promise<StartResult> {
   let res: Response
   try {
     res = await fetch('/api/checkout/order', {
@@ -87,8 +93,8 @@ export async function startPayment(order: { items: CheckoutItem[]; contact: Chec
         error: 'The payment wasn’t completed. If you approved it in your UPI app, wait a minute before trying again.',
       }
     }
-    window.location.assign(`/thank-you?order_id=${encodeURIComponent(session.orderId)}`)
-    return { ok: true }
+    if (!stay) window.location.assign(`/thank-you?order_id=${encodeURIComponent(session.orderId)}`)
+    return { ok: true, orderId: session.orderId }
   } catch (err) {
     return failed('payment', err)
   }

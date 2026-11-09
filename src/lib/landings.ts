@@ -54,10 +54,11 @@ export function landingHero(kind: LandingKind, price: string) {
       }
 }
 
-/* On these four pages a buyer goes from their details straight to Cashfree:
-   no one-time code, no /checkout review. Every other page keeps both. */
-const LANDING_PATHS = ['/campaign/everything-ai', '/campaign/everything-ai-intro', '/campaign/claude', '/campaign/claude-intro']
-
+/* On every campaign page a buyer goes from their details straight to
+   Cashfree: no one-time code, no /checkout review, and no /thank-you after it
+   (the dialog says the login is on its way). Every other page keeps all three. */
 export function paysDirect(pathname: string | null): boolean {
-  return pathname !== null && LANDING_PATHS.includes(pathname.replace(/\/+$/, ''))
+  if (pathname === null) return false
+  const path = pathname.replace(/\/+$/, '')
+  return path.startsWith('/campaign/')
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Modal, useDialogId } from './Modal'
+import { PaidNotice } from './PaidNotice'
 import { track } from '@/lib/analytics/track'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
 import { verifySmsOtp } from '@/lib/amplifeedOtp'
@@ -33,10 +34,12 @@ type Errors = Partial<Record<Field, string>>
  * one exists it should send otp_token with the order and verify it there, the
  * way menler's /leads does before marking a lead verified.
  *
- * DIRECT: on the four campaign landing pages (lib/landings) there is no code
- * and no /checkout review — the details go straight to an order and Cashfree's
- * popup. Nothing is lost by it on the server: the order route never asked for
- * the code, and only Cashfree answering PAID unlocks anything.
+ * DIRECT: on the campaign pages (lib/landings) there is no code and no
+ * /checkout review: the details go straight to an order and Cashfree's popup,
+ * and once it closes this dialog says the login is on its way (PaidNotice)
+ * rather than sending the buyer to /thank-you. Nothing is lost by it on the
+ * server: the order route never asked for the code, and only Cashfree
+ * answering PAID unlocks anything.
  */
 export function VerifyModal({
   modules,
@@ -55,6 +58,7 @@ export function VerifyModal({
   const [failure, setFailure] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [leaving, setLeaving] = useState(false)
+  const [paidOrder, setPaidOrder] = useState<string | null>(null)
 
   // /checkout is never linked to, so Next has no reason to have fetched it —
   // without this the route is only requested once verification passes, and the
@@ -98,13 +102,11 @@ export function VerifyModal({
       track('verify_ok', { modules, ...contact })
       saveCheckoutSession({ modules, contact, verifiedAt: Date.now() })
       setLeaving(true)
-      const result = await startPayment({ items: modules, contact })
-      // On success the page is already moving on to /thank-you.
-      if (!result.ok) {
-        setBusy(false)
-        setLeaving(false)
-        setFailure(result.error)
-      }
+      const result = await startPayment({ items: modules, contact }, { stay: true })
+      setBusy(false)
+      setLeaving(false)
+      if (result.ok) setPaidOrder(result.orderId)
+      else setFailure(result.error)
       return
     }
 
@@ -145,6 +147,9 @@ export function VerifyModal({
 
   return (
     <Modal labelledBy={titleId} onClose={onClose} className="verify-modal" suspended={busy}>
+      {paidOrder ? (
+        <PaidNotice orderId={paidOrder} email={values.email.trim()} onClose={onClose} />
+      ) : (
       <form className="verify-form" onSubmit={handleSubmit} noValidate>
         <h3 id={titleId} className="sr-only">
           Verify it&rsquo;s you
@@ -240,6 +245,7 @@ export function VerifyModal({
             : 'We’ll text a code to confirm it’s you. Your seat is held once it is verified.'}
         </small>
       </form>
+      )}
     </Modal>
   )
 }
