@@ -2151,7 +2151,7 @@
   .ea-foot-inner {
     flex-direction: column;
     text-align: center;
-    padding-bottom: 72px; /* clear of the sticky bar */
+    padding-bottom: 112px; /* clear of the sticky bar, which is two lines tall on a phone */
   }
 
   .ea-sticky-inner {

@@ -7328,10 +7328,10 @@ details p {
     font-size: 12.5px;
   }
   .compare-column {
-    padding: 16px 7px;
+    padding: 16px 10px;
   }
   .compare-column b {
-    font-size: 9.5px;
+    font-size: 11px;
   }
   /* Two jobs: "TRADITIONAL COURSE" is 18 characters of tracked-out mono against
      "SKEO", and on a 320px phone it wrapped and started its whole column a line
@@ -7343,21 +7343,13 @@ details p {
   }
   /* THE COPY IS THE COPY — none of this rewrites a word of it. */
   .compare-column > div {
-    /* THE LARGEST SIZE THAT STILL HOLDS ONE LINE, fitted to measurement rather
-       than guessed. The binding row is "Access jobs, internships & freelancing"
-       in the narrower column; measured against what that column actually gives
-       it, one line allows 6.4px at 320, 8.3px at 390 and 10.7px at 480, and
-       the requirement stops climbing once .wrap caps. The slope tracks those
-       figures about 4% under, and the cap is the grid's own 12.5px. Re-derive
-       it if the padding or the bleed above move — they set what is left. */
-
-
-    font-size: clamp(6px, calc(2.585vw - 2.14px), 12.5px);
-    line-height: 1.35;
-    /* Every row is one line now, so this is breathing room rather than a hedge
-       against wrapping — and it is what keeps the two columns level. Still a
-       minimum, not a flat height, so nothing is ever clipped. */
-    min-height: 34px;
+    /* Rows wrap rather than shrink. Holding every row to one line took the
+       type down to 8px on a 390px phone, too small to read. At this size the
+       longest rows take two lines, and the min-height is two lines, so the
+       two columns stay level row for row. */
+    font-size: clamp(11px, 3.1vw, 12.5px);
+    line-height: 1.3;
+    min-height: 46px;
     padding: 3px 0;
     gap: 6px;
   }
@@ -7587,7 +7579,7 @@ details p {
     /* Each column as wide as its longest item, rather than half the panel —
        halves left "1000+ Opportunities" too narrow on a 360px phone and it
        broke onto a second line. */
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: repeat(2, minmax(0, max-content));
     gap: 14px 22px;
     margin: 20px 0 24px;
   }
@@ -7660,7 +7652,7 @@ details p {
      1fr tracks split the phone in half and sat Company a half-screen away from
      Explore, which read as two unrelated blocks rather than one menu. */
   .footer-nav {
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: repeat(2, minmax(0, max-content));
     gap: 20px 56px;
   }
   .footer-nav nav {
@@ -10796,4 +10788,12 @@ details p {
   font-family: var(--mono);
   font-size: 12.5px;
   color: var(--ink-4);
+}
+
+/* Under 380px a few comparison rows run to three lines. A three-line
+   minimum keeps the two columns level row for row there too. */
+@media (max-width: 380px) {
+  .compare-column > div {
+    min-height: 52px;
+  }
 }
