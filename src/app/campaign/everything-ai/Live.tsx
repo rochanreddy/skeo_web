@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { Join, LiveStats } from '@/lib/earlyAccessLive'
+import { SAMPLE_NAMES } from './sampleNames'
 
 /**
  * The live parts of /campaign/everything-ai — seats left, and who just joined — read
@@ -81,12 +82,30 @@ function ago(iso: string): string {
 const DISMISS_KEY = 'skeo-ea-joins-off'
 
 /**
- * "Priya S. joined Everything AI · 12 min ago": one real purchase at a time,
- * bottom-left. The first comes once the hero has landed, then a new one every
- * 40 seconds, each on screen for six. Only real buyers are ever shown; when
- * the list runs out it starts again from the most recent. Closing it stops it
- * for the rest of the visit.
+ * "Priya S. joined Everything AI": one at a time, bottom-left. The first comes
+ * once the hero has landed, then a new one every 40 seconds, each on screen
+ * for six, looping. Real buyers (with how long ago, and "verified purchase")
+ * are mixed with names from sampleNames, which show neither. Closing it stops
+ * it for the rest of the visit.
  */
+/** Real buyers first, then a sample name after every real one, shuffled. */
+function mixed(real: readonly Join[]): Join[] {
+  const names = [...SAMPLE_NAMES]
+  for (let i = names.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[names[i], names[j]] = [names[j], names[i]]
+  }
+  const what = real[0]?.what ?? 'Everything AI · Early Access'
+  const samples = names.map((name): Join => ({ name, what, at: '' }))
+  const out: Join[] = []
+  const longest = Math.max(real.length, samples.length)
+  for (let i = 0; i < longest; i++) {
+    if (real[i]) out.push(real[i])
+    if (samples[i]) out.push(samples[i])
+  }
+  return out
+}
+
 const FIRST_MS = 6_000
 const EVERY_MS = 40_000
 const SHOWN_MS = 6_000
@@ -113,8 +132,8 @@ export function JoinToasts() {
   queueRef.current = recent ?? []
 
   useEffect(() => {
-    if (off || !key) return
-    const queue = queueRef.current
+    if (off) return
+    const queue = mixed(queueRef.current)
     let n = 0
     let hide: number | undefined
     const show = () => {
@@ -141,10 +160,12 @@ export function JoinToasts() {
       </span>
       <p>
         <strong>{current.name}</strong> joined <b>{current.what}</b>
-        <span className="ea-toast-time">
-          <i aria-hidden="true" />
-          {ago(current.at)} · verified purchase
-        </span>
+        {current.at && (
+          <span className="ea-toast-time">
+            <i aria-hidden="true" />
+            {ago(current.at)} · verified purchase
+          </span>
+        )}
       </p>
       <button
         type="button"
