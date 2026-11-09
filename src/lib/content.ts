@@ -445,7 +445,7 @@ export const faqs = [
     a: 'No platform can promise that, and we won’t pretend otherwise. What you get is verified proof of work and access to the Job & Freelancing Board — real opportunities to apply to, not a guaranteed outcome.',
   },
   {
-    q: 'Can I cancel whenever I want?',
+    q: 'Is this a one-time payment?',
     a: 'This is a one-time payment, learn-on-the-go platform. So there are no memberships and no subscriptions.',
   },
   {
