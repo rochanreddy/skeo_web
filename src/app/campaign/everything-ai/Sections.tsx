@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Award, BookOpen, BriefcaseBusiness, FileText, Radio, ReceiptText, Rocket, ShieldCheck, Users, Wrench, Zap } from 'lucide-react'
+import { Award, BookOpen, BriefcaseBusiness, FileText, GraduationCap, Layers, Presentation, Radio, ReceiptText, Rocket, ShieldCheck, Users, Wrench, Zap } from 'lucide-react'
 import { PurchaseButton } from '@/components/ActionButton'
 import type { PlanKey } from '@/lib/plans'
 import { CertificatePicker } from '@/components/CertificatePicker'
@@ -7,7 +7,7 @@ import { Accreditation } from '@/components/sections/Accreditation'
 import { Included } from '@/components/sections/Included'
 import { JobBoard } from '@/components/sections/JobBoard'
 import { ChatGptMark, ClaudeMark, GrokMark, LovableMark, N8nMark } from '@/components/tools/marks'
-import { opportunities, testimonials } from '@/lib/content'
+import { faqs, opportunities, testimonials } from '@/lib/content'
 import { offerOf, savePctOf } from '@/lib/catalog'
 import { getCatalog } from '@/lib/cms'
 import { build, certificate, faq as faqCode, inr, jobs, learn, mentors, pricing as pricingCode, reviews } from '@/lib/earlyAccess'
@@ -97,23 +97,22 @@ const PINNED = ['Claude', 'ChatGPT', 'Grok', 'n8n', 'Lovable']
 /* An icon for each line of the offer, picked by what the line is about. */
 export function OfferIcon({ item }: { item: string }) {
   const t = item.toLowerCase()
-  const I = t.includes('course')
-    ? BookOpen
-    : t.includes('project')
-      ? Rocket
-      : t.includes('tool')
-        ? Wrench
-        : t.includes('workshop') || t.includes('live')
-          ? Radio
-          : t.includes('template') || t.includes('resource')
-            ? FileText
-            : t.includes('community')
-              ? Users
-              : t.includes('certificate')
-                ? Award
-                : t.includes('job')
-                  ? BriefcaseBusiness
-                  : Zap
+  const icons: [string, typeof Zap][] = [
+    ['platform', Layers],
+    ['mentor', GraduationCap],
+    ['masterclass', Presentation],
+    ['course', BookOpen],
+    ['project', Rocket],
+    ['tool', Wrench],
+    ['workshop', Radio],
+    ['live', Radio],
+    ['template', FileText],
+    ['resource', FileText],
+    ['community', Users],
+    ['certificate', Award],
+    ['job', BriefcaseBusiness],
+  ]
+  const I = icons.find(([word]) => t.includes(word))?.[1] ?? Zap
   return <I className="ea-deal-ico-svg" strokeWidth={1.9} absoluteStrokeWidth aria-hidden="true" />
 }
 
@@ -383,8 +382,10 @@ export async function CampaignSections() {
   const catalog = await getCatalog()
   const offer = offerOf(catalog)
   const savePct = savePctOf(catalog)
-  const pricing = { ...pricingCode, ...catalog.campaign.pricing }
-  const faq = { ...faqCode, items: catalog.campaign.faq }
+  /* The list is the hero pass's eight, so it is not taken from Sanity. */
+  const pricing = { ...pricingCode, ...catalog.campaign.pricing, items: pricingCode.items }
+  /* The website's own FAQ, the same questions and answers as the home page. */
+  const faq = { ...faqCode, items: faqs }
   return (
     <div className="ea-flow">
         {/* Accreditation — the home page's strip */}
@@ -457,14 +458,14 @@ export async function CampaignSections() {
           <div className="ea-container">
             <Head eyebrow={jobs.eyebrow} title={jobs.title} />
             <p className="ea-jobs-lede">{jobs.body}</p>
+            <div className="ea-jobs-desk">
+              <JobBoard />
+            </div>
             <ul className="ea-jobs-opps" aria-label="What the board opens up">
               {opportunities.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <div className="ea-jobs-desk">
-              <JobBoard />
-            </div>
             <div className="ea-jobs-cta">
               <Buy className="button button-lime ea-cta">{jobs.cta}</Buy>
             </div>
@@ -535,6 +536,8 @@ export async function CampaignSections() {
                     </li>
                   ))}
                 </ul>
+                {/* On a phone the button closes the card, under the list. */}
+                <Buy className="button ea-cta ea-deal-cta ea-deal-cta-end">{pricing.cta}</Buy>
               </div>
             </div>
           </div>

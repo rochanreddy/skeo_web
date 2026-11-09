@@ -6,11 +6,10 @@ import { useCatalog } from '@/components/CatalogProvider'
 import { offerOf } from '@/lib/catalog'
 import type { PlanKey } from '@/lib/plans'
 import { inr } from '@/lib/earlyAccess'
-import { SeatsLeft } from './Live'
 
 /**
  * The offer, pinned to the bottom of the screen from the moment the hero has
- * scrolled away to the end of the page — so the price, the seats left and the
+ * scrolled away to the end of the page — so the price and the
  * button are never more than a glance off. On the hero itself it stays out of
  * the way: the hero already carries all three.
  */
@@ -46,7 +45,6 @@ export function StickyCta({ plan }: { plan?: PlanKey } = {}) {
               <span className="ea-sticky-price">
                 <strong>{inr(offer.price)}</strong>
                 <s>{inr(offer.was)}</s>
-                <SeatsLeft variant="inline" />
               </span>
             </>
           )}

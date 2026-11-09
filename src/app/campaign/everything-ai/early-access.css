@@ -5405,3 +5405,98 @@
     white-space: nowrap;
   }
 }
+
+/* ---- Hero write-up: one sentence a line ------------------------------------
+   "Learn by doing, build real proof of work, and unlock opportunities." is the
+   promise and keeps to one line. On a phone the write-up is a size down and
+   runs as one paragraph over two lines. */
+.ea .ea-lede-split {
+  max-width: none;
+}
+
+.ea .ea-lede-split span {
+  display: block;
+}
+
+@media (min-width: 681px) {
+  .ea .ea-lede-split span {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 680px) {
+  .ea .ea-lede-split span {
+    display: inline;
+  }
+
+  .ea .ea-lede-split span + span::before {
+    content: ' ';
+  }
+
+  .ea .ea-hero .ea-lede-split {
+    font-size: min(14px, 3.3cqi);
+    line-height: 1.5;
+  }
+}
+
+/* ---- Phone hero with the pass: no second price ----------------------------
+   The pass card right above already shows the price, so on a phone the big
+   price row under it goes, and the button moves up to the card. */
+@media (max-width: 680px) {
+  .ea .ea-hero-copy > .ea-hero-price-pass,
+  .ea .ea-hero-copy > .ea-terms-pass {
+    display: none;
+  }
+
+  .ea .ea-hero-copy > .ea-terms-pass + .ea-hero-actions {
+    margin-top: 4px;
+  }
+}
+
+/* ---- The offer card --------------------------------------------------------
+   The three promises sit on one line, and on a phone the button closes the
+   card under the list, which moves up to sit right under the price. */
+.ea .ea-deal-trust {
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ea .ea-deal-trust li {
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.ea .ea-deal-cta-end {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .ea .ea-deal-pass .ea-deal-cta {
+    display: none;
+  }
+
+  .ea .ea-deal-list .ea-deal-cta-end {
+    display: inline-flex;
+    width: 100%;
+    margin-top: 18px;
+    background: var(--lime);
+    color: #26331e;
+  }
+
+  .ea .ea-deal-list {
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ea .ea-deal-trust {
+    gap: 6px;
+    font-size: min(12px, 3.05vw);
+  }
+
+  .ea .ea-deal-trust svg {
+    width: 12px;
+    height: 12px;
+  }
+}

@@ -8,7 +8,7 @@ import { offerOf, savePctOf, type Catalog } from '@/lib/catalog'
 import { getCatalog } from '@/lib/cms'
 import { announcement as announcementCode, inr } from '@/lib/earlyAccess'
 import { landingHero, type LandingKind } from '@/lib/landings'
-import { JoinToasts, SeatsLeft } from './Live'
+import { JoinToasts } from './Live'
 import { Buy, CampaignSections, Check, Lines } from './Sections'
 import { StickyCta } from './StickyCta'
 import { WindowTimer } from './WindowTimer'
@@ -54,9 +54,6 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
             </span>
           </p>
           <WindowTimer offer={announcement.offer} />
-          <span className="ea-announce-seats">
-            <SeatsLeft variant="inline" />
-          </span>
           <Buy className="ea-announce-cta">{announcement.cta}</Buy>
         </div>
       </div>
@@ -84,12 +81,18 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
               <h1>
                 <Lines lines={h.lines} />
               </h1>
-              <p className="ea-lede">{h.lede}</p>
-              <div className="ea-hero-price">
+              {/* Each sentence on its own line: "Learn by doing…" is the promise
+                  and reads as one. */}
+              <p className="ea-lede ea-lede-split">
+                {h.lede.split(/(?<=\.)\s+/).map((sentence) => (
+                  <span key={sentence}>{sentence}</span>
+                ))}
+              </p>
+              <div className={video ? 'ea-hero-price' : 'ea-hero-price ea-hero-price-pass'}>
                 <Price big offer={offer} />
                 <span className="ea-save">{savePct}% OFF</span>
               </div>
-              <p className="ea-terms">{offer.terms}</p>
+              <p className={video ? 'ea-terms' : 'ea-terms ea-terms-pass'}>{offer.terms}</p>
               <div className="ea-hero-actions">
                 <Buy>{hero.cta}</Buy>
                 <a className="button button-outline ea-cta ea-ghost" href="#learn">

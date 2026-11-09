@@ -205,7 +205,8 @@ export const pricing = {
   eyebrow: 'The offer',
   title: 'One price. Everything included.',
   plan: 'Everything AI · Early Access',
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate', '1 Lakh+ Jobs'],
+  /* The same eight the hero's pass lists (lib/landings). */
+  items: ['1 Platform', '50+ Tools', '100+ Projects', '1 Lakh+ Jobs', 'Certificate', 'Top AI Mentors', 'AI Masterclasses', 'Community Access'],
   cta: 'Get Everything',
   small: 'One-time payment · Instant access · No hidden fees',
 } as const
