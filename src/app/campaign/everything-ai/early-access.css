@@ -5500,3 +5500,15 @@
     height: 12px;
   }
 }
+
+/* A tool page's write-up is longer than the Everything AI one, so its lines
+   may wrap; the sentences still start on lines of their own. */
+@media (min-width: 681px) {
+  .ea .ea-lede-wrap {
+    max-width: 40ch;
+  }
+
+  .ea .ea-lede-wrap span {
+    white-space: normal;
+  }
+}

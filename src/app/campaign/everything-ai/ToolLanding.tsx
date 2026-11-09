@@ -80,14 +80,20 @@ export async function ToolLanding({ c }: { c: ToolCampaign }) {
               <h1>
                 <Lines lines={c.hero.lines} />
               </h1>
-              <p className="ea-lede">{c.hero.lede}</p>
-              <div className="ea-hero-price">
+              {/* One sentence a line, as on the Everything AI pages; these run
+                  longer, so a line may wrap. */}
+              <p className="ea-lede ea-lede-split ea-lede-wrap">
+                {c.hero.lede.split(/(?<=\.)\s+/).map((sentence) => (
+                  <span key={sentence}>{sentence}</span>
+                ))}
+              </p>
+              <div className="ea-hero-price ea-hero-price-pass">
                 <p className="ea-price ea-price-big">
                   <strong>{price}</strong>
                 </p>
                 <span className="ea-once">one-time</span>
               </div>
-              <p className="ea-terms">One-time payment · Instant access</p>
+              <p className="ea-terms ea-terms-pass">One-time payment · Instant access</p>
               <div className="ea-hero-actions">
                 <Buy plan={c.plan}>Get Started</Buy>
                 <a className="button button-outline ea-cta ea-ghost" href="#learn">
