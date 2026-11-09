@@ -4,7 +4,7 @@ import { getCatalog } from '@/lib/cms'
 import { inr } from '@/lib/earlyAccess'
 import { LIVE_TOOL_SLUGS, TOOL_CAMPAIGNS, type ToolSlug } from '@/lib/toolCampaigns'
 import { Buy, KitFooter, variantMeta } from '../../_kit/Kit'
-import { JoinedToast } from '../../_kit/Live'
+import { JoinToasts } from '../../everything-ai/Live'
 import { StickyCta } from '../../everything-ai/StickyCta'
 import { CampaignSections } from '../../everything-ai/Sections'
 import '../../everything-ai/early-access.css'
@@ -112,10 +112,10 @@ export default async function ShowcaseToolPage({ params }: Props) {
         {/* Below the hero, every campaign page is the Everything AI page. */}
         <CampaignSections pinned={c.slug === 'claude' ? ['Claude'] : undefined} />
         <StickyCta plan={c.plan} />
+        <JoinToasts />
       </div>
 
       <KitFooter />
-      <JoinedToast />
     </div>
   )
 }

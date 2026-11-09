@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { Buy, KitFooter, variantMeta } from '../_kit/Kit'
-import { JoinedToast } from '../_kit/Live'
 import { getCatalog } from '@/lib/cms'
 import { liveFacts, product } from '../_kit/facts'
 import { CampaignSections } from '../everything-ai/Sections'
+import { JoinToasts } from '../everything-ai/Live'
 import { StickyCta } from '../everything-ai/StickyCta'
 import { WindowTimer } from '../everything-ai/WindowTimer'
 import '../everything-ai/early-access.css'
@@ -99,10 +99,10 @@ export default async function ShowcasePage() {
       <div className="ea vx-body">
         <CampaignSections />
         <StickyCta />
+        <JoinToasts />
       </div>
 
       <KitFooter />
-      <JoinedToast />
     </div>
   )
 }
