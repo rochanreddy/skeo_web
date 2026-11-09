@@ -72,7 +72,7 @@ export const featuredTool = {
   facts: [
     { icon: 'book', label: '8+ modules' },
     { icon: 'rocket', label: '10+ projects' },
-    { icon: 'clock', label: '15 hours' },
+    { icon: 'clock', label: '5+ hours' },
     { icon: 'compass', label: 'Self-paced' },
   ],
   blurb:
@@ -221,7 +221,7 @@ export const claudeSyllabus = {
      different figures describing the same course (8 modules / 41 lessons / 40
      assignments), which is not wrong but reads as a second course when the
      overlay opens straight off the card. */
-  stats: ['8+ modules', '10+ projects', '15 hours', 'Self-paced'],
+  stats: ['8+ modules', '10+ projects', '5+ hours', 'Self-paced'],
   modules: [
     {
       title: 'Foundations: How AI and Claude actually work',

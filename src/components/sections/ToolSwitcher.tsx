@@ -5,7 +5,7 @@ import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'rea
 type Tab = { id: string; name: string; logo: string }
 
 /**
- * The tab row above the tool card. Every panel is rendered on the server and
+ * The tab row below the tool card. Every panel is rendered on the server and
  * only the visible one is shown, so all of the copy is in the page for search
  * and for anyone without JavaScript (the first panel shows by default).
  * Arrow keys move between tabs, as the ARIA tabs pattern expects.
@@ -29,6 +29,19 @@ export function ToolSwitcher({ tabs, panels }: { tabs: Tab[]; panels: ReactNode[
 
   return (
     <>
+      {panels.map((panel, i) => (
+        <div
+          key={tabs[i].id}
+          role="tabpanel"
+          id={`${base}-panel-${tabs[i].id}`}
+          aria-labelledby={`${base}-tab-${tabs[i].id}`}
+          hidden={i !== active}
+          className="tool-panel"
+        >
+          {panel}
+        </div>
+      ))}
+
       <div className="tool-tabs" role="tablist" aria-label="AI tools" onKeyDown={onKey}>
         {tabs.map((tab, i) => (
           <button
@@ -51,19 +64,6 @@ export function ToolSwitcher({ tabs, panels }: { tabs: Tab[]; panels: ReactNode[
           </button>
         ))}
       </div>
-
-      {panels.map((panel, i) => (
-        <div
-          key={tabs[i].id}
-          role="tabpanel"
-          id={`${base}-panel-${tabs[i].id}`}
-          aria-labelledby={`${base}-tab-${tabs[i].id}`}
-          hidden={i !== active}
-          className="tool-panel"
-        >
-          {panel}
-        </div>
-      ))}
     </>
   )
 }
