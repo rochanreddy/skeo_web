@@ -29,18 +29,26 @@ export function ToolSwitcher({ tabs, panels }: { tabs: Tab[]; panels: ReactNode[
 
   return (
     <>
-      {panels.map((panel, i) => (
-        <div
-          key={tabs[i].id}
-          role="tabpanel"
-          id={`${base}-panel-${tabs[i].id}`}
-          aria-labelledby={`${base}-tab-${tabs[i].id}`}
-          hidden={i !== active}
-          className="tool-panel"
-        >
-          {panel}
-        </div>
-      ))}
+      {/* Every panel sits in the same grid cell, so the frame is as tall as
+          the tallest card and switching tools never changes the card's size. */}
+      <div className="tool-panels">
+        {panels.map((panel, i) => (
+          <div
+            key={tabs[i].id}
+            role="tabpanel"
+            id={`${base}-panel-${tabs[i].id}`}
+            aria-labelledby={`${base}-tab-${tabs[i].id}`}
+            /* Not `hidden`: the reset forces that to display:none, which takes
+               the card out of the stack. Off panels keep their space instead,
+               invisible and out of reach. */
+            inert={i !== active}
+            aria-hidden={i !== active || undefined}
+            className={i === active ? 'tool-panel is-on' : 'tool-panel is-off'}
+          >
+            {panel}
+          </div>
+        ))}
+      </div>
 
       <div className="tool-tabs" role="tablist" aria-label="AI tools" onKeyDown={onKey}>
         {tabs.map((tab, i) => (
