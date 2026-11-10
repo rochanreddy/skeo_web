@@ -131,7 +131,7 @@ export function OfferItem({ item }: { item: string }) {
 export const TRUST_ICONS = [ShieldCheck, Zap, ReceiptText]
 
 /** Every section below the hero opens the same way: a small label, one line. */
-export function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
+export function Head({ eyebrow, title }: { eyebrow: string; title: ReactNode }) {
   return (
     <header className="ea-head">
       <span className="ea-eyebrow">{eyebrow}</span>
@@ -460,7 +460,16 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
         {/* 3. Job board — the home page's dashboard, on every screen */}
         <section className="ea-jobs" id="jobs">
           <div className="ea-container">
-            <Head eyebrow={jobs.eyebrow} title={jobs.title} />
+            <Head
+              eyebrow={jobs.eyebrow}
+              title={
+                <>
+                  {jobs.title[0]}
+                  <br />
+                  {jobs.title[1]}
+                </>
+              }
+            />
             <p className="ea-jobs-lede">{jobs.body}</p>
             <div className="ea-jobs-desk">
               <JobBoard />

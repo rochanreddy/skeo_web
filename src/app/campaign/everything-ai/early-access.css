@@ -5539,3 +5539,12 @@
     font-weight: 700;
   }
 }
+
+/* The job board heading is the home page's two lines; on the one-view
+   desktop layout it is a size down so "Job & Freelancing Board." fits its
+   column on one line. */
+@media (min-width: 1100px) {
+  .ea .ea-jobs .ea-head h2 {
+    font-size: clamp(28px, 2.5vw, 32px);
+  }
+}

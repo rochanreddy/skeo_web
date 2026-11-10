@@ -245,8 +245,9 @@ export const certificate = {
 
 /** The Job & Freelancing Board. */
 export const jobs = {
-  eyebrow: 'Job board',
-  title: 'Then put it to work.',
+  /* The home page's heading for the same board (components/sections/Jobs). */
+  eyebrow: 'Your next step',
+  title: ['Access to the', 'Job & Freelancing Board.'],
   body: 'Certification is just the beginning. Apply your skills to real opportunities — to earn, gain experience and build your career.',
   cta: 'Access Now',
 } as const
