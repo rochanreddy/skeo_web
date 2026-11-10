@@ -562,6 +562,10 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
               </div>
             </div>
             <FaqList items={faq.items} />
+            {/* The "Still have a question?" box is hidden on narrow screens; this takes its place. */}
+            <p className="ea-faq-contact">
+              Contact us: <a href="mailto:support@skeoai.com">support@skeoai.com</a>
+            </p>
           </div>
         </section>
 

@@ -36,7 +36,7 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
   const savePct = savePctOf(catalog)
   const { hero } = catalog.campaign
   const h = landingHero(kind, inr(offer.price))
-  const announcement = { ...announcementCode, ...catalog.campaign.announcement, offer: `${savePct}% OFF` }
+  const announcement = { ...announcementCode, ...catalog.campaign.announcement, cta: announcementCode.cta, offer: `${savePct}% OFF` }
   return (
     <div className="ea">
       <MetaViewContent ids={['earlyaccess']} name={catalog.plans.earlyaccess.title} value={offer.price} />
@@ -204,7 +204,6 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
         <div className="ea-container ea-foot-inner">
           <span>© {new Date().getFullYear()} skeo · Menler Learning Systems Private Limited</span>
           <nav aria-label="Policies">
-            <Link href="/about#working-with-us">Contact</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/refund">Refund</Link>
             <Link href="/terms">Terms</Link>

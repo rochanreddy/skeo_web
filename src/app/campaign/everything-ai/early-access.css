@@ -5408,8 +5408,8 @@
 
 /* ---- Hero write-up: one sentence a line ------------------------------------
    "Learn by doing, build real proof of work, and unlock opportunities." is the
-   promise and keeps to one line. On a phone the write-up is a size down and
-   runs as one paragraph over two lines. */
+   promise and keeps to one line. On a phone the write-up is a size down, and
+   that sentence still starts a line of its own. */
 .ea .ea-lede-split {
   max-width: none;
 }
@@ -5425,14 +5425,7 @@
 }
 
 @media (max-width: 680px) {
-  .ea .ea-lede-split span {
-    display: inline;
-  }
-
-  .ea .ea-lede-split span + span::before {
-    content: ' ';
-  }
-
+  /* Each sentence still starts its own line on a phone, a size down. */
   .ea .ea-hero .ea-lede-split {
     font-size: min(14px, 3.3cqi);
     line-height: 1.5;
@@ -5524,4 +5517,25 @@
 .ea-announce-window {
   color: var(--lime);
   font-weight: 800;
+}
+
+/* The contact line under the FAQ: only where the "Still have a question?"
+   box beside it is hidden. */
+.ea .ea-faq-contact {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  .ea .ea-faq-contact {
+    display: block;
+    margin: 18px 0 0;
+    color: var(--ink-3);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .ea .ea-faq-contact a {
+    color: var(--purple-ink);
+    font-weight: 700;
+  }
 }

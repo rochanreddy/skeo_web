@@ -37,7 +37,7 @@ export const announcement = {
   offer: `${savePct}% OFF`,
   endsIn: 'ends in',
   ended: 'This offer has ended',
-  cta: 'Join Now',
+  cta: 'Register Now',
 } as const
 
 export const hero = {
@@ -52,7 +52,7 @@ export const hero = {
 export const valueStack = {
   /* Laid out in two columns, filled top to bottom: the numbers on the left,
      everything else on the right. */
-  items: ['10+ Courses', '20+ Projects', '50+ Tools', '1 Lakh+ Jobs', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
+  items: ['10+ Courses', '20+ Projects', '50+ AI Courses', '1 Lakh+ Jobs', 'Live Workshops', 'Templates & Resources', 'Community Access', 'Certificate'],
 } as const
 
 export const numbers = [
@@ -68,7 +68,7 @@ export const get = {
   title: `Everything below, for ${inr(offer.price)}.`,
   items: [
     { icon: 'book', title: '10+ Courses', body: 'Learn the fundamentals.' },
-    { icon: 'tools', title: '50+ Tools', body: 'The tools companies actually use.' },
+    { icon: 'tools', title: '50+ AI Courses', body: 'The tools companies actually use.' },
     { icon: 'rocket', title: '20+ Projects', body: 'Build instead of just watching.' },
     { icon: 'live', title: 'Live Workshops', body: 'Learn from practitioners.' },
     { icon: 'file', title: 'Templates & Resources', body: 'Prompts, guides and notes.' },
@@ -206,7 +206,7 @@ export const pricing = {
   title: 'One price. Everything included.',
   plan: 'Everything AI · Early Access',
   /* The same eight the hero's pass lists (lib/landings). */
-  items: ['1 Platform', '50+ Tools', '100+ Projects', '1 Lakh+ Jobs', 'Certificate', 'Top AI Mentors', 'AI Masterclasses', 'Community Access'],
+  items: ['1 Platform', '50+ AI Courses', '100+ Projects', '1 Lakh+ Jobs', 'Certificate', 'Top AI Mentors', 'AI Masterclasses', 'Community Access'],
   cta: 'Get Everything',
   small: 'One-time payment · Instant access · No hidden fees',
 } as const
@@ -248,7 +248,7 @@ export const jobs = {
   eyebrow: 'Job board',
   title: 'Then put it to work.',
   body: 'Certification is just the beginning. Apply your skills to real opportunities — to earn, gain experience and build your career.',
-  cta: 'Get Started',
+  cta: 'Access Now',
 } as const
 
 /** Testimonials — the same quotes the home page carries (lib/content.ts). */

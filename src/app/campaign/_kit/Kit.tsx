@@ -56,7 +56,6 @@ export function KitFooter({ className = 'kit-foot' }: { className?: string }) {
     <footer className={className}>
       <span>© {new Date().getFullYear()} skeo · Menler Learning Systems Private Limited</span>
       <nav aria-label="Policies">
-        <Link href="/about#working-with-us">Contact</Link>
         <Link href="/privacy">Privacy</Link>
         <Link href="/refund">Refund</Link>
         <Link href="/terms">Terms</Link>

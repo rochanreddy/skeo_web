@@ -155,7 +155,6 @@ export async function ToolLanding({ c }: { c: ToolCampaign }) {
         <div className="ea-container ea-foot-inner">
           <span>© {new Date().getFullYear()} skeo · Menler Learning Systems Private Limited</span>
           <nav aria-label="Policies">
-            <Link href="/about#working-with-us">Contact</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/refund">Refund</Link>
             <Link href="/terms">Terms</Link>

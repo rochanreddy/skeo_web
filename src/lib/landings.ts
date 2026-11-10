@@ -20,7 +20,7 @@ const lede =
    the left, what comes with them on the right. */
 const items = [
   '1 Platform',
-  '50+ Tools',
+  '50+ AI Courses',
   '100+ Projects',
   '1 Lakh+ Jobs',
   'Certificate',
