@@ -28,10 +28,10 @@ export function AuthButton({ mode, children, className = 'button', arrow = '→'
   )
 }
 
-export function SyllabusButton({ children, className = 'button', arrow = '→' }: TriggerProps) {
+export function SyllabusButton({ children, className = 'button', arrow = '→', tool }: TriggerProps & { tool?: string }) {
   const { openSyllabus } = useModal()
   return (
-    <button type="button" className={className} onClick={openSyllabus}>
+    <button type="button" className={className} onClick={() => openSyllabus(tool)}>
       <span className="btn-label">{children}</span>
       {arrow && <span aria-hidden="true">{arrow}</span>}
     </button>

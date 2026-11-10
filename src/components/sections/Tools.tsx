@@ -43,7 +43,7 @@ const iconMap: Record<string, ReactElement> = {
  * treatment is the same one the hero stage and the job board use.
  */
 function ToolCard({ tool }: { tool: (typeof toolLibrary)[number] }) {
-  const { badge, name, maker, tagline, poster, capsules, facts, blurb, cta, syllabus } = tool
+  const { id, badge, name, maker, tagline, poster, capsules, facts, blurb, cta, syllabus } = tool
   return (
     <TiltCard className="tool-card">
       {/* Decorative restatement of the copy on the right — hidden from screen readers. */}
@@ -93,7 +93,11 @@ function ToolCard({ tool }: { tool: (typeof toolLibrary)[number] }) {
           <a className="button" href={cta.href}>
             <span className="btn-label">{cta.label}</span> <span aria-hidden="true">↗</span>
           </a>
-          {syllabus && <SyllabusButton className="button button-outline">{syllabus.label}</SyllabusButton>}
+          {syllabus && (
+            <SyllabusButton className="button button-outline" tool={id}>
+              {syllabus.label}
+            </SyllabusButton>
+          )}
         </div>
       </div>
     </TiltCard>

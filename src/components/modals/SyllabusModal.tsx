@@ -1,18 +1,18 @@
 'use client'
 
-import { claudeSyllabus } from '@/lib/content'
+import { syllabusFor } from '@/lib/syllabi'
 import { Modal, useDialogId } from './Modal'
 
 /**
- * The curriculum, opened over the page from the tool card.
+ * A tool's curriculum, opened over the page from its card.
  *
  * Overview depth on purpose: what each module covers, not every lesson inside
  * it. Someone deciding whether to buy wants to answer "will this teach me the
  * thing I came for?" in a minute of scrolling.
  */
-export function SyllabusModal({ onClose }: { onClose: () => void }) {
+export function SyllabusModal({ tool, onClose }: { tool?: string; onClose: () => void }) {
   const titleId = useDialogId('syllabus-title')
-  const { eyebrow, title, intro, stats, modules, footnote, cta } = claudeSyllabus
+  const { eyebrow, title, intro, stats, modules, footnote, cta } = syllabusFor(tool)
 
   return (
     <Modal labelledBy={titleId} onClose={onClose} className="syllabus-modal">

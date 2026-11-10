@@ -94,7 +94,7 @@ type LibraryTool = {
   facts: readonly { icon: string; label: string }[]
   blurb: string
   cta: { label: string; href: string }
-  /* Only tools with a written curriculum get the overlay button. */
+  /* Opens the tool's curriculum (lib/syllabi). */
   syllabus?: { label: string }
 }
 
@@ -116,19 +116,20 @@ export const toolLibrary: readonly LibraryTool[] = [
       logo: '/logos/chatgpt.svg',
       kicker: 'AI tool library',
       lines: ['Learn ChatGPT', 'end to end'],
-      note: 'Prompting, custom GPTs, and daily workflows.',
+      note: 'Chat, Work and Codex, from daily tasks to real builds.',
       footer: 'From beginner to advanced level',
     },
-    capsules: ['ChatGPT Chat', 'Custom GPTs', 'Deep Research'],
+    capsules: ['ChatGPT Work', 'Deep Research', 'Plugins & Sites'],
     facts: [
-      { icon: 'book', label: '6+ modules' },
+      { icon: 'book', label: '9+ modules' },
       { icon: 'rocket', label: '8+ projects' },
       { icon: 'clock', label: '10 hours' },
       { icon: 'compass', label: 'Self-paced' },
     ],
     blurb:
-      'Go past quick questions: structure prompts, build your own GPTs, run cited research and turn ChatGPT into a dependable part of your working day.',
+      'Go past quick questions: run cited research, delegate real tasks to ChatGPT Work, build your own plugins and Sites, and turn ChatGPT into a dependable part of your working day.',
     cta: { label: 'Start Learning', href: '#pricing' },
+    syllabus: { label: 'View Curriculum' },
   },
   {
     id: 'grok',
@@ -140,19 +141,20 @@ export const toolLibrary: readonly LibraryTool[] = [
       logo: '/logos/grok.svg',
       kicker: 'AI tool library',
       lines: ['Learn Grok', 'end to end'],
-      note: 'Live search, trend research, and image generation.',
+      note: 'Live search, Imagine visuals, and Grok Bot agents.',
       footer: 'From beginner to advanced level',
     },
-    capsules: ['Grok Chat', 'DeepSearch', 'Grok Imagine'],
+    capsules: ['Real-time Search', 'Grok Imagine', 'Grok Bot'],
     facts: [
-      { icon: 'book', label: '5+ modules' },
+      { icon: 'book', label: '9+ modules' },
       { icon: 'rocket', label: '6+ projects' },
       { icon: 'clock', label: '8 hours' },
       { icon: 'compass', label: 'Self-paced' },
     ],
     blurb:
-      'Use Grok for what it does best: live research on fast-moving topics, trend and audience analysis, and visuals — then put it to work on real briefs.',
+      'Use Grok for what it does best: live research across the web and X, trend and audience analysis, and Imagine visuals, then hand the routine work to Grok Bot agents.',
     cta: { label: 'Start Learning', href: '#pricing' },
+    syllabus: { label: 'View Curriculum' },
   },
   {
     id: 'n8n',
@@ -169,7 +171,7 @@ export const toolLibrary: readonly LibraryTool[] = [
     },
     capsules: ['Workflows', 'AI Agents', 'Integrations'],
     facts: [
-      { icon: 'book', label: '7+ modules' },
+      { icon: 'book', label: '9+ modules' },
       { icon: 'rocket', label: '10+ projects' },
       { icon: 'clock', label: '12 hours' },
       { icon: 'compass', label: 'Self-paced' },
@@ -177,6 +179,7 @@ export const toolLibrary: readonly LibraryTool[] = [
     blurb:
       'Build automations that move data between the tools you already use, add AI agents to them, and ship workflows that save hours every week.',
     cta: { label: 'Start Learning', href: '#pricing' },
+    syllabus: { label: 'View Curriculum' },
   },
   {
     id: 'lovable',
@@ -188,12 +191,12 @@ export const toolLibrary: readonly LibraryTool[] = [
       logo: '/logos/lovable.svg',
       kicker: 'AI tool library',
       lines: ['Learn Lovable', 'end to end'],
-      note: 'Prompt-to-app, databases, and deployment.',
+      note: 'Prompt to app, logins, payments, and going live.',
       footer: 'From beginner to advanced level',
     },
-    capsules: ['Prompt to App', 'Supabase', 'Publishing'],
+    capsules: ['Prompt to App', 'Lovable Cloud', 'Publishing'],
     facts: [
-      { icon: 'book', label: '6+ modules' },
+      { icon: 'book', label: '9+ modules' },
       { icon: 'rocket', label: '5+ projects' },
       { icon: 'clock', label: '10 hours' },
       { icon: 'compass', label: 'Self-paced' },
@@ -201,6 +204,7 @@ export const toolLibrary: readonly LibraryTool[] = [
     blurb:
       'Describe what you want and build it: landing pages, internal tools and full apps with logins and data — published on a link you can share.',
     cta: { label: 'Start Learning', href: '#pricing' },
+    syllabus: { label: 'View Curriculum' },
   },
 ]
 

@@ -17,7 +17,7 @@ type ModalState =
   | { kind: 'auth'; mode: AuthMode }
   | { kind: 'purchase'; plans: PlanKey[] }
   | { kind: 'verify'; modules: CheckoutItem[] }
-  | { kind: 'syllabus' }
+  | { kind: 'syllabus'; tool?: string }
 
 type ModalApi = {
   openAuth: (mode: AuthMode) => void
@@ -25,7 +25,7 @@ type ModalApi = {
   /** Step two of the buying flow: verify the buyer, then send them to /checkout. */
   openVerify: (modules: CheckoutItem[]) => void
   /** The curriculum overlay, raised from the tool card. */
-  openSyllabus: () => void
+  openSyllabus: (tool?: string) => void
   close: () => void
 }
 
@@ -60,7 +60,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   const openVerify = useCallback((modules: CheckoutItem[]) => {
     if (modules.length > 0) setState({ kind: 'verify', modules })
   }, [])
-  const openSyllabus = useCallback(() => setState({ kind: 'syllabus' }), [])
+  const openSyllabus = useCallback((tool?: string) => setState({ kind: 'syllabus', tool }), [])
   const close = useCallback(() => setState({ kind: 'none' }), [])
 
   const api = useMemo(
@@ -74,7 +74,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       {state.kind === 'auth' && <AuthModal initialMode={state.mode} onClose={close} />}
       {state.kind === 'purchase' && <PurchaseModal planKeys={state.plans} onClose={close} />}
       {state.kind === 'verify' && <VerifyModal modules={state.modules} direct={paysDirect(pathname)} onClose={close} />}
-      {state.kind === 'syllabus' && <SyllabusModal onClose={close} />}
+      {state.kind === 'syllabus' && <SyllabusModal tool={state.tool} onClose={close} />}
     </ModalContext.Provider>
   )
 }
