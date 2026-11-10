@@ -2250,7 +2250,7 @@ h2 em {
   filter: invert(1);
 }
 
-.tool-panel:not([hidden]) {
+.tool-panel.is-on {
   animation: tool-panel-in 0.45s var(--ease-out);
 }
 
@@ -2262,7 +2262,7 @@ h2 em {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tool-panel:not([hidden]) {
+  .tool-panel.is-on {
     animation: none;
   }
 }
@@ -10867,4 +10867,40 @@ details p {
     animation: none;
     opacity: 0;
   }
+}
+
+/* ---- Tool library: every card the same size ---------------------------------
+   All five panels share one grid cell, so the stack is as tall as the tallest
+   card. The hidden ones keep their place in the layout but are invisible and
+   out of reach, and the visible card stretches to the full height. */
+.tool-panels {
+  display: grid;
+}
+
+.tool-panels > .tool-panel {
+  grid-area: 1 / 1;
+  display: flex;
+  min-width: 0;
+}
+
+.tool-panels > .tool-panel.is-off {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.tool-panels > .tool-panel > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/* "AI isn’t one skill anymore." on one line everywhere: the line is about
+   11.4 times its font size wide, so on narrow screens the size follows the
+   column (cqi) instead of wrapping; wide screens keep the size above. */
+.about-head {
+  container-type: inline-size;
+}
+
+.about-head h1 {
+  font-size: min(clamp(38px, 6vw, 62px), 8.6cqi);
+  white-space: nowrap;
 }

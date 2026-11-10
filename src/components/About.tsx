@@ -62,8 +62,7 @@ export function About() {
           <Reveal className="about-head">
             <span className="eyebrow">ABOUT SKEO</span>
             <h1>
-              AI isn’t one skill<br />
-              <em>anymore.</em>
+              AI isn’t one skill <em>anymore.</em>
             </h1>
             <p className="about-lede">
               It is a dozen tools that each do something different, changing every month, with no
