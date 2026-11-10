@@ -5653,3 +5653,53 @@
     transform: translateY(-16px);
   }
 }
+
+/* The three promises: under the price on wide screens, under the closing
+   "Get Everything" button on a phone. */
+/* Scoped past ".ea .ea-deal-list ul" and its li, which style the
+   "Everything included" tiles: this list sits inside the same block. */
+.ea .ea-deal-list ul.ea-deal-trust-end {
+  display: none;
+}
+
+.ea .ea-deal-list .ea-deal-trust-end li {
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--on-dark-2);
+  font-size: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  transform: none;
+}
+
+@media (max-width: 820px) {
+  .ea .ea-deal-pass .ea-deal-trust {
+    display: none;
+  }
+
+  .ea .ea-deal-list ul.ea-deal-trust-end {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 14px;
+    margin: 14px 0 0;
+    padding: 0;
+    border-top: 0;
+    color: var(--ink-3);
+    font-size: 12.5px;
+  }
+
+  .ea .ea-deal-list .ea-deal-trust-end li {
+    color: var(--ink-3);
+  }
+}
+
+@media (max-width: 480px) {
+  .ea .ea-deal-list ul.ea-deal-trust-end {
+    gap: 10px;
+    font-size: min(12px, 3.05vw);
+  }
+}

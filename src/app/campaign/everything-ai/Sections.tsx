@@ -390,6 +390,26 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
   const pricing = { ...pricingCode, ...catalog.campaign.pricing, items: pricingCode.items }
   /* The website's own FAQ, the same questions and answers as the home page. */
   const faq = { ...faqCode, items: faqs }
+  /* "One-time payment · Instant access · No hidden fees", each with its icon.
+     Drawn twice: under the price on wide screens, under the closing button
+     on a phone; CSS shows one. */
+  const trust = (extra = '') => (
+    <ul className={extra ? `ea-deal-trust ${extra}` : 'ea-deal-trust'}>
+      {pricing.small
+        .split('·')
+        .map((x) => x.trim())
+        .filter(Boolean)
+        .map((x, n) => {
+          const T = TRUST_ICONS[n % TRUST_ICONS.length]
+          return (
+            <li key={x}>
+              <T strokeWidth={2} absoluteStrokeWidth aria-hidden="true" />
+              {x}
+            </li>
+          )
+        })}
+    </ul>
+  )
   return (
     <div className="ea-flow">
         {/* Accreditation — the home page's strip */}
@@ -519,21 +539,7 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
                   You save <b>{inr(offer.was - offer.price)}</b>
                 </p>
                 <Buy className="button ea-cta ea-deal-cta">{pricing.cta}</Buy>
-                <ul className="ea-deal-trust">
-                  {pricing.small
-                    .split('·')
-                    .map((x) => x.trim())
-                    .filter(Boolean)
-                    .map((x, n) => {
-                      const T = TRUST_ICONS[n % TRUST_ICONS.length]
-                      return (
-                        <li key={x}>
-                          <T strokeWidth={2} absoluteStrokeWidth aria-hidden="true" />
-                          {x}
-                        </li>
-                      )
-                    })}
-                </ul>
+                {trust()}
               </div>
               <div className="ea-deal-list">
                 <p className="ea-deal-h">Everything included</p>
@@ -549,8 +555,10 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
                     </li>
                   ))}
                 </ul>
-                {/* On a phone the button closes the card, under the list. */}
+                {/* On a phone the button closes the card, under the list, with the
+                    three promises right under it. */}
                 <Buy className="button ea-cta ea-deal-cta ea-deal-cta-end">{pricing.cta}</Buy>
+                {trust('ea-deal-trust-end')}
               </div>
             </div>
           </div>
