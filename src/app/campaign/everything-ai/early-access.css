@@ -5548,3 +5548,108 @@
     font-size: clamp(28px, 2.5vw, 32px);
   }
 }
+
+/* ---- Phones: the hero's button on the first screen -------------------------
+   A compact pass, so "Get Started" sits on the screen the visitor lands on.
+   Less air round the card, a smaller price and list, and no card footer (the
+   same "one-time payment, instant access" is said right under the button). */
+@media (max-width: 680px) {
+  .ea .ea-hero-visual {
+    padding-top: 26px;
+    padding-bottom: 4px;
+  }
+
+  .ea .ea-pass {
+    padding: 16px 18px;
+  }
+
+  .ea .ea-pass-brand {
+    font-size: 19px;
+  }
+
+  .ea .ea-pass-tag {
+    padding: 4px 8px;
+    font-size: 9.5px;
+  }
+
+  .ea .ea-pass-name {
+    margin-top: 10px;
+    font-size: 11px;
+  }
+
+  .ea .ea-pass-price {
+    margin-top: 2px;
+  }
+
+  .ea .ea-pass-price strong {
+    font-size: 40px;
+  }
+
+  .ea .ea-pass-price s {
+    font-size: 16px;
+  }
+
+  .ea .ea-pass-list {
+    gap: 5px 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    font-size: 12.5px;
+  }
+
+  .ea .ea-pass-list .ea-check {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ea .ea-pass-marks {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .ea .ea-pass-mark,
+  .ea .ea-pass-more {
+    width: 28px;
+    height: 28px;
+    padding: 6px;
+    border-radius: 8px;
+  }
+
+  .ea .ea-pass-more {
+    padding: 0;
+    font-size: 11px;
+  }
+
+  .ea .ea-pass-features {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .ea .ea-pass-features li {
+    gap: 6px;
+    padding: 4px 10px 4px 4px;
+    font-size: 12px;
+  }
+
+  .ea .ea-pass-feature-logo {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ea .ea-pass-feature-logo.is-wide {
+    width: 36px;
+  }
+
+  .ea .ea-pass-foot {
+    display: none;
+  }
+}
+
+/* On a phone the join notice drops in from the top, under the offer bar:
+   at the foot of the screen it sat on the hero's button. */
+@media (max-width: 680px) {
+  .ea-toast {
+    top: 52px;
+    bottom: auto;
+    transform: translateY(-16px);
+  }
+}
