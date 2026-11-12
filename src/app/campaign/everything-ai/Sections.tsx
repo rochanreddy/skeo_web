@@ -226,10 +226,11 @@ type Review = (typeof testimonials)[number]
 
 /* The review wall's two columns: learners in India on the left, learners
    abroad on the right — read from the city at the end of each role. */
-const INDIAN_CITIES = ['Mumbai', 'Bengaluru', 'Bangalore', 'Pune', 'Hyderabad', 'Chennai', 'Delhi', 'New Delhi', 'Noida', 'Gurugram', 'Kolkata', 'Kochi', 'Ahmedabad', 'Jaipur', 'India']
-const inIndia = (r: Review) => INDIAN_CITIES.includes(r.role.split(',').pop()?.trim() ?? '')
-const REVIEWS_INDIA = testimonials.filter(inIndia)
-const REVIEWS_ABROAD = testimonials.filter((r) => !inIndia(r))
+/* The wall's two columns: the reviews taken alternately, so both are always
+   full. (They were split India / abroad, which left one column empty once
+   every reviewer was in India.) */
+const REVIEWS_LEFT = testimonials.filter((_, i) => i % 2 === 0)
+const REVIEWS_RIGHT = testimonials.filter((_, i) => i % 2 === 1)
 
 function ReviewCard({ item, tint, hidden }: { item: Review; tint: number; hidden?: boolean }) {
   return (
@@ -347,9 +348,8 @@ export function Reviews() {
               quotes twice so the loop has no seam; the copy is hidden
               from screen readers. */}
           <div className="ea-rv-wall">
-            {/* Left: learners in India. Right: learners abroad. Each column
-                drifts at the same pace however many quotes it holds. */}
-            {[REVIEWS_INDIA, REVIEWS_ABROAD].map((list, col) => (
+            {/* Each column drifts at the same pace however many quotes it holds. */}
+            {[REVIEWS_LEFT, REVIEWS_RIGHT].map((list, col) => (
               <div key={col} className={`ea-rv-col ea-rv-col-${col}`}>
                 <ul className="ea-rv-track" style={{ animationDuration: `${list.length * 9}s` }}>
                   {[0, 1].map((copy) =>
