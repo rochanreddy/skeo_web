@@ -114,7 +114,8 @@ export const PLANS: Record<PlanKey, Plan> = {
     billing: 'one-time',
     features: [
       'Every course and every tool batch',
-      'Claude Playbooks and the AI Library',
+      'Claude Playbooks, worth ₹2,500',
+      'AI Library, worth ₹2,000',
       'Real projects and a certificate',
       'Live workshops and the community',
     ],
