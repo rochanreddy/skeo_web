@@ -3,6 +3,7 @@ import { SyllabusButton } from '@/components/ActionButton'
 import { Reveal } from '@/components/Reveal'
 import { TiltCard } from '@/components/sections/TiltCard'
 import { ToolSwitcher } from '@/components/sections/ToolSwitcher'
+import { GrokMark } from '@/components/tools/marks'
 import { toolLibrary, toolsIntro } from '@/lib/content'
 import { site } from '@/lib/site'
 
@@ -116,7 +117,13 @@ export function Tools() {
 
         <Reveal className="tool-shell">
           <ToolSwitcher
-            tabs={toolLibrary.map(({ id, name, poster }) => ({ id, name, logo: poster.logo }))}
+            tabs={toolLibrary.map(({ id, name, poster }) => ({
+              id,
+              name,
+              logo: poster.logo,
+              // The Grok Bot mark the hero uses, not the slashed-circle logo.
+              mark: id === 'grok' ? <GrokMark className="tool-tab-mark" /> : undefined,
+            }))}
             panels={toolLibrary.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
             ))}

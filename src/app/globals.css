@@ -10992,3 +10992,10 @@ details p {
   color: #fff;
   font-weight: 700;
 }
+
+/* The Grok Bot mark on the Grok tab: drawn in the tab's own text colour. */
+.tool-tab .tool-tab-mark {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}

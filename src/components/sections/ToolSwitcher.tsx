@@ -2,7 +2,8 @@
 
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 
-type Tab = { id: string; name: string; logo: string }
+/* `mark`, when given, is drawn in place of the `logo` image (Grok: the Grok Bot mark). */
+type Tab = { id: string; name: string; logo: string; mark?: ReactNode }
 
 /**
  * The tab row below the tool card. Every panel is rendered on the server and
@@ -66,8 +67,10 @@ export function ToolSwitcher({ tabs, panels }: { tabs: Tab[]; panels: ReactNode[
             className="tool-tab"
             onClick={() => setActive(i)}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={tab.logo} alt="" width={20} height={20} />
+            {tab.mark ?? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={tab.logo} alt="" width={20} height={20} />
+            )}
             {tab.name}
           </button>
         ))}
