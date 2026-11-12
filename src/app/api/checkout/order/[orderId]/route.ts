@@ -21,6 +21,11 @@ export const maxDuration = 60
 
 export async function GET(_request: Request, { params }: { params: Promise<{ orderId: string }> }) {
   const { orderId } = await params
+  /* A made-up paid order for previewing /thank-you on a local dev server
+     (?order_id=SKEO-PREVIEW-0000000000). Never answered in production. */
+  if (process.env.NODE_ENV !== 'production' && orderId === 'SKEO-PREVIEW-0000000000') {
+    return NextResponse.json({ status: 'provisioned', orderId, items: ['earlyaccess'], amount: 499, email: 'test.buyer@example.com' })
+  }
   if (!/^SKEO-[A-Z0-9]+-[A-F0-9]{10}$/.test(orderId)) {
     return NextResponse.json({ status: 'unknown' }, { status: 404 })
   }

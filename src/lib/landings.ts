@@ -55,8 +55,7 @@ export function landingHero(kind: LandingKind, price: string) {
 }
 
 /* On every campaign page a buyer goes from their details straight to
-   Cashfree: no one-time code, no /checkout review, and no /thank-you after it
-   (the dialog says the login is on its way). Every other page keeps all three. */
+   /checkout, with no one-time code. Every other page asks for the code first. */
 export function paysDirect(pathname: string | null): boolean {
   if (pathname === null) return false
   const path = pathname.replace(/\/+$/, '')

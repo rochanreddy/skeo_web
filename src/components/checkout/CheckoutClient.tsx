@@ -12,6 +12,7 @@ import {
 import { track } from '@/lib/analytics/track'
 import { startPayment } from '@/lib/payment'
 import { useCatalog } from '@/components/CatalogProvider'
+import { lms } from '@/lib/site'
 import { checkoutRows, isAllAccess, type CheckoutItem } from '@/lib/checkoutItems'
 import { price, useCurrency } from '@/lib/currency'
 import {
@@ -120,6 +121,12 @@ export function CheckoutClient() {
   const extras = isMember ? [] : listedModules(MODULE_ROWS).filter((row) => !session.modules.includes(row.key))
   const subtotal = rows.reduce((sum, row) => sum + row.amount, 0)
   const total = subtotal
+  /* A campaign buyer skipped the one-time code, so there is nothing to lose by
+     going back, and Back returns to the page they came from. */
+  const campaign = Boolean(session.from)
+  const backTo = session.from ?? '/#pricing'
+  // Playbooks and the AI Library come as PDFs by mail; there is no login.
+  const playbooksOnly = session.modules.every((item) => item === 'playbooks' || item === 'library')
 
   /* The cart is editable here, so every change is written back: a tool added
      on this page has to survive a refresh the way the original pick does, and
@@ -170,15 +177,21 @@ export function CheckoutClient() {
         <div className="checkout-panel">
           {/* A button rather than a link: leaving is a decision here, not a
               navigation, because the verification does not survive it. */}
-          <button type="button" className="checkout-back" onClick={() => setConfirmLeave(true)}>
-            ← Back to tools
+          <button
+            type="button"
+            className="checkout-back"
+            onClick={() => (campaign ? router.push(backTo) : setConfirmLeave(true))}
+          >
+            {campaign ? '← Back' : '← Back to tools'}
           </button>
 
           <h2 className="checkout-h">
             Contact
-            <span className="checkout-verified" aria-label="Verified by one-time code">
-              ✓ Verified
-            </span>
+            {!campaign && (
+              <span className="checkout-verified" aria-label="Verified by one-time code">
+                ✓ Verified
+              </span>
+            )}
           </h2>
           <dl className="checkout-info" data-clarity-mask="true">
             <div>
@@ -233,6 +246,63 @@ export function CheckoutClient() {
               )
             })}
           </ul>
+
+          {/* What the campaign popup used to say after paying, said before it:
+              where the login goes, when, how to sign in, and what to do if it
+              does not arrive. */}
+          <section className="checkout-howto" aria-labelledby="checkout-howto-h">
+            <h2 className="checkout-h" id="checkout-howto-h">
+              {playbooksOnly ? 'How you get your playbooks' : 'How you get in'}
+            </h2>
+            <ol className="checkout-howto-steps">
+              <li>
+                <span className="checkout-howto-num" aria-hidden="true">
+                  1
+                </span>
+                <div>
+                  <b>Pay securely</b>
+                  <p>UPI, cards or netbanking through Cashfree. It takes about a minute.</p>
+                </div>
+              </li>
+              <li>
+                <span className="checkout-howto-num" aria-hidden="true">
+                  2
+                </span>
+                <div>
+                  <b>Check your inbox</b>
+                  {playbooksOnly ? (
+                    <p>
+                      Your playbooks are emailed to <b data-clarity-mask="true">{session.contact.email}</b> as PDFs,{' '}
+                      {lms.credentialsEta}. A large set comes in more than one email.
+                    </p>
+                  ) : (
+                    <p>
+                      Your skeo login, a username and a temporary password, is emailed to{' '}
+                      <b data-clarity-mask="true">{session.contact.email}</b> {lms.credentialsEta}.
+                    </p>
+                  )}
+                </div>
+              </li>
+              {!playbooksOnly && (
+                <li>
+                  <span className="checkout-howto-num" aria-hidden="true">
+                    3
+                  </span>
+                  <div>
+                    <b>Sign in and start learning</b>
+                    <p>
+                      Open <b>{lms.web.replace(/^https?:\/\//, '')}</b>, sign in with that email and the temporary
+                      password, then set a password of your own. Everything you bought is already unlocked.
+                    </p>
+                  </div>
+                </li>
+              )}
+            </ol>
+            <p className="checkout-howto-help">
+              Not in your inbox? Check spam or Promotions first. Still nothing? Write to{' '}
+              <a href={`mailto:${lms.support}`}>{lms.support}</a> and a real person replies.
+            </p>
+          </section>
 
           {extras.length > 0 && (
             <>
@@ -328,9 +398,9 @@ export function CheckoutClient() {
           {/* Where the money actually goes, and what happens after it. */}
           <p className="checkout-fine">
             Secure payment by Cashfree.{' '}
-            {session.modules.every((item) => item === 'playbooks' || item === 'library')
-              ? 'Your playbooks are emailed once the payment is confirmed.'
-              : 'Your LMS login is emailed once the payment is confirmed.'}
+            {playbooksOnly
+              ? `Your playbooks are emailed to ${session.contact.email} once the payment is confirmed.`
+              : `Your login is emailed to ${session.contact.email} ${lms.credentialsEta} of the payment.`}
           </p>
         </div>
       </section>
@@ -350,7 +420,7 @@ export function CheckoutClient() {
             <button type="button" className="button" onClick={() => setConfirmLeave(false)}>
               Stay here
             </button>
-            <button type="button" className="button button-quiet" onClick={() => router.push('/#pricing')}>
+            <button type="button" className="button button-quiet" onClick={() => router.push(backTo)}>
               Go back
             </button>
           </div>

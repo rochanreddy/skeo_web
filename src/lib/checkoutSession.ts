@@ -24,6 +24,9 @@ export type CheckoutSession = {
   contact: CheckoutContact
   /** Epoch ms the OTP was accepted — /checkout refuses a stale verification. */
   verifiedAt: number
+  /** Set when the buyer came from a campaign page, which skips the one-time
+   *  code: the page they came from, for /checkout's Back. */
+  from?: string
 }
 
 /** A verification is good for one sitting, not for a tab left open overnight. */
@@ -51,7 +54,7 @@ export function readCheckoutSession(): CheckoutSession | null {
   try {
     const parsed: unknown = JSON.parse(raw)
     if (typeof parsed !== 'object' || parsed === null) return null
-    const { modules, contact, verifiedAt } = parsed as Partial<CheckoutSession>
+    const { modules, contact, verifiedAt, from } = parsed as Partial<CheckoutSession>
 
     if (!Array.isArray(modules)) return null
     const keys = normaliseItems(modules.filter(isCheckoutItem))
@@ -60,7 +63,12 @@ export function readCheckoutSession(): CheckoutSession | null {
     if (!contact || !contact.name || !contact.email || !contact.phone) return null
     if (typeof verifiedAt !== 'number' || Date.now() - verifiedAt > MAX_AGE_MS) return null
 
-    return { modules: keys, contact, verifiedAt }
+    return {
+      modules: keys,
+      contact,
+      verifiedAt,
+      ...(typeof from === 'string' && from.startsWith('/') ? { from } : {}),
+    }
   } catch {
     return null
   }

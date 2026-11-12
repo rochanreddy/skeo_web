@@ -1,13 +1,11 @@
 'use client'
 
 import { useEffect, useState, type FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Modal, useDialogId } from './Modal'
-import { PaidNotice } from './PaidNotice'
 import { track } from '@/lib/analytics/track'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
 import { verifySmsOtp } from '@/lib/amplifeedOtp'
-import { startPayment } from '@/lib/payment'
 import { friendlyError, reportError } from '@/lib/friendlyError'
 import type { CheckoutItem } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
@@ -34,12 +32,11 @@ type Errors = Partial<Record<Field, string>>
  * one exists it should send otp_token with the order and verify it there, the
  * way menler's /leads does before marking a lead verified.
  *
- * DIRECT: on the campaign pages (lib/landings) there is no code and no
- * /checkout review: the details go straight to an order and Cashfree's popup,
- * and once it closes this dialog says the login is on its way (PaidNotice)
- * rather than sending the buyer to /thank-you. Nothing is lost by it on the
- * server: the order route never asked for the code, and only Cashfree
- * answering PAID unlocks anything.
+ * DIRECT: on the campaign pages (lib/landings) there is no code: the details
+ * go straight to /checkout, which spells out how the login reaches them, and
+ * Pay opens Cashfree from there. Nothing is lost by skipping the code on the
+ * server: the order route never asked for it, and only Cashfree answering
+ * PAID unlocks anything.
  */
 export function VerifyModal({
   modules,
@@ -52,13 +49,13 @@ export function VerifyModal({
 }) {
   const titleId = useDialogId('verify-title')
   const router = useRouter()
+  const pathname = usePathname()
 
   const [values, setValues] = useState({ name: '', email: '', phone: '' })
   const [errors, setErrors] = useState<Errors>({})
   const [failure, setFailure] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [leaving, setLeaving] = useState(false)
-  const [paidOrder, setPaidOrder] = useState<string | null>(null)
 
   // /checkout is never linked to, so Next has no reason to have fetched it —
   // without this the route is only requested once verification passes, and the
@@ -100,13 +97,12 @@ export function VerifyModal({
     if (direct) {
       // Still a lead in the admin's list, called back if they do not pay.
       track('verify_ok', { modules, ...contact })
-      saveCheckoutSession({ modules, contact, verifiedAt: Date.now() })
+      // No code on a campaign page: straight to /checkout, which says how the
+      // login reaches them, and remembers this page for its Back.
+      saveCheckoutSession({ modules, contact, verifiedAt: Date.now(), from: pathname ?? undefined })
       setLeaving(true)
-      const result = await startPayment({ items: modules, contact }, { stay: true })
-      setBusy(false)
-      setLeaving(false)
-      if (result.ok) setPaidOrder(result.orderId)
-      else setFailure(result.error)
+      router.push('/checkout')
+      onClose()
       return
     }
 
@@ -147,9 +143,6 @@ export function VerifyModal({
 
   return (
     <Modal labelledBy={titleId} onClose={onClose} className="verify-modal" suspended={busy}>
-      {paidOrder ? (
-        <PaidNotice orderId={paidOrder} email={values.email.trim()} onClose={onClose} />
-      ) : (
       <form className="verify-form" onSubmit={handleSubmit} noValidate>
         <h3 id={titleId} className="sr-only">
           Verify it&rsquo;s you
@@ -223,7 +216,7 @@ export function VerifyModal({
           <span className="btn-label">
             {direct
               ? leaving
-                ? 'Opening payment…'
+                ? 'Opening checkout…'
                 : failure
                   ? 'Try again'
                   : 'Register Now'
@@ -245,7 +238,6 @@ export function VerifyModal({
             : 'We’ll text a code to confirm it’s you. Your seat is held once it is verified.'}
         </small>
       </form>
-      )}
     </Modal>
   )
 }
