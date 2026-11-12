@@ -37,7 +37,7 @@ export const announcement = {
   offer: `${savePct}% OFF`,
   endsIn: 'ends in',
   ended: 'This offer has ended',
-  cta: 'Register Now',
+  cta: 'Buy Now',
 } as const
 
 export const hero = {

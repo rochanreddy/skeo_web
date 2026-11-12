@@ -130,7 +130,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var s=localStorage.getItem('skeo-palette');var p=(s==='charcoal'||s==='claude')?s:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'charcoal':'claude');document.documentElement.dataset.palette=p}catch(e){}",
+              "try{var s=localStorage.getItem('skeo-palette');var p=/^\\/campaign\\/(everything-ai|claude-intro)\\/?$/.test(location.pathname)?'claude':(s==='charcoal'||s==='claude')?s:(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'charcoal':'claude');document.documentElement.dataset.palette=p}catch(e){}",
           }}
         />
         <GoogleAnalytics />

@@ -10,7 +10,12 @@ const nextConfig = {
   poweredByHeader: false,
   // The campaign page moved under /campaign; links already shared keep working.
   async redirects() {
-    return [{ source: '/early-access', destination: '/campaign/everything-ai', permanent: true }]
+    return [
+      { source: '/early-access', destination: '/campaign/everything-ai', permanent: true },
+      // The bundle pages' preview links: the pages now live at the ad links.
+      { source: '/campaign/ai-bundle', destination: '/campaign/everything-ai', permanent: true },
+      { source: '/campaign/claude-bundle', destination: '/campaign/claude-intro', permanent: true },
+    ]
   },
   compress: true,
   async headers() {

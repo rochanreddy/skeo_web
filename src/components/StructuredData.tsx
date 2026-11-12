@@ -161,10 +161,13 @@ export async function HomeSchema() {
 }
 
 /** /campaign/everything-ai: the bundle on sale, its price, and its FAQ. */
-export async function CampaignSchema() {
-  const { plans: PLANS, campaign } = await getCatalog()
-  const campaignFaq = { items: campaign.faq }
-  const path = '/campaign/everything-ai'
+export async function CampaignSchema({
+  path = '/campaign/everything-ai',
+  name = 'Everything AI',
+}: { path?: string; name?: string } = {}) {
+  const { plans: PLANS } = await getCatalog()
+  /* The FAQ the campaign pages show: the website's own (Sections.tsx). */
+  const campaignFaq = { items: faqs }
   const url = abs(path)
   const plan = PLANS.earlyaccess
   return (
@@ -207,7 +210,7 @@ export async function CampaignSchema() {
               acceptedAnswer: { '@type': 'Answer', text: f.a },
             })),
           },
-          breadcrumbs([{ name: 'Everything AI', path }]),
+          breadcrumbs([{ name, path }]),
         ],
       }}
     />
