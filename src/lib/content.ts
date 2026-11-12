@@ -385,28 +385,28 @@ export const testimonials: readonly Testimonial[] = [
       'I went from opening ChatGPT once a week to building automations my whole team now uses. That felt like a superpower.',
     name: 'Akhil Satwik',
     photo: '/testimonials/akhil-satwik.svg',
-    role: 'Operations Lead, Singapore',
+    role: 'Operations Lead, Hyderabad',
   },
   {
     quote:
       'Not another course. Actual momentum, actual output, and a community that keeps you moving.',
     name: 'Megha Reddy',
     photo: '/testimonials/megha-reddy.svg',
-    role: 'Growth Marketer, London',
+    role: 'Growth Marketer, Delhi',
   },
   {
     quote:
       'The daily builds are the whole trick. Fifteen minutes is small enough that I never skipped it, and it compounded fast.',
     name: 'Mithresh Uttarwar',
     photo: '/testimonials/mithresh-uttarwar.svg',
-    role: 'Founder, Lagos',
+    role: 'Founder, Chennai',
   },
   {
     quote:
       'I applied through the Job Board with three shipped projects attached. That conversation went very differently.',
     name: 'Poojitha Polagani',
     photo: '/testimonials/poojitha-polagani.svg',
-    role: 'AI Ops Analyst, Lisbon',
+    role: 'AI Ops Analyst, Noida',
   },
   {
     quote:
@@ -427,7 +427,7 @@ export const testimonials: readonly Testimonial[] = [
       'My internship interview turned into a demo of what I had shipped. Nobody asked about my grades.',
     name: 'Yogini Chaganti',
     photo: '/testimonials/yogini-chaganti.svg',
-    role: 'Engineering Student, Madrid',
+    role: 'Engineering Student, Kochi',
   },
 ]
 
