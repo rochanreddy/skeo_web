@@ -380,7 +380,10 @@ export function Reviews() {
  * `pinned`: the tools held still at the start of the tools row. A Claude page
  * pins Claude alone, and the other four scroll past with the rest.
  */
-export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly string[] } = {}) {
+export async function CampaignSections({
+  pinned = PINNED,
+  free = false,
+}: { pinned?: readonly string[]; free?: boolean } = {}) {
   /* The offer block and the FAQ are editable in Sanity; the rest of this copy
      is code. Headings stay code-side so an edit cannot unbalance the layout. */
   const catalog = await getCatalog()
@@ -395,7 +398,7 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
      on a phone; CSS shows one. */
   const trust = (extra = '') => (
     <ul className={extra ? `ea-deal-trust ${extra}` : 'ea-deal-trust'}>
-      {pricing.small
+      {(free ? 'No payment · No card · Instant access' : pricing.small)
         .split('·')
         .map((x) => x.trim())
         .filter(Boolean)
@@ -500,7 +503,7 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
               ))}
             </ul>
             <div className="ea-jobs-cta">
-              <Buy className="button button-lime ea-cta">{jobs.cta}</Buy>
+              <Buy className="button button-lime ea-cta">{free ? 'Start Free Trial' : jobs.cta}</Buy>
             </div>
           </div>
         </section>
@@ -525,20 +528,28 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
             <div className="ea-deal">
               <div className="ea-deal-pass">
                 <div className="ea-deal-top">
-                  <span className="ea-deal-plan">{pricing.plan}</span>
-                  <span className="ea-deal-save">{savePct}% OFF</span>
+                  <span className="ea-deal-plan">{free ? 'Everything AI · Free Trial' : pricing.plan}</span>
+                  <span className="ea-deal-save">{free ? '7 DAYS FREE' : `${savePct}% OFF`}</span>
                 </div>
                 <p className="ea-deal-price">
-                  <strong>{inr(offer.price)}</strong>
+                  <strong>{free ? 'FREE' : inr(offer.price)}</strong>
                   <span>
                     <s aria-label={`was ${inr(offer.was)}`}>{inr(offer.was)}</s>
-                    <em>one-time</em>
+                    <em>{free ? 'for 7 days' : 'one-time'}</em>
                   </span>
                 </p>
                 <p className="ea-deal-note">
-                  You save <b>{inr(offer.was - offer.price)}</b>
+                  {free ? (
+                    <>
+                      Then <b>{inr(offer.price)}</b> one-time to keep learning
+                    </>
+                  ) : (
+                    <>
+                      You save <b>{inr(offer.was - offer.price)}</b>
+                    </>
+                  )}
                 </p>
-                <Buy className="button ea-cta ea-deal-cta">{pricing.cta}</Buy>
+                <Buy className="button ea-cta ea-deal-cta">{free ? 'Start Free Trial' : pricing.cta}</Buy>
                 {trust()}
               </div>
               <div className="ea-deal-list">
@@ -557,7 +568,7 @@ export async function CampaignSections({ pinned = PINNED }: { pinned?: readonly 
                 </ul>
                 {/* On a phone the button closes the card, under the list, with the
                     three promises right under it. */}
-                <Buy className="button ea-cta ea-deal-cta ea-deal-cta-end">{pricing.cta}</Buy>
+                <Buy className="button ea-cta ea-deal-cta ea-deal-cta-end">{free ? 'Start Free Trial' : pricing.cta}</Buy>
                 {trust('ea-deal-trust-end')}
               </div>
             </div>

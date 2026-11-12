@@ -41,10 +41,13 @@ type Errors = Partial<Record<Field, string>>
 export function VerifyModal({
   modules,
   direct = false,
+  free = false,
   onClose,
 }: {
   modules: CheckoutItem[]
   direct?: boolean
+  /** The free campaign: register for full access, no payment (lib/landings). */
+  free?: boolean
   onClose: () => void
 }) {
   const titleId = useDialogId('verify-title')
@@ -56,6 +59,7 @@ export function VerifyModal({
   const [failure, setFailure] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [leaving, setLeaving] = useState(false)
+  const [registered, setRegistered] = useState<string | null>(null)
 
   // /checkout is never linked to, so Next has no reason to have fetched it —
   // without this the route is only requested once verification passes, and the
@@ -93,6 +97,41 @@ export function VerifyModal({
     setBusy(true)
     setFailure(null)
     const contact = { name: values.name.trim(), email: values.email.trim(), phone: values.phone.trim() }
+
+    if (free) {
+      // The one-time code first, as on the main site: a free account is only
+      // made for a phone someone can actually receive a code on.
+      track('verify_sent', { modules, plan: 'free' })
+      try {
+        await verifySmsOtp(values.phone, { email: values.email })
+      } catch (err) {
+        setBusy(false)
+        const f = friendlyError(err, 'verify')
+        reportError('verify', err, f)
+        setFailure(f.message)
+        return
+      }
+      // A lead like any other, then the account: the login goes by email.
+      track('verify_ok', { modules, ...contact, plan: 'free' })
+      setLeaving(true)
+      try {
+        const res = await fetch('/api/free-signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(contact),
+        })
+        const body = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string }
+        setBusy(false)
+        setLeaving(false)
+        if (body.ok) setRegistered(contact.email)
+        else setFailure(body.error || 'Something went wrong. Please try again.')
+      } catch {
+        setBusy(false)
+        setLeaving(false)
+        setFailure('Could not reach skeo. Check your connection and try again.')
+      }
+      return
+    }
 
     if (direct) {
       // Still a lead in the admin's list, called back if they do not pay.
@@ -143,6 +182,25 @@ export function VerifyModal({
 
   return (
     <Modal labelledBy={titleId} onClose={onClose} className="verify-modal" suspended={busy}>
+      {registered ? (
+        <div className="modal-success paid-notice" role="status">
+          <div className="success-mark" aria-hidden="true">
+            ✓
+          </div>
+          <h3 id={titleId}>You&rsquo;re in!</h3>
+          <p>
+            Your free 7-day skeo login is on its way to <b>{registered}</b>. It arrives within 5 minutes, with your
+            username and a temporary password.
+          </p>
+          <p>
+            Sign in at <b>lms.skeoai.com</b> and set your own password. Every course is unlocked for 7 days. Not in
+            your inbox? Check spam, or write to <a href="mailto:support@skeoai.com">support@skeoai.com</a>.
+          </p>
+          <button type="button" className="button" onClick={onClose}>
+            Done <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      ) : (
       <form className="verify-form" onSubmit={handleSubmit} noValidate>
         <h3 id={titleId} className="sr-only">
           Verify it&rsquo;s you
@@ -214,7 +272,15 @@ export function VerifyModal({
 
         <button type="submit" className="button modal-submit full" disabled={busy}>
           <span className="btn-label">
-            {direct
+            {free
+              ? leaving
+                ? 'Setting up your access…'
+                : busy
+                ? 'Verifying…'
+                : failure
+                  ? 'Try again'
+                  : 'Start Free Trial'
+              : direct
               ? leaving
                 ? 'Opening checkout…'
                 : failure
@@ -233,11 +299,14 @@ export function VerifyModal({
           </span>
         </button>
         <small className="purchase-note">
-          {direct
+          {free
+            ? 'We’ll text a code to confirm it’s you. Free for 7 days, no payment, no card.'
+            : direct
             ? 'Secure payment by Cashfree — UPI, cards and netbanking.'
             : 'We’ll text a code to confirm it’s you. Your seat is held once it is verified.'}
         </small>
       </form>
+      )}
     </Modal>
   )
 }

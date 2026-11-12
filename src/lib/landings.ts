@@ -56,6 +56,15 @@ export function landingHero(kind: LandingKind, price: string) {
 
 /* On every campaign page a buyer goes from their details straight to
    /checkout, with no one-time code. Every other page asks for the code first. */
+/* The free campaign (an Instagram push): registering gives full access at
+   once, with no payment. The form posts to /api/free-signup instead of going
+   to /checkout. */
+export const FREE_CAMPAIGNS = ['/campaign/everything-ai-intro']
+export function isFreeCampaign(pathname: string | null): boolean {
+  if (pathname === null) return false
+  return FREE_CAMPAIGNS.includes(pathname.replace(/\/+$/, ''))
+}
+
 export function paysDirect(pathname: string | null): boolean {
   if (pathname === null) return false
   const path = pathname.replace(/\/+$/, '')

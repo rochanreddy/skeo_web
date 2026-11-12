@@ -30,7 +30,17 @@ function Price({ big = false, offer }: { big?: boolean; offer: ReturnType<typeof
  * the Early Access pass card or the intro video. Below the hero every one of
  * them is the same page, selling Everything AI.
  */
-export async function EverythingAiLanding({ kind = 'all', video = false }: { kind?: LandingKind; video?: boolean }) {
+export async function EverythingAiLanding({
+  kind = 'all',
+  video = false,
+  free = false,
+}: {
+  kind?: LandingKind
+  video?: boolean
+  /** The free 7-day campaign (lib/landings isFreeCampaign): no prices, and
+   *  every button starts a free trial instead of a purchase. */
+  free?: boolean
+}) {
   const catalog: Catalog = await getCatalog()
   const offer = offerOf(catalog)
   const savePct = savePctOf(catalog)
@@ -53,8 +63,12 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
               </span>
             </span>
           </p>
-          <WindowTimer offer={announcement.offer} />
-          <Buy className="ea-announce-cta">{announcement.cta}</Buy>
+          {free ? (
+            <span className="ea-announce-free">100% FREE · 7-day access</span>
+          ) : (
+            <WindowTimer offer={announcement.offer} />
+          )}
+          <Buy className="ea-announce-cta">{free ? 'Start Free' : announcement.cta}</Buy>
         </div>
       </div>
 
@@ -64,7 +78,7 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
         </Link>
         <div className="ea-header-actions">
           <ThemeToggle />
-          <Buy className="button button-small">{hero.cta}</Buy>
+          <Buy className="button button-small">{free ? 'Start Free' : hero.cta}</Buy>
         </div>
       </header>
 
@@ -88,13 +102,28 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
                   <span key={sentence}>{sentence}</span>
                 ))}
               </p>
-              <div className={video ? 'ea-hero-price' : 'ea-hero-price ea-hero-price-pass'}>
-                <Price big offer={offer} />
-                <span className="ea-save">{savePct}% OFF</span>
-              </div>
-              <p className={video ? 'ea-terms' : 'ea-terms ea-terms-pass'}>{offer.terms}</p>
+              {free ? (
+                <>
+                  <div className="ea-hero-price">
+                    <p className="ea-price ea-price-big">
+                      <strong>FREE</strong>
+                      <s aria-label={`worth ${inr(offer.was)}`}>{inr(offer.was)}</s>
+                    </p>
+                    <span className="ea-save">7 DAYS FREE</span>
+                  </div>
+                  <p className="ea-terms">No payment · No card · Instant access</p>
+                </>
+              ) : (
+                <>
+                  <div className={video ? 'ea-hero-price' : 'ea-hero-price ea-hero-price-pass'}>
+                    <Price big offer={offer} />
+                    <span className="ea-save">{savePct}% OFF</span>
+                  </div>
+                  <p className={video ? 'ea-terms' : 'ea-terms ea-terms-pass'}>{offer.terms}</p>
+                </>
+              )}
               <div className="ea-hero-actions">
-                <Buy>{hero.cta}</Buy>
+                <Buy>{free ? 'Start Free Trial' : hero.cta}</Buy>
                 <a className="button button-outline ea-cta ea-ghost" href="#learn">
                   <span className="btn-label">See what’s inside</span>
                   <span aria-hidden="true">↓</span>
@@ -195,7 +224,7 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
           </div>
         </section>
 
-        <CampaignSections pinned={kind === 'claude' ? ['Claude'] : undefined} />
+        <CampaignSections pinned={kind === 'claude' ? ['Claude'] : undefined} free={free} />
       </main>
 
       {/* A campaign page ends on its ask, not on the site's navigation: only
@@ -211,9 +240,10 @@ export async function EverythingAiLanding({ kind = 'all', video = false }: { kin
         </div>
       </footer>
 
-      <StickyCta />
+      <StickyCta free={free} />
       <JoinToasts />
-      <CampaignSchema />
+      {/* No price to describe on the free page. */}
+      {!free && <CampaignSchema />}
     </div>
   )
 }

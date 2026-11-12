@@ -13,13 +13,13 @@ import { inr } from '@/lib/earlyAccess'
  * button are never more than a glance off. On the hero itself it stays out of
  * the way: the hero already carries all three.
  */
-export function StickyCta({ plan }: { plan?: PlanKey } = {}) {
+export function StickyCta({ plan, free = false }: { plan?: PlanKey; free?: boolean } = {}) {
   const [show, setShow] = useState(false)
   const catalog = useCatalog()
   const offer = offerOf(catalog)
 
   useEffect(() => {
-    const hero = document.querySelector('.ea-hero-band')
+    const hero = document.querySelector('.ea-hero-band, [data-hero]')
     if (!hero || typeof IntersectionObserver === 'undefined') return
     const io = new IntersectionObserver(([e]) => setShow(!e.isIntersecting), { rootMargin: '0px 0px -40% 0px' })
     io.observe(hero)
@@ -31,7 +31,15 @@ export function StickyCta({ plan }: { plan?: PlanKey } = {}) {
       <div className="ea-sticky-inner">
         <p>
           {/* A tool's page sells that tool at its one price: no anchor, no seats. */}
-          {plan ? (
+          {free ? (
+            <>
+              <span className="ea-sticky-plan">Everything AI · Free Trial</span>
+              <span className="ea-sticky-price">
+                <strong>FREE</strong>
+                <em className="ea-sticky-once">7 days</em>
+              </span>
+            </>
+          ) : plan ? (
             <>
               <span className="ea-sticky-plan">{catalog.plans[plan].title}</span>
               <span className="ea-sticky-price">
@@ -50,7 +58,7 @@ export function StickyCta({ plan }: { plan?: PlanKey } = {}) {
           )}
         </p>
         <PurchaseButton plan={plan ?? 'earlyaccess'} className="button button-lime ea-sticky-cta">
-          Get Started
+          {free ? 'Start Free' : 'Get Started'}
         </PurchaseButton>
       </div>
     </div>

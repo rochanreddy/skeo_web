@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
-import { paysDirect } from '@/lib/landings'
+import { isFreeCampaign, paysDirect } from '@/lib/landings'
 import type { PlanKey } from '@/lib/plans'
 import { isCheckoutItem, type CheckoutItem } from '@/lib/checkoutItems'
 import { AuthModal } from './AuthModal'
@@ -73,7 +73,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
       {children}
       {state.kind === 'auth' && <AuthModal initialMode={state.mode} onClose={close} />}
       {state.kind === 'purchase' && <PurchaseModal planKeys={state.plans} onClose={close} />}
-      {state.kind === 'verify' && <VerifyModal modules={state.modules} direct={paysDirect(pathname)} onClose={close} />}
+      {state.kind === 'verify' && <VerifyModal modules={state.modules} direct={paysDirect(pathname)} free={isFreeCampaign(pathname)} onClose={close} />}
       {state.kind === 'syllabus' && <SyllabusModal tool={state.tool} onClose={close} />}
     </ModalContext.Provider>
   )
