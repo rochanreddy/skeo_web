@@ -341,7 +341,10 @@ export const TOOL_SLUGS = Object.keys(TOOL_CAMPAIGNS) as ToolSlug[]
 
 /* Tools whose campaign pages are off for now: no page, and left out of the
    sitemap and llms.txt. Remove a slug here to bring its pages back. */
-const HIDDEN_TOOL_PAGES: readonly ToolSlug[] = ['chatgpt']
+/* 14 Nov 2026: every tool page off; the ads run on /campaign/everything-ai,
+   /campaign/claude-intro and /campaign/everything-ai-intro only. Visitors
+   to the old links are forwarded there (next.config.mjs). */
+const HIDDEN_TOOL_PAGES: readonly ToolSlug[] = ['chatgpt', 'claude', 'grok', 'n8n', 'lovable']
 
 /** The tools with a campaign page live: /campaign/<tool> and /campaign/ai-showcase/<tool>. */
 export const LIVE_TOOL_SLUGS = TOOL_SLUGS.filter((slug) => !HIDDEN_TOOL_PAGES.includes(slug))

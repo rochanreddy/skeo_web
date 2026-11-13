@@ -15,6 +15,15 @@ const nextConfig = {
       // The bundle pages' preview links: the pages now live at the ad links.
       { source: '/campaign/ai-bundle', destination: '/campaign/everything-ai', permanent: true },
       { source: '/campaign/claude-bundle', destination: '/campaign/claude-intro', permanent: true },
+      /* Campaign pages switched off for now (14 Nov 2026): their links go to the
+         live pages instead. Temporary, so search engines keep the old links;
+         delete a line here (and the slug in lib/toolCampaigns HIDDEN_TOOL_PAGES)
+         to bring that page back. */
+      { source: '/campaign/claude', destination: '/campaign/claude-intro', permanent: false },
+      { source: '/campaign/ai-showcase/claude', destination: '/campaign/claude-intro', permanent: false },
+      { source: '/campaign/ai-showcase/:tool', destination: '/campaign/everything-ai', permanent: false },
+      { source: '/campaign/ai-showcase', destination: '/campaign/everything-ai', permanent: false },
+      { source: '/campaign/:tool(chatgpt|grok|n8n|lovable)', destination: '/campaign/everything-ai', permanent: false },
     ]
   },
   compress: true,
