@@ -459,10 +459,27 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
               </tbody>
             </table>
           </div>
-          <p className="panel-note">
-            A sale counts for the page it was placed from. Sales from before 9 Nov 2026 did not record their page, so
-            those count for every campaign page the buyer had opened.
-          </p>
+          {(() => {
+            /* A check on this table: its sales must add up to no more than the
+               real sales in this window. Fewer is fine (the rest came from the
+               main site); more would mean a sale counted twice. */
+            const inTable = stats.campaigns.reduce((n, c) => n + c.orders, 0)
+            return (
+              <>
+                {inTable > t.orders && (
+                  <p className="admin-notice is-error">
+                    <b>These numbers don&rsquo;t add up:</b> the table shows {num(inTable)} sales but only{' '}
+                    {num(t.orders)} were paid in this window. Trust the Orders tab and report this.
+                  </p>
+                )}
+                <p className="panel-note">
+                  {num(inTable)} of the {num(t.orders)} sale{t.orders === 1 ? '' : 's'} in this window came from a
+                  campaign page{t.orders > inTable ? '; the rest came from other pages' : ''}. Each sale counts once, for
+                  the campaign page the buyer was on just before paying.
+                </p>
+              </>
+            )
+          })()}
         </Panel>
       )}
 
