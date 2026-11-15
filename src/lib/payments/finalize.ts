@@ -64,7 +64,7 @@ export async function finalizeOrder(orderId: string): Promise<FinalState> {
           name: order.contact.name,
           // The page the order was placed from, so the dashboard can credit
           // the sale to the campaign page that made it.
-          page: orderPage(order.meta?.url),
+          page: order.fromPage || orderPage(order.meta?.url),
         },
       }).catch((err) => console.error(`[orders] ${orderId}: purchase event not recorded:`, err))
       // The same once-only moment tells Meta and the CRM. After the response:

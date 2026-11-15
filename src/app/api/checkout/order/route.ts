@@ -100,6 +100,7 @@ export async function POST(request: Request) {
     contact,
     visitorId: str(body?.visitorId, 40),
     sessionId: str(body?.sessionId, 40),
+    fromPage: /^\/campaign\/[\w-]+$/.test(str(body?.from, 80)) ? str(body?.from, 80) : '',
     meta: metaContextFrom(request, body),
     status: 'created',
     createdAt: new Date(),

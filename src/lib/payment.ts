@@ -54,7 +54,8 @@ function loadSdk(): Promise<void> {
    closes and show the result in their own dialog (PaidNotice), rather than
    moving on to /thank-you. */
 export async function startPayment(
-  order: { items: CheckoutItem[]; contact: CheckoutContact },
+  /** `from`: the campaign page the buyer came from to /checkout, for the admin. */
+  order: { items: CheckoutItem[]; contact: CheckoutContact; from?: string },
   { stay = false }: { stay?: boolean } = {},
 ): Promise<StartResult> {
   let res: Response

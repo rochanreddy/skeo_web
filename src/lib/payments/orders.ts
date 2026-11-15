@@ -31,6 +31,8 @@ export type OrderDoc = {
    *  credited to the visit that led to it. */
   visitorId: string
   sessionId: string
+  /** The campaign page the buyer came from to /checkout ('' when not from one). */
+  fromPage?: string
   status: OrderStatus
   /** What was bought, by name ("Claude Course"), as priced — for Meta and the CRM. */
   title?: string

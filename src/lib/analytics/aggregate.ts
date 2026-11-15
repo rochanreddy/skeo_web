@@ -434,12 +434,45 @@ export const isCampaignPath = (value: unknown): value is string =>
 const purchasePage = (event: AnalyticsEvent): string => asString(event.props?.page)
 
 /**
- * Whether an event belongs to a campaign page's numbers. A sale that knows its
- * page counts for that page alone; everything else (and older sales, recorded
- * before the page was kept) counts when the person opened the page.
+ * The one campaign page each sale is credited to (by event id; '' for none).
+ * A sale recorded with its campaign page counts there. Otherwise (older sales,
+ * and ones recorded as coming from /checkout) it counts for the last campaign
+ * page that buyer opened BEFORE paying. Never for every page they ever opened:
+ * that counted one sale on two pages, including one opened after buying.
  */
-function belongsTo(event: AnalyticsEvent, viewers: ReadonlySet<string>, page: string): boolean {
-  if (event.type === 'purchase' && purchasePage(event)) return purchasePage(event) === page
+function saleAttribution(all: readonly AnalyticsEvent[]): Map<string, string> {
+  const views = new Map<string, { at: number; path: string }[]>()
+  for (const e of all) {
+    if (e.type !== 'pageview' || !isCampaignPath(e.path)) continue
+    if (!views.has(e.visitorId)) views.set(e.visitorId, [])
+    views.get(e.visitorId)!.push({ at: e.at, path: e.path })
+  }
+  const out = new Map<string, string>()
+  for (const e of all) {
+    if (e.type !== 'purchase') continue
+    const recorded = purchasePage(e)
+    if (isCampaignPath(recorded)) {
+      out.set(e.id, recorded)
+      continue
+    }
+    let best: { at: number; path: string } | null = null
+    for (const v of views.get(e.visitorId) ?? []) if (v.at <= e.at && (!best || v.at > best.at)) best = v
+    out.set(e.id, best?.path ?? '')
+  }
+  return out
+}
+
+/**
+ * Whether an event belongs to a campaign page's numbers: a sale where it is
+ * credited (saleAttribution), anything else when that person opened the page.
+ */
+function belongsTo(
+  event: AnalyticsEvent,
+  viewers: ReadonlySet<string>,
+  page: string,
+  sales: ReadonlyMap<string, string>,
+): boolean {
+  if (event.type === 'purchase') return sales.get(event.id) === page
   return event.visitorId !== 'server' && viewers.has(event.visitorId)
 }
 
@@ -449,7 +482,12 @@ function viewersOf(events: readonly AnalyticsEvent[], page: string): Set<string>
   return viewers
 }
 
-function buildCampaigns(inRange: readonly AnalyticsEvent[], all: readonly AnalyticsEvent[], pages: string[]): CampaignRow[] {
+function buildCampaigns(
+  inRange: readonly AnalyticsEvent[],
+  all: readonly AnalyticsEvent[],
+  pages: string[],
+  sales: ReadonlyMap<string, string>,
+): CampaignRow[] {
   return pages
     .map((path) => {
       const viewers = viewersOf(all, path)
@@ -465,7 +503,7 @@ function buildCampaigns(inRange: readonly AnalyticsEvent[], all: readonly Analyt
           visitors.add(event.visitorId)
         } else if (event.type === 'verify_ok' && event.path === path) {
           leads.add(event.visitorId)
-        } else if (event.type === 'purchase' && belongsTo(event, viewers, path)) {
+        } else if (event.type === 'purchase' && belongsTo(event, viewers, path, sales)) {
           orders++
           revenue += asNumber(event.props?.amount)
           buyers.add(event.visitorId === 'server' ? asString(event.props?.orderId) : event.visitorId)
@@ -501,8 +539,9 @@ export function computeStats(
   ].sort()
 
   // Narrowed to one campaign page: the people who opened it, and the sales it made.
+  const sales = saleAttribution(everything)
   const viewers = page ? viewersOf(everything, page) : null
-  const all = page && viewers ? everything.filter((event) => belongsTo(event, viewers, page)) : everything
+  const all = page && viewers ? everything.filter((event) => belongsTo(event, viewers, page, sales)) : everything
 
   // Not `all[0].at`: seeded rows are appended after live ones, so the log is
   // not guaranteed to be in order.
@@ -560,7 +599,7 @@ export function computeStats(
     range,
     page,
     pages,
-    campaigns: buildCampaigns(campaignsInRange, everything, pages),
+    campaigns: buildCampaigns(campaignsInRange, everything, pages, sales),
     from,
     to,
     generatedAt: now,

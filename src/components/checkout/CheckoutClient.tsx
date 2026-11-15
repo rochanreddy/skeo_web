@@ -163,7 +163,7 @@ export function CheckoutClient() {
   async function pay() {
     setError(null)
     setPaying(true)
-    const result = await startPayment({ items: session!.modules, contact: session!.contact })
+    const result = await startPayment({ items: session!.modules, contact: session!.contact, from: session!.from })
     if (!result.ok) {
       setPaying(false)
       setError({ message: result.error, retry: result.retry })
