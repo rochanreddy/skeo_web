@@ -17,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    {
+      url: `${site.url}/campaign/claude-intro`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
     /* One page per tool course. */
     ...LIVE_TOOL_SLUGS.map((slug) => ({
       url: `${site.url}/campaign/${slug}`,

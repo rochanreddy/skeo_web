@@ -67,8 +67,8 @@ the rest — as short tool-specific tracks rather than one long course. Each tra
 ends in projects and a verified certificate that anyone can check.
 
 ## What it is
-- One subscription covers every tool track, the community, mentorship, the job
-  board, the resource library and a certificate per track.
+- One one-time payment (no subscription) covers every tool track, the community,
+  mentorship, the job board, the resource library and a certificate per track.
 - Tracks are self-paced. ${featuredTool.facts.map((f) => f.label).join(' · ')}.
 - Certificates carry a QR code and a public verification page, so an employer
   can confirm one without an account.
@@ -81,11 +81,11 @@ ${plans}
 
 Prices are in Indian rupees for visitors in India and in US dollars elsewhere.
 
-## Single-tool courses
+${toolCourses ? `## Single-tool courses
 Each tool is also sold on its own, as a self-paced course with projects and a
 certificate.
 
-${toolCourses}
+${toolCourses}` : ''}
 ## What the Claude track covers
 ${claudeSyllabus.intro}
 
@@ -103,6 +103,7 @@ Support: ${site.email}.
 ## Links
 - [skeo — home](${site.url}): what skeo teaches, the tracks, pricing and FAQ
 - [Everything AI](${site.url}/campaign/everything-ai): every course in one one-time pass
+- [Master Claude](${site.url}/campaign/claude-intro): the Claude course (Chat, Cowork, Code and Design) with every other course included
 ${LIVE_TOOL_SLUGS.map((slug) => `- [${TOOL_CAMPAIGNS[slug].name} Course](${site.url}/campaign/${slug}): ${TOOL_CAMPAIGNS[slug].meta.title}`).join('\n')}
 ${GUIDES.map((g) => `- [${g.title}](${site.url}/guides/${g.slug}): ${g.description}`).join('\n')}
 - [About](${site.url}/about): what skeo is and who is behind it
