@@ -534,16 +534,33 @@
   }
 }
 
-/* ---- Certificate on desktop: bigger type ----
-   Everything inside the card is sized in px, so the card is scaled as a whole
-   (text, logos and spacing together) and given a wider column to keep A4.
-   From 1100px: below that the column is too narrow to give it the room. */
+/* ---- Certificate on desktop: a smaller card, bigger type ----
+   Everything inside the card is sized in px, so the text blocks are scaled
+   (the holder's block most, the header and foot a little) inside a card of
+   normal size, with a little less padding so it all still fits A4.
+   From 1100px; below that the shared layout is left alone. */
 @media (min-width: 1100px) {
   .sx .credential {
-    grid-template-columns: 64fr 36fr;
+    grid-template-columns: 53fr 47fr;
   }
 
-  .sx .certificate {
-    zoom: 1.2;
+  .sx .cert-inner {
+    padding: 20px 26px 64px;
+  }
+
+  .sx .cert-body {
+    zoom: 1.22;
+  }
+
+  /* The foot is pinned to the bottom edge, so it keeps its own size and the
+     64px bottom padding keeps the text clear of it. */
+  .sx .cert-foot {
+    left: 26px;
+    right: 26px;
+  }
+
+  .sx .cert-head,
+  .sx .cert-title-row {
+    zoom: 1.1;
   }
 }
