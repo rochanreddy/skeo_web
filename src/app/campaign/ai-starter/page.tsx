@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Award, BookOpen, BriefcaseBusiness, Gift, Presentation, Rocket, Users } from 'lucide-react'
-import { CampaignSchema } from '@/components/StructuredData'
+import type { Metadata } from 'next'
 import { Accreditation } from '@/components/sections/Accreditation'
 import { MetaViewContent } from '@/components/MetaViewContent'
 import { faqs } from '@/lib/content'
@@ -27,13 +27,18 @@ import './starter.css'
 
 const PATH = '/campaign/ai-starter'
 
-export async function generateMetadata() {
+/* Kept out of search (noindex, no schema) until we decide to rank it; to turn
+   SEO on, drop `robots` here and put <CampaignSchema> back. */
+export async function generateMetadata(): Promise<Metadata> {
   const { price } = offerOf(await getCatalog())
-  return pageMeta({
-    path: PATH,
-    title: `Learn AI the Easy Way: 50+ Courses for ${inr(price)}`,
-    description: `50+ AI courses, 100+ real projects, a certificate and ₹25,000 of free playbooks, for a one-time ${inr(price)}. Beginner friendly, no coding needed.`,
-  })
+  return {
+    ...pageMeta({
+      path: PATH,
+      title: `Learn AI the Easy Way: 50+ Courses for ${inr(price)}`,
+      description: `50+ AI courses, 100+ real projects, a certificate and ₹25,000 of free playbooks, for a one-time ${inr(price)}. Beginner friendly, no coding needed.`,
+    }),
+    robots: { index: false, follow: false },
+  }
 }
 
 /* What you get: one line each, in plain words. */
@@ -334,7 +339,6 @@ export default async function AiStarterPage() {
       </footer>
 
       <StickyCta />
-      <CampaignSchema path={PATH} name="Learn AI the Easy Way" />
     </div>
   )
 }
