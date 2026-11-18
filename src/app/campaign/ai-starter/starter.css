@@ -432,3 +432,104 @@
   background: #ffffff10;
   text-align: left;
 }
+
+/* ---- Certificate on phones: bigger ----
+   The shared card is drawn 620px wide and zoomed down to fit (to about half on
+   a 390px phone). Here it is drawn 500px wide, the narrowest that still holds
+   its text in the A4 shape, so it needs less zoom and fills the section's width.
+   The page itself runs at zoom 0.9 on phones (early-access.css), so:
+   zoom = (screen / 0.9 - 32) / 500, stepped by screen width. */
+@media (max-width: 680px) {
+  /* The section's own gutter, 16px like the rest of this page. */
+  .sx .ea-cert .wrap.credential {
+    width: calc(100% - 32px);
+  }
+
+  .sx .certificate {
+    width: 500px;
+    zoom: 1;
+  }
+
+  /* A little less room above the pinned foot, so the text fits the A4 shape. */
+  .sx .cert-inner {
+    padding-bottom: 54px;
+  }
+}
+
+@media (max-width: 540px) {
+  .sx .certificate {
+    zoom: 1.093;
+  }
+}
+
+@media (max-width: 520px) {
+  .sx .certificate {
+    zoom: 1.049;
+  }
+}
+
+@media (max-width: 500px) {
+  .sx .certificate {
+    zoom: 1.004;
+  }
+}
+
+@media (max-width: 480px) {
+  .sx .certificate {
+    zoom: 0.96;
+  }
+}
+
+@media (max-width: 460px) {
+  .sx .certificate {
+    zoom: 0.916;
+  }
+}
+
+@media (max-width: 440px) {
+  .sx .certificate {
+    zoom: 0.871;
+  }
+}
+
+@media (max-width: 420px) {
+  .sx .certificate {
+    zoom: 0.827;
+  }
+}
+
+@media (max-width: 400px) {
+  .sx .certificate {
+    zoom: 0.782;
+  }
+}
+
+@media (max-width: 380px) {
+  .sx .certificate {
+    zoom: 0.738;
+  }
+}
+
+@media (max-width: 360px) {
+  .sx .certificate {
+    zoom: 0.693;
+  }
+}
+
+@media (max-width: 340px) {
+  .sx .certificate {
+    zoom: 0.649;
+  }
+}
+
+@media (max-width: 320px) {
+  .sx .certificate {
+    zoom: 0.604;
+  }
+}
+
+@media (max-width: 300px) {
+  .sx .certificate {
+    zoom: 0.56;
+  }
+}
