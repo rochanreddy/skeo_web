@@ -549,7 +549,7 @@
   }
 
   .sx .cert-body {
-    zoom: 1.22;
+    zoom: 1.12;
   }
 
   /* The foot is pinned to the bottom edge, so it keeps its own size and the
@@ -561,6 +561,6 @@
 
   .sx .cert-head,
   .sx .cert-title-row {
-    zoom: 1.1;
+    zoom: 1.05;
   }
 }
