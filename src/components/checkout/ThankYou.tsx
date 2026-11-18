@@ -283,6 +283,13 @@ export function ThankYou() {
             </div>
           </li>
         </ol>
+        {/* Moved here from the checkout page, which no longer explains it. */}
+        {lms.support && (
+          <p className="thanks-next-sub">
+            Not in your inbox? Check spam or Promotions first. Still nothing? Write to{' '}
+            <a href={`mailto:${lms.support}?subject=Order ${order.orderId}`}>{lms.support}</a> and a real person replies.
+          </p>
+        )}
         </>
         )}
 

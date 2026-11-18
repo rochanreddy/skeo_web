@@ -19,6 +19,8 @@ export type Plan = {
   period: string
   billing: 'one-time' | 'monthly' | 'custom'
   features: readonly string[]
+  /** Something included free, called out on its own line at checkout with what it is worth (rupees). */
+  bonus?: { label: string; worth: number }
   cta: string
 }
 
@@ -114,10 +116,10 @@ export const PLANS: Record<PlanKey, Plan> = {
     billing: 'one-time',
     features: [
       'Every course and every tool batch',
-      'Claude Playbooks & AI Library, worth ₹25,000',
       'Real projects and a certificate',
       'Live workshops and the community',
     ],
+    bonus: { label: 'Claude Playbooks & AI Library', worth: 25000 },
     cta: 'Get everything',
   },
   teams: {

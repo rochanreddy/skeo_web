@@ -231,6 +231,14 @@ export function CheckoutClient() {
                       <li key={feature}>{feature}</li>
                     ))}
                   </ul>
+                  {plan.bonus && (
+                    <p className="checkout-bonus">
+                      <span className="checkout-bonus-tag">FREE</span>
+                      <span>
+                        {plan.bonus.label} worth <b>₹{plan.bonus.worth.toLocaleString('en-IN')}</b>, free with your plan
+                      </span>
+                    </p>
+                  )}
                   {/* Only offered while something would be left to pay for. */}
                   {rows.length > 1 && (
                     <button
@@ -246,63 +254,6 @@ export function CheckoutClient() {
               )
             })}
           </ul>
-
-          {/* What the campaign popup used to say after paying, said before it:
-              where the login goes, when, how to sign in, and what to do if it
-              does not arrive. */}
-          <section className="checkout-howto" aria-labelledby="checkout-howto-h">
-            <h2 className="checkout-h" id="checkout-howto-h">
-              {playbooksOnly ? 'How you get your playbooks' : 'How you get in'}
-            </h2>
-            <ol className="checkout-howto-steps">
-              <li>
-                <span className="checkout-howto-num" aria-hidden="true">
-                  1
-                </span>
-                <div>
-                  <b>Pay securely</b>
-                  <p>UPI, cards or netbanking through Cashfree. It takes about a minute.</p>
-                </div>
-              </li>
-              <li>
-                <span className="checkout-howto-num" aria-hidden="true">
-                  2
-                </span>
-                <div>
-                  <b>Check your inbox</b>
-                  {playbooksOnly ? (
-                    <p>
-                      Your playbooks are emailed to <b data-clarity-mask="true">{session.contact.email}</b> as PDFs,{' '}
-                      {lms.credentialsEta}. A large set comes in more than one email.
-                    </p>
-                  ) : (
-                    <p>
-                      Your skeo login, a username and a temporary password, is emailed to{' '}
-                      <b data-clarity-mask="true">{session.contact.email}</b> {lms.credentialsEta}.
-                    </p>
-                  )}
-                </div>
-              </li>
-              {!playbooksOnly && (
-                <li>
-                  <span className="checkout-howto-num" aria-hidden="true">
-                    3
-                  </span>
-                  <div>
-                    <b>Sign in and start learning</b>
-                    <p>
-                      Open <b>{lms.web.replace(/^https?:\/\//, '')}</b>, sign in with that email and the temporary
-                      password, then set a password of your own. Everything you bought is already unlocked.
-                    </p>
-                  </div>
-                </li>
-              )}
-            </ol>
-            <p className="checkout-howto-help">
-              Not in your inbox? Check spam or Promotions first. Still nothing? Write to{' '}
-              <a href={`mailto:${lms.support}`}>{lms.support}</a> and a real person replies.
-            </p>
-          </section>
 
           {extras.length > 0 && (
             <>
