@@ -163,7 +163,7 @@ export function PaidUsersTab() {
 
       <div className="money-boxes">
         <div className="money-box">
-          <span>{filtered ? 'Revenue (matching)' : 'Total revenue'}</span>
+          <span>{filtered ? 'Revenue (matching)' : 'Total revenue · all time'}</span>
           <b>{rupees(revenue)}</b>
           <small>{view.all.length} payments</small>
         </div>

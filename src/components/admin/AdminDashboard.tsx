@@ -338,6 +338,12 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
       )}
 
       {/* ---- The headline numbers ---- */}
+      {/* Says which window the cards count, so they are not read as all-time
+         totals next to the Paid users tab (which is). */}
+      <p className="panel-note">
+        Showing the <b>{range === 'all' ? 'whole history' : `last ${rangeLabel.toLowerCase()}`}</b>. Paid users and
+        Orders list every payment ever; pick <b>All time</b> above to compare totals.
+      </p>
       <div className="kpi-grid">
         <Kpi
           label="Total visitors"
@@ -347,7 +353,7 @@ export function AdminDashboard({ defaultPassword }: { defaultPassword: boolean }
           accent="purple"
         />
         <Kpi
-          label="Total sales"
+          label={`Total sales · ${range === 'all' ? 'all time' : rangeLabel.toLowerCase()}`}
           value={money(t.revenue)}
           sub={t.orders > 0 ? `${num(t.orders)} orders · ${money(t.aov)} average` : 'No orders yet'}
           delta={delta(t.revenue, p.revenue)}
