@@ -19,7 +19,7 @@ export type Plan = {
   period: string
   billing: 'one-time' | 'monthly' | 'custom'
   features: readonly string[]
-  /** Something included free, called out on its own line at checkout with what it is worth (rupees). */
+  /** A feature (same text as in `features`) shown at checkout with what it is worth, in rupees. */
   bonus?: { label: string; worth: number }
   cta: string
 }
@@ -116,6 +116,7 @@ export const PLANS: Record<PlanKey, Plan> = {
     billing: 'one-time',
     features: [
       'Every course and every tool batch',
+      'Claude Playbooks & AI Library',
       'Real projects and a certificate',
       'Live workshops and the community',
     ],

@@ -228,17 +228,17 @@ export function CheckoutClient() {
                   </div>
                   <ul className="checkout-item-features">
                     {plan.features.map((feature) => (
-                      <li key={feature}>{feature}</li>
+                      <li key={feature}>
+                        {feature}
+                        {plan.bonus?.label === feature && (
+                          <>
+                            {' '}
+                            <b className="checkout-worth">worth ₹{plan.bonus.worth.toLocaleString('en-IN')}</b>
+                          </>
+                        )}
+                      </li>
                     ))}
                   </ul>
-                  {plan.bonus && (
-                    <p className="checkout-bonus">
-                      <span className="checkout-bonus-tag">FREE</span>
-                      <span>
-                        {plan.bonus.label} worth <b>₹{plan.bonus.worth.toLocaleString('en-IN')}</b>, free with your plan
-                      </span>
-                    </p>
-                  )}
                   {/* Only offered while something would be left to pay for. */}
                   {rows.length > 1 && (
                     <button
