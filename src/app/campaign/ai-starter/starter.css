@@ -533,3 +533,17 @@
     zoom: 0.56;
   }
 }
+
+/* ---- Certificate on desktop: bigger type ----
+   Everything inside the card is sized in px, so the card is scaled as a whole
+   (text, logos and spacing together) and given a wider column to keep A4.
+   From 1100px: below that the column is too narrow to give it the room. */
+@media (min-width: 1100px) {
+  .sx .credential {
+    grid-template-columns: 64fr 36fr;
+  }
+
+  .sx .certificate {
+    zoom: 1.2;
+  }
+}
