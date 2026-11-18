@@ -3,7 +3,8 @@ import { Award, BookOpen, BriefcaseBusiness, Gift, Presentation, Rocket, Users }
 import type { Metadata } from 'next'
 import { Accreditation } from '@/components/sections/Accreditation'
 import { MetaViewContent } from '@/components/MetaViewContent'
-import { faqs } from '@/lib/content'
+import { faqs, walkthrough } from '@/lib/content'
+import { VideoPlayer } from '@/components/ui/video-player'
 import { offerOf, savePctOf } from '@/lib/catalog'
 import { getCatalog } from '@/lib/cms'
 import { announcement as announcementCode, inr, learn } from '@/lib/earlyAccess'
@@ -173,6 +174,15 @@ export default async function AiStarterPage() {
                 <Check /> Lifetime access
               </li>
             </ul>
+            {/* The walkthrough the earlier campaign page showed: the course itself, in 2 minutes. */}
+            <div className="ea-hero-video sx-video">
+              <VideoPlayer
+                src={walkthrough.src}
+                poster={walkthrough.poster}
+                label={walkthrough.label}
+                duration={walkthrough.duration}
+              />
+            </div>
             <div className="sx-hero-price">
               <b>{price}</b>
               <s>{was}</s>

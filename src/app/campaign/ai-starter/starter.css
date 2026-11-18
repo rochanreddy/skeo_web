@@ -403,3 +403,32 @@
     margin-bottom: 32px;
   }
 }
+
+/* ---- Certificate: a true A4 landscape card (297 × 210) on this page ----
+   The shared card runs flatter (1.55) and, on phones, as tall as its text.
+   Here it keeps the real certificate shape at every size; .cert-body centres
+   the text in the height. The card's column is a little wider on desktop so
+   the text fits inside that shape without growing it. */
+.sx .certificate {
+  --cert-ratio: 1.4142;
+}
+
+.sx .cert-inner {
+  min-height: calc(100cqw / var(--cert-ratio));
+}
+
+@media (min-width: 681px) {
+  .sx .credential {
+    grid-template-columns: 56fr 44fr;
+  }
+}
+
+/* ---- The walkthrough video in the hero ---- */
+.sx .sx-video {
+  margin: 24px auto 0;
+  width: min(100%, 560px);
+  padding: 6px;
+  border-color: #ffffff24;
+  background: #ffffff10;
+  text-align: left;
+}
