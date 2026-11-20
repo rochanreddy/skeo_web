@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Modal, useDialogId } from './Modal'
 import { track } from '@/lib/analytics/track'
 import { saveCheckoutSession } from '@/lib/checkoutSession'
-import { verifySmsOtp } from '@/lib/amplifeedOtp'
+import { OTP_UNSENDABLE, verifySmsOtp, type OtpError } from '@/lib/amplifeedOtp'
 import { friendlyError, reportError } from '@/lib/friendlyError'
 import type { CheckoutItem } from '@/lib/checkoutItems'
 import { validateEmail, validateName, validatePhone } from '@/lib/validation'
@@ -152,11 +152,25 @@ export function VerifyModal({
       // menler's apply flow uses, and the reason the address is passed in.
       await verifySmsOtp(values.phone, { email: values.email })
     } catch (err) {
-      setBusy(false)
-      // Cancelling the provider's dialog rejects too, so this is not always an
-      // error worth alarming about — friendlyError words it as something to retry.
       const f = friendlyError(err, 'verify')
       reportError('verify', err, f)
+      // THE CODE COULD NOT BE SENT AT ALL (the bot check never passed, as in
+      // Instagram's in-app browser; Amplifeed blocked the network; the service
+      // did not load). Trying again does not fix that, and a buyer stuck here
+      // is a lost sale, so they go on to /checkout exactly as a campaign page
+      // sends them: nothing is unlocked until Cashfree answers PAID. Still a
+      // lead in the admin, marked as not verified.
+      const code = (err as OtpError)?.code
+      if (code && OTP_UNSENDABLE.has(code)) {
+        setLeaving(true)
+        track('verify_ok', { modules, ...contact, otp: 'skipped', otpError: code })
+        saveCheckoutSession({ modules, contact, verifiedAt: Date.now() })
+        router.push('/checkout')
+        onClose()
+        return
+      }
+      setBusy(false)
+      // A wrong code or a closed dialog: friendlyError words it as something to retry.
       setFailure(f.message)
       return
     }

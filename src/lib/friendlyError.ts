@@ -24,6 +24,7 @@ const OTP_HINTS: [RegExp, string, boolean][] = [
   [/expire/i, 'That code has expired. Try again to get a new one.', true],
   [/limit|too many|attempt/i, 'Too many verification attempts. Please wait a few minutes before trying again.', false],
   [/not ready|could not load|load the verification/i, "We couldn't load the verification step. Check your connection and try again.", true],
+  [/could not be sent|captcha|ip_locked/i, "We couldn't send the code. If you opened this from Instagram or Facebook, open the page in Chrome and try again.", true],
 ]
 
 export function friendlyError(err: unknown, stage: Stage): Friendly {

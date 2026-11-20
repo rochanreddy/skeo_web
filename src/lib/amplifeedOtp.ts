@@ -39,7 +39,50 @@ declare global {
   interface Window {
     initSendOTP?: (options: InitOptions) => void
     initSendOtp?: (options: InitOptions) => void
+    /* The widget's own handle (otp-provider.js): the live SDK, whose
+       getLatestReqId() is set only once a code has really been sent. */
+    __AmplifeedOtp?: { closeModal?: () => void; getSdk?: () => { getLatestReqId?: () => string | null } | null }
   }
+}
+
+/** A verification failure that knows why: the widget's code, or one of ours. */
+export type OtpError = Error & { code?: string }
+
+const otpError = (code: string, message: string): OtpError => Object.assign(new Error(message), { code })
+
+/**
+ * Failures that mean the code could not be SENT, as opposed to a wrong code or
+ * the visitor closing the dialog: the bot check never passed, Amplifeed refused
+ * the send or blocked this network, or the service did not load. Trying again
+ * does not get past these, so a paid checkout continues without the code (see
+ * VerifyModal); only Cashfree answering PAID unlocks anything.
+ */
+export const OTP_UNSENDABLE = new Set([
+  'SEND_TIMEOUT',
+  'SEND_FAILED',
+  'CAPTCHA_REQUIRED',
+  'NETWORK_ERROR',
+  'IP_LOCKED',
+  'NOT_READY',
+  'LOAD_FAILED',
+])
+
+/** How long the code may take to go out (the bot check included) before we give up on it. */
+const SEND_TIMEOUT_MS = 30_000
+
+/**
+ * The SMS identifier: country code and number, digits only, no "+". A buyer
+ * who types their 10-digit Indian mobile (the usual case) gets 91 in front;
+ * a leading 0 is a trunk prefix and is dropped. Returns null for a number our
+ * SMS cannot reach (the provider only delivers inside India), so the caller
+ * can verify by email instead.
+ */
+export function smsIdentifier(phone: string): string | null {
+  let digits = String(phone || '').replace(/\D/g, '')
+  if (digits.startsWith('00')) digits = digits.slice(2)
+  else if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1)
+  if (digits.length === 10 && /^[6-9]/.test(digits)) digits = `91${digits}`
+  return /^91[6-9]\d{9}$/.test(digits) ? digits : null
 }
 
 /* ── Local development only: skip the widget ──────────────────────────────
@@ -87,7 +130,9 @@ export function loadOtpProvider(): Promise<void> {
     let i = 0
     const tryNext = () => {
       if (i >= OTP_HOSTS.length) {
-        reject(new Error('Could not load the verification service.'))
+        // Forget the failed attempt, so the next press loads it afresh.
+        loadPromise = undefined
+        reject(otpError('LOAD_FAILED', 'Could not load the verification service.'))
         return
       }
       const s = document.createElement('script')
@@ -254,7 +299,88 @@ function watchForSwitchLink(channel: string, onSwitch: () => void): () => void {
 
 type Switched = { token: string; channel: string; identifier: string }
 
-/** Open the widget for one identifier on one channel. */
+/*
+ * Two defects in the widget, both of which leave a buyer stuck on the code
+ * screen, and both patched from outside like the ones above:
+ *
+ * 1. VERIFY WORKS BEFORE ANY CODE WAS SENT. Given the number up front, the
+ *    widget opens straight on the code boxes and sends in the background, and
+ *    only once Cloudflare's bot check passes. If that check is slow or never
+ *    passes (Instagram's and Facebook's in-app browsers), no code goes out, yet
+ *    Verify is live: the buyer types something, presses it, and gets
+ *    "reqId is required". Held here: Verify stays disabled until the SDK has a
+ *    request id, and if none arrives within SEND_TIMEOUT_MS the dialog is
+ *    closed and the failure reported as SEND_TIMEOUT.
+ *
+ * 2. CLOSING IT IS SILENT. The X, Escape and a tap outside remove the dialog
+ *    without calling success or failure, so a promise waiting on it never
+ *    settles and the button behind it spins forever. Watched here: the dialog
+ *    going away settles it, with the last failure seen or CANCELLED.
+ */
+function guardWidget(onClosed: () => void, onSendTimeout: () => void): () => void {
+  const started = Date.now()
+  let seen = false
+  let timedOut = false
+  let held: HTMLButtonElement | null = null
+  const sent = () => Boolean(window.__AmplifeedOtp?.getSdk?.()?.getLatestReqId?.())
+
+  const tick = () => {
+    const root = otpShadow()
+    if (!root) {
+      if (seen) {
+        stop()
+        onClosed()
+      } else if (!timedOut && Date.now() - started > SEND_TIMEOUT_MS) {
+        // The dialog never appeared at all.
+        timedOut = true
+        stop()
+        onSendTimeout()
+      }
+      return
+    }
+    seen = true
+    const verify = Array.from(root.querySelectorAll<HTMLButtonElement>('button.btn')).find(
+      (btn) => (btn.textContent || '').trim().toLowerCase() === 'verify',
+    )
+    if (!sent()) {
+      if (verify && !verify.disabled) {
+        verify.disabled = true
+        held = verify
+      }
+      if (!timedOut && Date.now() - started > SEND_TIMEOUT_MS) {
+        timedOut = true
+        onSendTimeout()
+      }
+    } else if (held) {
+      held.disabled = false
+      held = null
+    }
+  }
+
+  const poll = window.setInterval(tick, 250)
+  const stop = () => window.clearInterval(poll)
+  return stop
+}
+
+/** The widget's failure, as an OtpError carrying its code (IP_LOCKED, SEND_FAILED, ...). */
+function toOtpError(err: unknown): OtpError {
+  const e = err as Record<string, unknown> | string | null
+  if (typeof e === 'string') return otpError(e, e)
+  const code = String((e && (e.code || e.error || e.type)) || 'ERROR')
+  const msg = (e && (e.message || e.msg || e.error || e.code || e.type)) || 'OTP verification failed.'
+  return otpError(code, typeof msg === 'string' ? msg : 'OTP verification failed.')
+}
+
+/**
+ * Open the widget for one identifier on one channel.
+ *
+ * Settles once: with the token when the code is accepted, or, when the dialog
+ * goes away without one, with the last failure it showed (or CANCELLED). A
+ * failure while it is still open (a wrong code, a send to retry) does NOT
+ * settle it: the widget shows that error itself and the buyer can try again in
+ * place. Rejecting there left a buyer who corrected a typo verified in the
+ * widget but stuck on our side, because the promise had already failed.
+ */
 export function sendOtpFull(
   identifier: string,
   channel: string,
@@ -263,44 +389,56 @@ export function sendOtpFull(
   return new Promise((resolve, reject) => {
     const init = getInit()
     if (!init) {
-      reject(new Error('Verification service is not ready. Please try again.'))
+      reject(otpError('NOT_READY', 'Verification service is not ready. Please try again.'))
       return
     }
-    let stop = () => {}
+    let settled = false
+    let lastError: OtpError | null = null
+    let stopSwitch = () => {}
     const stopDigits = enhanceOtpDigits()
-    const done = <T,>(fn: (v: T) => void) => (v: T) => {
-      stop()
+    const finish = (fn: () => void) => {
+      if (settled) return
+      settled = true
+      stopSwitch()
       stopDigits()
-      fn(v)
+      stopGuard()
+      fn()
     }
-    const ok = done(resolve)
-    const bad = done(reject)
+    const stopGuard = guardWidget(
+      () => finish(() => reject(lastError ?? otpError('CANCELLED', 'Verification was closed before it finished.'))),
+      () => {
+        lastError = otpError('SEND_TIMEOUT', 'The verification code could not be sent.')
+        // Closing it settles through the guard's close branch; if it never
+        // opened, settle here.
+        if (otpShadow()) closeOtpWidget()
+        else finish(() => reject(lastError))
+      },
+    )
 
     init({
       widgetId: WIDGET_ID,
       tokenAuth: TOKEN_AUTH,
       identifier,
       ...(channel ? { channel } : {}),
-      success: (data) => ok({ token: tokenFrom(data), channel, identifier }),
+      success: (data) => finish(() => resolve({ token: tokenFrom(data), channel, identifier })),
       failure: (err) => {
-        // Surface Amplifeed's own reason rather than a generic message.
+        // Amplifeed's own reason, kept for when the dialog closes.
         console.error('OTP failure:', err)
-        const e = err as Record<string, unknown> | string | null
-        const msg =
-          (e &&
-            (typeof e === 'string'
-              ? e
-              : (e.message || e.msg || e.error || e.code || e.type) as string)) ||
-          'OTP verification failed.'
-        bad(new Error(typeof msg === 'string' ? msg : 'OTP verification failed.'))
+        lastError = toOtpError(err)
+        // Refused before any code went out (blocked network, failed bot
+        // check): no point leaving the buyer on a code screen for nothing.
+        const sentAlready = Boolean(window.__AmplifeedOtp?.getSdk?.()?.getLatestReqId?.())
+        if (!sentAlready && lastError.code && OTP_UNSENDABLE.has(lastError.code)) closeOtpWidget()
       },
     })
 
     if (alt && alt.identifier) {
-      stop = watchForSwitchLink(alt.channel, () => {
-        stop()
-        closeOtpWidget()
-        sendOtpFull(alt.identifier, alt.channel, { channel, identifier }).then(resolve, reject)
+      stopSwitch = watchForSwitchLink(alt.channel, () => {
+        // Settle this one first, so closing it is not read as a cancel.
+        finish(() => {
+          closeOtpWidget()
+          sendOtpFull(alt.identifier, alt.channel, { channel, identifier }).then(resolve, reject)
+        })
       })
     }
   })
@@ -326,14 +464,19 @@ export async function verifyEmailOtp(email: string): Promise<OtpResult> {
 
 /**
  * Verify a PHONE by SMS. The identifier must be digits only, country code and
- * no "+", per the widget — so +91 99999 99999 goes in as "919999999999".
+ * no "+", per the widget, so +91 99999 99999, or plain 99999 99999, goes in as
+ * "919999999999" (smsIdentifier). A number outside India is verified by email
+ * instead, since the SMS cannot reach it.
  *
  * `email` makes the widget's "Use email instead" link work: without it that
  * link retries the phone number over email and always fails.
  */
 export async function verifySmsOtp(phone: string, opts: { email?: string } = {}): Promise<OtpResult> {
-  const digits = String(phone || '').replace(/\D/g, '')
   const clean = String(opts.email || '').trim()
+  const digits = smsIdentifier(phone)
+  // Outside India the text would never arrive: the same proof by email instead.
+  if (!digits && clean) return verifyEmailOtp(clean)
+  if (!digits) throw otpError('SEND_FAILED', 'Enter a 10-digit Indian mobile number.')
   if (isDev && DEV_BYPASS) return devToken('sms', digits)
   await loadOtpProvider()
   const r = await sendOtpFull(digits, 'sms', clean ? { channel: 'email', identifier: clean } : null)
