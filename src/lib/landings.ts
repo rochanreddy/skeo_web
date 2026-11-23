@@ -55,7 +55,8 @@ export function landingHero(kind: LandingKind, price: string) {
 }
 
 /* On every campaign page a buyer goes from their details straight to
-   /checkout, with no one-time code. Every other page asks for the code first. */
+   Cashfree, with no one-time code and no /checkout page. Every other page asks
+   for the code first and pays from /checkout. */
 /* The free campaign (an Instagram push): registering gives full access at
    once, with no payment. The form posts to /api/free-signup instead of going
    to /checkout. */
