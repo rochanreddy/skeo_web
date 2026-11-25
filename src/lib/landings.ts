@@ -60,7 +60,9 @@ export function landingHero(kind: LandingKind, price: string) {
 /* The free campaign (an Instagram push): registering gives full access at
    once, with no payment. The form posts to /api/free-signup instead of going
    to /checkout. */
-export const FREE_CAMPAIGNS = ['/campaign/everything-ai-intro']
+/* None right now: /campaign/everything-ai-intro was free until 25 Nov 2026
+   and is paid again. Add its path back here to make it free. */
+export const FREE_CAMPAIGNS: string[] = []
 export function isFreeCampaign(pathname: string | null): boolean {
   if (pathname === null) return false
   return FREE_CAMPAIGNS.includes(pathname.replace(/\/+$/, ''))
